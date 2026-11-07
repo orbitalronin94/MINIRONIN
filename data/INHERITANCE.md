@@ -6,7 +6,9 @@ MINIRONIN solo puede heredar bibliotecas de datos de RONIN-IA y HERETIC-RONIN. E
 
 ## Reglas de admisión
 
-Una fuente permanece **pendiente** hasta verificar la licencia y procedencia originales. Que exista en un repositorio hermano o se haya descargado no basta.
+**HERETIC-RONIN: preaprobación del usuario.** El usuario confirma que ha revisado recientemente las bibliotecas descargadas y scoped de HERETIC-RONIN y autoriza su herencia en MINIRONIN. No se repetirá una auditoría manual fuente por fuente como condición para empezar la importación. Se conservarán las licencias, atribuciones y restricciones que ya acompañan a cada fuente; se comprobarán integridad, hashes, formato, duplicados y compatibilidad técnica durante la importación. Esta preaprobación cubre el corpus/bibliotecas ya revisados, no convierte automáticamente checkpoints, secretos, holdouts, workflows o estados del optimizador en texto entrenable.
+
+**RONIN-IA:** se aplicará el estado de admisión que el usuario haya establecido para sus bibliotecas; la deduplicación cruzada con HERETIC seguirá siendo obligatoria para evitar contar dos veces el mismo documento.
 
 Cada fuente debe registrar:
 - identificador estable y proyecto de origen;
@@ -35,8 +37,8 @@ Para logs y artefactos de entrenamiento se exige además el ID de ejecución/tra
 | ID de fuente | Origen | Evidencia de snapshot | Inventario de entrenamiento publicado | Estado en MINIRONIN |
 |---|---|---|---:|---|
 | RONIN-IA-TRAIN-2026-11-07 | RONIN-IA | `data/datasets/README.md`, corte 2026-11-07 | 286.468 documentos / 684.738.932 bytes | Candidato a importación selectiva; controles globales G-0 y de casi duplicados aún sin resolver |
-| HERETIC-CORPUS-2026-11-07 | HERETIC-RONIN | `data/datasets/README.md`, actualizado 2026-11-07; auditoría [42362365447](https://github.com/orbitalronin94/HERETIC-RONIN/actions/runs/42362365447) | 260.971 documentos / 703.593.871 bytes | Snapshot candidato; reconciliar solapamiento por fuente antes de importar |
-| HERETIC-COSMOPEDIA-V0.1 | HERETIC-RONIN | `HuggingFaceTB/cosmopedia`, revisión `0ae6ec63f91742bd2d1eaef4f02232c55d719385` | 4.734 documentos / 22.927.899 bytes | Fragmento sintético separado; limitaciones de calidad registradas upstream |
+| HERETIC-CORPUS-2026-11-07 | HERETIC-RONIN | `data/datasets/README.md`, actualizado 2026-11-07; auditoría [42362365447](https://github.com/orbitalronin94/HERETIC-RONIN/actions/runs/42362365447); revisión y aprobación del usuario confirmadas el 2026-11-07 | 260.971 documentos / 703.593.871 bytes | **Preaprobado para importación**; reconciliar hashes y solapamiento con RONIN-IA durante la carga |
+| HERETIC-COSMOPEDIA-V0.1 | HERETIC-RONIN | `HuggingFaceTB/cosmopedia`, revisión `0ae6ec63f91742bd2d1eaef4f02232c55d719385` | 4.734 documentos / 22.927.899 bytes | **Preaprobado como corpus experimental** dentro de la revisión del usuario; mantener etiqueta sintética y no tratarlo como respuestas verificadas |
 | RONIN-PAPERS-INTERNAL | RONIN-IA | `orbitalronin94/Papers`, revisión `d7bf3ae446f666ce3be73b11aab7090e1605a889` | 9 Markdown / 750.857 bytes | Autorización de uso interno; sin permiso de redistribución externa |
 | HERETIC-TRAIN-LOG-42370725970 | HERETIC-RONIN | Ejecución [42370725970](https://github.com/orbitalronin94/HERETIC-RONIN/actions/runs/42370725970), trabajo 128398241561, artefacto 13574129542 | 200 ejemplos generados; artefacto ZIP 82.876 bytes | Artefacto inspeccionado; lote bruto rechazado como supervisión directa; lecciones de ingeniería curadas manualmente |
 | RONIN-CI-42364138740 | RONIN-IA | Ejecución [42364138740](https://github.com/orbitalronin94/RONIN-IA/actions/runs/42364138740), trabajos 128378601930 y 128378602072 | 80 tests; cobertura 82%; smoke test de un paso | Evidencia operativa convertida en lecciones verificables; no es corpus documental bruto |
@@ -45,7 +47,7 @@ Para logs y artefactos de entrenamiento se exige además el ID de ejecución/tra
 
 La auditoría de HERETIC describe sus 260.971 documentos como una base derivada de RONIN-IA de 256.237 documentos (680.665.972 bytes), más 4.734 documentos de Cosmopedia (22.927.899 bytes), tras su propia deduplicación. Estos totales se solapan con el inventario de RONIN-IA. **No sumes los totales de RONIN-IA y HERETIC.** MINIRONIN debe reconciliar hashes de documentos entre ambos orígenes y conservar la procedencia original.
 
-El README de RONIN-IA informa de 286.468 documentos de entrenamiento / 684.738.932 bytes repartidos entre literatura, Mathlib4, NASA revisado por archivo, Papers, ScienceVerse y CoVoST 2. Es un recuento de alcance, no una prueba de elegibilidad global de Nivel A: su control estricto de 64 bibliotecas figura como 0/64 y el control global G-0 sigue fallando. El registro de HERETIC también distingue bytes admitidos de candidatos y describe su auditoría como heurística, no como benchmark público ni prueba de deduplicación semántica.
+El README de RONIN-IA informa de 286.468 documentos de entrenamiento / 684.738.932 bytes repartidos entre literatura, Mathlib4, NASA revisado por archivo, Papers, ScienceVerse y CoVoST 2. Es un recuento de alcance, no una prueba de elegibilidad global de Nivel A: su control estricto de 64 bibliotecas figura como 0/64 y el control global G-0 sigue fallando. El usuario ha revisado y aprobado el lote scoped de HERETIC; MINIRONIN no repetirá esa auditoría de admisión. La importación sí debe reconciliar hashes entre repositorios y conservar los límites de cada licencia y tipo de dato.
 
 ## Precauciones por fuente
 
@@ -55,11 +57,12 @@ El README de RONIN-IA informa de 286.468 documentos de entrenamiento / 684.738.9
 - **ScienceVerse:** CC BY/CC0 según DOI; conservar atribución y metadatos de licencia del artículo.
 - **NASA NTRS:** solo el subconjunto de uso público revisado archivo por archivo está incluido en el alcance de entrenamiento; no admitir automáticamente todo el catálogo.
 - **Cosmopedia:** Apache-2.0 declarado por el editor del dataset, pero es sintético y se basa en material externo; usar solo como texto experimental de siguiente token, no como supervisión de respuestas verificadas.
-- Otros candidatos de cualquiera de los repositorios siguen excluidos hasta revisar sus evidencias de admisión.
+- Las bibliotecas y lotes descargados/scoped de HERETIC que forman parte de la revisión aprobada por el usuario no se consideran candidatos pendientes: deben pasar directamente a la fase de importación técnica y deduplicación.
+- No extender esta aprobación a nuevos orígenes que no estuvieran incluidos en el lote revisado ni a artefactos operativos no documentales.
 
 ## Estado de importación
 
-**Una carga documental está importada:** los nueve artículos propios de Markdown de `orbitalronin94/Papers`, fijados en la revisión `d7bf3ae446f666ce3be73b11aab7090e1605a889`. Están en `data/inherited/papers/` y autorizados para investigación/entrenamiento interno; no se autoriza redistribuirlos. El workflow `data-audit.yml` comprueba número exacto, UTF-8, archivos vacíos, duplicados exactos y calcula SHA-256 en un manifiesto.
+**Cargas documentales:** los nueve artículos propios de Markdown de `orbitalronin94/Papers` están importados en `data/inherited/papers/`, fijados en la revisión `d7bf3ae446f666ce3be73b11aab7090e1605a889`, para investigación/entrenamiento interno y sin redistribución. El corpus scoped de HERETIC está preaprobado por el usuario y su importación física en MINIRONIN es la siguiente tarea; no se volverá a solicitar su aprobación fuente por fuente. El workflow `data-audit.yml` comprueba número exacto, UTF-8, archivos vacíos, duplicados exactos y calcula SHA-256 en un manifiesto.
 
 **Una primera carga de lecciones de ingeniería también está curada:** 15 registros derivados de logs y artefactos de HERETIC y RONIN-IA, con evidencia y limitaciones explícitas. Incluye un benchmark CPU de HERETIC; sus resultados son de una sola actualización y solo sirven para seleccionar candidatos a repetir. No se han importado los 200 pares generados por el docente como respuestas verificadas.
 
