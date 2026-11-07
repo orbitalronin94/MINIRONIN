@@ -18,10 +18,8 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 from minironin import MiniRoninLM, ModelConfig  # noqa: E402
 from train_seed_tournament import (  # noqa: E402
-    ACTIVE_VOCAB, MIX_WEIGHTS, add_doc, build_schedules, clean_text,
-    encode_doc, evaluate, load_curated_jsonl, read_book_texts, read_jsonl,
-    weighted_domains, JSONL_SOURCES, MAX_JSONL_BYTES_PER_SOURCE,
-    MAX_JSONL_DOCS_PER_SOURCE,
+    ACTIVE_VOCAB, MIX_WEIGHTS, add_doc, clean_text, evaluate,
+    load_curated_jsonl, read_book_texts, weighted_domains, split_documents,
 )
 
 TOTAL_STEPS = 200_000
@@ -31,57 +29,184 @@ SEQUENCE_LENGTH = 128
 BASE_SEED = 20261107
 
 
-def load_training_data(heretic_root: Path, books_root: Path):
+TEXT_SUFFIXES = {".jsonl", ".ndjson", ".json", ".txt", ".md", ".xml", ".tei", ".html", ".htm", ".csv", ".tsv"}
+SKIP_NAME_PARTS = ("license", "readme", "metadata", "manifest", "schema", "checksum", "sha256", "audio", "speech", "wav", "mp3", "flac", "parquet", "arrow", "image", "video")
+
+
+def infer_domain(path: Path) -> str:
+    name = path.name.lower()
+    if any(x in name for x in ("math", "gsm", "algebra", "arith")):
+        return "math"
+    if any(x in name for x in ("arxiv", "science", "cosmopedia", "fineweb", "stem")):
+        return "science"
+    if any(x in name for x in ("book", "gutenberg", "prodatphil", "literature")):
+        return "books"
+    return "general"
+
+
+def add_full_text(store, domain: str, text: str, source: str, source_file: str) -> int:
+    text = clean_text(text)
+    if len(text) < 200:
+        return 0
+    before = len(store["docs"])
+    for offset in range(0, len(text), 16000):
+        chunk = text[offset:offset + 18000]
+        if len(chunk) >= 200:
+            add_doc(store, domain, chunk, source, source_file)
+        if offset + 18000 >= len(text):
+            break
+    return len(store["docs"]) - before
+
+
+def extract_text_values(value):
+    if isinstance(value, str):
+        if len(value.strip()) >= 40:
+            yield value
+    elif isinstance(value, list):
+        for item in value:
+            yield from extract_text_values(item)
+    elif isinstance(value, dict):
+        preferred = ("text", "content", "document", "body", "abstract", "problem", "question", "solution", "answer", "instruction", "response", "completion", "passage")
+        used = set()
+        for key in preferred:
+            if key in value:
+                used.add(key)
+                yield from extract_text_values(value[key])
+        if not used:
+            ignored = {"id", "url", "source", "license", "metadata", "title", "author", "date", "language", "timestamp", "image", "audio", "video", "path", "filename"}
+            for key, item in value.items():
+                if key not in ignored:
+                    yield from extract_text_values(item)
+
+
+def read_full_jsonl(path: Path, domain: str, store) -> dict:
+    before, rows, invalid = len(store["docs"]), 0, 0
+    digest = hashlib.sha256()
+    opener = __import__("gzip").open if path.name.lower().endswith(".gz") else open
+    with opener(path, "rb") as stream:
+        for line in stream:
+            digest.update(line)
+            if not line.strip():
+                continue
+            rows += 1
+            try:
+                obj = json.loads(line)
+            except (UnicodeDecodeError, json.JSONDecodeError):
+                invalid += 1
+                continue
+            for value in extract_text_values(obj):
+                add_full_text(store, domain, value, "HERETIC:" + path.name, str(path))
+    return {"path": str(path), "format": "jsonl", "domain": domain, "bytes": path.stat().st_size, "rows": rows, "invalid_rows": invalid, "documents_added": len(store["docs"]) - before, "sha256": digest.hexdigest()}
+
+
+def read_full_text(path: Path, domain: str, store) -> dict:
+    before = len(store["docs"])
+    digest = hashlib.sha256()
+    opener = __import__("gzip").open if path.name.lower().endswith(".gz") else open
+    buffer = ""
+    with opener(path, "rt", encoding="utf-8", errors="replace") as stream:
+        for line in stream:
+            digest.update(line.encode("utf-8", errors="replace"))
+            buffer += line
+            if len(buffer) >= 24000:
+                add_full_text(store, domain, buffer, "HERETIC:" + path.name, str(path))
+                buffer = buffer[-2000:]
+        if buffer:
+            add_full_text(store, domain, buffer, "HERETIC:" + path.name, str(path))
+    return {"path": str(path), "format": path.suffix.lower(), "domain": domain, "bytes": path.stat().st_size, "documents_added": len(store["docs"]) - before, "sha256": digest.hexdigest()}
+
+
+def read_full_json(path: Path, domain: str, store) -> dict:
+    before = len(store["docs"])
+    raw = path.read_bytes()
+    try:
+        obj = json.loads(raw)
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        return {"path": str(path), "format": "json", "domain": domain, "bytes": len(raw), "documents_added": 0, "error": str(exc)}
+    for value in extract_text_values(obj):
+        add_full_text(store, domain, value, "HERETIC:" + path.name, str(path))
+    return {"path": str(path), "format": "json", "domain": domain, "bytes": len(raw), "documents_added": len(store["docs"]) - before, "sha256": hashlib.sha256(raw).hexdigest()}
+
+
+def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
+    if cache_path.exists():
+        cached = torch.load(cache_path, map_location="cpu", weights_only=False)
+        print(json.dumps({"dataset_cache": "reused", **cached["manifest"]}, ensure_ascii=False), flush=True)
+        return cached["train_docs"], cached["names"], cached["probs"], cached["validation"], cached["manifest"]
+
     store = {"docs": [], "seen": set()}
+    discovered = sorted(p for p in heretic_root.rglob("*") if p.is_file())
+    if not discovered:
+        raise SystemExit("HERETIC corpus directory is empty")
     source_audit = []
-    for filename, domain in JSONL_SOURCES.items():
-        path = heretic_root / filename
-        if path.exists():
-            source_audit.append(read_jsonl(
-                path, domain, store, MAX_JSONL_BYTES_PER_SOURCE,
-                MAX_JSONL_DOCS_PER_SOURCE, f"HERETIC:{filename}"
-            ))
+    for path in discovered:
+        lower, suffix = path.name.lower(), path.suffix.lower()
+        if any(part in lower for part in SKIP_NAME_PARTS):
+            continue
+        domain = infer_domain(path)
+        if suffix in {".jsonl", ".ndjson"} or lower.endswith(".jsonl.gz"):
+            source_audit.append(read_full_jsonl(path, domain, store))
+        elif suffix == ".json":
+            source_audit.append(read_full_json(path, domain, store))
+        elif suffix in TEXT_SUFFIXES or lower.endswith((".txt.gz", ".md.gz")):
+            source_audit.append(read_full_text(path, domain, store))
+
     book_audit = read_book_texts(books_root, store)
-    behavior_count = load_curated_jsonl(
-        ROOT / "data/curated/minironin-behavior-v1.jsonl",
-        "behavior", store, "MINIRONIN-authored-behavior-v1"
-    )
+    behavior_count = load_curated_jsonl(ROOT / "data/curated/minironin-behavior-v1.jsonl", "behavior", store, "MINIRONIN-authored-behavior-v1")
     if behavior_count == 0:
         raise SystemExit("No curated MINIRONIN behavior examples loaded")
-    train_docs, val_docs = __import__("train_seed_tournament").split_documents(store["docs"])
+    train_docs, val_docs = split_documents(store["docs"])
     for domain in ("math", "science", "books", "behavior"):
         if not train_docs.get(domain) or not val_docs.get(domain):
-            raise SystemExit(f"Missing train/validation documents for {domain}")
+            raise SystemExit("Missing train/validation documents for " + domain)
     names, probs = weighted_domains(train_docs)
-    encoded = {name: [encode_doc(d) for d in train_docs[name]] for name in names}
-    # Reuse the exact fixed validation-window construction from the seed tournament.
-    _, validation, _, _ = build_schedules(
-        train_docs, val_docs, 1, BATCH_SIZE, SEQUENCE_LENGTH
-    )
+    val_rng, validation = random.Random(314159), {}
+    for domain in sorted(val_docs):
+        batches = []
+        for _ in range(4):
+            rows = []
+            for _ in range(BATCH_SIZE):
+                raw = val_rng.choice(val_docs[domain])["text"].encode("utf-8", errors="replace")
+                if len(raw) < SEQUENCE_LENGTH + 1:
+                    continue
+                offset = val_rng.randrange(0, len(raw) - SEQUENCE_LENGTH)
+                rows.append(torch.tensor(list(raw[offset:offset + SEQUENCE_LENGTH + 1]), dtype=torch.long))
+            if len(rows) == BATCH_SIZE:
+                batches.append(torch.stack(rows))
+        if batches:
+            validation[domain] = batches
+    if not validation:
+        raise SystemExit("No validation windows could be built")
     manifest = {
-        "source_files": source_audit,
+        "corpus_policy": "recursive full textual HERETIC ingest; no per-source byte/document cap",
+        "heretic_discovered_files": len(discovered),
+        "heretic_ingested_files": len(source_audit),
+        "heretic_files": source_audit,
         "book_files": book_audit,
         "behavior_examples": behavior_count,
         "documents_total": len(store["docs"]),
-        "documents_by_domain": {
-            d: sum(1 for x in store["docs"] if x["domain"] == d) for d in MIX_WEIGHTS
-        },
+        "documents_by_domain": {d: sum(1 for x in store["docs"] if x["domain"] == d) for d in MIX_WEIGHTS},
         "training_mix": {d: w for d, w in zip(names, probs)},
-        "validation": "fixed document-disjoint windows; same corpus and seed-tournament split",
+        "validation": "document-disjoint fixed windows from full-corpus split",
+        "excluded": "binary audio/video/image, parquet/arrow and metadata/license/manifest files; never counted as trained text",
     }
-    return encoded, names, probs, validation, manifest
+    payload = {"train_docs": dict(train_docs), "names": names, "probs": probs, "validation": validation, "manifest": manifest}
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    torch.save(payload, cache_path)
+    print(json.dumps({"dataset_cache": "created", **manifest}, ensure_ascii=False), flush=True)
+    return train_docs, names, probs, validation, manifest
 
 
-def batch_for_step(encoded, names, probs, global_step):
+def batch_for_step(train_docs, names, probs, global_step):
     rng = random.Random(BASE_SEED + global_step)
     domains = rng.choices(names, weights=probs, k=BATCH_SIZE)
     rows = []
     for domain in domains:
-        doc = rng.choice(encoded[domain])
-        if len(doc) < SEQUENCE_LENGTH + 1:
-            raise ValueError(f"Document shorter than training window in {domain}")
-        start = rng.randrange(0, len(doc) - SEQUENCE_LENGTH)
-        rows.append(doc[start:start + SEQUENCE_LENGTH + 1])
+        raw = rng.choice(train_docs[domain])["text"].encode("utf-8", errors="replace")
+        if len(raw) < SEQUENCE_LENGTH + 1:
+            raise ValueError("Document shorter than training window in " + domain)
+        start = rng.randrange(0, len(raw) - SEQUENCE_LENGTH)
+        rows.append(torch.tensor(list(raw[start:start + SEQUENCE_LENGTH + 1]), dtype=torch.long))
     return torch.stack(rows)
 
 
@@ -103,6 +228,7 @@ def main():
     parser.add_argument("--start-step", type=int, required=True)
     parser.add_argument("--steps", type=int, default=CHECKPOINT_EVERY)
     parser.add_argument("--threads", type=int, default=2)
+    parser.add_argument("--dataset-cache", default="long-training/full-corpus-cache.pt")
     args = parser.parse_args()
 
     if args.start_step < 0 or args.start_step >= TOTAL_STEPS:
@@ -115,8 +241,8 @@ def main():
     torch.set_num_threads(args.threads)
     torch.use_deterministic_algorithms(True)
     device = torch.device("cpu")
-    encoded, names, probs, validation, manifest = load_training_data(
-        Path(args.heretic_root), Path(args.books_root)
+    train_docs, names, probs, validation, manifest = load_training_data(
+        Path(args.heretic_root), Path(args.books_root), Path(args.dataset_cache)
     )
 
     config = ModelConfig.load(ROOT / "configs/model-10m.json")
@@ -155,7 +281,7 @@ def main():
         lr = learning_rate(global_step)
         for group in optimizer.param_groups:
             group["lr"] = lr
-        batch = batch_for_step(encoded, names, probs, global_step).to(device)
+        batch = batch_for_step(train_docs, names, probs, global_step).to(device)
         optimizer.zero_grad(set_to_none=True)
         _, loss = model(batch, labels=batch, vocab_limit=ACTIVE_VOCAB)
         if not torch.isfinite(loss):
