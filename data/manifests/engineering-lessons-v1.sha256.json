@@ -3,8 +3,8 @@
   "dataset": "data/curated/engineering-lessons-v1.jsonl",
   "language": "es",
   "curation": "manual",
-  "record_count": 15,
-  "sha256": "d0d4b618783b7533c823d4bf10cad5ae666cf73841267e37c47e046c6d60b21a",
+  "record_count": 21,
+  "sha256": "eb74a0aeda67d28eea0a1254b5783d2150d31d9d821bc69bdaf76e0febef0418",
   "sources": [
     {
       "repository": "HERETIC-RONIN",
@@ -38,9 +38,32 @@
       "job_id": "128353150091",
       "artifact_id": 13576377154,
       "checkpoint_bytes": 6001698610
+    },
+    {
+      "repository": "cobol2py",
+      "run_id": "42268813592",
+      "job_id": "128067764631"
+    },
+    {
+      "repository": "ronin-lang",
+      "run_id": "41697731306",
+      "job_ids": [
+        "126132605197",
+        "126132605280"
+      ]
+    },
+    {
+      "repository": "Sycophancy-audit",
+      "run_id": "40388502880",
+      "job_id": "121802992304"
+    },
+    {
+      "repository": "Agent-Eval",
+      "run_id": "41129688540",
+      "job_id": "124317135721"
     }
   ],
-  "audit_run": "42378954458",
+  "audit_run": "42379345170",
   "limitations": [
     "No raw logs included",
     "The 200 teacher-generated examples are excluded as unverified supervision",
