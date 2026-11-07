@@ -159,7 +159,7 @@ def main() -> None:
             "method": "greedy argmax",
             "temperature": 0,
             "max_new_tokens": args.max_new_tokens,
-            "prompt_suffix": "\\nRespuesta:",
+            "prompt_suffix": "\nRespuesta:",
             "threads": args.threads,
             "model_mode": "eval",
         },
