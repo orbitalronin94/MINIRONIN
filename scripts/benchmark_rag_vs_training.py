@@ -77,6 +77,19 @@ def retrieve(query,embedder,index_dir,info,top_k):
    row["cosine_similarity"]=score; results.append(row)
  return sorted(results,key=lambda x:x["cosine_similarity"],reverse=True)
 
+def make_rag_prompt(question,hits,context_length):
+ header="Contexto recuperado:\\n"
+ suffix="\\nPregunta: "+question+"\\nResponde usando el contexto cuando sea pertinente. Si no basta, dilo.\\nRespuesta:"
+ budget=max(0,context_length-len((header+suffix).encode("utf-8")))
+ parts=[]
+ for hit in hits:
+  if budget<=0:break
+  raw=hit["text"].encode("utf-8")[:budget]
+  piece=raw.decode("utf-8",errors="ignore").strip()
+  if piece:
+   parts.append(piece); budget-=len(piece.encode("utf-8"))+1
+ return header+"\\n".join(parts)+suffix
+
 def generate(model,prompt,max_new):
  encoded=list(prompt.encode("utf-8",errors="replace")); generated=[]
  for _ in range(max_new):
@@ -109,8 +122,7 @@ def main():
    question=row["question"].strip(); started=time.perf_counter()
    direct,direct_ids=generate(model,question+"\nRespuesta:",a.max_new_tokens); direct_time=time.perf_counter()-started
    started=time.perf_counter(); hits=retrieve(question,embedder,index_dir,info,a.top_k); retrieval_time=time.perf_counter()-started
-   context="\n".join(x["text"][:MAX_CONTEXT_CHARS] for x in hits)
-   prompt=("Contexto recuperado:\n"+context+"\nPregunta: "+question+"\nResponde usando el contexto cuando sea pertinente. Si no basta, dilo.\nRespuesta:")
+   prompt=make_rag_prompt(question,hits,model.config.context_length)
    started=time.perf_counter(); rag,rag_ids=generate(model,prompt,a.max_new_tokens); rag_time=time.perf_counter()-started
    results.append({"id":row["id"],"domain":row["domain"],"question":question,"rubric":row["rubric"],
     "direct":{"answer":direct,"generated_bytes":len(direct_ids),"seconds":round(direct_time,6)},
