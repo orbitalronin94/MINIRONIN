@@ -191,6 +191,10 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     behavior_count = load_curated_jsonl(ROOT / "data/curated/minironin-behavior-v1.jsonl", "behavior", store, "MINIRONIN-authored-behavior-v1")
     if behavior_count == 0:
         raise SystemExit("No curated MINIRONIN behavior examples loaded")
+    abstain_plain_count = load_curated_jsonl(ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl", "abstain_plain", store, "MINIRONIN-abstain-plain-50k-v1")
+    abstain_literary_count = load_curated_jsonl(ROOT / "data/curated/minironin-abstain-literary-50k-v1.jsonl", "abstain_literary", store, "MINIRONIN-abstain-literary-50k-v1")
+    if abstain_plain_count != 50000 or abstain_literary_count != 50000:
+        raise SystemExit(f"Abstention dataset count mismatch: plain={abstain_plain_count}, literary={abstain_literary_count}")
     abstention_path = ROOT / "data/curated/minironin-abstention-50k.jsonl"
     abstention_manifest = generate_dataset(abstention_path)
     abstention_count = load_curated_jsonl(abstention_path, "abstention", store, "MINIRONIN-authored-abstention-50k")
@@ -226,6 +230,8 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         "heretic_files": source_audit,
         "book_files": book_audit,
         "behavior_examples": behavior_count,
+        "abstention_plain_examples": abstain_plain_count,
+        "abstention_literary_examples": abstain_literary_count,
         "abstention_dataset": abstention_manifest,
         "abstention_examples_loaded": abstention_count,
         "documents_total": len(store["docs"]),
