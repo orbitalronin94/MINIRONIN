@@ -41,7 +41,7 @@ Baseline: decoder-only causal Transformer, pre-layer normalization, learned or r
 | Context length | 512 initially; extend only after memory/quality tests |
 | Parameter budget | ~10M |
 
-The vocabulary size is a parameter-budget lever. The configuration above is only a starting point: exact parameter count must be computed from the implemented module graph and recorded in a machine-readable model config. Do not describe the model as “10M” until that count is verified.
+The first implementation is now configured at vocabulary 23,000 and has an analytically verified count of **9,970,176 trainable parameters**. The breakdown is 5,888,000 token-embedding parameters + 131,072 learned-position parameters + 3,950,592 Transformer-block parameters + 512 final LayerNorm parameters. The test suite asserts this exact count; the test has not yet run in CI. The implementation uses PyTorch scaled-dot-product causal attention, pre-LayerNorm blocks, GELU MLPs, and tied input/output embeddings.
 
 ## 4. Open-source foundations
 
