@@ -85,6 +85,32 @@ jobs:
             gh release create "evolution-130k-step-$end" "evolution-tournament/checkpoint-$end.pt" "evolution-tournament/report-$end.json" "evolution-tournament/SHA256SUMS-$end" --title "MINIRONIN evolutionary winner step $end" --notes "Continuation of 30x1000 tournament winner from step 131000; candidate only. Holdout review required."
             input="evolution-tournament/checkpoint-$end.pt"
           done
+      - name: Select best checkpoint across the complete 200k continuation
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib, shutil
+          root = pathlib.Path("evolution-tournament")
+          candidates = [(root / "winner-131000.pt", root / "tournament-report.json")]
+          for report in sorted(root.glob("report-*.json")):
+              step = int(report.stem.split("-")[-1])
+              candidates.append((root / f"checkpoint-{step}.pt", report))
+          rows = []
+          for checkpoint, report_path in candidates:
+              report = json.loads(report_path.read_text())
+              rows.append((float(report.get("winner_validation_loss", report.get("validation_loss"))),
+                           checkpoint, report_path, report))
+          loss, checkpoint, report_path, report = min(rows, key=lambda row: row[0])
+          shutil.copy2(checkpoint, root / "selected-best-checkpoint.pt")
+          selected = {"selected_checkpoint": checkpoint.name, "completed_steps": report.get("completed_steps", 131000),
+                      "validation_loss": loss, "validation_loss_by_domain": report.get("validation_loss_by_domain", report.get("winner_by_domain")),
+                      "selection_rule": "lowest fixed validation loss across tournament winner and all 20 continuation checkpoints",
+                      "source_report": report_path.name}
+          (root / "selected-best-report.json").write_text(json.dumps(selected, indent=2) + "\\n")
+          print(json.dumps(selected))
+          PY
+          sha256sum evolution-tournament/selected-best-checkpoint.pt evolution-tournament/selected-best-report.json > evolution-tournament/selected-best-SHA256SUMS
+          gh release create "evolution-130k-best-${GITHUB_RUN_ID}" evolution-tournament/selected-best-checkpoint.pt evolution-tournament/selected-best-report.json evolution-tournament/selected-best-SHA256SUMS --title "MINIRONIN selected best checkpoint ${GITHUB_RUN_ID}" --notes "Best validation checkpoint across the tournament winner and all 20 continuation checkpoints. Candidate only; independent holdout review required."
       - name: Publish full run artifact
         uses: actions/upload-artifact@v6
         with:
