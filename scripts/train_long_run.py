@@ -21,6 +21,7 @@ from train_seed_tournament import (  # noqa: E402
     ACTIVE_VOCAB, MIX_WEIGHTS, add_doc, clean_text, evaluate,
     load_curated_jsonl, weighted_domains, split_documents,
 )
+from generate_abstention_dataset import generate_dataset  # noqa: E402
 
 TOTAL_STEPS = 200_000
 CHECKPOINT_EVERY = 10_000
@@ -190,8 +191,17 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     behavior_count = load_curated_jsonl(ROOT / "data/curated/minironin-behavior-v1.jsonl", "behavior", store, "MINIRONIN-authored-behavior-v1")
     if behavior_count == 0:
         raise SystemExit("No curated MINIRONIN behavior examples loaded")
+    abstain_plain_count = load_curated_jsonl(ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl", "abstain_plain", store, "MINIRONIN-abstain-plain-50k-v1")
+    abstain_literary_count = load_curated_jsonl(ROOT / "data/curated/minironin-abstain-literary-50k-v1.jsonl", "abstain_literary", store, "MINIRONIN-abstain-literary-50k-v1")
+    if abstain_plain_count != 50000 or abstain_literary_count != 50000:
+        raise SystemExit(f"Abstention dataset count mismatch: plain={abstain_plain_count}, literary={abstain_literary_count}")
+    abstention_path = ROOT / "data/curated/minironin-abstention-50k.jsonl"
+    abstention_manifest = generate_dataset(abstention_path)
+    abstention_count = load_curated_jsonl(abstention_path, "abstention", store, "MINIRONIN-authored-abstention-50k")
+    if abstention_count != 50_000:
+        raise SystemExit(f"Expected 50000 unique abstention examples, loaded {abstention_count}")
     train_docs, val_docs = split_documents(store["docs"])
-    for domain in ("math", "science", "books", "behavior"):
+    for domain in ("math", "science", "books", "behavior", "abstention"):
         if not train_docs.get(domain) or not val_docs.get(domain):
             raise SystemExit("Missing train/validation documents for " + domain)
     names, probs = weighted_domains(train_docs)
@@ -220,6 +230,18 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         "heretic_files": source_audit,
         "book_files": book_audit,
         "behavior_examples": behavior_count,
+        "abstention_plain_examples": abstain_plain_count,
+        "abstention_literary_examples": abstain_literary_count,
+        "abstention_datasets": [
+            {"path": str(ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl"),
+             "bytes": (ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl").stat().st_size,
+             "sha256": hashlib.sha256((ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl").read_bytes()).hexdigest()},
+            {"path": str(ROOT / "data/curated/minironin-abstain-literary-50k-v1.jsonl"),
+             "bytes": (ROOT / "data/curated/minironin-abstain-literary-50k-v1.jsonl").stat().st_size,
+             "sha256": hashlib.sha256((ROOT / "data/curated/minironin-abstain-literary-50k-v1.jsonl").read_bytes()).hexdigest()},
+        ],
+        "abstention_dataset": abstention_manifest,
+        "abstention_examples_loaded": abstention_count,
         "documents_total": len(store["docs"]),
         "documents_by_domain": {d: sum(1 for x in store["docs"] if x["domain"] == d) for d in MIX_WEIGHTS},
         "training_mix": {d: w for d, w in zip(names, probs)},

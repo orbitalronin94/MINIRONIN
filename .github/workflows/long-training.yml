@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/long-training.yml"
       - "scripts/train_long_run.py"
+      - "scripts/build_abstention_datasets.py"
   workflow_dispatch:
 
 permissions:
@@ -57,6 +58,24 @@ jobs:
               out.write(f"generation={generation}\nparent_tag={tag}\nparent_kind={kind}\n")
           print({"generation":generation,"parent_release":tag,"parent_kind":kind})
           PY
+
+      - name: Generar y verificar los dos datasets de abstención (50k + 50k)
+        run: |
+          set -euo pipefail
+          python scripts/build_abstention_datasets.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path("data/curated/abstention-50k-manifest.json").read_text())
+          assert len(m["datasets"]) == 2
+          assert all(x["records"] == 50000 for x in m["datasets"]), m
+          for x in m["datasets"]:
+              p=Path(x["file"])
+              assert p.stat().st_size == x["bytes"] and p.stat().st_size > 1000000
+          print(json.dumps(m, ensure_ascii=False, indent=2))
+          PY
+          mkdir -p long-training/abstention-datasets
+          cp data/curated/minironin-abstain-plain-50k-v1.jsonl data/curated/minironin-abstain-literary-50k-v1.jsonl data/curated/abstention-50k-manifest.json long-training/abstention-datasets/
 
       - name: Comprobar espacio
         run: |
