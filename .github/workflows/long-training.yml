@@ -94,8 +94,9 @@ jobs:
               --start-step "$start" \
               --steps 10000 \
               --threads 2
-            checkpoint="long-training/current/checkpoint-$((end)).pt"
-            report="long-training/current/report-$((end)).json"
+            printf -v padded "%06d" "$end"
+            checkpoint="long-training/current/checkpoint-$padded.pt"
+            report="long-training/current/report-$padded.json"
             cp "$checkpoint" "long-training/checkpoint-$((end)).pt"
             cp "$report" "long-training/report-$((end)).json"
             sha256sum "long-training/checkpoint-$((end)).pt" "long-training/report-$((end)).json" > "long-training/SHA256SUMS-$((end))"
