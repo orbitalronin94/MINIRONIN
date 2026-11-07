@@ -1,0 +1,90 @@
+name: Acquire reasoning books
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/acquire-reasoning-books.yml"
+      - "data/books/SOURCES.jsonl"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: minironin-reasoning-books
+  cancel-in-progress: false
+
+jobs:
+  prodatphil:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download PRODATPHIL v0.3
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 4 --retry-all-errors \
+            "https://datastore.uni-muenster.de/records/bm3kg-cnb72/files/prodatphil_en_txt_0_3.zip?download=1" \
+            -o prodatphil_en_txt_0_3.zip
+          test -s prodatphil_en_txt_0_3.zip
+          unzip -tq prodatphil_en_txt_0_3.zip
+          sha256sum prodatphil_en_txt_0_3.zip | tee prodatphil.sha256
+      - name: Extract and audit corpus
+        run: |
+          set -euo pipefail
+          mkdir -p acquired/prodatphil-en-v0.3
+          unzip -q prodatphil_en_txt_0_3.zip -d acquired/prodatphil-en-v0.3
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, json
+          root = Path("acquired/prodatphil-en-v0.3")
+          rows = []
+          for p in sorted(root.rglob("*")):
+              if not p.is_file():
+                  continue
+              raw = p.read_bytes()
+              try:
+                  text = raw.decode("utf-8")
+                  encoding = "utf-8"
+              except UnicodeDecodeError:
+                  text = raw.decode("utf-8", errors="replace")
+                  encoding = "utf-8-replacement"
+              rows.append({
+                  "path": str(p.relative_to(root)),
+                  "bytes": len(raw),
+                  "sha256": hashlib.sha256(raw).hexdigest(),
+                  "encoding": encoding,
+                  "characters": len(text),
+                  "nonempty": bool(text.strip())
+              })
+          if not rows:
+              raise SystemExit("PRODATPHIL archive extracted no files")
+          (root / "MINIRONIN-AUDIT.json").write_text(
+              json.dumps({
+                  "source": "PRODATPHIL Science and Logic v0.3",
+                  "url": "https://datastore.uni-muenster.de/records/bm3kg-cnb72",
+                  "license": "public domain, as declared by Universität Münster",
+                  "expected_works": 147,
+                  "files": rows,
+                  "file_count": len(rows),
+                  "nonempty_files": sum(x["nonempty"] for x in rows),
+                  "total_bytes": sum(x["bytes"] for x in rows)
+              }, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8"
+          )
+          print(f"Extracted files: {len(rows)}")
+          print(f"Non-empty files: {sum(x['nonempty'] for x in rows)}")
+          print(f"Extracted bytes: {sum(x['bytes'] for x in rows)}")
+          PY
+      - name: Publish auditable book corpus
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-prodatphil-en-v0.3
+          path: |
+            acquired/prodatphil-en-v0.3/
+            prodatphil_en_txt_0_3.zip
+            prodatphil.sha256
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
