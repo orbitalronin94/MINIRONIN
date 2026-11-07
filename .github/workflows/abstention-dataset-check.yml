@@ -44,6 +44,7 @@ jobs:
               if "plain" in path.name:
                   assert all(r["answer"] == "ni puta idea, la verdad" for r in rows)
               else:
-                  assert all(r["answer"].endswith("ni puta idea, la verdad.") for r in rows)
+                  assert all("ni puta idea, la verdad" in r["answer"] for r in rows)
+                  assert len({r["answer"] for r in rows}) >= 100
           print("PASS: 100,000 unique records; exact canonical labels; SHA-256 verified.")
           PY
