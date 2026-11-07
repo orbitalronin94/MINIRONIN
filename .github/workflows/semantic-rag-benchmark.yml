@@ -1,0 +1,97 @@
+name: MINIRONIN — benchmark entrenamiento vs RAG semántico
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/semantic-rag-benchmark.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: minironin-semantic-rag-benchmark
+  cancel-in-progress: false
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BOOTSTRAP_TAG: long-train-step-130000
+      BOOTSTRAP_SHA256: 4eea4efe7e1c65da0ee7985ae3c09a7f69eab3cce90e2cabaa8694b6857cc986
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Elegir checkpoint de comparación
+        id: model
+        run: |
+          set -euo pipefail
+          gh api --paginate repos/orbitalronin94/MINIRONIN/releases > "$RUNNER_TEMP/releases.json"
+          python - <<'PY'
+          import json, os, re
+          releases=json.load(open(os.environ["RUNNER_TEMP"]+"/releases.json"))
+          found=[]
+          for r in releases:
+              m=re.fullmatch(r"minironin-cycle-(\d+)-best",r.get("tag_name",""))
+              if m and not r.get("draft") and not r.get("prerelease"): found.append((int(m.group(1)),r["tag_name"]))
+          tag=max(found)[1] if found else os.environ["BOOTSTRAP_TAG"]
+          kind="cycle-best" if found else "bootstrap-130k"
+          with open(os.environ["GITHUB_OUTPUT"],"a") as f: f.write(f"tag={tag}\nkind={kind}\n")
+          print({"checkpoint_release":tag,"kind":kind})
+          PY
+      - name: Descargar y verificar checkpoint
+        run: |
+          set -euo pipefail
+          mkdir -p .tmp/model
+          if [ "${{ steps.model.outputs.kind }}" = "bootstrap-130k" ]; then
+            curl --fail --location --retry 4 --retry-all-errors "https://github.com/orbitalronin94/MINIRONIN/releases/download/$BOOTSTRAP_TAG/checkpoint-130000.pt" -o .tmp/model/checkpoint.pt
+            echo "$BOOTSTRAP_SHA256  .tmp/model/checkpoint.pt" | sha256sum -c -
+          else
+            gh release download "${{ steps.model.outputs.tag }}" --pattern best-checkpoint.pt --pattern best-SHA256SUMS --dir .tmp/model
+            (cd .tmp/model && sed 's#long-training/##g' best-SHA256SUMS | sha256sum -c -)
+            mv .tmp/model/best-checkpoint.pt .tmp/model/checkpoint.pt
+          fi
+      - name: Descargar HERETIC y verificar
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/releases/assets"
+          curl --fail --location --retry 4 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936363" -o heretic-corpus.part-0
+          curl --fail --location --retry 4 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936357" -o heretic-corpus.part-1
+          curl --fail --location --retry 4 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936364" -o parts.sha256
+          curl --fail --location --retry 4 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936362" -o corpus.sha256
+          test "$(stat -c%s heretic-corpus.part-0)" -eq 400000000
+          test "$(stat -c%s heretic-corpus.part-1)" -eq 349837093
+          sha256sum -c parts.sha256
+          cat heretic-corpus.part-0 heretic-corpus.part-1 > heretic-approved-corpus.zip
+          test "$(sha256sum heretic-approved-corpus.zip | awk '{print $1}')" = "$(awk '{print $1}' corpus.sha256)"
+          unzip -tq heretic-approved-corpus.zip
+          mkdir -p data/inherited/heretic-corpus
+          unzip -q heretic-approved-corpus.zip -d data/inherited/heretic-corpus
+      - name: Descargar PRODATPHIL v0.3 y verificar
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 4 --retry-all-errors "https://github.com/orbitalronin94/MINIRONIN/releases/download/reasoning-library-prodatphil-v0.3/prodatphil_en_txt_0_3.zip" -o prodatphil_en_txt_0_3.zip
+          echo "8eacf44101c87772a842fce3d3ab415903f28ba7684f8b33eddba0e2489c13c9  prodatphil_en_txt_0_3.zip" | sha256sum -c -
+          mkdir -p data/inherited/prodatphil-en-v0.3
+          unzip -tq prodatphil_en_txt_0_3.zip
+          unzip -q prodatphil_en_txt_0_3.zip -d data/inherited/prodatphil-en-v0.3
+      - name: Instalar dependencias CPU
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install numpy pyarrow pytest sentence-transformers
+      - name: Tests del experimento
+        run: pytest -q tests/test_rag_benchmark.py
+      - name: Ejecutar comparación pareada
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_rag_vs_training.py --heretic-root data/inherited/heretic-corpus --books-root data/inherited/prodatphil-en-v0.3 --checkpoint .tmp/model/checkpoint.pt --holdout benchmarks/inference-holdout-v1.jsonl --output rag-benchmark --cache "$RUNNER_TEMP/minironin-rag-corpus-cache.pt" --threads 2
+      - name: Publicar resultados
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-direct-vs-rag-${{ github.run_id }}
+          path: rag-benchmark/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
