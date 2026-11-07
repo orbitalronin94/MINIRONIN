@@ -1,63 +1,65 @@
-# MINIRONIN — Technical specification
+# MINIRONIN — Especificación técnica
 
-**Status:** draft v0.1  
-**Target:** approximately 10,000,000 trainable parameters  
-**Project independence:** mandatory
+**Estado:** borrador v0.1  
+**Objetivo:** aproximadamente 10.000.000 de parámetros entrenables  
+**Independencia del proyecto:** obligatoria
 
-## 1. Mission
+## 1. Misión
 
-Build a genuinely small, independently trained language model using carefully curated open data and the strongest practical open-source foundations suitable for a 10M-parameter budget.
+Construir un modelo de lenguaje realmente pequeño, entrenado de forma independiente, utilizando datos abiertos cuidadosamente seleccionados y fundamentos de código abierto adecuados a un presupuesto de 10M de parámetros.
 
-MINIRONIN inherits *libraries of data* from RONIN-IA and HERETIC-RONIN. It does not inherit their procedures, workflows, training scripts, model weights, checkpoint lineage, or promotion systems.
+MINIRONIN hereda *bibliotecas de datos* de RONIN-IA y HERETIC-RONIN. No hereda sus procedimientos, workflows, scripts de entrenamiento, pesos, linaje de checkpoints ni sistemas de promoción.
 
-## 2. Explicit inheritance boundary
+## 2. Límites explícitos de herencia
 
-### Allowed after admission review
-- Text documents and dataset shards.
-- Dataset metadata, source URLs, license notices, provenance records, and checksums.
-- Public-domain or otherwise license-compatible evaluation/training material, subject to each source's terms.
+### Permitido tras la revisión de admisión
+- Documentos de texto y fragmentos de conjuntos de datos.
+- Metadatos, URL de origen, avisos de licencia, registros de procedencia y sumas de comprobación.
+- Material de dominio público o compatible con la licencia, sujeto a las condiciones de cada fuente.
+- Lecciones de ingeniería derivadas de logs y artefactos, después de curación manual, eliminación de datos sensibles y verificación de cada afirmación.
 
-### Forbidden by default
-- `.github/workflows/**` from either sibling repository.
-- Training/evaluation scripts, optimizer schedules, launchers, and promotion code.
-- Model checkpoints, optimizer states, and teacher/student weights.
-- Unverified artifacts or content whose license/provenance cannot be established.
+### Prohibido por defecto
+- `.github/workflows/**` de cualquiera de los repositorios hermanos.
+- Scripts de entrenamiento/evaluación, planificadores de optimización, lanzadores y código de promoción.
+- Checkpoints, estados del optimizador y pesos de profesor/alumno.
+- Artefactos sin verificar o contenido cuya licencia/procedencia no pueda establecerse.
+- Logs brutos completos como texto de entrenamiento: suelen contener ruido, rutas, identificadores, datos operativos y afirmaciones sin contexto.
 
-A data file is not automatically safe to import merely because it exists in a sibling repository or artifact. Each source must have a source ID, upstream URL, license evidence, retrieval date, content hash, format, size, language/domain tags, and admission decision.
+Un archivo de datos no es automáticamente seguro para importar por existir en un repositorio hermano o en un artefacto. Cada fuente debe tener identificador, URL/revisión de origen, evidencia de licencia, fecha de recuperación, hash, formato, tamaño, etiquetas de idioma/dominio y decisión de admisión.
 
-## 3. Model architecture candidate
+## 3. Candidato de arquitectura
 
-Baseline: decoder-only causal Transformer, pre-layer normalization, learned or rotary position encoding (benchmark before locking), causal multi-head self-attention, gated or GELU MLP, residual connections, and tied input/output token embeddings.
+Referencia: Transformer causal decoder-only, pre-normalización, codificación posicional aprendida o rotatoria (comparar antes de fijar), autoatención multi-cabeza causal, MLP GELU o gated, conexiones residuales y embeddings de entrada/salida compartidos.
 
-| Component | Initial candidate |
+| Componente | Candidato inicial |
 |---|---:|
-| Transformer blocks | 6 |
-| Hidden width | 256 |
-| Attention heads | 8 |
-| Head dimension | 32 |
-| MLP width | 768 |
-| Vocabulary | tune around 22k–24k |
-| Embedding/output weights | tied |
-| Context length | 512 initially; extend only after memory/quality tests |
-| Parameter budget | ~10M |
+| Bloques Transformer | 6 |
+| Anchura oculta | 256 |
+| Cabezas de atención | 8 |
+| Dimensión por cabeza | 32 |
+| Anchura MLP | 768 |
+| Vocabulario | ajustar alrededor de 22k–24k |
+| Pesos de embeddings/salida | compartidos |
+| Longitud de contexto | 512 inicialmente |
+| Presupuesto de parámetros | ~10M |
 
-The first implementation is now configured at vocabulary 23,000 and has an analytically verified count of **9,970,176 trainable parameters**. The breakdown is 5,888,000 token-embedding parameters + 131,072 learned-position parameters + 3,950,592 Transformer-block parameters + 512 final LayerNorm parameters. The test suite asserts this exact count; the test has not yet run in CI. The implementation uses PyTorch scaled-dot-product causal attention, pre-LayerNorm blocks, GELU MLPs, and tied input/output embeddings.
+La primera implementación utiliza vocabulario 23.000 y tiene un recuento analítico verificado de **9.970.176 parámetros entrenables**: 5.888.000 de embeddings de tokens + 131.072 posicionales + 3.950.592 de bloques Transformer + 512 de la LayerNorm final. La implementación usa atención causal escalada de PyTorch (SDPA), bloques pre-LayerNorm, MLP GELU y embeddings compartidos. Los tests iniciales han pasado en GitHub Actions.
 
-## 4. Open-source foundations
+## 4. Fundamentos de código abierto
 
-Prefer mature, auditable implementations and published methods over novel infrastructure. Candidate references to evaluate (not blanket approvals):
+Se prefieren implementaciones maduras y auditables y métodos publicados frente a infraestructura novedosa. Referencias candidatas (no aprobaciones generales):
 
-- **PyTorch** — tensor/autograd/runtime foundation; BSD-style license.
-- **Hugging Face Tokenizers** — fast tokenizer implementation; Apache-2.0.
-- **SentencePiece** — tokenizer training/runtime; Apache-2.0.
-- **nanoGPT** — educational compact GPT reference; MIT. Reuse only after reviewing the exact upstream revision and retaining required notices.
-- **GPT-NeoX / EleutherAI evaluation ecosystem** — reference material for model/evaluation conventions; check each component's license independently.
+- **PyTorch:** base de tensores, autograd y ejecución; licencia de la familia BSD.
+- **Hugging Face Tokenizers:** tokenización BPE/WordPiece rápida; Apache-2.0.
+- **SentencePiece:** entrenamiento y ejecución de tokenizadores Unigram/BPE; Apache-2.0.
+- **nanoGPT:** referencia educativa de GPT compacto; MIT. Revisar la revisión exacta y conservar avisos.
+- **GPT-NeoX / ecosistema de evaluación de EleutherAI:** referencias de metodología; comprobar por separado la licencia de cada componente.
 
-No dependency is approved merely by this list. Pin exact versions/commits and licenses in `docs/OPEN_SOURCE_REGISTER.md` before importing code.
+Ninguna dependencia queda aprobada por aparecer en esta lista. Antes de importar código, fijar versiones/commits y licencias en `docs/OPEN_SOURCE_REGISTER.md`.
 
-## 5. Data design
+## 5. Diseño de datos
 
-Use a unified, documented schema with at least:
+Esquema unificado mínimo:
 - `source_id`
 - `document_id`
 - `text`
@@ -69,57 +71,59 @@ Use a unified, documented schema with at least:
 - `split`
 - `quality_flags`
 
-Admission pipeline: inventory → license/provenance check → format validation → text extraction → normalization → exact deduplication → near-duplicate screening → quality filters → domain/language tagging → split assignment → immutable manifest.
+Flujo de admisión: inventario → licencia/procedencia → validación de formato → extracción → normalización → deduplicación exacta → detección de casi duplicados → filtros de calidad → etiquetas de dominio/idioma → asignación de particiones → manifiesto inmutable.
 
-Training data and evaluation data must be disjoint. Evaluation prompts/answers must never leak into training shards. Preserve source attribution and original license notices.
+Los datos de entrenamiento y evaluación deben estar separados. Las preguntas/respuestas del holdout no deben filtrarse a los fragmentos de entrenamiento. Se conserva la atribución y los avisos de licencia originales.
 
-## 6. Training principles (new MINIRONIN design)
+Para los registros de ingeniería se añade: repositorio, ejecución, trabajo, hash del artefacto, fragmento de evidencia, resultado de curación y nivel de confianza. Se distingue entre hechos observados, interpretación y recomendación.
 
-The training recipe will be designed and measured specifically for this model. It must not be copied from either sibling project.
+## 6. Principios de entrenamiento (diseño propio de MINIRONIN)
 
-Initial principles:
-1. Establish a deterministic baseline and record seed, code revision, data manifest hash, tokenizer hash, config, and environment.
-2. Use next-token causal language modeling as the initial objective.
-3. Track token count, throughput, loss, gradient norm, learning rate, and parameter count.
-4. Save immutable checkpoints with SHA-256.
-5. Evaluate against fixed, held-out, domain-balanced sets.
-6. Compare every candidate against the same baseline and same holdout.
-7. Never infer quality from training loss or dataset size alone.
+La receta se diseñará y medirá específicamente para este modelo; no se copiará de los proyectos hermanos.
 
-Optimizer, schedule, batch size, warmup, precision, and total token budget remain experimental decisions until hardware-aware pilot measurements exist.
+1. Establecer una referencia determinista y registrar semilla, revisión de código, hash del manifiesto de datos, hash del tokenizador, configuración y entorno.
+2. Usar predicción causal del siguiente token como objetivo inicial.
+3. Registrar tokens, rendimiento, pérdida, norma del gradiente, tasa de aprendizaje y número de parámetros.
+4. Guardar checkpoints inmutables con SHA-256.
+5. Evaluar con conjuntos fijos, equilibrados por dominio y reservados.
+6. Comparar cada candidato con la misma referencia y el mismo holdout.
+7. No inferir calidad a partir de la pérdida de entrenamiento ni del tamaño del corpus.
 
-## 7. Evaluation
+Optimizador, planificador, lote, calentamiento, precisión y presupuesto total de tokens siguen siendo decisiones experimentales hasta medir pilotos adaptados al hardware.
 
-A small model needs a realistic evaluation suite, not a single aggregate score. The initial suite should cover:
-- language understanding and instruction following,
-- arithmetic and elementary mathematics,
-- code reading and simple programming,
-- factual/scientific explanations,
-- logic and multi-step reasoning,
-- multilingual robustness (Spanish and English at minimum).
+## 7. Evaluación
 
-Use held-out, license-compatible benchmarks or newly authored questions. Keep a sealed holdout. Report per-domain scores, sample counts, confidence intervals where meaningful, failure examples, and regressions. Compare only runs using identical evaluation IDs and settings.
+La suite inicial debe cubrir:
+- comprensión lingüística y seguimiento de instrucciones;
+- aritmética y matemáticas elementales;
+- lectura de código y programación sencilla;
+- explicaciones científicas y factuales;
+- lógica y razonamiento en varios pasos;
+- robustez multilingüe (como mínimo español e inglés).
 
-## 8. Reproducibility and release gates
+Usar benchmarks compatibles con sus licencias o preguntas nuevas redactadas expresamente. Mantener un holdout sellado. Informar resultados por dominio, número de muestras, intervalos de confianza cuando tengan sentido, ejemplos de fallos y regresiones. Comparar solo ejecuciones con los mismos identificadores y ajustes de evaluación.
 
-A checkpoint is eligible for release only when:
-- architecture and parameter count are verified;
-- data manifest and licenses are auditable;
-- training configuration and hashes are recorded;
-- tests pass;
-- held-out evaluation is complete;
-- no material domain regression is hidden by the aggregate;
-- model card documents limitations and intended use.
+## 8. Reproducibilidad y criterios de publicación
 
-## 9. Non-goals
+Un checkpoint solo podrá publicarse cuando:
+- arquitectura y número de parámetros estén verificados;
+- manifiesto de datos y licencias sean auditables;
+- configuración de entrenamiento y hashes estén registrados;
+- tests superados;
+- evaluación reservada completada;
+- ninguna regresión importante por dominio quede oculta por el promedio;
+- la ficha del modelo documente límites y uso previsto.
 
-- Importing sibling training workflows or procedures.
-- Starting from a sibling checkpoint.
-- Maximizing raw corpus size at the expense of legality or quality.
-- Claiming parity with larger models.
-- Treating a passing training job as evidence of model capability.
+## 9. Fuera de alcance
 
-## 10. Decision log
+- Importar workflows o procedimientos de entrenamiento de los repositorios hermanos.
+- Empezar desde un checkpoint de un hermano.
+- Maximizar el volumen bruto a costa de legalidad o calidad.
+- Afirmar paridad con modelos mayores.
+- Considerar un job de entrenamiento exitoso como prueba de capacidad.
 
-- 2026-11-07: MINIRONIN established as an independent ~10M-parameter model project.
-- 2026-11-07: data-library inheritance from RONIN-IA and HERETIC-RONIN permitted; sibling workflows, procedures, and model checkpoints explicitly excluded.
+## 10. Registro de decisiones
+
+- 2026-11-07: MINIRONIN se establece como proyecto independiente de modelo de ~10M de parámetros.
+- 2026-11-07: se permite heredar bibliotecas de datos de RONIN-IA y HERETIC-RONIN; se excluyen expresamente workflows, procedimientos y checkpoints.
+- 2026-11-07: se admite curar manualmente registros de ingeniería procedentes de logs y artefactos, sin importar logs brutos ni resultados no verificados.
