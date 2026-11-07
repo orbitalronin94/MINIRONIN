@@ -111,3 +111,15 @@ La variante de evaluación con `inference_mode` también quedó excluida: el art
 - Todos los candidatos ejecutaron una sola actualización del optimizador. La pérdida media casi idéntica no demuestra equivalencia de calidad a largo plazo.
 
 Los seis nuevos ejemplos derivados de este benchmark se han redactado manualmente y se han añadido al JSONL curado. El lote completo de 14 registros pasó la auditoría de procedencia y estructura en [ejecución 42378755692](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378755692). SHA-256: `fd9ca3e1c7624ea897d26d6f0a70aa7ee317fb42b79ce6fa524d998f88f45015`.
+
+## 6. HERETIC-RONIN — bloque de entrenamiento 42355677713
+
+El trabajo 128353150091 registró un bloque de continuación desde el paso 600 hasta el 2600, con objetivo global declarado de 250.000 pasos:
+- 2.000 pasos en el bloque.
+- 15.382,33 segundos de entrenamiento.
+- Pérdida inicial: 2,7662957.
+- Pérdida final: 2,5199592.
+- Pérdida media: 2,5911295.
+- Corpus auditado declarado: 256.237 documentos y 680.665.972 bytes, después de excluir 68 registros duplicados.
+
+**Interpretación:** la pérdida de entrenamiento bajó durante ese bloque. No se puede inferir una mejora del holdout a partir de ese dato. El artefacto de 6.001.698.610 bytes incluye archivos `holdout-before.json` y `holdout-after.json`, pero no se descargó el checkpoint completo y el fragmento de log consultado no expone las métricas de esos informes. Por eso el ejemplo curado enseña a separar pérdida de entrenamiento y generalización, sin inventar un resultado de evaluación.
