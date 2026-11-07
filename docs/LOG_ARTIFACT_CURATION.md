@@ -127,3 +127,8 @@ El trabajo 128353150091 registró un bloque de continuación desde el paso 600 h
 ## 7. Ampliación a otros repositorios propios
 
 Se incorporaron 16 registros adicionales a partir de ejecuciones verificadas de `cobol2py`, `ronin-lang`, `Sycophancy-audit` y `Agent-Eval`. La suite COBOL de 363 pruebas se ha utilizado para curar propiedades distintas (análisis de literales, comentarios, destinos ambiguos, referencias dinámicas, rutas, ramificaciones simbólicas y caché), no para contar ejecuciones repetidas como nuevos casos. El total actual de la biblioteca es 31; el objetivo es 1.000 y el progreso se documenta en `docs/ENGINEERING_CASES_1000.md`.
+
+
+## 8. Lote adicional de noviembre
+
+Se amplió la biblioteca de 31 a 50 registros. Se incorporaron propiedades de benchmark y manifiestos, resolución de copybooks, semántica de archivos COBOL, clases de condición, funciones financieras, gobernanza de licencias y diagnóstico prudente de exportaciones Android. Fuentes: `cobol2py` run 42272058320, `HERETIC-RONIN` run 42379476052 y `RoninRPG` run 42376711339. La validación de licencia de HERETIC pasó 14 pruebas; su job de adquisición fue omitido, por lo que esa ejecución no se cuenta como ingestión de corpus.
