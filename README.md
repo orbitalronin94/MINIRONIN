@@ -43,7 +43,7 @@ Se han inspeccionado los inventarios de los repositorios hermanos. **La primera 
 
 El corpus scoped de **HERETIC-RONIN está preaprobado por el usuario para importación**, sin repetir la revisión manual de admisión. La copia física y deduplicación cruzada aún están pendientes. HERETIC declara 260.971 documentos / 703.593.871 bytes, incluidos 256.237 documentos derivados de RONIN-IA y 4.734 registros de Cosmopedia. RONIN-IA declara 286.468 documentos / 684.738.932 bytes. Los inventarios se solapan y nunca deben sumarse sin deduplicación. Consulta el [registro de herencia](data/INHERITANCE.md).
 
-Además, ya hay **14 lecciones de ingeniería en castellano** curadas manualmente a partir de logs y artefactos de Actions de ambos repositorios. El lote ampliado de 14 pasó en [42378755692](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378755692); SHA-256: `fd9ca3e1c7624ea897d26d6f0a70aa7ee317fb42b79ce6fa524d998f88f45015`. Incluye comparaciones de rendimiento CPU de HERETIC, siempre marcadas como microbenchmarks de una sola actualización. No se incorporan logs brutos ni respuestas de profesores automáticos sin verificación.
+Además, ya hay **15 lecciones de ingeniería en castellano** curadas manualmente a partir de logs y artefactos de Actions de ambos repositorios. El lote de 15 pasó en [42378954458](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378954458); SHA-256: `d0d4b618783b7533c823d4bf10cad5ae666cf73841267e37c47e046c6d60b21a`. Incluye comparaciones de rendimiento CPU y una lección sobre un bloque de 2.000 pasos de HERETIC. No se incorporan logs brutos ni respuestas docentes no verificadas.
 
 ## Exclusiones
 
