@@ -94,7 +94,7 @@ jobs:
               --output-dir long-training/current \
               --start-step "$start" \
               --steps 10000 \
-              --threads 2 \\
+              --threads 2 \
               --dataset-cache "$RUNNER_TEMP/minironin-full-corpus-cache.pt"
             printf -v padded "%06d" "$end"
             checkpoint="long-training/current/checkpoint-$padded.pt"
