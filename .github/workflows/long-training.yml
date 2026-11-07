@@ -5,13 +5,14 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/long-training.yml"
+      - "scripts/train_long_run.py"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: minironin-long-training-200k
+  group: minironin-long-training-200k-full-corpus
   cancel-in-progress: false
 
 jobs:
@@ -93,7 +94,8 @@ jobs:
               --output-dir long-training/current \
               --start-step "$start" \
               --steps 10000 \
-              --threads 2
+              --threads 2 \\
+              --dataset-cache "$RUNNER_TEMP/minironin-full-corpus-cache.pt"
             printf -v padded "%06d" "$end"
             checkpoint="long-training/current/checkpoint-$padded.pt"
             report="long-training/current/report-$padded.json"
@@ -106,7 +108,7 @@ jobs:
               "long-training/report-$((end)).json" \
               "long-training/SHA256SUMS-$((end))" \
               --title "MINIRONIN checkpoint $((end))/200000" \
-              --notes "Continuation from the 30-seed winner (seed 9519). Checkpoint includes model and AdamW optimizer state; SHA-256 manifest included. Candidate only; no automatic main promotion. Byte-level active vocabulary=257."
+              --notes "Continuation from the 30-seed winner (seed 9519). Checkpoint includes model and AdamW optimizer state; SHA-256 manifest included. Candidate only; no automatic main promotion. Byte-level active vocabulary=257. The training corpus is the full recursively ingested textual HERETIC library and full-text PRODATPHIL; binary modalities and metadata are audited but not treated as text."
             input="long-training/checkpoint-$((end)).pt"
             echo "::endgroup::"
           done
