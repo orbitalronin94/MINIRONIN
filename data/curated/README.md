@@ -2,7 +2,7 @@
 
 **Versión:** 1.0  
 **Idioma:** castellano  
-**Registros:** 15  
+**Registros:** 31  
 **Método:** curación manual a partir de logs y metadatos de artefactos de GitHub Actions.
 
 Este conjunto transforma evidencia operativa de RONIN-IA y HERETIC-RONIN en ejemplos explicativos. No contiene logs brutos ni respuestas automáticas del docente.
@@ -40,7 +40,11 @@ El artefacto de la ejecución 42370725970 contenía 200 ejemplos generados por S
 
 ## Auditoría e integridad
 
-El lote de 15 registros pasó la auditoría en [ejecución 42378954458](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378954458). SHA-256: `d0d4b618783b7533c823d4bf10cad5ae666cf73841267e37c47e046c6d60b21a`. El manifiesto versionado recoge los cuatro orígenes.
+El lote de 31 registros pasó la auditoría en [ejecución 42379452577](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42379452577). SHA-256: `f96218280922a1a8cfe2ac9d7520b0c554b72e4aa600aae95a9581350a30e204`. El manifiesto versionado recoge seis repositorios de origen.
+
+## Objetivo de expansión
+
+El objetivo es llegar a 1.000 casos válidos. El progreso y los criterios de admisión están en [ENGINEERING_CASES_1000.md](../../docs/ENGINEERING_CASES_1000.md). Los logs repetidos de una misma suite no se cuentan como casos distintos.
 
 ## Uso
 
