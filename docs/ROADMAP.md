@@ -1,108 +1,114 @@
-# MINIRONIN — Roadmap to v1.0
+# MINIRONIN — Hoja de ruta hasta v1.0
 
-This roadmap describes MINIRONIN only. It does not import the workflows or training procedures of RONIN-IA or HERETIC-RONIN.
+Esta hoja de ruta corresponde exclusivamente a MINIRONIN. No incorpora workflows ni procedimientos de entrenamiento de RONIN-IA o HERETIC-RONIN.
 
-## CP-00 — Project boundary
-- [x] Define independent project and ~10M parameter target.
-- [x] Explicitly prohibit sibling workflows, procedures, and checkpoints.
-- [ ] Record initial repository commit and baseline tree.
+## CP-00 — Límites del proyecto
+- [x] Definir el proyecto independiente y el objetivo de ~10M de parámetros.
+- [x] Prohibir expresamente la herencia de workflows, procedimientos y checkpoints de los repositorios hermanos.
+- [ ] Registrar el commit inicial y el árbol de referencia del repositorio.
 
-**Exit:** scope is documented and unambiguous.
+**Salida:** alcance documentado y sin ambigüedades.
 
-## CP-01 — Source inventory
-- [ ] Inventory data-bearing paths and available artifacts in RONIN-IA.
-- [ ] Inventory data-bearing paths and available artifacts in HERETIC-RONIN.
-- [ ] Exclude workflows, code, checkpoints, optimizer states, and logs unless separately approved as metadata.
-- [ ] Produce source-by-source candidate register with sizes and file counts.
+## CP-01 — Inventario de fuentes
+- [x] Inspeccionar rutas con datos y artefactos disponibles en RONIN-IA y HERETIC-RONIN.
+- [x] Inspeccionar logs de CI/entrenamiento seleccionados y sus artefactos.
+- [ ] Completar el inventario de artefactos históricos adicionales de ambos repositorios.
+- [x] Separar los logs de entrenamiento, informes de evaluación, metadatos y artefactos de modelo.
+- [ ] Crear un registro de candidatos por fuente con tamaños y recuentos.
 
-**Exit:** every proposed import has a concrete source locator.
+**Salida:** cada importación propuesta tiene un localizador de origen concreto.
 
-## CP-02 — License and provenance audit
-- [ ] Verify license at original upstream source, not only sibling-repo presence.
-- [ ] Record retrieval date, upstream revision/URL, attribution requirements, and redistribution conditions.
-- [ ] Reject unknown, incompatible, or untraceable sources.
-- [ ] Record SHA-256 and immutable source manifest.
+## CP-02 — Auditoría de licencia y procedencia
+- [x] Registrar autorización interna para los nueve artículos propios de Papers.
+- [ ] Verificar licencia en la fuente original, no solo en el repositorio hermano.
+- [ ] Registrar fecha de recuperación, revisión/URL, atribución y condiciones de redistribución.
+- [ ] Rechazar fuentes desconocidas, incompatibles o sin trazabilidad.
+- [ ] Registrar SHA-256 y manifiesto inmutable de cada lote.
 
-**Exit:** every admitted document has a defensible provenance and license record.
+**Salida:** cada documento admitido tiene procedencia y licencia defendibles.
 
-## CP-03 — Data library inheritance
-- [x] Import the nine owner-authored Papers Markdown files into `data/inherited/papers/` at a pinned upstream revision, under internal-use-only authorization.
-- [x] Preserve source revision, source filenames, and the explicit no-redistribution restriction.
-- [ ] Generate and retain the successful SHA-256 audit manifest (workflow added; first run exposed and is fixing a README-count bug).
-- [ ] Normalize admitted text to the canonical training schema.
-- [ ] Run global cross-source exact/near-duplicate and holdout-contamination checks.
-- [ ] Publish corpus statistics by source, language, domain, and license.
+## CP-03 — Herencia de bibliotecas de datos
+- [x] Importar los nueve artículos propios Markdown de Papers en `data/inherited/papers/`, desde una revisión fijada y con autorización de uso interno.
+- [x] Conservar revisión, nombres originales y restricción de no redistribución.
+- [x] Generar y conservar el manifiesto SHA-256: auditoría superada en [ejecución 42378151858](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378151858).
+- [ ] Normalizar los textos admitidos al esquema canónico de entrenamiento.
+- [ ] Ejecutar deduplicación exacta/aproximada global y comprobaciones de contaminación del holdout.
+- [ ] Publicar estadísticas por fuente, idioma, dominio y licencia.
 
-**Exit:** reproducible, auditable corpus snapshot with manifest hash.
+**Salida:** snapshot reproducible del corpus con hash de manifiesto.
 
-## CP-04 — Open-source foundation selection
-- [ ] Evaluate PyTorch, Tokenizers/SentencePiece, and compact Transformer references.
-- [ ] Pin exact dependency versions and upstream commits.
-- [ ] Review licenses and preserve notices.
-- [ ] Implement only the minimum architecture required by the specification.
+## CP-04 — Curación de logs y artefactos de entrenamiento
+- [x] Recuperar y examinar el artefacto de la ejecución HERETIC [42370725970](https://github.com/orbitalronin94/HERETIC-RONIN/actions/runs/42370725970).
+- [x] Identificar 200 ejemplos generados automáticamente y sus limitaciones de verificación.
+- [x] Rechazar el lote bruto como supervisión directa: contiene respuestas incorrectas, redundantes o justificadas de forma insuficiente.
+- [x] Crear ejemplos de ingeniería curados manualmente a partir de evidencia verificable de HERETIC y RONIN-IA.
+- [ ] Ampliar la curación a ejecuciones históricas, métricas y artefactos adicionales.
+- [ ] Auditar privacidad, secretos, identificadores operativos, duplicados y licencias.
+- [ ] Separar registros factuales, diagnósticos, recomendaciones y ejemplos negativos.
 
-**Exit:** dependency register and clean-room MINIRONIN implementation plan.
+**Salida:** conjunto de lecciones de ingeniería en castellano, trazable y con confianza explícita.
 
-## CP-05 — Tokenizer
-- [ ] Choose tokenizer method and vocabulary size using corpus coverage and parameter budget.
-- [ ] Train tokenizer on training split only.
-- [ ] Measure fertility, unknown-token behavior, and Spanish/English coverage.
-- [ ] Freeze tokenizer files and SHA-256.
+## CP-05 — Selección de fundamentos de código abierto
+- [ ] Evaluar PyTorch, Tokenizers/SentencePiece y referencias Transformer compactas.
+- [ ] Fijar versiones y commits exactos.
+- [ ] Revisar licencias y conservar avisos.
+- [ ] Implementar solo la arquitectura mínima de la especificación.
 
-**Exit:** deterministic tokenizer artifact and report.
+**Salida:** registro de dependencias y plan de implementación limpio.
 
-## CP-06 — Model implementation
-- [ ] Implement decoder-only Transformer baseline.
-- [ ] Add exact parameter counter and config validation.
-- [ ] Verify causal mask, tied embeddings, position handling, and shape invariants.
-- [ ] Add save/load round-trip and deterministic forward tests.
-- [ ] Verify total parameters are near 10M.
+## CP-06 — Tokenizador
+- [ ] Elegir método y vocabulario según cobertura del corpus y presupuesto de parámetros.
+- [ ] Entrenar el tokenizador solo con la partición de entrenamiento.
+- [ ] Medir fragmentación, tokens desconocidos y cobertura de español/inglés.
+- [ ] Congelar archivos y SHA-256 del tokenizador.
 
-**Exit:** tested model implementation and parameter report.
+**Salida:** artefacto determinista y su informe.
 
-## CP-07 — Data pipeline
-- [ ] Implement streaming shard reader and deterministic batching.
-- [ ] Ensure document boundaries and split isolation.
-- [ ] Add reproducible packing and data-order controls.
-- [ ] Test malformed and oversized examples.
+## CP-07 — Implementación del modelo
+- [x] Implementar Transformer decoder-only de referencia.
+- [x] Añadir contador exacto de parámetros y validación de configuración.
+- [x] Verificar máscara causal, embeddings compartidos, posiciones e invariantes de forma.
+- [ ] Añadir prueba de guardado/carga y ejecución directa determinista.
+- [x] Verificar que el total está cerca de 10M: 9.970.176 parámetros.
 
-**Exit:** stable token batches with recorded manifest/tokenizer hashes.
+**Salida:** implementación probada e informe de parámetros.
 
-## CP-08 — Pilot experiments
-- [ ] Run short smoke test for numerical stability.
-- [ ] Measure throughput and memory on available runner hardware.
-- [ ] Compare a small set of optimizer/schedule candidates using the experiment ladder in [TRAINING_RESEARCH.md](TRAINING_RESEARCH.md).
-- [ ] Select training settings from measured evidence, not sibling defaults.
+## CP-08 — Experimentos piloto
+- [x] Ejecutar pruebas iniciales de arquitectura.
+- [ ] Validar el smoke test del benchmark de rendimiento.
+- [ ] Medir rendimiento y memoria en los runners disponibles.
+- [ ] Comparar optimizadores y planificadores con experimentos controlados.
+- [ ] Elegir ajustes mediante evidencia, no por herencia de otros repositorios.
 
-**Exit:** documented pilot report and frozen baseline recipe.
+**Salida:** informe de pilotos y receta de referencia congelada.
 
-## CP-09 — Baseline training
-- [ ] Train first full baseline from random initialization.
-- [ ] Save checkpoint and complete metadata.
-- [ ] Record token budget, wall time, loss curves, and hardware.
-- [ ] Run the fixed validation suite.
+## CP-09 — Entrenamiento de referencia
+- [ ] Entrenar la primera referencia completa desde inicialización aleatoria.
+- [ ] Guardar checkpoint y metadatos completos.
+- [ ] Registrar presupuesto de tokens, tiempo, curvas de pérdida y hardware.
+- [ ] Ejecutar la suite fija de validación.
 
-**Exit:** reproducible baseline checkpoint and evaluation report.
+**Salida:** checkpoint reproducible e informe de evaluación.
 
-## CP-10 — Quality iteration
-- [ ] Identify failure clusters by domain and language.
-- [ ] Improve data quality/balance or model configuration based on evidence.
-- [ ] Keep sealed holdout untouched.
-- [ ] Compare candidate to baseline on identical evaluation IDs.
+## CP-10 — Iteración de calidad
+- [ ] Identificar grupos de fallos por dominio e idioma.
+- [ ] Mejorar calidad/equilibrio de datos o configuración con evidencia.
+- [ ] Mantener intacto el holdout sellado.
+- [ ] Comparar candidatos con la referencia usando los mismos identificadores de evaluación.
 
-**Exit:** measurable improvement without concealed regressions.
+**Salida:** mejora medible sin regresiones ocultas.
 
-## CP-11 — Robustness and safety
-- [ ] Test malformed prompts, repetition, hallucination, language switching, and long context.
-- [ ] Document memorization/privacy risks and dataset exclusions.
-- [ ] Add model limitations and usage guidance.
+## CP-11 — Robustez y seguridad
+- [ ] Probar prompts malformados, repetición, alucinación, cambios de idioma y contexto largo.
+- [ ] Documentar riesgos de memorización/privacidad y exclusiones del dataset.
+- [ ] Añadir limitaciones y pautas de uso del modelo.
 
-**Exit:** published limitations and robustness report.
+**Salida:** informe de limitaciones y robustez.
 
-## CP-12 — v1.0 release
-- [ ] Freeze model config, tokenizer, corpus manifest, and checkpoint hashes.
-- [ ] Publish model card, data statement, license register, and evaluation report.
-- [ ] Confirm all tests and provenance checks pass.
-- [ ] Tag v1.0 only after release gates are satisfied.
+## CP-12 — Publicación v1.0
+- [ ] Congelar configuración, tokenizador, manifiesto de corpus y hashes del checkpoint.
+- [ ] Publicar ficha del modelo, declaración de datos, registro de licencias e informe de evaluación.
+- [ ] Confirmar que todos los tests y controles de procedencia pasan.
+- [ ] Etiquetar v1.0 solo después de satisfacer los criterios de publicación.
 
-**Exit:** independently reproducible, documented ~10M model release.
+**Salida:** modelo independiente de ~10M, documentado y reproducible.
