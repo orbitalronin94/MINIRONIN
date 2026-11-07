@@ -1,0 +1,149 @@
+name: MINIRONIN — inference holdout diary
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: minironin-inference-holdout-diary
+  cancel-in-progress: false
+
+jobs:
+  evaluate-next:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: orbitalronin94/MINIRONIN
+      BASE_RELEASE: seed-tournament-42383056882
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install CPU PyTorch
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Ensure base is evaluated before checkpoints
+        id: base
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p benchmarks/diary .tmp/inference
+          if [[ ! -f benchmarks/diary/base.json ]]; then
+            gh release download "$BASE_RELEASE" --repo "$REPOSITORY" \
+              --pattern "best-checkpoint.pt" --dir .tmp/inference
+            python scripts/run_inference_holdout.py \
+              --checkpoint .tmp/inference/best-checkpoint.pt \
+              --label base-seed-9519-before-long-training \
+              --steps 100 \
+              --holdout benchmarks/inference-holdout-v1.jsonl \
+              --output benchmarks/diary/base.json \
+              --threads 2
+            echo "created=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "created=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Evaluate the next unseen checkpoint only
+        if: steps.base.outputs.created != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .tmp/inference benchmarks/diary
+          mapfile -t tags < <(
+            gh release list --repo "$REPOSITORY" --limit 100 --json tagName \
+              --jq '.[].tagName' \
+              | grep -E '^long-train-step-[0-9]+$' \
+              | sort -V
+          )
+          selected=""
+          selected_step=""
+          for tag in "${tags[@]}"; do
+            step="${tag#long-train-step-}"
+            if [[ ! -f "benchmarks/diary/checkpoint-${step}.json" ]]; then
+              selected="$tag"
+              selected_step="$step"
+              break
+            fi
+          done
+          if [[ -z "$selected" ]]; then
+            echo "No unseen checkpoint release is available."
+            exit 0
+          fi
+
+          gh release download "$selected" --repo "$REPOSITORY" \
+            --pattern "checkpoint-${selected_step}.pt" --dir .tmp/inference
+          checkpoint=".tmp/inference/checkpoint-${selected_step}.pt"
+          python scripts/run_inference_holdout.py \
+            --checkpoint "$checkpoint" \
+            --label "long-train-step-${selected_step}" \
+            --steps "$selected_step" \
+            --holdout benchmarks/inference-holdout-v1.jsonl \
+            --base-diary benchmarks/diary/base.json \
+            --output "benchmarks/diary/checkpoint-${selected_step}.json" \
+            --threads 2
+
+      - name: Refresh human-readable diary index
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("benchmarks/diary")
+          rows = []
+          for path in sorted(root.glob("*.json"), key=lambda p: (p.name != "base.json", int(p.stem.split("-")[-1]) if p.stem.startswith("checkpoint-") else -1)):
+              data = json.loads(path.read_text(encoding="utf-8"))
+              comparison = data.get("comparison_to_base") or {}
+              rows.append({
+                  "label": data["label"],
+                  "steps": data["completed_steps"],
+                  "count": data["holdout_count"],
+                  "sha": data["checkpoint_sha256"],
+                  "date": data["created_at_utc"],
+                  "changed": comparison.get("changed_answers", "—"),
+                  "change_rate": comparison.get("answer_change_rate", "—"),
+                  "file": path.name,
+              })
+          lines = [
+              "# MINIRONIN — diario de inferencia",
+              "",
+              "Las respuestas completas, prompts, rúbricas y hashes están en los JSON enlazados. ",
+              "«Respuestas cambiadas» mide diferencia literal frente a base, no calidad.",
+              "No hay puntuación automática de inteligencia: requiere revisión humana ciega.",
+              "",
+              "| Modelo | Pasos completados | Preguntas | Respuestas distintas vs base | Tasa de cambio | Fecha UTC | Diario |",
+              "|---|---:|---:|---:|---:|---|---|",
+          ]
+          for row in rows:
+              rate = f'{row["change_rate"]:.1%}' if isinstance(row["change_rate"], (int, float)) else row["change_rate"]
+              lines.append(f'| {row["label"]} | {row["steps"]} | {row["count"]} | {row["changed"]} | {rate} | {row["date"]} | [{row["file"]}]({row["file"]}) |')
+          (root / "index.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+          PY
+
+      - name: Commit diary
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add benchmarks/diary
+          if git diff --cached --quiet; then
+            echo "Diary unchanged."
+            exit 0
+          fi
+          git commit -m "Record MINIRONIN inference holdout diary"
+          git pull --rebase origin main
+          git push origin HEAD:main
