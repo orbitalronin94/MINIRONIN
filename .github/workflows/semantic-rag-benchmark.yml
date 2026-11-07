@@ -1,5 +1,9 @@
 name: MINIRONIN — benchmark entrenamiento vs RAG semántico
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/semantic-rag-benchmark.yml"
   workflow_dispatch:
 permissions:
   contents: read
