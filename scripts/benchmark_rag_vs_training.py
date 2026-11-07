@@ -6,7 +6,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 import numpy as np
 import torch
-from sentence_transformers import SentenceTransformer
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"src")); sys.path.insert(0,str(ROOT/"scripts"))
 from minironin import MiniRoninLM, ModelConfig
@@ -94,6 +93,7 @@ def main():
  p.add_argument("--threads",type=int,default=2); p.add_argument("--max-new-tokens",type=int,default=128); p.add_argument("--top-k",type=int,default=TOP_K)
  a=p.parse_args(); torch.set_num_threads(a.threads); torch.use_deterministic_algorithms(True); a.output.mkdir(parents=True,exist_ok=True)
  train_docs,_,_,_,manifest=load_training_data(a.heretic_root,a.books_root,a.cache)
+ from sentence_transformers import SentenceTransformer
  embedder=SentenceTransformer(EMBEDDING_MODEL,device="cpu"); index_dir=a.output/"semantic-index"
  info=build_index(train_docs,embedder,index_dir)
  config=ModelConfig.load(ROOT/"configs/model-10m.json"); model=MiniRoninLM(config).cpu()
