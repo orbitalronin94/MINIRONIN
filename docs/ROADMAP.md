@@ -43,8 +43,10 @@ Esta hoja de ruta corresponde exclusivamente a MINIRONIN. No incorpora workflows
 - [x] Rechazar el lote bruto como supervisión directa: contiene respuestas incorrectas, redundantes o justificadas de forma insuficiente.
 - [x] Crear ejemplos de ingeniería curados manualmente a partir de evidencia verificable de HERETIC y RONIN-IA.
 - [ ] Ampliar la curación a ejecuciones históricas, métricas y artefactos adicionales.
-- [ ] Auditar privacidad, secretos, identificadores operativos, duplicados y licencias.
-- [ ] Separar registros factuales, diagnósticos, recomendaciones y ejemplos negativos.
+- [x] Auditar el alcance del primer lote, eliminar logs brutos y excluir respuestas docentes no verificadas.
+- [x] Separar registros factuales, diagnósticos y límites de calidad; conservar evidencia y confianza.
+- [x] Validar los ocho registros y publicar SHA-256 en [auditoría 42378515927](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378515927).
+- [ ] Ampliar la curación a ejecuciones históricas y artefactos adicionales; revisar privacidad, duplicados y licencias de cada nueva fuente.
 
 **Salida:** conjunto de lecciones de ingeniería en castellano, trazable y con confianza explícita.
 
