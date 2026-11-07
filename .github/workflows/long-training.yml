@@ -1,4 +1,4 @@
-name: MINIRONIN — ganador a 200k pasos
+name: MINIRONIN — 300k pasos desde checkpoint 130k (corpus textual completo)
 
 on:
   push:
@@ -12,16 +12,19 @@ permissions:
   contents: write
 
 concurrency:
-  group: minironin-long-training-200k-full-corpus
+  group: minironin-long-training-300k-from-130k
   cancel-in-progress: false
 
 jobs:
-  train-winner:
+  train-from-130k:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
       GH_TOKEN: ${{ github.token }}
-      WINNER_RELEASE: seed-tournament-42383056882
+      PARENT_RELEASE: long-train-step-130000
+      PARENT_SHA256: 4eea4efe7e1c65da0ee7985ae3c09a7f69eab3cce90e2cabaa8694b6857cc986
+      PARENT_STEP: "130000"
+      TOTAL_STEPS: "430000"
     steps:
       - name: Checkout MINIRONIN
         uses: actions/checkout@v4
@@ -37,16 +40,16 @@ jobs:
           df -h .
           test "$(df --output=avail -k . | tail -1 | tr -d ' ')" -gt 8000000
 
-      - name: Descargar y verificar ganador de las 30 semillas
+      - name: Descargar y verificar checkpoint exacto de 130k
         run: |
           set -euo pipefail
           mkdir -p long-training
           curl --fail --location --retry 4 --retry-all-errors \
-            "https://github.com/orbitalronin94/MINIRONIN/releases/download/$WINNER_RELEASE/best-checkpoint.pt" \
-            -o long-training/winner-seed-checkpoint.pt
-          echo "6648494c0f5f972b140e48e59e5c0bd1e686f7cb3b35b11e6983919e1b3f0c91  long-training/winner-seed-checkpoint.pt" | sha256sum -c -
+            "https://github.com/orbitalronin94/MINIRONIN/releases/download/$PARENT_RELEASE/checkpoint-130000.pt" \
+            -o long-training/parent-130000.pt
+          echo "$PARENT_SHA256  long-training/parent-130000.pt" | sha256sum -c -
 
-      - name: Descargar y verificar corpus HERETIC
+      - name: Descargar y verificar corpus HERETIC completo
         run: |
           set -euo pipefail
           api="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/releases/assets"
@@ -74,19 +77,40 @@ jobs:
           unzip -tq prodatphil_en_txt_0_3.zip
           unzip -q prodatphil_en_txt_0_3.zip -d data/inherited/prodatphil-en-v0.3
 
-      - name: Instalar PyTorch CPU
+      - name: Instalar PyTorch CPU y lector Parquet
         run: |
           python -m pip install --upgrade pip
           python -m pip install numpy pyarrow
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
 
-      - name: Entrenar 200.000 pasos y publicar 20 checkpoints
+      - name: Preflight del checkpoint y recuperar LR real
+        id: parent
         run: |
           set -euo pipefail
-          input="long-training/winner-seed-checkpoint.pt"
-          for start in $(seq 0 10000 190000); do
+          python - <<'PY'
+          import os, torch
+          path = "long-training/parent-130000.pt"
+          c = torch.load(path, map_location="cpu", weights_only=False)
+          assert c.get("completed_steps") == 130000, c.get("completed_steps")
+          assert c.get("parameter_count") == 9970176, c.get("parameter_count")
+          assert c.get("active_vocabulary") == 257, c.get("active_vocabulary")
+          assert "model_state_dict" in c and "optimizer_state_dict" in c
+          groups = c["optimizer_state_dict"].get("param_groups", [])
+          assert groups and "lr" in groups[0], "optimizer LR missing"
+          lr = float(groups[0]["lr"])
+          assert 0 < lr <= 3e-4, lr
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"parent_lr={lr:.12g}\\n")
+          print({"parent_step": c["completed_steps"], "parameters": c["parameter_count"], "active_vocabulary": c["active_vocabulary"], "optimizer_lr": lr})
+          PY
+
+      - name: Entrenar 300.000 pasos adicionales; checkpoint cada 10k
+        run: |
+          set -euo pipefail
+          input="long-training/parent-130000.pt"
+          for start in $(seq 130000 10000 420000); do
             end=$((start + 10000))
-            echo "::group::MINIRONIN training steps $((start + 1))-$end"
+            echo "::group::MINIRONIN global steps $((start + 1))-$end / $TOTAL_STEPS"
             python scripts/train_long_run.py \
               --heretic-root data/inherited/heretic-corpus \
               --books-root data/inherited/prodatphil-en-v0.3 \
@@ -95,28 +119,33 @@ jobs:
               --start-step "$start" \
               --steps 10000 \
               --threads 2 \
-              --dataset-cache "$RUNNER_TEMP/minironin-full-corpus-cache.pt"
+              --dataset-cache "$RUNNER_TEMP/minironin-full-corpus-cache.pt" \
+              --total-steps "$TOTAL_STEPS" \
+              --schedule-start-step "$PARENT_STEP" \
+              --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
             printf -v padded "%06d" "$end"
             checkpoint="long-training/current/checkpoint-$padded.pt"
             report="long-training/current/report-$padded.json"
-            cp "$checkpoint" "long-training/checkpoint-$((end)).pt"
-            cp "$report" "long-training/report-$((end)).json"
-            sha256sum "long-training/checkpoint-$((end)).pt" "long-training/report-$((end)).json" > "long-training/SHA256SUMS-$((end))"
-            tag="long-train-step-$((end))"
+            test -s "$checkpoint"
+            test -s "$report"
+            cp "$checkpoint" "long-training/checkpoint-$end.pt"
+            cp "$report" "long-training/report-$end.json"
+            sha256sum "long-training/checkpoint-$end.pt" "long-training/report-$end.json" > "long-training/SHA256SUMS-$end"
+            tag="long-train-130k-to-430k-step-$end"
             gh release create "$tag" \
-              "long-training/checkpoint-$((end)).pt" \
-              "long-training/report-$((end)).json" \
-              "long-training/SHA256SUMS-$((end))" \
-              --title "MINIRONIN checkpoint $((end))/200000" \
-              --notes "Continuation from the 30-seed winner (seed 9519). Checkpoint includes model and AdamW optimizer state; SHA-256 manifest included. Candidate only; no automatic main promotion. Byte-level active vocabulary=257. The training corpus is the full recursively ingested textual HERETIC library and full-text PRODATPHIL; binary modalities and metadata are audited but not treated as text."
-            input="long-training/checkpoint-$((end)).pt"
+              "long-training/checkpoint-$end.pt" \
+              "long-training/report-$end.json" \
+              "long-training/SHA256SUMS-$end" \
+              --title "MINIRONIN 130k → $end / 430k" \
+              --notes "300,000-step continuation from the verified 130,000-step checkpoint. Full recursive textual HERETIC corpus + full-text PRODATPHIL v0.3 + curated MINIRONIN behavior examples. 10k checkpoints, per-checkpoint validation, dataset manifest and SHA-256. Candidate only; no automatic promotion."
+            input="long-training/checkpoint-$end.pt"
             echo "::endgroup::"
           done
 
-      - name: Publicar último estado como artefacto
+      - name: Publicar artefacto completo de la ejecución
         uses: actions/upload-artifact@v6
         with:
-          name: minironin-long-training-200000
+          name: minironin-300k-from-130k-${{ github.run_id }}
           path: long-training/
           if-no-files-found: error
           compression-level: 0
