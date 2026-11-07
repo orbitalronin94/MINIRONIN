@@ -54,7 +54,7 @@ jobs:
           else:
               generation, tag, kind=1, os.environ["BOOTSTRAP_TAG"], "bootstrap-130k"
           with open(os.environ["GITHUB_OUTPUT"],"a") as out:
-              out.write(f"generation={generation}\\nparent_tag={tag}\\nparent_kind={kind}\\n")
+              out.write(f"generation={generation}\nparent_tag={tag}\nparent_kind={kind}\n")
           print({"generation":generation,"parent_release":tag,"parent_kind":kind})
           PY
 
@@ -137,7 +137,7 @@ jobs:
           assert groups and 0 < float(groups[0]["lr"]) <= 3e-4
           total=step+300000
           with open(os.environ["GITHUB_OUTPUT"],"a") as f:
-              f.write(f"parent_step={step}\\ntotal_steps={total}\\nparent_lr={float(groups[0]['lr']):.12g}\\n")
+              f.write(f"parent_step={step}\ntotal_steps={total}\nparent_lr={float(groups[0]['lr']):.12g}\n")
           print({"parent_step":step,"total_steps":total,"parameter_count":cp["parameter_count"],"optimizer_lr":groups[0]["lr"],"parent_validation_loss":report["validation_loss"]})
           PY
 
@@ -202,10 +202,10 @@ jobs:
           shutil.copy2(cp,root/"best-checkpoint.pt")
           shutil.copy2(rp,root/"best-report.json")
           summary={"generation":int("${{ steps.parent.outputs.generation }}"),"selected_step":step,"validation_loss":loss,"validation_loss_by_domain":report.get("validation_loss_by_domain"),"selected_source_report":rp.name,"selection_rule":"minimum fixed full-corpus validation loss among parent and all 30 checkpoints"}
-          (root/"best-selection.json").write_text(json.dumps(summary,indent=2)+"\\n")
+          (root/"best-selection.json").write_text(json.dumps(summary,indent=2)+"\n")
           print(json.dumps(summary,indent=2))
-          with open("${{ github.output }}","a") as f:
-              f.write(f"best_step={step}\\n")
+          with open(os.environ["GITHUB_OUTPUT"],"a") as f:
+              f.write(f"best_step={step}\n")
           PY
           sha256sum long-training/best-checkpoint.pt long-training/best-report.json long-training/best-selection.json > long-training/best-SHA256SUMS
           gh release create "minironin-cycle-${{ steps.parent.outputs.generation }}-best" \
