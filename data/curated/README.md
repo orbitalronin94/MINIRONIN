@@ -39,7 +39,7 @@ El artefacto de la ejecución 42370725970 contenía 200 ejemplos generados por S
 
 ## Auditoría e integridad
 
-El primer lote de 8 registros pasó la auditoría en [ejecución 42378515927](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378515927). Se ha ampliado a 14 registros y el nuevo commit vuelve a disparar la auditoría. El manifiesto versionado se actualizará con el nuevo SHA-256 al finalizar.
+El lote ampliado de 14 registros pasó la auditoría en [ejecución 42378755692](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378755692). SHA-256 del JSONL: `fd9ca3e1c7624ea897d26d6f0a70aa7ee317fb42b79ce6fa524d998f88f45015`. El manifiesto versionado recoge los tres orígenes.
 
 ## Uso
 
