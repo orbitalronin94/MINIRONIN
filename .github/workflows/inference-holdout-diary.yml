@@ -1,4 +1,5 @@
 name: MINIRONIN — inference holdout diary
+# Batch backfill enabled; this commit also kicks off the initial baseline + checkpoint comparison.
 
 on:
   workflow_dispatch:
