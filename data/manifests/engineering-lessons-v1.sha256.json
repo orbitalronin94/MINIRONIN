@@ -3,8 +3,8 @@
   "dataset": "data/curated/engineering-lessons-v1.jsonl",
   "language": "es",
   "curation": "manual",
-  "record_count": 14,
-  "sha256": "fd9ca3e1c7624ea897d26d6f0a70aa7ee317fb42b79ce6fa524d998f88f45015",
+  "record_count": 15,
+  "sha256": "d0d4b618783b7533c823d4bf10cad5ae666cf73841267e37c47e046c6d60b21a",
   "sources": [
     {
       "repository": "HERETIC-RONIN",
@@ -31,9 +31,16 @@
         "128354710699",
         "128354710653"
       ]
+    },
+    {
+      "repository": "HERETIC-RONIN",
+      "run_id": "42355677713",
+      "job_id": "128353150091",
+      "artifact_id": 13576377154,
+      "checkpoint_bytes": 6001698610
     }
   ],
-  "audit_run": "42378755692",
+  "audit_run": "42378954458",
   "limitations": [
     "No raw logs included",
     "The 200 teacher-generated examples are excluded as unverified supervision",
