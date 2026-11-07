@@ -40,7 +40,7 @@ El artefacto de la ejecución 42370725970 contenía 200 ejemplos generados por S
 
 ## Auditoría e integridad
 
-El lote de 14 registros pasó la auditoría en [ejecución 42378755692](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378755692). Se ha añadido una lección más sobre un bloque de entrenamiento de 2.000 pasos; la nueva auditoría está en curso y actualizará el hash del manifiesto.
+El lote de 15 registros pasó la auditoría en [ejecución 42378954458](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378954458). SHA-256: `d0d4b618783b7533c823d4bf10cad5ae666cf73841267e37c47e046c6d60b21a`. El manifiesto versionado recoge los cuatro orígenes.
 
 ## Uso
 
