@@ -1,6 +1,8 @@
-name: MINIRONIN — evolución 130k: 30 semillas x 1k + ganador 200k
+name: MINIRONIN — evolución generacional (30 x 1k + ganador 200k)
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
   push:
     branches: [main]
     paths:
@@ -10,7 +12,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: minironin-evolution-130k
+  group: minironin-evolution-generations
   cancel-in-progress: false
 jobs:
   evolve:
@@ -23,17 +25,52 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Resolve next generation parent
+        id: parent
+        run: |
+          set -euo pipefail
+          gh api --paginate repos/orbitalronin94/MINIRONIN/releases > "$RUNNER_TEMP/releases.json"
+          python - <<'PY'
+          import json, os, re
+          releases=json.load(open(os.environ['RUNNER_TEMP']+'/releases.json'))
+          found=[]
+          for r in releases:
+              m=re.fullmatch(r'evolution-gen-(\d+)-best',r.get('tag_name',''))
+              if m and not r.get('draft') and not r.get('prerelease'): found.append((int(m.group(1)),r['tag_name']))
+          if found:
+              generation=max(found)[0]+1
+              parent_tag=max(found)[1]
+              parent_kind='previous-generation'
+          else:
+              generation, parent_tag, parent_kind = 1, 'long-train-step-130000', 'bootstrap-130k'
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write(f'generation={generation}\nparent_tag={parent_tag}\nparent_kind={parent_kind}\n')
+          print(f'Generation {generation}; parent release {parent_tag} ({parent_kind})')
+          PY
       - name: Check disk
         run: |
           set -euo pipefail
           df -h .
           test "$(df --output=avail -k . | tail -1 | tr -d ' ')" -gt 8000000
-      - name: Download exact 130k parent and verify
+      - name: Download and verify parent checkpoint
         run: |
           set -euo pipefail
           mkdir -p evolution-tournament
-          curl --fail --location --retry 4 --retry-all-errors "https://github.com/orbitalronin94/MINIRONIN/releases/download/long-train-step-130000/checkpoint-130000.pt" -o evolution-tournament/parent-130000.pt
-          echo "4eea4efe7e1c65da0ee7985ae3c09a7f69eab3cce90e2cabaa8694b6857cc986  evolution-tournament/parent-130000.pt" | sha256sum -c -
+          if [ "${{ steps.parent.outputs.parent_kind }}" = "bootstrap-130k" ]; then
+            curl --fail --location --retry 4 --retry-all-errors "https://github.com/orbitalronin94/MINIRONIN/releases/download/long-train-step-130000/checkpoint-130000.pt" -o evolution-tournament/parent.pt
+            echo "4eea4efe7e1c65da0ee7985ae3c09a7f69eab3cce90e2cabaa8694b6857cc986  evolution-tournament/parent.pt" | sha256sum -c -
+          else
+            gh release download "${{ steps.parent.outputs.parent_tag }}" --pattern selected-best-checkpoint.pt --pattern selected-best-SHA256SUMS --dir evolution-tournament
+            (cd evolution-tournament && sha256sum -c selected-best-SHA256SUMS)
+            mv evolution-tournament/selected-best-checkpoint.pt evolution-tournament/parent.pt
+          fi
+          python - <<'PY'
+          import torch
+          c=torch.load('evolution-tournament/parent.pt',map_location='cpu',weights_only=False)
+          print({'completed_steps':c.get('completed_steps'),'parameter_count':c.get('parameter_count'),'optimizer':bool(c.get('optimizer_state_dict'))})
+          assert isinstance(c.get('completed_steps'),int) and c['completed_steps']>0
+          assert 'optimizer_state_dict' in c
+          PY
       - name: Download and verify full HERETIC corpus
         run: |
           set -euo pipefail
@@ -63,58 +100,72 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install numpy pyarrow
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
-      - name: Run 30 descendants from identical 130k parent
+      - name: Read parent metadata
+        id: metadata
+        run: |
+          python - <<'PY'
+          import json, os, torch
+          c=torch.load('evolution-tournament/parent.pt',map_location='cpu',weights_only=False)
+          lr=float(c['optimizer_state_dict']['param_groups'][0]['lr'])
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write(f"parent_step={int(c['completed_steps'])}\nschedule_start_lr={lr:.12g}\n")
+          PY
+      - name: Run 30 descendants from identical verified parent
         run: |
           set -euo pipefail
-          python scripts/train_130k_evolution.py --parent evolution-tournament/parent-130000.pt --heretic-root data/inherited/heretic-corpus --books-root data/inherited/prodatphil-en-v0.3 --cache "$RUNNER_TEMP/minironin-full-corpus-cache.pt" --out evolution-tournament --seeds 30 --steps 1000 --threads 2
+          python scripts/train_130k_evolution.py --parent evolution-tournament/parent.pt --expected-parent-sha "$(sha256sum evolution-tournament/parent.pt | awk '{print $1}')" --generation "${{ steps.parent.outputs.generation }}" --seed-base "$(( ${{ steps.parent.outputs.generation }} * 100000 ))" --heretic-root data/inherited/heretic-corpus --books-root data/inherited/prodatphil-en-v0.3 --cache "$RUNNER_TEMP/minironin-full-corpus-cache.pt" --out evolution-tournament --seeds 30 --steps 1000 --threads 2
           sha256sum -c evolution-tournament/SHA256SUMS
       - name: Publish tournament winner and ranking
         run: |
           set -euo pipefail
-          gh release create "evolution-130k-${GITHUB_RUN_ID}" evolution-tournament/winner-131000.pt evolution-tournament/tournament-report.json evolution-tournament/SHA256SUMS --title "MINIRONIN 130k evolutionary tournament ${GITHUB_RUN_ID}" --notes "30 descendants from the exact 130k parent, 1,000 optimizer steps each. Candidate winner selected by common document-disjoint validation. No main promotion."
+          tag=$(printf 'evolution-gen-%04d-tournament' "${{ steps.parent.outputs.generation }}")
+          gh release create "$tag" evolution-tournament/winner-*.pt evolution-tournament/tournament-report.json evolution-tournament/SHA256SUMS --title "MINIRONIN generation ${{ steps.parent.outputs.generation }} tournament" --notes "30 descendants x 1,000 optimizer steps from the verified parent. Winner selected on common fixed validation. Candidate only; independent holdout required."
       - name: Continue winner for 200,000 additional steps
         run: |
           set -euo pipefail
-          input="evolution-tournament/winner-131000.pt"
-          for start in $(seq 131000 10000 321000); do
+          winner_step=$(( ${{ steps.metadata.outputs.parent_step }} + 1000 ))
+          total_steps=$(( winner_step + 200000 ))
+          input="evolution-tournament/winner-${winner_step}.pt"
+          for start in $(seq "$winner_step" 10000 "$((total_steps - 10000))"); do
             end=$((start + 10000))
-            python scripts/train_long_run.py --heretic-root data/inherited/heretic-corpus --books-root data/inherited/prodatphil-en-v0.3 --input-checkpoint "$input" --output-dir evolution-tournament/continuation --start-step "$start" --steps 10000 --threads 2 --dataset-cache "$RUNNER_TEMP/minironin-full-corpus-cache.pt" --total-steps 331000 --schedule-start-step 131000
+            python scripts/train_long_run.py --heretic-root data/inherited/heretic-corpus --books-root data/inherited/prodatphil-en-v0.3 --input-checkpoint "$input" --output-dir evolution-tournament/continuation --start-step "$start" --steps 10000 --threads 2 --dataset-cache "$RUNNER_TEMP/minironin-full-corpus-cache.pt" --total-steps "$total_steps" --schedule-start-step "$winner_step" --schedule-start-lr "${{ steps.metadata.outputs.schedule_start_lr }}"
             cp "evolution-tournament/continuation/checkpoint-$end.pt" "evolution-tournament/checkpoint-$end.pt"
             cp "evolution-tournament/continuation/report-$end.json" "evolution-tournament/report-$end.json"
             sha256sum "evolution-tournament/checkpoint-$end.pt" "evolution-tournament/report-$end.json" > "evolution-tournament/SHA256SUMS-$end"
-            gh release create "evolution-130k-step-$end" "evolution-tournament/checkpoint-$end.pt" "evolution-tournament/report-$end.json" "evolution-tournament/SHA256SUMS-$end" --title "MINIRONIN evolutionary winner step $end" --notes "Continuation of 30x1000 tournament winner from step 131000; candidate only. Holdout review required."
+            tag=$(printf 'evolution-gen-%04d-step-%06d' "${{ steps.parent.outputs.generation }}" "$end")
+            gh release create "$tag" "evolution-tournament/checkpoint-$end.pt" "evolution-tournament/report-$end.json" "evolution-tournament/SHA256SUMS-$end" --title "MINIRONIN generation ${{ steps.parent.outputs.generation }} step $end" --notes "Continuation of this generation's tournament winner; candidate only."
             input="evolution-tournament/checkpoint-$end.pt"
           done
-      - name: Select best checkpoint across the complete 200k continuation
+      - name: Select best checkpoint across tournament and all 20 continuation checkpoints
         run: |
           set -euo pipefail
           python - <<'PY'
-          import json, pathlib, shutil
-          root = pathlib.Path("evolution-tournament")
-          candidates = [(root / "winner-131000.pt", root / "tournament-report.json")]
-          for report in sorted(root.glob("report-*.json")):
-              step = int(report.stem.split("-")[-1])
-              candidates.append((root / f"checkpoint-{step}.pt", report))
-          rows = []
-          for checkpoint, report_path in candidates:
-              report = json.loads(report_path.read_text())
-              rows.append((float(report.get("winner_validation_loss", report.get("validation_loss"))),
-                           checkpoint, report_path, report))
-          loss, checkpoint, report_path, report = min(rows, key=lambda row: row[0])
-          shutil.copy2(checkpoint, root / "selected-best-checkpoint.pt")
-          selected = {"selected_checkpoint": checkpoint.name, "completed_steps": report.get("completed_steps", 131000),
-                      "validation_loss": loss, "validation_loss_by_domain": report.get("validation_loss_by_domain", report.get("winner_by_domain")),
-                      "selection_rule": "lowest fixed validation loss across tournament winner and all 20 continuation checkpoints",
-                      "source_report": report_path.name}
-          (root / "selected-best-report.json").write_text(json.dumps(selected, indent=2) + "\\n")
-          print(json.dumps(selected))
+          import glob, json, pathlib, shutil
+          root=pathlib.Path('evolution-tournament')
+          candidates=[(root/f"winner-{int(json.loads((root/'tournament-report.json').read_text())['winner_completed_steps'])}.pt",root/'tournament-report.json')]
+          for rp in sorted(root.glob('report-*.json')):
+              report=json.loads(rp.read_text())
+              step=int(report['completed_steps'])
+              candidates.append((root/f'checkpoint-{step}.pt',rp))
+          rows=[]
+          for cp,rp in candidates:
+              report=json.loads(rp.read_text())
+              loss=float(report.get('winner_validation_loss',report.get('validation_loss')))
+              step=int(report.get('winner_completed_steps',report.get('completed_steps')))
+              rows.append((loss,step,cp,rp,report))
+          loss,step,cp,rp,report=min(rows,key=lambda x:x[0])
+          shutil.copy2(cp,root/'selected-best-checkpoint.pt')
+          selected={'generation':int('${{ steps.parent.outputs.generation }}'),'selected_checkpoint':cp.name,'completed_steps':step,'validation_loss':loss,'validation_loss_by_domain':report.get('winner_by_domain',report.get('validation_loss_by_domain')),'selection_rule':'lowest fixed validation loss across tournament winner and all 20 continuation checkpoints','source_report':rp.name,'parent_checkpoint_sha256':json.loads((root/'tournament-report.json').read_text())['parent_sha256']}
+          (root/'selected-best-report.json').write_text(json.dumps(selected,indent=2)+'\n')
+          print(json.dumps(selected,indent=2))
           PY
           sha256sum evolution-tournament/selected-best-checkpoint.pt evolution-tournament/selected-best-report.json > evolution-tournament/selected-best-SHA256SUMS
-          gh release create "evolution-130k-best-${GITHUB_RUN_ID}" evolution-tournament/selected-best-checkpoint.pt evolution-tournament/selected-best-report.json evolution-tournament/selected-best-SHA256SUMS --title "MINIRONIN selected best checkpoint ${GITHUB_RUN_ID}" --notes "Best validation checkpoint across the tournament winner and all 20 continuation checkpoints. Candidate only; independent holdout review required."
+          tag=$(printf 'evolution-gen-%04d-best' "${{ steps.parent.outputs.generation }}")
+          gh release create "$tag" evolution-tournament/selected-best-checkpoint.pt evolution-tournament/selected-best-report.json evolution-tournament/selected-best-SHA256SUMS --title "MINIRONIN generation ${{ steps.parent.outputs.generation }} selected parent" --notes "Next generation starts from this lowest-validation-loss checkpoint. Candidate only; immutable 40-question holdout review required before promotion to main."
       - name: Publish full run artifact
         uses: actions/upload-artifact@v6
         with:
-          name: minironin-evolution-130k-${{ github.run_id }}
+          name: minironin-generation-${{ steps.parent.outputs.generation }}-${{ github.run_id }}
           path: evolution-tournament/
           if-no-files-found: error
           compression-level: 0
