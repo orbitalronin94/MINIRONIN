@@ -30,7 +30,7 @@ BASE_SEED = 20261107
 
 
 TEXT_SUFFIXES = {".jsonl", ".ndjson", ".json", ".txt", ".md", ".xml", ".tei", ".html", ".htm", ".csv", ".tsv"}
-SKIP_NAME_PARTS = ("license", "readme", "metadata", "manifest", "schema", "checksum", "sha256", "audio", "speech", "wav", "mp3", "flac", "parquet", "arrow", "image", "video")
+SKIP_NAME_PARTS = ("license", "readme", "metadata", "manifest", "schema", "checksum", "sha256", "wav", "mp3", "flac", "parquet", "arrow", "image", "video")
 
 
 def infer_domain(path: Path) -> str:
@@ -189,8 +189,9 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
                 batches.append(torch.stack(rows))
         if batches:
             validation[domain] = batches
-    if not validation:
-        raise SystemExit("No validation windows could be built")
+    missing_validation = [d for d in ("math", "science", "books", "behavior") if not validation.get(d)]
+    if missing_validation:
+        raise SystemExit("Missing full-corpus validation windows for: " + ", ".join(missing_validation))
     manifest = {
         "corpus_policy": "recursive full textual HERETIC ingest; no per-source byte/document cap",
         "heretic_discovered_files": len(discovered),
