@@ -30,8 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
-      SEEDS: \${{ inputs.seeds || '30' }}
-      STEPS: \${{ inputs.steps || '100' }}
+      SEEDS: ${{ inputs.seeds || '30' }}
+      STEPS: ${{ inputs.steps || '100' }}
     steps:
       - name: Checkout MINIRONIN
         uses: actions/checkout@v4
@@ -85,9 +85,15 @@ jobs:
           unzip -tq prodatphil_en_txt_0_3.zip
           unzip -q prodatphil_en_txt_0_3.zip -d data/inherited/prodatphil-en-v0.3
 
+      - name: Preparar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: Instalar PyTorch CPU
         run: |
           python -m pip install --upgrade pip
+          python -m pip install numpy
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
 
       - name: Ejecutar torneo de semillas con datos reales
@@ -109,7 +115,7 @@ jobs:
       - name: Publicar artefactos auditables
         uses: actions/upload-artifact@v6
         with:
-          name: minironin-seed-tournament-\${{ github.run_id }}
+          name: minironin-seed-tournament-${{ github.run_id }}
           path: |
             seed-tournament/
             heretic-approved-corpus.zip
@@ -121,10 +127,10 @@ jobs:
 
       - name: Publicar el mejor candidato como release
         env:
-          GH_TOKEN: \${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          tag="seed-tournament-\${GITHUB_RUN_ID}"
+          tag="seed-tournament-${GITHUB_RUN_ID}"
           gh release create "$tag" \
             seed-tournament/best-checkpoint.pt \
             seed-tournament/tournament-report.json \
