@@ -75,8 +75,8 @@ jobs:
       - name: Instalar dependencias CPU
         run: |
           python -m pip install --upgrade pip
-          python -m pip install numpy pyarrow pytest sentence-transformers
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install numpy pyarrow pytest sentence-transformers
       - name: Tests del experimento
         run: pytest -q tests/test_rag_benchmark.py
       - name: Ejecutar comparación pareada
