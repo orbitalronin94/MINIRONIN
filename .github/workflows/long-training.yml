@@ -1,4 +1,4 @@
-name: MINIRONIN — 300k pasos desde checkpoint 130k (corpus textual completo)
+name: MINIRONIN — selección cíclica del mejor checkpoint + 300k
 
 on:
   push:
@@ -10,21 +10,21 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
-  group: minironin-long-training-300k-from-130k
+  group: minironin-best-checkpoint-300k-cycle
   cancel-in-progress: false
 
 jobs:
-  train-from-130k:
+  train-select-repeat:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
       GH_TOKEN: ${{ github.token }}
-      PARENT_RELEASE: long-train-step-130000
-      PARENT_SHA256: 4eea4efe7e1c65da0ee7985ae3c09a7f69eab3cce90e2cabaa8694b6857cc986
-      PARENT_STEP: "130000"
-      TOTAL_STEPS: "430000"
+      BOOTSTRAP_TAG: long-train-step-130000
+      BOOTSTRAP_SHA256: 4eea4efe7e1c65da0ee7985ae3c09a7f69eab3cce90e2cabaa8694b6857cc986
+      CYCLE_STEPS: "300000"
     steps:
       - name: Checkout MINIRONIN
         uses: actions/checkout@v4
@@ -34,22 +34,58 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Resolver el mejor checkpoint de la generación anterior
+        id: parent
+        run: |
+          set -euo pipefail
+          gh api --paginate repos/orbitalronin94/MINIRONIN/releases > "$RUNNER_TEMP/releases.json"
+          python - <<'PY'
+          import json, os, re
+          releases=json.load(open(os.environ["RUNNER_TEMP"]+"/releases.json"))
+          found=[]
+          for r in releases:
+              m=re.fullmatch(r"minironin-cycle-(\\d+)-best",r.get("tag_name",""))
+              if m and not r.get("draft") and not r.get("prerelease"):
+                  found.append((int(m.group(1)),r["tag_name"]))
+          if found:
+              generation, tag=max(found)
+              generation += 1
+              kind="cycle-best"
+          else:
+              generation, tag, kind=1, os.environ["BOOTSTRAP_TAG"], "bootstrap-130k"
+          with open(os.environ["GITHUB_OUTPUT"],"a") as out:
+              out.write(f"generation={generation}\\nparent_tag={tag}\\nparent_kind={kind}\\n")
+          print({"generation":generation,"parent_release":tag,"parent_kind":kind})
+          PY
+
       - name: Comprobar espacio
         run: |
           set -euo pipefail
           df -h .
           test "$(df --output=avail -k . | tail -1 | tr -d ' ')" -gt 8000000
 
-      - name: Descargar y verificar checkpoint exacto de 130k
+      - name: Descargar y verificar checkpoint y evaluación del padre
         run: |
           set -euo pipefail
-          mkdir -p long-training
-          curl --fail --location --retry 4 --retry-all-errors \
-            "https://github.com/orbitalronin94/MINIRONIN/releases/download/$PARENT_RELEASE/checkpoint-130000.pt" \
-            -o long-training/parent-130000.pt
-          echo "$PARENT_SHA256  long-training/parent-130000.pt" | sha256sum -c -
+          mkdir -p long-training/parent
+          if [ "${{ steps.parent.outputs.parent_kind }}" = "bootstrap-130k" ]; then
+            curl --fail --location --retry 4 --retry-all-errors \
+              "https://github.com/orbitalronin94/MINIRONIN/releases/download/$BOOTSTRAP_TAG/checkpoint-130000.pt" \
+              -o long-training/parent/parent-checkpoint.pt
+            curl --fail --location --retry 4 --retry-all-errors \
+              "https://github.com/orbitalronin94/MINIRONIN/releases/download/$BOOTSTRAP_TAG/report-130000.json" \
+              -o long-training/parent/parent-report.json
+            echo "$BOOTSTRAP_SHA256  long-training/parent/parent-checkpoint.pt" | sha256sum -c -
+          else
+            gh release download "${{ steps.parent.outputs.parent_tag }}" \
+              --pattern best-checkpoint.pt --pattern best-report.json --pattern best-SHA256SUMS \
+              --dir long-training/parent
+            (cd long-training/parent && sha256sum -c best-SHA256SUMS)
+            mv long-training/parent/best-checkpoint.pt long-training/parent/parent-checkpoint.pt
+            mv long-training/parent/best-report.json long-training/parent/parent-report.json
+          fi
 
-      - name: Descargar y verificar corpus HERETIC completo
+      - name: Descargar y verificar HERETIC completo
         run: |
           set -euo pipefail
           api="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/releases/assets"
@@ -83,34 +119,41 @@ jobs:
           python -m pip install numpy pyarrow
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
 
-      - name: Preflight del checkpoint y recuperar LR real
-        id: parent
+      - name: Validar padre y fijar parámetros de ciclo
+        id: metadata
         run: |
           set -euo pipefail
           python - <<'PY'
-          import os, torch
-          path = "long-training/parent-130000.pt"
-          c = torch.load(path, map_location="cpu", weights_only=False)
-          assert c.get("completed_steps") == 130000, c.get("completed_steps")
-          assert c.get("parameter_count") == 9970176, c.get("parameter_count")
-          assert c.get("active_vocabulary") == 257, c.get("active_vocabulary")
-          assert "model_state_dict" in c and "optimizer_state_dict" in c
-          groups = c["optimizer_state_dict"].get("param_groups", [])
-          assert groups and "lr" in groups[0], "optimizer LR missing"
-          lr = float(groups[0]["lr"])
-          assert 0 < lr <= 3e-4, lr
-          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-              f.write(f"parent_lr={lr:.12g}\n")
-          print({"parent_step": c["completed_steps"], "parameters": c["parameter_count"], "active_vocabulary": c["active_vocabulary"], "optimizer_lr": lr})
+          import json, os, torch
+          cp=torch.load("long-training/parent/parent-checkpoint.pt",map_location="cpu",weights_only=False)
+          report=json.load(open("long-training/parent/parent-report.json"))
+          step=int(cp.get("completed_steps",-1))
+          assert step > 0 and step % 10000 == 0, step
+          assert report.get("completed_steps") == step, (report.get("completed_steps"),step)
+          assert cp.get("parameter_count") == 9970176
+          assert cp.get("active_vocabulary") == 257
+          assert "model_state_dict" in cp and "optimizer_state_dict" in cp
+          groups=cp["optimizer_state_dict"].get("param_groups",[])
+          assert groups and 0 < float(groups[0]["lr"]) <= 3e-4
+          total=step+300000
+          with open(os.environ["GITHUB_OUTPUT"],"a") as f:
+              f.write(f"parent_step={step}\\ntotal_steps={total}\\nparent_lr={float(groups[0]['lr']):.12g}\\n")
+          print({"parent_step":step,"total_steps":total,"parameter_count":cp["parameter_count"],"optimizer_lr":groups[0]["lr"],"parent_validation_loss":report["validation_loss"]})
           PY
 
-      - name: Entrenar 300.000 pasos adicionales; checkpoint cada 10k
+      - name: Entrenar 300k adicionales con todo el texto entrenable; checkpoint cada 10k
         run: |
           set -euo pipefail
-          input="long-training/parent-130000.pt"
-          for start in $(seq 130000 10000 420000); do
+          parent_step="${{ steps.metadata.outputs.parent_step }}"
+          total_steps="${{ steps.metadata.outputs.total_steps }}"
+          input="long-training/parent/parent-checkpoint.pt"
+          seed_offset=$(( ${{ steps.parent.outputs.generation }} * 100000000 ))
+          mkdir -p long-training/checkpoints
+          cp long-training/parent/parent-report.json "long-training/report-$parent_step.json"
+          cp "$input" "long-training/checkpoint-$parent_step.pt"
+          for start in $(seq "$parent_step" 10000 "$((total_steps - 10000))"); do
             end=$((start + 10000))
-            echo "::group::MINIRONIN global steps $((start + 1))-$end / $TOTAL_STEPS"
+            echo "::group::Generation ${{ steps.parent.outputs.generation }} — steps $((start + 1))-$end"
             python scripts/train_long_run.py \
               --heretic-root data/inherited/heretic-corpus \
               --books-root data/inherited/prodatphil-en-v0.3 \
@@ -120,33 +163,69 @@ jobs:
               --steps 10000 \
               --threads 2 \
               --dataset-cache "$RUNNER_TEMP/minironin-full-corpus-cache.pt" \
-              --total-steps "$TOTAL_STEPS" \
-              --schedule-start-step "$PARENT_STEP" \
-              --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
+              --total-steps "$total_steps" \
+              --schedule-start-step "$parent_step" \
+              --schedule-start-lr "${{ steps.metadata.outputs.parent_lr }}" \
+              --seed-offset "$seed_offset"
             printf -v padded "%06d" "$end"
             checkpoint="long-training/current/checkpoint-$padded.pt"
             report="long-training/current/report-$padded.json"
-            test -s "$checkpoint"
-            test -s "$report"
+            test -s "$checkpoint" && test -s "$report"
             cp "$checkpoint" "long-training/checkpoint-$end.pt"
             cp "$report" "long-training/report-$end.json"
             sha256sum "long-training/checkpoint-$end.pt" "long-training/report-$end.json" > "long-training/SHA256SUMS-$end"
-            tag="long-train-130k-to-430k-step-$end"
-            gh release create "$tag" \
-              "long-training/checkpoint-$end.pt" \
-              "long-training/report-$end.json" \
-              "long-training/SHA256SUMS-$end" \
-              --title "MINIRONIN 130k → $end / 430k" \
-              --notes "300,000-step continuation from the verified 130,000-step checkpoint. Full recursive textual HERETIC corpus + full-text PRODATPHIL v0.3 + curated MINIRONIN behavior examples. 10k checkpoints, per-checkpoint validation, dataset manifest and SHA-256. Candidate only; no automatic promotion."
+            gh release create "minironin-cycle-${{ steps.parent.outputs.generation }}-step-$end" \
+              "long-training/checkpoint-$end.pt" "long-training/report-$end.json" "long-training/SHA256SUMS-$end" \
+              --title "MINIRONIN cycle ${{ steps.parent.outputs.generation }} — step $end" \
+              --notes "10k segment in a 300k continuation from the previous selected best checkpoint. Full recursively ingested eligible textual HERETIC + PRODATPHIL v0.3 + curated behavior set. Candidate only."
             input="long-training/checkpoint-$end.pt"
             echo "::endgroup::"
           done
 
-      - name: Publicar artefacto completo de la ejecución
+      - name: Seleccionar el mejor checkpoint de todo el ciclo
+        id: select
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib, shutil
+          root=pathlib.Path("long-training")
+          rows=[]
+          for rp in [root/f"report-${{ steps.metadata.outputs.parent_step }}.json", *sorted(root.glob("report-*.json"))]:
+              report=json.loads(rp.read_text())
+              step=int(report["completed_steps"])
+              cp=root/f"checkpoint-{step}.pt"
+              if cp.exists():
+                  rows.append((float(report["validation_loss"]),step,cp,rp,report))
+          if not rows:
+              raise SystemExit("No verified checkpoint/report pairs found")
+          loss,step,cp,rp,report=min(rows,key=lambda x:(x[0],x[1]))
+          shutil.copy2(cp,root/"best-checkpoint.pt")
+          shutil.copy2(rp,root/"best-report.json")
+          summary={"generation":int("${{ steps.parent.outputs.generation }}"),"selected_step":step,"validation_loss":loss,"validation_loss_by_domain":report.get("validation_loss_by_domain"),"selected_source_report":rp.name,"selection_rule":"minimum fixed full-corpus validation loss among parent and all 30 checkpoints"}
+          (root/"best-selection.json").write_text(json.dumps(summary,indent=2)+"\\n")
+          print(json.dumps(summary,indent=2))
+          with open("${{ github.output }}","a") as f:
+              f.write(f"best_step={step}\\n")
+          PY
+          sha256sum long-training/best-checkpoint.pt long-training/best-report.json long-training/best-selection.json > long-training/best-SHA256SUMS
+          gh release create "minironin-cycle-${{ steps.parent.outputs.generation }}-best" \
+            long-training/best-checkpoint.pt long-training/best-report.json long-training/best-selection.json long-training/best-SHA256SUMS \
+            --title "MINIRONIN cycle ${{ steps.parent.outputs.generation }} — selected best checkpoint" \
+            --notes "Best checkpoint selected across the incoming parent and all 30 10k checkpoints using the same validation protocol. Candidate only; independent holdout required before promotion."
+
+      - name: Publicar artefacto auditable del ciclo
         uses: actions/upload-artifact@v6
         with:
-          name: minironin-300k-from-130k-${{ github.run_id }}
+          name: minironin-cycle-${{ steps.parent.outputs.generation }}-300k-${{ github.run_id }}
           path: long-training/
           if-no-files-found: error
           compression-level: 0
           retention-days: 90
+
+      - name: Iniciar automáticamente el siguiente ciclo de 300k
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh workflow run long-training.yml --ref main
+          echo "Dispatched next 300k cycle from the newly published best checkpoint."
