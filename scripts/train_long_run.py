@@ -95,11 +95,11 @@ def read_full_jsonl(path: Path, domain: str, store) -> dict:
                 invalid += 1
                 continue
             for value in extract_text_values(obj):
-                add_full_text(store, domain, value, "HERETIC:" + path.name, str(path))
+                add_full_text(store, domain, value, source_name + ":" + path.name, str(path))
     return {"path": str(path), "format": "jsonl", "domain": domain, "bytes": path.stat().st_size, "rows": rows, "invalid_rows": invalid, "documents_added": len(store["docs"]) - before, "sha256": digest.hexdigest()}
 
 
-def read_full_text(path: Path, domain: str, store) -> dict:
+def read_full_text(path: Path, domain: str, store, source_name: str = "HERETIC") -> dict:
     before = len(store["docs"])
     digest = hashlib.sha256()
     opener = __import__("gzip").open if path.name.lower().endswith(".gz") else open
@@ -155,7 +155,7 @@ def read_full_books(root: Path, store) -> list[dict]:
     for path in sorted(p for p in root.rglob("*") if p.is_file() and p.suffix.lower() in allowed):
         if any(part in path.name.lower() for part in SKIP_NAME_PARTS):
             continue
-        audit.append(read_full_text(path, "books", store))
+        audit.append(read_full_text(path, "books", store, "PRODATPHIL v0.3"))
     if not audit:
         raise SystemExit("No usable full-text book files found")
     return audit
