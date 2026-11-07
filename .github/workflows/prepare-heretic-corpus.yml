@@ -15,14 +15,17 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
-      - name: Descargar partes públicas versionadas
+      - name: Descargar activos públicos por ID de GitHub
         shell: bash
         run: |
           set -euo pipefail
-          base="https://github.com/orbitalronin94/HERETIC-RONIN/releases/download/minironin-corpus-2026-11-07"
-          for name in heretic-corpus.part-0 heretic-corpus.part-1 parts.sha256 corpus.sha256; do
-            curl --fail --location --retry 4 "$base/$name" -o "$name"
-          done
+          api="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/releases/assets"
+          curl --fail --location --retry 4 -H "Accept: application/octet-stream" "$api/720936363" -o heretic-corpus.part-0
+          curl --fail --location --retry 4 -H "Accept: application/octet-stream" "$api/720936357" -o heretic-corpus.part-1
+          curl --fail --location --retry 4 -H "Accept: application/octet-stream" "$api/720936364" -o parts.sha256
+          curl --fail --location --retry 4 -H "Accept: application/octet-stream" "$api/720936362" -o corpus.sha256
+          test "$(stat -c%s heretic-corpus.part-0)" -eq 400000000
+          test "$(stat -c%s heretic-corpus.part-1)" -eq 349837093
           sha256sum -c parts.sha256
       - name: Reconstruir y verificar ZIP original
         run: |
