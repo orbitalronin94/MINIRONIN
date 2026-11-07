@@ -52,6 +52,7 @@ def main() -> int:
             "redactado_manual_desde_manifiesto",
             "revision_manual_del_manifiesto_y_muestra",
             "parafrasis_manual_de_campo_del_manifiesto",
+            "redactado_manual_desde_artefacto",
         }:
             raise SystemExit(f"row {index}: unknown curation method")
     manifest = {
