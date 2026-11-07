@@ -2,7 +2,7 @@
 
 **Versión:** 1.0  
 **Idioma:** castellano  
-**Registros:** 8  
+**Registros:** 14  
 **Método:** curación manual a partir de logs y metadatos de artefactos de GitHub Actions.
 
 Este conjunto transforma evidencia operativa de RONIN-IA y HERETIC-RONIN en ejemplos explicativos. No contiene logs brutos ni respuestas automáticas del docente.
@@ -11,6 +11,7 @@ Este conjunto transforma evidencia operativa de RONIN-IA y HERETIC-RONIN en ejem
 
 - HERETIC-RONIN, ejecución [42370725970](https://github.com/orbitalronin94/HERETIC-RONIN/actions/runs/42370725970), trabajo 128398241561, artefacto 13574129542.
 - RONIN-IA, ejecución [42364138740](https://github.com/orbitalronin94/RONIN-IA/actions/runs/42364138740), trabajos 128378601930 y 128378602072.
+- HERETIC-RONIN, benchmark CPU [42355677701](https://github.com/orbitalronin94/HERETIC-RONIN/actions/runs/42355677701), referencia y variantes de hilos, mmap, BF16, compilación y afinidad.
 
 ## Esquema
 
@@ -38,7 +39,7 @@ El artefacto de la ejecución 42370725970 contenía 200 ejemplos generados por S
 
 ## Auditoría e integridad
 
-La auditoría automática pasó en [ejecución 42378515927](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378515927). SHA-256 del JSONL: `013155e7b94ed4278ffb31e21970c1db895f17336f5c7a59c5deba0b7d7d3faa`. El manifiesto está versionado en `data/manifests/engineering-lessons-v1.sha256.json` y también se publicó como artefacto de Actions.
+El primer lote de 8 registros pasó la auditoría en [ejecución 42378515927](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378515927). Se ha ampliado a 14 registros y el nuevo commit vuelve a disparar la auditoría. El manifiesto versionado se actualizará con el nuevo SHA-256 al finalizar.
 
 ## Uso
 
