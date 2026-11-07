@@ -1,0 +1,32 @@
+name: MINIRONIN inherited-data audit
+
+on:
+  push:
+    paths:
+      - "data/inherited/papers/**"
+      - "scripts/audit_inherited_data.py"
+      - ".github/workflows/data-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-papers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Audit UTF-8, count, duplicates and SHA-256
+        run: python scripts/audit_inherited_data.py
+      - name: Publish immutable audit manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-papers-sha256-manifest
+          path: data/manifests/papers-internal.sha256.json
+          if-no-files-found: error
+          retention-days: 90
