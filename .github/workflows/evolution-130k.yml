@@ -64,13 +64,6 @@ jobs:
             (cd evolution-tournament && sha256sum -c selected-best-SHA256SUMS)
             mv evolution-tournament/selected-best-checkpoint.pt evolution-tournament/parent.pt
           fi
-          python - <<'PY'
-          import torch
-          c=torch.load('evolution-tournament/parent.pt',map_location='cpu',weights_only=False)
-          print({'completed_steps':c.get('completed_steps'),'parameter_count':c.get('parameter_count'),'optimizer':bool(c.get('optimizer_state_dict'))})
-          assert isinstance(c.get('completed_steps'),int) and c['completed_steps']>0
-          assert 'optimizer_state_dict' in c
-          PY
       - name: Download and verify full HERETIC corpus
         run: |
           set -euo pipefail
@@ -106,6 +99,9 @@ jobs:
           python - <<'PY'
           import json, os, torch
           c=torch.load('evolution-tournament/parent.pt',map_location='cpu',weights_only=False)
+          assert isinstance(c.get('completed_steps'),int) and c['completed_steps']>0
+          assert 'optimizer_state_dict' in c
+          print({'completed_steps':c.get('completed_steps'),'parameter_count':c.get('parameter_count'),'optimizer':True})
           lr=float(c['optimizer_state_dict']['param_groups'][0]['lr'])
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:
               f.write(f"parent_step={int(c['completed_steps'])}\nschedule_start_lr={lr:.12g}\n")
