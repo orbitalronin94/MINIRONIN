@@ -1,0 +1,51 @@
+name: MINIRONIN training throughput benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      steps:
+        description: Measured optimizer steps per configuration
+        required: true
+        default: "8"
+        type: string
+      warmup:
+        description: Warmup steps per configuration
+        required: true
+        default: "2"
+        type: string
+      threads:
+        description: PyTorch CPU threads (0 = runner default)
+        required: true
+        default: "0"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark-cpu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install PyTorch
+        run: python -m pip install --upgrade pip torch
+      - name: Measure synthetic training throughput
+        run: >-
+          python scripts/benchmark_training.py
+          --device cpu
+          --steps "${{ inputs.steps }}"
+          --warmup "${{ inputs.warmup }}"
+          --threads "${{ inputs.threads }}"
+      - name: Upload benchmark report
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-training-throughput
+          path: benchmark-results/training-throughput.json
+          if-no-files-found: error
+          retention-days: 90
