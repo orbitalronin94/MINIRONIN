@@ -1,5 +1,5 @@
 name: MINIRONIN — inference holdout diary
-# Batch backfill enabled; this commit also kicks off the initial baseline + checkpoint comparison.
+# Backfill all published long-train-step checkpoints; missing 40k–160k diaries are evaluated on the fixed 40-question holdout.
 
 on:
   workflow_dispatch:
