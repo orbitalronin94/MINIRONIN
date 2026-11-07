@@ -76,7 +76,14 @@ def retrieve(query,embedder,index_dir,info,top_k):
   for n,score in wanted.items():
    stream.seek(int(offsets[n])); row=json.loads(stream.readline())
    row["cosine_similarity"]=score; results.append(row)
- return sorted(results,key=lambda x:x["cosine_similarity"],reverse=True)
+ ranked=sorted(results,key=lambda x:x["cosine_similarity"],reverse=True)
+ seen=set(); diverse=[]
+ for row in ranked:
+  key=row.get("document_sha256") or row.get("source_file")
+  if key in seen:continue
+  seen.add(key); diverse.append(row)
+  if len(diverse)>=top_k:break
+ return diverse
 
 def make_rag_prompt(question,hits,context_length):
  header="Contexto recuperado:\\n"
