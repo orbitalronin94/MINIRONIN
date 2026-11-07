@@ -42,6 +42,7 @@ Esta hoja de ruta corresponde exclusivamente a MINIRONIN. No incorpora workflows
 - [x] Identificar 200 ejemplos generados automáticamente y sus limitaciones de verificación.
 - [x] Rechazar el lote bruto como supervisión directa: contiene respuestas incorrectas, redundantes o justificadas de forma insuficiente.
 - [x] Crear ejemplos de ingeniería curados manualmente a partir de evidencia verificable de HERETIC y RONIN-IA.
+- [x] Inspeccionar 13 artefactos de microbenchmark CPU y curar seis lecciones adicionales; rechazar BF16 y torch.compile cuando fallan los controles numéricos.
 - [ ] Ampliar la curación a ejecuciones históricas, métricas y artefactos adicionales.
 - [x] Auditar el alcance del primer lote, eliminar logs brutos y excluir respuestas docentes no verificadas.
 - [x] Separar registros factuales, diagnósticos y límites de calidad; conservar evidencia y confianza.
