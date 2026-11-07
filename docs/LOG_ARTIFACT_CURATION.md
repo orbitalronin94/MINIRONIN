@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-11-07  
 **Destino:** MINIRONIN  
-**Decisión:** admitir ocho lecciones de ingeniería redactadas manualmente; rechazar el lote docente bruto de 200 ejemplos como supervisión directa.
+**Decisión:** admitir catorce lecciones de ingeniería redactadas manualmente; rechazar el lote docente bruto de 200 ejemplos como supervisión directa.
 
 ## 1. HERETIC-RONIN — ejecución 42370725970
 
@@ -60,7 +60,7 @@ El manifiesto declara expresamente que solo se comprobaron formato, longitud y u
 
 ## 3. Material admitido en MINIRONIN
 
-Se han redactado manualmente ocho ejemplos en castellano:
+Se han redactado manualmente catorce ejemplos en castellano:
 - diagnóstico de fallo de preparación de datos;
 - identificación de la condición de 200 frente a 900 filas;
 - límites de las respuestas generadas por docentes;
@@ -110,4 +110,4 @@ La variante de evaluación con `inference_mode` también quedó excluida: el art
 - La afinidad de CPU perjudicó gravemente el rendimiento de esa ejecución.
 - Todos los candidatos ejecutaron una sola actualización del optimizador. La pérdida media casi idéntica no demuestra equivalencia de calidad a largo plazo.
 
-Los seis nuevos ejemplos derivados de este benchmark se han redactado manualmente y se han añadido al JSONL curado. La auditoría automática comprobará su procedencia y estructura antes de admitir el lote ampliado.
+Los seis nuevos ejemplos derivados de este benchmark se han redactado manualmente y se han añadido al JSONL curado. El lote completo de 14 registros pasó la auditoría de procedencia y estructura en [ejecución 42378755692](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378755692). SHA-256: `fd9ca3e1c7624ea897d26d6f0a70aa7ee317fb42b79ce6fa524d998f88f45015`.
