@@ -15,8 +15,9 @@ from pathlib import Path
 
 import torch
 
-from minironin import MiniRonin
-from minironin.config import ModelConfig
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from minironin import MiniRoninLM, ModelConfig
 
 
 def sync(device: torch.device) -> None:
@@ -30,7 +31,7 @@ def benchmark(config: ModelConfig, device: torch.device, batch: int,
     if device.type == "cuda":
         torch.cuda.manual_seed_all(seed)
         torch.cuda.reset_peak_memory_stats(device)
-    model = MiniRonin(config).to(device)
+    model = MiniRoninLM(config).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=3e-4)
     x = torch.randint(config.vocab_size, (batch, config.context_length),
                       dtype=torch.long, device=device)
@@ -111,7 +112,7 @@ def main() -> int:
         "cpu": platform.processor(),
         "logical_cpu_count": __import__("os").cpu_count(),
         "torch_num_threads": torch.get_num_threads(),
-        "parameter_count": MiniRonin(base).parameter_count(),
+        "parameter_count": MiniRoninLM(base).parameter_count(),
         "results": results,
     }
     output = Path(args.output)
