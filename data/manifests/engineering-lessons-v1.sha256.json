@@ -3,8 +3,8 @@
   "dataset": "data/curated/engineering-lessons-v1.jsonl",
   "language": "es",
   "curation": "manual",
-  "record_count": 21,
-  "sha256": "eb74a0aeda67d28eea0a1254b5783d2150d31d9d821bc69bdaf76e0febef0418",
+  "record_count": 31,
+  "sha256": "f96218280922a1a8cfe2ac9d7520b0c554b72e4aa600aae95a9581350a30e204",
   "sources": [
     {
       "repository": "HERETIC-RONIN",
@@ -61,9 +61,14 @@
       "repository": "Agent-Eval",
       "run_id": "41129688540",
       "job_id": "124317135721"
+    },
+    {
+      "repository": "cobol2py",
+      "run_id": "42268813592",
+      "job_id": "128067764385"
     }
   ],
-  "audit_run": "42379345170",
+  "audit_run": "42379452577",
   "limitations": [
     "No raw logs included",
     "The 200 teacher-generated examples are excluded as unverified supervision",
