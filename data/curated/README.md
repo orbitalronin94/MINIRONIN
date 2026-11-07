@@ -36,6 +36,10 @@ Cada línea JSONL contiene:
 
 El artefacto de la ejecución 42370725970 contenía 200 ejemplos generados por SoAIHQ/Qwen3.5-4B-GGUF Q4_K_M. El propio manifiesto declara que solo se comprobaron formato, longitud y unicidad; no hubo verificación factual independiente. La muestra inspeccionada mostró preguntas redundantes y respuestas semánticamente dudosas. **No se incorpora ese JSONL bruto como supervisión aprobada.** Se conserva únicamente la lección sobre sus límites de calidad y la evidencia de la ejecución.
 
+## Auditoría e integridad
+
+La auditoría automática pasó en [ejecución 42378515927](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378515927). SHA-256 del JSONL: `013155e7b94ed4278ffb31e21970c1db895f17336f5c7a59c5deba0b7d7d3faa`. El manifiesto está versionado en `data/manifests/engineering-lessons-v1.sha256.json` y también se publicó como artefacto de Actions.
+
 ## Uso
 
 Estos registros pueden servir para entrenar al modelo a interpretar métricas, diagnosticar fallos y explicar controles de reproducibilidad. No sustituyen los corpus lingüísticos generales ni los benchmarks reservados. Antes de una mezcla de entrenamiento, deben pasar deduplicación global y revisión de contaminación del holdout.
