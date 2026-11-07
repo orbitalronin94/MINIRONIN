@@ -96,7 +96,10 @@ class MiniRoninLM(nn.Module):
             nn.init.zeros_(module.bias)
 
     def forward(
-        self, input_ids: torch.Tensor, labels: torch.Tensor | None = None
+        self,
+        input_ids: torch.Tensor,
+        labels: torch.Tensor | None = None,
+        vocab_limit: int | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor | None]:
         if input_ids.ndim != 2:
             raise ValueError("input_ids must have shape [batch, sequence]")
@@ -110,11 +113,20 @@ class MiniRoninLM(nn.Module):
         x = self.embedding_dropout(x)
         for block in self.blocks:
             x = block(x)
-        logits = self.lm_head(self.final_norm(x))
+        if vocab_limit is not None and not 1 <= vocab_limit <= self.config.vocab_size:
+            raise ValueError("vocab_limit must be between 1 and configured vocab_size")
+        hidden = self.final_norm(x)
+        output_weight = (
+            self.lm_head.weight if vocab_limit is None
+            else self.lm_head.weight[:vocab_limit]
+        )
+        logits = F.linear(hidden, output_weight)
         loss = None
         if labels is not None:
             if labels.shape != input_ids.shape:
                 raise ValueError("labels must have the same shape as input_ids")
+            if vocab_limit is not None and int(labels.max()) >= vocab_limit:
+                raise ValueError("labels contain token IDs outside vocab_limit")
             loss = F.cross_entropy(
                 logits[:, :-1, :].contiguous().view(-1, logits.size(-1)),
                 labels[:, 1:].contiguous().view(-1),
