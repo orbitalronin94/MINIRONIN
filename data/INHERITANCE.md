@@ -61,7 +61,7 @@ El README de RONIN-IA informa de 286.468 documentos de entrenamiento / 684.738.9
 
 **Una carga documental está importada:** los nueve artículos propios de Markdown de `orbitalronin94/Papers`, fijados en la revisión `d7bf3ae446f666ce3be73b11aab7090e1605a889`. Están en `data/inherited/papers/` y autorizados para investigación/entrenamiento interno; no se autoriza redistribuirlos. El workflow `data-audit.yml` comprueba número exacto, UTF-8, archivos vacíos, duplicados exactos y calcula SHA-256 en un manifiesto.
 
-**Una primera carga de lecciones de ingeniería también está curada:** 14 registros derivados de logs y artefactos de HERETIC y RONIN-IA, con evidencia y limitaciones explícitas. Incluye un benchmark CPU de HERETIC; sus resultados son de una sola actualización y solo sirven para seleccionar candidatos a repetir. No se han importado los 200 pares generados por el docente como respuestas verificadas.
+**Una primera carga de lecciones de ingeniería también está curada:** 15 registros derivados de logs y artefactos de HERETIC y RONIN-IA, con evidencia y limitaciones explícitas. Incluye un benchmark CPU de HERETIC; sus resultados son de una sola actualización y solo sirven para seleccionar candidatos a repetir. No se han importado los 200 pares generados por el docente como respuestas verificadas.
 
 Importar no significa que el material ya esté tokenizado, asignado a particiones o consumido por entrenamiento.
 
