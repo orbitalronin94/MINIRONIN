@@ -6,7 +6,6 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/acquire-reasoning-books.yml"
-      - "data/books/SOURCES.jsonl"
 
 permissions:
   contents: write
@@ -84,12 +83,12 @@ jobs:
           set -euo pipefail
           tag="reasoning-library-prodatphil-v0.3"
           if gh release view "$tag" >/dev/null 2>&1; then
-            echo "Release $tag already exists; refusing to overwrite immutable source archive."
-            exit 1
+            echo "Immutable release $tag already exists; leaving it unchanged."
+          else
+            gh release create "$tag" prodatphil_en_txt_0_3.zip prodatphil.sha256 \
+              --title "MINIRONIN reasoning library — PRODATPHIL v0.3" \
+              --notes "Upstream: https://datastore.uni-muenster.de/records/bm3kg-cnb72. 147 public-domain works (44 books, 103 articles; 1831–1923), as declared by Universität Münster. Original ZIP SHA-256 is recorded in prodatphil.sha256. Imported as source material; no claim that these historical authors are infallible."
           fi
-          gh release create "$tag" prodatphil_en_txt_0_3.zip prodatphil.sha256 \
-            --title "MINIRONIN reasoning library — PRODATPHIL v0.3" \
-            --notes "Upstream: https://datastore.uni-muenster.de/records/bm3kg-cnb72. 147 public-domain works (44 books, 103 articles; 1831–1923), as declared by Universität Münster. Original ZIP SHA-256 is recorded in prodatphil.sha256. Imported as source material; no claim that these historical authors are infallible."
       - name: Publish auditable book corpus
         uses: actions/upload-artifact@v6
         with:
