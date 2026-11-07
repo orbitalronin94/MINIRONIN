@@ -71,6 +71,9 @@ def main() -> int:
             {"repository": "HERETIC-RONIN", "run_id": "42355677701",
              "job_ids": ["128353149782", "128354710674", "128354710613",
                          "128354710611", "128354710699", "128354710653"]},
+            {"repository": "HERETIC-RONIN", "run_id": "42355677713",
+             "job_id": "128353150091", "artifact_id": 13576377154,
+             "checkpoint_bytes": 6001698610},
         ],
         "limitations": [
             "Not raw logs",
