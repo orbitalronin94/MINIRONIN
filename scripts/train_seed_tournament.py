@@ -32,11 +32,12 @@ from minironin import MiniRoninLM, ModelConfig  # noqa: E402
 BYTE_EOS = 256
 ACTIVE_VOCAB = 257
 MIX_WEIGHTS = {
-    "math": 0.40,
-    "science": 0.25,
-    "books": 0.20,
-    "behavior": 0.10,
-    "general": 0.05,
+    "math": 0.38,
+    "science": 0.2375,
+    "books": 0.19,
+    "behavior": 0.095,
+    "general": 0.0475,
+    "abstention": 0.05,
 }
 JSONL_SOURCES = {
     "open-web-math__open-web-math__default__train.jsonl": "math",
