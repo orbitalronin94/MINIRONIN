@@ -1,14 +1,14 @@
-# Owner-authored Papers corpus
+# Corpus de artículos propios de Papers
 
-**Admission:** internal MINIRONIN research/training use only, based on the owner's authorization recorded for this project. This is not permission to redistribute the documents or publish them as a standalone dataset.
+**Admisión:** uso interno de investigación y entrenamiento de MINIRONIN, conforme a la autorización del propietario registrada para este proyecto. Esto no autoriza redistribuir los documentos ni publicarlos como dataset independiente.
 
-- Upstream: https://github.com/orbitalronin94/Papers
-- Pinned revision: d7bf3ae446f666ce3be73b11aab7090e1605a889
-- Imported files: 9 Markdown papers (README excluded), 750,857 bytes
-- Import date: 2026-11-07
-- Source scope: only the nine Markdown files listed below; no repository workflows, scripts, binaries, or other files were imported.
+- Origen: https://github.com/orbitalronin94/Papers
+- Revisión fijada: `d7bf3ae446f666ce3be73b11aab7090e1605a889`
+- Archivos importados: 9 artículos Markdown (se excluye README), 750.857 bytes.
+- Fecha de importación: 2026-11-07.
+- Alcance: solo los nueve archivos Markdown enumerados; no se importaron workflows, scripts, binarios ni otros archivos del repositorio.
 
-| Local file | Upstream source |
+| Archivo local | Archivo de origen |
 |---|---|
 | 01-epistemologia-generativa.md | # Epistemología Generativa: Un Protocolo para Producir Proposiciones Falsables a Escala.md |
 | 02-epistemologia-de-la-degeneracion.md | # Epistemología de la Degeneración: Cuándo un Parámetro No Es una Medición.md |
@@ -20,6 +20,6 @@
 | 08-validacion-50-dominios.md | # PROTOCOLO DE VALIDACIÓN DE IDENTIFICABILIDAD ESTRUCTURAL APLICADO A 50 DOMINIOS NO EXPLORADOS.md |
 | 09-tratado-periplo-metodo.md | # TRATADO DEL PERIPLO Y DEL MÉTODO.md |
 
-## Integrity
+## Integridad
 
-The source repository's Git blob identifiers are recorded in the admission register. The MINIRONIN data-audit workflow independently computes SHA-256 for every imported file and publishes a machine-readable manifest artifact. No training split assignment has been made yet; these files are admitted as a source payload, not yet tokenized or consumed by training.
+Los identificadores Git blob del repositorio de origen se registran en el registro de admisión. El workflow de auditoría de MINIRONIN calcula SHA-256 de forma independiente para cada archivo y publica un manifiesto como artefacto. Aún no se ha asignado ninguna partición de entrenamiento: estos archivos están admitidos como carga documental, pero todavía no se han tokenizado ni consumido en entrenamiento.
