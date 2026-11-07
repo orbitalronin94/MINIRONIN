@@ -1,20 +1,20 @@
-# Open-source foundation register
+# Registro de fundamentos de código abierto
 
-Candidate references only; nothing is approved for code reuse until exact versions/commits and licenses are reviewed.
+Son referencias candidatas. No se aprueba reutilizar código hasta revisar versiones/commits exactos y licencias.
 
-| Component | Candidate | Intended role | License family | Pinned version/commit | Review status |
+| Componente | Candidato | Función prevista | Familia de licencia | Versión/commit fijado | Estado de revisión |
 |---|---|---|---|---|---|
-| Tensor runtime | PyTorch | Model implementation and training | BSD-style | TBD | Candidate |
-| Tokenizer | Hugging Face Tokenizers | Fast BPE/WordPiece tokenization | Apache-2.0 | TBD | Candidate |
-| Tokenizer | SentencePiece | Unigram/BPE tokenizer option | Apache-2.0 | TBD | Candidate |
-| Compact GPT reference | nanoGPT | Architecture/implementation reference | MIT | TBD | Candidate; inspect exact revision |
-| Evaluation reference | EleutherAI evaluation ecosystem | Benchmark methodology | Per-component | TBD | Candidate; inspect exact component |
+| Motor de tensores | PyTorch | Implementación y entrenamiento del modelo | Familia BSD | Pendiente | Candidato |
+| Tokenizador | Hugging Face Tokenizers | Tokenización rápida BPE/WordPiece | Apache-2.0 | Pendiente | Candidato |
+| Tokenizador | SentencePiece | Opción de tokenizador Unigram/BPE | Apache-2.0 | Pendiente | Candidato |
+| Referencia GPT compacto | nanoGPT | Referencia de arquitectura/implementación | MIT | Pendiente | Candidato; revisar revisión exacta |
+| Referencia de evaluación | Ecosistema de evaluación de EleutherAI | Metodología de benchmarks | Según componente | Pendiente | Candidato; revisar componente concreto |
 
-## Approval checklist
+## Lista de aprobación
 
-- [ ] Exact upstream repository and commit/tag recorded.
-- [ ] License file inspected at that revision.
-- [ ] Transitive dependencies reviewed where relevant.
-- [ ] Required notices and attribution retained.
-- [ ] Scope of code copied/adapted documented.
-- [ ] Dependency pinned and reproducibility impact assessed.
+- [ ] Registrar repositorio upstream exacto y commit/tag.
+- [ ] Inspeccionar el archivo de licencia en esa revisión.
+- [ ] Revisar dependencias transitivas cuando corresponda.
+- [ ] Conservar avisos y atribuciones obligatorios.
+- [ ] Documentar el alcance del código copiado/adaptado.
+- [ ] Fijar la dependencia y evaluar el impacto en la reproducibilidad.
