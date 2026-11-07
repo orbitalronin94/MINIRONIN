@@ -1,5 +1,6 @@
 name: MINIRONIN — inference holdout diary
-# Backfill all published long-train-step checkpoints; missing 40k–160k diaries are evaluated on the fixed 40-question holdout.
+# Backfill all published long-train-step checkpoints; missing checkpoints are evaluated on the fixed 40-question holdout.
+# Re-run after completion of the 200k training run (2026-11-07).
 
 on:
   workflow_dispatch:
