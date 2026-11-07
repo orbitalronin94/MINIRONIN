@@ -45,7 +45,7 @@ jobs:
             echo "$BOOTSTRAP_SHA256  .tmp/model/checkpoint.pt" | sha256sum -c -
           else
             gh release download "${{ steps.model.outputs.tag }}" --pattern best-checkpoint.pt --pattern best-SHA256SUMS --dir .tmp/model
-            (cd .tmp/model && sha256sum -c best-SHA256SUMS)
+            (cd .tmp/model && sed 's#long-training/##g' best-SHA256SUMS | sha256sum -c -)
             mv .tmp/model/best-checkpoint.pt .tmp/model/checkpoint.pt
           fi
       - name: Descargar HERETIC y verificar
