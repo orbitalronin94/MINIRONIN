@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from minironin import MiniRoninLM, ModelConfig  # noqa: E402
 from train_seed_tournament import (  # noqa: E402
     ACTIVE_VOCAB, MIX_WEIGHTS, add_doc, clean_text, evaluate,
-    load_curated_jsonl, read_book_texts, weighted_domains, split_documents,
+    load_curated_jsonl, weighted_domains, split_documents,
 )
 
 TOTAL_STEPS = 200_000
@@ -128,6 +128,20 @@ def read_full_json(path: Path, domain: str, store) -> dict:
     return {"path": str(path), "format": "json", "domain": domain, "bytes": len(raw), "documents_added": len(store["docs"]) - before, "sha256": hashlib.sha256(raw).hexdigest()}
 
 
+def read_full_books(root: Path, store) -> list[dict]:
+    if not root.exists():
+        raise SystemExit("Book corpus missing: " + str(root))
+    audit = []
+    allowed = {".txt", ".md", ".xml", ".tei", ".html", ".htm"}
+    for path in sorted(p for p in root.rglob("*") if p.is_file() and p.suffix.lower() in allowed):
+        if any(part in path.name.lower() for part in SKIP_NAME_PARTS):
+            continue
+        audit.append(read_full_text(path, "books", store))
+    if not audit:
+        raise SystemExit("No usable full-text book files found")
+    return audit
+
+
 def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     if cache_path.exists():
         cached = torch.load(cache_path, map_location="cpu", weights_only=False)
@@ -151,7 +165,7 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         elif suffix in TEXT_SUFFIXES or lower.endswith((".txt.gz", ".md.gz")):
             source_audit.append(read_full_text(path, domain, store))
 
-    book_audit = read_book_texts(books_root, store)
+    book_audit = read_full_books(books_root, store)
     behavior_count = load_curated_jsonl(ROOT / "data/curated/minironin-behavior-v1.jsonl", "behavior", store, "MINIRONIN-authored-behavior-v1")
     if behavior_count == 0:
         raise SystemExit("No curated MINIRONIN behavior examples loaded")
@@ -166,11 +180,11 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         for _ in range(4):
             rows = []
             for _ in range(BATCH_SIZE):
-                raw = val_rng.choice(val_docs[domain])["text"].encode("utf-8", errors="replace")
+                raw = list(val_rng.choice(val_docs[domain])["text"].encode("utf-8", errors="replace")) + [ACTIVE_VOCAB - 1]
                 if len(raw) < SEQUENCE_LENGTH + 1:
                     continue
                 offset = val_rng.randrange(0, len(raw) - SEQUENCE_LENGTH)
-                rows.append(torch.tensor(list(raw[offset:offset + SEQUENCE_LENGTH + 1]), dtype=torch.long))
+                rows.append(torch.tensor(raw[offset:offset + SEQUENCE_LENGTH + 1], dtype=torch.long))
             if len(rows) == BATCH_SIZE:
                 batches.append(torch.stack(rows))
         if batches:
@@ -188,7 +202,8 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         "documents_by_domain": {d: sum(1 for x in store["docs"] if x["domain"] == d) for d in MIX_WEIGHTS},
         "training_mix": {d: w for d, w in zip(names, probs)},
         "validation": "document-disjoint fixed windows from full-corpus split",
-        "excluded": "binary audio/video/image, parquet/arrow and metadata/license/manifest files; never counted as trained text",
+        "excluded_files": [{"path": str(p), "bytes": p.stat().st_size} for p in discovered if p not in {Path(x["path"]) for x in source_audit}],
+        "excluded_policy": "binary audio/video/image, parquet/arrow and metadata/license/manifest files; never counted as trained text",
     }
     payload = {"train_docs": dict(train_docs), "names": names, "probs": probs, "validation": validation, "manifest": manifest}
     cache_path.parent.mkdir(parents=True, exist_ok=True)
@@ -202,11 +217,11 @@ def batch_for_step(train_docs, names, probs, global_step):
     domains = rng.choices(names, weights=probs, k=BATCH_SIZE)
     rows = []
     for domain in domains:
-        raw = rng.choice(train_docs[domain])["text"].encode("utf-8", errors="replace")
+        raw = list(rng.choice(train_docs[domain])["text"].encode("utf-8", errors="replace")) + [ACTIVE_VOCAB - 1]
         if len(raw) < SEQUENCE_LENGTH + 1:
             raise ValueError("Document shorter than training window in " + domain)
         start = rng.randrange(0, len(raw) - SEQUENCE_LENGTH)
-        rows.append(torch.tensor(list(raw[start:start + SEQUENCE_LENGTH + 1]), dtype=torch.long))
+        rows.append(torch.tensor(raw[start:start + SEQUENCE_LENGTH + 1], dtype=torch.long))
     return torch.stack(rows)
 
 
