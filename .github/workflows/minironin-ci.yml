@@ -28,3 +28,9 @@ jobs:
           python -m pip install pytest
       - name: Run architecture tests
         run: python -m pytest -q
+      - name: Smoke-test independent training benchmark
+        run: >-
+          python scripts/benchmark_training.py
+          --device cpu --steps 1 --warmup 0
+          --contexts 8 --batches 1 --threads 1
+          --output /tmp/minironin-benchmark-smoke.json
