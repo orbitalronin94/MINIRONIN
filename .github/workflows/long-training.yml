@@ -100,7 +100,7 @@ jobs:
           lr = float(groups[0]["lr"])
           assert 0 < lr <= 3e-4, lr
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-              f.write(f"parent_lr={lr:.12g}\\n")
+              f.write(f"parent_lr={lr:.12g}\n")
           print({"parent_step": c["completed_steps"], "parameters": c["parameter_count"], "active_vocabulary": c["active_vocabulary"], "optimizer_lr": lr})
           PY
 
