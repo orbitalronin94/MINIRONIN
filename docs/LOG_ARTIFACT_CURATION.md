@@ -80,3 +80,34 @@ Cada registro conserva repositorio, ejecución, trabajo, evidencia, nivel de con
 - Excluir checkpoints y estados del optimizador del dataset.
 - No introducir datos del holdout ni respuestas de evaluación.
 - Ejecutar deduplicación global contra documentos ya admitidos.
+
+## 5. HERETIC-RONIN — benchmark CPU 42355677701
+
+Se descargaron y examinaron los 13 artefactos pequeños de referencia/variantes (no los checkpoints de varios GB). Todos comparan 10.240 tokens y una sola actualización del optimizador; por ello sus tokens/s son datos de microbenchmark, no rendimiento garantizado de entrenamiento largo.
+
+| Variante | Tokens/s | Cambio frente a referencia | Control numérico | Decisión |
+|---|---:|---:|---|---|
+| Referencia, 4 hilos | 38,18 | — | referencia | base |
+| 2 hilos | 53,12 | +28,12 % | superado | candidata a repetir |
+| mmap-batches | 52,62 | +27,44 % | superado | candidata a repetir |
+| sharded-prefetch | 46,54 | +17,95 % | superado | candidata secundaria |
+| 8 hilos | 45,80 | +16,64 % | superado | candidata secundaria |
+| mkldnn desactivado | 44,82 | +14,81 % | superado | candidata secundaria |
+| packed-window-cache | 40,74 | +6,28 % | superado | ganancia pequeña |
+| AdamW foreach | 38,96 | +2,01 % | superado | ganancia marginal |
+| BF16 autocast | 100,37 | +61,96 % | **fallido** | rechazada |
+| torch.compile | 30,69 | -24,42 % | **fallido** | rechazada |
+| 1 hilo | 24,76 | -54,20 % | superado | no competitiva |
+| afinidad CPU | 6,07 | -528,76 % | superado | rechazada |
+
+La variante de evaluación con `inference_mode` también quedó excluida: el artefacto informa control numérico fallido y accuracy de holdout 0,0; no se incorpora ese resultado como señal de calidad.
+
+### Lectura correcta
+
+- Dos hilos y mmap-batches son las dos variantes más interesantes para repetir en MINIRONIN, pero todavía no son ajustes elegidos.
+- BF16 fue la más rápida en bruto, pero falló el control numérico. Se rechaza aunque su velocidad parezca atractiva.
+- `torch.compile` fue más lento que la referencia y falló el control numérico en ese entorno.
+- La afinidad de CPU perjudicó gravemente el rendimiento de esa ejecución.
+- Todos los candidatos ejecutaron una sola actualización del optimizador. La pérdida media casi idéntica no demuestra equivalencia de calidad a largo plazo.
+
+Los seis nuevos ejemplos derivados de este benchmark se han redactado manualmente y se han añadido al JSONL curado. La auditoría automática comprobará su procedencia y estructura antes de admitir el lote ampliado.
