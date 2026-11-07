@@ -36,7 +36,7 @@ def build_index(train_docs,embedder,out,batch_size=128):
  import numpy as np
  out.mkdir(parents=True,exist_ok=True); mp=out/"chunks.jsonl"; vp=out/"embeddings.float16"; op=out/"offsets.uint64"
  total=0; pending=[]; metadata=[]; dim=embedder.get_sentence_embedding_dimension()
- with mp.open("w",encoding="utf-8") as meta, vp.open("wb") as vectors, op.open("wb") as offsets:
+ with mp.open("wb") as meta, vp.open("wb") as vectors, op.open("wb") as offsets:
   for domain in sorted(train_docs):
    for doc in train_docs[domain]:
     for i,chunk in enumerate(split_chunks(doc["text"])):
@@ -72,9 +72,9 @@ def retrieve(query,embedder,index_dir,info,top_k):
  wanted={int(best_i[i]):float(best_s[i]) for i in np.argsort(best_s)[::-1] if best_i[i]>=0}
  results=[]
  offsets=np.memmap(index_dir/"offsets.uint64",dtype=np.uint64,mode="r",shape=(count,))
- with (index_dir/"chunks.jsonl").open(encoding="utf-8") as stream:
+ with (index_dir/"chunks.jsonl").open("rb") as stream:
   for n,score in wanted.items():
-   stream.seek(int(offsets[n])); row=json.loads(stream.readline())
+   stream.seek(int(offsets[n])); row=json.loads(stream.readline().decode("utf-8"))
    row["cosine_similarity"]=score; results.append(row)
  ranked=sorted(results,key=lambda x:x["cosine_similarity"],reverse=True)
  seen=set(); diverse=[]
