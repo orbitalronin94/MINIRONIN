@@ -1,0 +1,134 @@
+name: MINIRONIN — torneo de 30 semillas sobre corpus real
+
+on:
+  workflow_dispatch:
+    inputs:
+      seeds:
+        description: Número de inicializaciones independientes
+        required: true
+        default: "30"
+        type: string
+      steps:
+        description: Pasos de optimización por semilla
+        required: true
+        default: "100"
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/seed-tournament.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: minironin-seed-tournament
+  cancel-in-progress: false
+
+jobs:
+  train-and-rank:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      SEEDS: \${{ inputs.seeds || '30' }}
+      STEPS: \${{ inputs.steps || '100' }}
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v4
+
+      - name: Comprobar espacio disponible
+        run: |
+          set -euo pipefail
+          df -h .
+          python - <<'PY'
+          import shutil
+          free = shutil.disk_usage(".").free
+          print(f"Free disk bytes: {free}")
+          if free < 8 * 1024**3:
+              raise SystemExit("At least 8 GiB free disk required for the verified corpus")
+          PY
+
+      - name: Descargar y reconstruir corpus HERETIC aprobado
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/releases/assets"
+          curl --fail --location --retry 4 --retry-all-errors \
+            -H "Accept: application/octet-stream" "$api/720936363" -o heretic-corpus.part-0
+          curl --fail --location --retry 4 --retry-all-errors \
+            -H "Accept: application/octet-stream" "$api/720936357" -o heretic-corpus.part-1
+          curl --fail --location --retry 4 --retry-all-errors \
+            -H "Accept: application/octet-stream" "$api/720936364" -o parts.sha256
+          curl --fail --location --retry 4 --retry-all-errors \
+            -H "Accept: application/octet-stream" "$api/720936362" -o corpus.sha256
+          test "$(stat -c%s heretic-corpus.part-0)" -eq 400000000
+          test "$(stat -c%s heretic-corpus.part-1)" -eq 349837093
+          sha256sum -c parts.sha256
+          cat heretic-corpus.part-0 heretic-corpus.part-1 > heretic-approved-corpus.zip
+          expected="$(awk '{print $1}' corpus.sha256)"
+          actual="$(sha256sum heretic-approved-corpus.zip | awk '{print $1}')"
+          test "$actual" = "$expected"
+          test "$(stat -c%s heretic-approved-corpus.zip)" -eq 749837093
+          unzip -tq heretic-approved-corpus.zip
+          mkdir -p data/inherited/heretic-corpus
+          unzip -q heretic-approved-corpus.zip -d data/inherited/heretic-corpus
+          echo "HERETIC corpus ZIP SHA-256: $actual"
+          find data/inherited/heretic-corpus -maxdepth 1 -type f -printf '%f %s bytes\n' | sort
+
+      - name: Descargar biblioteca PRODATPHIL v0.3
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 4 --retry-all-errors \
+            "https://github.com/orbitalronin94/MINIRONIN/releases/download/reasoning-library-prodatphil-v0.3/prodatphil_en_txt_0_3.zip" \
+            -o prodatphil_en_txt_0_3.zip
+          echo "8eacf44101c87772a842fce3d3ab415903f28ba7684f8b33eddba0e2489c13c9  prodatphil_en_txt_0_3.zip" | sha256sum -c -
+          mkdir -p data/inherited/prodatphil-en-v0.3
+          unzip -tq prodatphil_en_txt_0_3.zip
+          unzip -q prodatphil_en_txt_0_3.zip -d data/inherited/prodatphil-en-v0.3
+
+      - name: Instalar PyTorch CPU
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Ejecutar torneo de semillas con datos reales
+        run: |
+          set -euo pipefail
+          python scripts/train_seed_tournament.py \
+            --heretic-root data/inherited/heretic-corpus \
+            --books-root data/inherited/prodatphil-en-v0.3 \
+            --seeds "$SEEDS" \
+            --steps "$STEPS" \
+            --batch-size 2 \
+            --sequence-length 128 \
+            --threads 2 \
+            --output-dir seed-tournament
+          sha256sum seed-tournament/best-checkpoint.pt \
+            seed-tournament/tournament-report.json \
+            seed-tournament/dataset-manifest.json > seed-tournament/SHA256SUMS
+
+      - name: Publicar artefactos auditables
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-seed-tournament-\${{ github.run_id }}
+          path: |
+            seed-tournament/
+            heretic-approved-corpus.zip
+            corpus.sha256
+            prodatphil_en_txt_0_3.zip
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
+
+      - name: Publicar el mejor candidato como release
+        env:
+          GH_TOKEN: \${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="seed-tournament-\${GITHUB_RUN_ID}"
+          gh release create "$tag" \
+            seed-tournament/best-checkpoint.pt \
+            seed-tournament/tournament-report.json \
+            seed-tournament/dataset-manifest.json \
+            seed-tournament/SHA256SUMS \
+            --title "MINIRONIN seed tournament \${GITHUB_RUN_ID}" \
+            --notes "30-seed controlled pilot, 100 optimizer steps per seed by default. The best checkpoint is selected by fixed document-disjoint validation loss. Uses the verified HERETIC corpus and PRODATPHIL v0.3. Byte-level active vocabulary (257 symbols) is an explicit bootstrap limitation. This is a candidate artifact, not an automatic promotion to main."
