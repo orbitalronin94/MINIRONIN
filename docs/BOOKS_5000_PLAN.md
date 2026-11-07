@@ -7,9 +7,9 @@ El objetivo es 5.000 obras/documentos completos, únicos y utilizables. La cuota
 | Indicador | Valor |
 |---|---:|
 | Objetivo | 5.000 |
-| Obras completas admitidas en Git | 0 |
-| Obras en artefactos de adquisición confirmados | 0 |
-| Lote PRODATPHIL v0.3 | 147 obras declaradas por el editor; workflow de adquisición pendiente |
+| Obras de origen adquiridas y persistidas en release | 147 |
+| Obras completas en el árbol Git | 0 |
+| Lote PRODATPHIL v0.3 | 147 obras declaradas por el editor; adquiridas, verificadas y publicadas en release |
 | HERETIC corpus preparado | 16 archivos / 2.136.389.480 bytes; no son libros y no cuentan para este objetivo |
 
 ## Fases de expansión
