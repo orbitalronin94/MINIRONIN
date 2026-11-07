@@ -22,6 +22,11 @@ ALLOWED_RUNS = {
     ("HERETIC-RONIN", "42355677701", "128354710699"),
     ("HERETIC-RONIN", "42355677701", "128354710653"),
     ("HERETIC-RONIN", "42355677713", "128353150091"),
+    ("cobol2py", "42268813592", "128067764631"),
+    ("ronin-lang", "41697731306", "126132605197"),
+    ("ronin-lang", "41697731306", "126132605280"),
+    ("Sycophancy-audit", "40388502880", "121802992304"),
+    ("Agent-Eval", "41129688540", "124317135721"),
 }
 
 def main() -> int:
@@ -74,6 +79,10 @@ def main() -> int:
             {"repository": "HERETIC-RONIN", "run_id": "42355677713",
              "job_id": "128353150091", "artifact_id": 13576377154,
              "checkpoint_bytes": 6001698610},
+            {"repository": "cobol2py", "run_id": "42268813592", "job_id": "128067764631"},
+            {"repository": "ronin-lang", "run_id": "41697731306", "job_ids": ["126132605197", "126132605280"]},
+            {"repository": "Sycophancy-audit", "run_id": "40388502880", "job_id": "121802992304"},
+            {"repository": "Agent-Eval", "run_id": "41129688540", "job_id": "124317135721"},
         ],
         "limitations": [
             "Not raw logs",
