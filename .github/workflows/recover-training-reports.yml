@@ -1,0 +1,66 @@
+name: Recover MINIRONIN training reports
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/recover-training-reports.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: minironin-recover-training-reports
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Download all published training reports
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p benchmarks/training-reports
+          for step in $(seq 10000 10000 160000); do
+            tag="long-train-step-${step}"
+            gh release download "$tag" --repo "${GITHUB_REPOSITORY}" \
+              --pattern "report-${step}.json" \
+              --dir benchmarks/training-reports
+            test -s "benchmarks/training-reports/report-${step}.json"
+            python -m json.tool "benchmarks/training-reports/report-${step}.json" >/dev/null
+            echo "Recovered ${tag}: $(wc -c < "benchmarks/training-reports/report-${step}.json") bytes"
+          done
+
+      - name: Build report inventory and commit
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, glob, hashlib, os
+          rows = []
+          for path in sorted(glob.glob("benchmarks/training-reports/report-*.json")):
+              with open(path, "rb") as f:
+                  raw = f.read()
+              obj = json.loads(raw)
+              rows.append({
+                  "file": os.path.basename(path),
+                  "bytes": len(raw),
+                  "sha256": hashlib.sha256(raw).hexdigest(),
+                  "top_level_keys": sorted(obj) if isinstance(obj, dict) else []
+              })
+          with open("benchmarks/training-reports/manifest.json", "w") as f:
+              json.dump({"reports": rows}, f, indent=2)
+              f.write("\n")
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add benchmarks/training-reports/
+          git commit -m "Recover published training reports through Actions"
+          git push
