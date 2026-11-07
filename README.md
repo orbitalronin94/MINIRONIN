@@ -43,7 +43,7 @@ Se han inspeccionado los inventarios de los repositorios hermanos. **La primera 
 
 Los demás corpus de los repositorios hermanos aún no se han importado. RONIN-IA declara 286.468 documentos de entrenamiento / 684.738.932 bytes; HERETIC-RONIN declara 260.971 documentos / 703.593.871 bytes, incluidos 256.237 documentos derivados de RONIN-IA y 4.734 registros de Cosmopedia. Los inventarios se solapan y nunca deben sumarse sin deduplicación. Consulta el [registro de herencia](data/INHERITANCE.md).
 
-Además, ya hay **8 lecciones de ingeniería en castellano** curadas manualmente a partir de logs y artefactos de Actions de ambos repositorios. Su auditoría pasó en [42378515927](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378515927); SHA-256: `013155e7b94ed4278ffb31e21970c1db895f17336f5c7a59c5deba0b7d7d3faa`. No se incorporan logs brutos ni respuestas de profesores automáticos sin verificación.
+Además, ya hay **14 lecciones de ingeniería en castellano** curadas manualmente a partir de logs y artefactos de Actions de ambos repositorios. El primer lote de ocho pasó en [42378515927](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378515927); el lote ampliado está sometiéndose a una nueva auditoría. Incluye comparaciones de rendimiento CPU de HERETIC, siempre marcadas como microbenchmarks de una sola actualización. No se incorporan logs brutos ni respuestas de profesores automáticos sin verificación.
 
 ## Exclusiones
 
