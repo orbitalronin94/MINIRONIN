@@ -105,7 +105,7 @@ def strings_from_json(value, depth: int = 0) -> list[str]:
 
 def add_doc(store, domain: str, text: str, source: str, source_file: str) -> None:
     text = clean_text(text)
-    if len(text) < 80:
+    if len(text) < 200:
         return
     text = text[:MAX_TEXT_CHARS]
     digest = hashlib.sha256((domain + "\0" + text).encode("utf-8")).hexdigest()
@@ -333,7 +333,7 @@ def main():
         raise SystemExit("No curated MINIRONIN behavior examples loaded")
 
     train_docs, val_docs = split_documents(store["docs"])
-    for domain in MIX_WEIGHTS:
+    for domain in ("math", "science", "books", "behavior"):
         if not train_docs.get(domain):
             raise SystemExit(f"Training split is empty for required domain: {domain}")
         if not val_docs.get(domain):
@@ -423,6 +423,8 @@ def main():
             best_seed = seed
             best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
         del optimizer, model
+        import gc
+        gc.collect()
     total_elapsed = time.perf_counter() - started
 
     if best_state is None:
