@@ -1,0 +1,62 @@
+name: MINIRONIN — preparar corpus HERETIC aprobado
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/prepare-heretic-corpus.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  acquire-and-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Descargar partes públicas versionadas
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://github.com/orbitalronin94/HERETIC-RONIN/releases/download/minironin-corpus-2026-11-07"
+          for name in heretic-corpus.part-0 heretic-corpus.part-1 parts.sha256 corpus.sha256; do
+            curl --fail --location --retry 4 "$base/$name" -o "$name"
+          done
+          sha256sum -c parts.sha256
+      - name: Reconstruir y verificar ZIP original
+        run: |
+          set -euo pipefail
+          cat heretic-corpus.part-0 heretic-corpus.part-1 > heretic-approved-corpus.zip
+          expected="$(awk '{print $1}' corpus.sha256)"
+          actual="$(sha256sum heretic-approved-corpus.zip | awk '{print $1}')"
+          test "$actual" = "$expected"
+          test "$(stat -c%s heretic-approved-corpus.zip)" -eq 749837093
+          unzip -tq heretic-approved-corpus.zip
+      - name: Extraer biblioteca para el entrenamiento
+        run: |
+          set -euo pipefail
+          mkdir -p data/inherited/heretic-corpus
+          unzip -q heretic-approved-corpus.zip -d data/inherited/heretic-corpus
+          python - <<'PY'
+          from pathlib import Path
+          root = Path("data/inherited/heretic-corpus")
+          files = [p for p in root.rglob("*") if p.is_file()]
+          if not files:
+              raise SystemExit("El ZIP no contiene archivos extraíbles")
+          print(f"Archivos extraídos: {len(files)}")
+          print(f"Bytes extraídos: {sum(p.stat().st_size for p in files)}")
+          for p in files[:20]:
+              print(p)
+          PY
+      - name: Publicar biblioteca preparada como artefacto de entrenamiento
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-heretic-corpus-prepared
+          path: |
+            data/inherited/heretic-corpus/
+            heretic-approved-corpus.zip
+            corpus.sha256
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
