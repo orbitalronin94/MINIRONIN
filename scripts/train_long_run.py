@@ -79,7 +79,7 @@ def extract_text_values(value):
                     yield from extract_text_values(item)
 
 
-def read_full_jsonl(path: Path, domain: str, store) -> dict:
+def read_full_jsonl(path: Path, domain: str, store, source_name: str = "HERETIC") -> dict:
     before, rows, invalid = len(store["docs"]), 0, 0
     digest = hashlib.sha256()
     opener = __import__("gzip").open if path.name.lower().endswith(".gz") else open
