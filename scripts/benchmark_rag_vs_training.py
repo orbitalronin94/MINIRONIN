@@ -46,14 +46,14 @@ def build_index(train_docs,embedder,out,batch_size=128):
       vectors.write(np.asarray(emb,dtype=np.float16).tobytes())
       for row in metadata:
         offsets.write(struct.pack("<Q",meta.tell()))
-        meta.write(json.dumps(row,ensure_ascii=False)+"\n")
+        meta.write((json.dumps(row,ensure_ascii=False)+"\n").encode("utf-8"))
       total+=len(pending); pending=[]; metadata=[]
   if pending:
    emb=embedder.encode(pending,convert_to_numpy=True,normalize_embeddings=True,show_progress_bar=False)
    vectors.write(np.asarray(emb,dtype=np.float16).tobytes())
    for row in metadata:
         offsets.write(struct.pack("<Q",meta.tell()))
-        meta.write(json.dumps(row,ensure_ascii=False)+"\n")
+        meta.write((json.dumps(row,ensure_ascii=False)+"\n").encode("utf-8"))
    total+=len(pending)
  if not total: raise RuntimeError("No eligible training chunks indexed")
  return {"chunks":total,"dimension":dim,"embedding_dtype":"float16","metadata":str(mp),"vectors":str(vp),"offsets":str(op)}
