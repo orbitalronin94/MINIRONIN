@@ -29,8 +29,8 @@ SEQUENCE_LENGTH = 128
 BASE_SEED = 20261107
 
 
-TEXT_SUFFIXES = {".jsonl", ".ndjson", ".json", ".txt", ".md", ".xml", ".tei", ".html", ".htm", ".csv", ".tsv"}
-SKIP_NAME_PARTS = ("license", "readme", "metadata", "manifest", "schema", "checksum", "sha256", "wav", "mp3", "flac", "parquet", "arrow", "image", "video")
+TEXT_SUFFIXES = {".jsonl", ".ndjson", ".json", ".txt", ".md", ".xml", ".tei", ".html", ".htm", ".csv", ".tsv", ".parquet"}
+SKIP_NAME_PARTS = ("license", "readme", "metadata", "manifest", "schema", "checksum", "sha256", "wav", "mp3", "flac", "arrow", "image", "video")
 
 
 def infer_domain(path: Path) -> str:
@@ -116,6 +116,25 @@ def read_full_text(path: Path, domain: str, store) -> dict:
     return {"path": str(path), "format": path.suffix.lower(), "domain": domain, "bytes": path.stat().st_size, "documents_added": len(store["docs"]) - before, "sha256": digest.hexdigest()}
 
 
+def read_full_parquet(path: Path, domain: str, store) -> dict:
+    try:
+        import pyarrow.parquet as pq
+    except ImportError as exc:
+        raise SystemExit("Parquet source found but pyarrow is unavailable") from exc
+    before, rows = len(store["docs"]), 0
+    digest = hashlib.sha256()
+    with path.open("rb") as raw_stream:
+        for block in iter(lambda: raw_stream.read(1024 * 1024), b""):
+            digest.update(block)
+    parquet = pq.ParquetFile(path)
+    for batch in parquet.iter_batches(batch_size=128):
+        for obj in batch.to_pylist():
+            rows += 1
+            for value in extract_text_values(obj):
+                add_full_text(store, domain, value, "HERETIC:" + path.name, str(path))
+    return {"path": str(path), "format": "parquet", "domain": domain, "bytes": path.stat().st_size, "rows": rows, "documents_added": len(store["docs"]) - before, "sha256": digest.hexdigest()}
+
+
 def read_full_json(path: Path, domain: str, store) -> dict:
     before = len(store["docs"])
     raw = path.read_bytes()
@@ -162,6 +181,8 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
             source_audit.append(read_full_jsonl(path, domain, store))
         elif suffix == ".json":
             source_audit.append(read_full_json(path, domain, store))
+        elif suffix == ".parquet":
+            source_audit.append(read_full_parquet(path, domain, store))
         elif suffix in TEXT_SUFFIXES or lower.endswith((".txt.gz", ".md.gz")):
             source_audit.append(read_full_text(path, domain, store))
 
