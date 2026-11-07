@@ -1,48 +1,53 @@
 # MINIRONIN
 
-**MINIRONIN** is an independent research project to build a compact language model targeting **~10 million parameters**.
+**MINIRONIN** es un proyecto de investigación independiente cuyo objetivo es construir un modelo de lenguaje compacto de aproximadamente **10 millones de parámetros**.
 
-It may inherit and curate reusable *data libraries* from [RONIN-IA](https://github.com/orbitalronin94/RONIN-IA) and [HERETIC-RONIN](https://github.com/orbitalronin94/HERETIC-RONIN). It will **not** inherit their training procedures, model checkpoints, GitHub Actions workflows, automation, or promotion logic.
+Puede heredar y curar bibliotecas de datos reutilizables de [RONIN-IA](https://github.com/orbitalronin94/RONIN-IA) y [HERETIC-RONIN](https://github.com/orbitalronin94/HERETIC-RONIN). **No** heredará sus procedimientos de entrenamiento, checkpoints, workflows de GitHub Actions, automatizaciones ni sistemas de promoción.
 
-## Project boundaries
+## Límites del proyecto
 
-- **Data inheritance only:** source corpora, documents, and dataset metadata may be imported after provenance, license, integrity, and deduplication checks.
-- **Independent model:** MINIRONIN defines its own architecture, tokenizer contract, initialization, training objective, evaluation, and release criteria.
-- **No workflow inheritance:** no workflow files or training scripts are copied from RONIN-IA or HERETIC-RONIN.
-- **Open-source foundations:** PyTorch is the initial implementation foundation. Tokenizer and evaluation dependencies require separate review and pinning.
-- **Honest sizing:** the 10M target is a parameter budget, not a performance claim.
+- **Solo herencia de datos:** se podrán importar corpus, documentos y metadatos después de comprobar procedencia, licencia, integridad y duplicados.
+- **Modelo independiente:** MINIRONIN define su propia arquitectura, contrato de tokenizador, inicialización, objetivo de entrenamiento, evaluación y criterios de publicación.
+- **Sin herencia de workflows:** no se copian workflows ni scripts de entrenamiento de los repositorios hermanos.
+- **Fundamentos de código abierto:** PyTorch es la base inicial. Las dependencias de tokenización y evaluación requieren revisión y fijación de versiones por separado.
+- **Tamaño honesto:** el objetivo de 10M es un presupuesto de parámetros, no una afirmación de rendimiento.
 
-## First model baseline
+## Primer modelo de referencia
 
-<badge color="success">Implemented baseline</badge>
+<badge color="success">Implementación inicial</badge>
 
-The initial decoder-only Transformer implementation is configured at **9,970,176 trainable parameters**:
-- 6 Transformer blocks, width 256
-- 8 attention heads (32 dimensions per head)
-- MLP width 768
-- 23,000 token vocabulary
-- 512 learned position embeddings
-- tied token/output embeddings
-- pre-LayerNorm, causal self-attention, GELU MLP
+La implementación inicial de un Transformer decoder-only tiene **9.970.176 parámetros entrenables**:
+- 6 bloques Transformer, anchura 256.
+- 8 cabezas de atención (32 dimensiones por cabeza).
+- Capa MLP de anchura 768.
+- Vocabulario de 23.000 tokens.
+- 512 embeddings posicionales aprendidos.
+- Embeddings de entrada y salida compartidos.
+- Pre-LayerNorm, atención causal y MLP GELU.
 
-Implementation: `src/minironin/`; configuration: `configs/model-10m.json`; tests: `tests/test_model.py`. The parameter count is calculated analytically and asserted in a test; the tests have not yet been run in GitHub Actions.
+Código: `src/minironin/`; configuración: `configs/model-10m.json`; pruebas: `tests/test_model.py`. El recuento se calcula analíticamente y se comprueba mediante tests. La suite inicial pasó en GitHub Actions, ejecución [42377928652](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42377928652). El smoke test del nuevo benchmark de entrenamiento está en validación independiente.
 
-## Repository map
+## Estructura del repositorio
 
-- `docs/SPEC.md` — technical design and constraints.
-- `docs/ROADMAP.md` — staged milestones and acceptance gates.
-- `data/INHERITANCE.md` — source-by-source data admission register.
-- `docs/OPEN_SOURCE_REGISTER.md` — exact upstream dependencies and license review.
-- `src/minironin/` — independent model implementation.
-- `tests/` — architecture and reproducibility tests.
+- `docs/SPEC.md`: especificación técnica y restricciones.
+- `docs/ROADMAP.md`: hitos y criterios de aceptación.
+- `docs/TRAINING_RESEARCH.md`: investigación de métodos de entrenamiento eficientes.
+- `data/INHERITANCE.md`: registro de admisión de datos por fuente.
+- `docs/OPEN_SOURCE_REGISTER.md`: dependencias candidatas y revisión de licencias.
+- `src/minironin/`: implementación independiente del modelo.
+- `tests/`: pruebas de arquitectura y reproducibilidad.
 
-## Data inheritance status
+## Estado de la herencia de datos
 
-Sibling inventories have been inspected and recorded. **The first real payload is now imported:** nine owner-authored Markdown papers (750,857 bytes) from the pinned `Papers` revision, authorized for internal research/training only (no redistribution). Their UTF-8, count, empty-file, duplicate, and SHA-256 audit passed in [run 42378151858](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378151858); the manifest is retained as its workflow artifact. The other sibling corpus payloads have not been imported. RONIN-IA reports 286,468 train-scoped documents / 684,738,932 bytes; HERETIC-RONIN reports 260,971 documents / 703,593,871 bytes, including a 256,237-document RONIN-derived base plus 4,734 Cosmopedia records. These inventories overlap and must never be summed. See [the inheritance register](data/INHERITANCE.md) for license and admission caveats. The imported papers live in `data/inherited/papers/`; a separate GitHub Actions workflow audits them and emits a SHA-256 manifest.
+Se han inspeccionado los inventarios de los repositorios hermanos. **La primera carga real ya está importada:** nueve artículos propios en Markdown (750.857 bytes) de una revisión fijada de `Papers`, autorizados para investigación y entrenamiento internos, sin permiso de redistribución. La auditoría de UTF-8, número de archivos, archivos vacíos, duplicados exactos y SHA-256 pasó en [la ejecución 42378151858](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42378151858); el manifiesto se conserva como artefacto de esa ejecución.
 
-## Non-goals
+Los demás corpus de los repositorios hermanos aún no se han importado. RONIN-IA declara 286.468 documentos de entrenamiento / 684.738.932 bytes; HERETIC-RONIN declara 260.971 documentos / 703.593.871 bytes, incluidos 256.237 documentos derivados de RONIN-IA y 4.734 registros de Cosmopedia. Los inventarios se solapan y nunca deben sumarse sin deduplicación. Consulta el [registro de herencia](data/INHERITANCE.md).
 
-- Reproducing the 95M/100M RONIN-IA model or the 500M HERETIC-RONIN student.
-- Reusing sibling training recipes or workflow YAML.
-- Claiming that corpus volume alone produces model capability.
-- Promoting checkpoints without independent evaluation.
+Además, se está creando un pequeño conjunto curado de lecciones de ingeniería extraídas manualmente de logs y artefactos de Actions. No se incorporan logs brutos ni respuestas de profesores automáticos sin verificación.
+
+## Exclusiones
+
+- Reproducir el modelo de 95M/100M de RONIN-IA o el estudiante de 500M de HERETIC-RONIN.
+- Reutilizar recetas de entrenamiento o YAML de workflows de los repositorios hermanos.
+- Afirmar que el volumen del corpus produce capacidad por sí solo.
+- Promocionar checkpoints sin evaluación independiente.
