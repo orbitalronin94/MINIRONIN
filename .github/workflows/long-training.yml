@@ -44,7 +44,7 @@ jobs:
           releases=json.load(open(os.environ["RUNNER_TEMP"]+"/releases.json"))
           found=[]
           for r in releases:
-              m=re.fullmatch(r"minironin-cycle-(\\d+)-best",r.get("tag_name",""))
+              m=re.fullmatch(r"minironin-cycle-(\d+)-best",r.get("tag_name",""))
               if m and not r.get("draft") and not r.get("prerelease"):
                   found.append((int(m.group(1)),r["tag_name"]))
           if found:
