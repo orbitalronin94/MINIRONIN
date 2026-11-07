@@ -49,3 +49,17 @@ El objetivo es llegar a 1.000 casos válidos. El progreso y los criterios de adm
 ## Uso
 
 Estos registros pueden servir para entrenar al modelo a interpretar métricas, diagnosticar fallos y explicar controles de reproducibilidad. No sustituyen los corpus lingüísticos generales ni los benchmarks reservados. Antes de una mezcla de entrenamiento, deben pasar deduplicación global y revisión de contaminación del holdout.
+
+
+## Dataset de abstención fuera de ámbito
+
+**Versión:** 1.0  
+**Registros:** 50.000 preguntas únicas generadas de forma determinista.  
+**Respuesta objetivo:** `ni puta idea`.  
+**Generador:** `scripts/generate_abstention_dataset.py` (semilla fija `20261108`).
+
+El dataset cubre preguntas absurdas, premisas ficticias, sucesos imposibles, entidades inventadas y datos inaccesibles o no proporcionados. Cada registro incluye contexto explícito de ausencia de evidencia, pregunta y respuesta objetivo. El generador verifica unicidad, cardinalidad y uniformidad de la respuesta.
+
+El conjunto se genera automáticamente en cada ejecución limpia del entrenamiento, se incorpora al dominio independiente `abstention` y queda reflejado en el manifiesto con tamaño y SHA-256. La mezcla reserva un 5% del muestreo para abstención y conserva un dominio `behavior` separado para no diluir los ejemplos de comportamiento ya curados.
+
+**Límite de interpretación:** el corpus enseña una respuesta para preguntas sintéticas claramente fuera de ámbito; no demuestra por sí solo una capacidad general de calibración. La evaluación debe medir también abstenciones indebidas ante preguntas respondibles.
