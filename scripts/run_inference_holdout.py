@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import asdict
 import hashlib
 import json
 import statistics
@@ -94,7 +95,7 @@ def main() -> None:
         raise SystemExit("Checkpoint active vocabulary is not 257; refusing incomparable inference")
     if checkpoint.get("parameter_count") != model.parameter_count():
         raise SystemExit("Checkpoint parameter count does not match this model")
-    if checkpoint.get("model_config") != config.to_dict() if hasattr(config, "to_dict") else False:
+    if checkpoint.get("model_config") != asdict(config):
         raise SystemExit("Checkpoint model config differs from repository config")
     model.load_state_dict(checkpoint["model_state_dict"], strict=True)
     model.eval()
