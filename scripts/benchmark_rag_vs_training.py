@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Controlled MINIRONIN comparison: direct generation vs semantic retrieval + same checkpoint."""
 from __future__ import annotations
-import argparse, hashlib, json, sys, time
+import argparse, hashlib, json, struct, sys, time
 from datetime import datetime, timezone
 from pathlib import Path
 import numpy as np
@@ -34,9 +34,9 @@ def load_questions(path):
  return rows
 
 def build_index(train_docs,embedder,out,batch_size=128):
- out.mkdir(parents=True,exist_ok=True); mp=out/"chunks.jsonl"; vp=out/"embeddings.float16"
+ out.mkdir(parents=True,exist_ok=True); mp=out/"chunks.jsonl"; vp=out/"embeddings.float16"; op=out/"offsets.uint64"
  total=0; pending=[]; metadata=[]; dim=embedder.get_sentence_embedding_dimension()
- with mp.open("w",encoding="utf-8") as meta, vp.open("wb") as vectors:
+ with mp.open("w",encoding="utf-8") as meta, vp.open("wb") as vectors, op.open("wb") as offsets:
   for domain in sorted(train_docs):
    for doc in train_docs[domain]:
     for i,chunk in enumerate(split_chunks(doc["text"])):
@@ -52,7 +52,7 @@ def build_index(train_docs,embedder,out,batch_size=128):
    for row in metadata: meta.write(json.dumps(row,ensure_ascii=False)+"\n")
    total+=len(pending)
  if not total: raise RuntimeError("No eligible training chunks indexed")
- return {"chunks":total,"dimension":dim,"embedding_dtype":"float16","metadata":str(mp),"vectors":str(vp)}
+ return {"chunks":total,"dimension":dim,"embedding_dtype":"float16","metadata":str(mp),"vectors":str(vp),"offsets":str(op)}
 
 def retrieve(query,embedder,index_dir,info,top_k):
  q=embedder.encode([query],convert_to_numpy=True,normalize_embeddings=True)[0].astype(np.float32)
@@ -66,11 +66,11 @@ def retrieve(query,embedder,index_dir,info,top_k):
   keep=np.argpartition(merged_s,-top_k)[-top_k:]; best_s,best_i=merged_s[keep],merged_i[keep]
  wanted={int(best_i[i]):float(best_s[i]) for i in np.argsort(best_s)[::-1] if best_i[i]>=0}
  results=[]
+ offsets=np.memmap(index_dir/"offsets.uint64",dtype=np.uint64,mode="r",shape=(count,))
  with (index_dir/"chunks.jsonl").open(encoding="utf-8") as stream:
-  for n,line in enumerate(stream):
-   if n in wanted:
-    row=json.loads(line); row["cosine_similarity"]=wanted[n]; results.append(row)
-    if len(results)==len(wanted):break
+  for n,score in wanted.items():
+   stream.seek(int(offsets[n])); row=json.loads(stream.readline())
+   row["cosine_similarity"]=score; results.append(row)
  return sorted(results,key=lambda x:x["cosine_similarity"],reverse=True)
 
 def generate(model,prompt,max_new):
