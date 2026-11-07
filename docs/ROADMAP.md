@@ -26,10 +26,11 @@ This roadmap describes MINIRONIN only. It does not import the workflows or train
 **Exit:** every admitted document has a defensible provenance and license record.
 
 ## CP-03 — Data library inheritance
-- [ ] Import approved source shards into MINIRONIN's own data layout.
-- [ ] Preserve source IDs and license notices.
-- [ ] Normalize to the canonical schema.
-- [ ] Run integrity, encoding, empty-document, duplicate, and contamination checks.
+- [x] Import the nine owner-authored Papers Markdown files into `data/inherited/papers/` at a pinned upstream revision, under internal-use-only authorization.
+- [x] Preserve source revision, source filenames, and the explicit no-redistribution restriction.
+- [ ] Generate and retain the successful SHA-256 audit manifest (workflow added; first run exposed and is fixing a README-count bug).
+- [ ] Normalize admitted text to the canonical training schema.
+- [ ] Run global cross-source exact/near-duplicate and holdout-contamination checks.
 - [ ] Publish corpus statistics by source, language, domain, and license.
 
 **Exit:** reproducible, auditable corpus snapshot with manifest hash.
@@ -70,7 +71,7 @@ This roadmap describes MINIRONIN only. It does not import the workflows or train
 ## CP-08 — Pilot experiments
 - [ ] Run short smoke test for numerical stability.
 - [ ] Measure throughput and memory on available runner hardware.
-- [ ] Compare a small set of optimizer/schedule candidates.
+- [ ] Compare a small set of optimizer/schedule candidates using the experiment ladder in [TRAINING_RESEARCH.md](TRAINING_RESEARCH.md).
 - [ ] Select training settings from measured evidence, not sibling defaults.
 
 **Exit:** documented pilot report and frozen baseline recipe.
