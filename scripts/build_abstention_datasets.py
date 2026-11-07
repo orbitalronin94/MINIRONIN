@@ -119,7 +119,7 @@ def main():
     for i in range(50_000):
         entity = ENTITIES[i % len(ENTITIES)]
         q = PLAIN_FRAMES[(i // len(ENTITIES)) % len(PLAIN_FRAMES)].format(
-            q=PLAIN_Q[(i // len(ENTITIES)) % len(PLAIN_Q)].format(e=entity))
+            q=PLAIN_Q[((i // len(ENTITIES)) // len(PLAIN_FRAMES)) % len(PLAIN_Q)].format(e=entity))
         plain.append({
             "id": f"abstain-plain-{i+1:05d}", "tag": "out_of_scope_plain",
             "context": "No existe una fuente verificable ni información disponible que permita responder. La entidad y el hecho preguntados son deliberadamente ficticios.",
@@ -128,7 +128,7 @@ def main():
             "license": "project-authored",
         })
         q2 = LIT_FRAMES[(i // len(ENTITIES)) % len(LIT_FRAMES)].format(
-            q=LIT_Q[(i // len(ENTITIES)) % len(LIT_Q)].format(e=entity))
+            q=LIT_Q[((i // len(ENTITIES)) // len(LIT_FRAMES)) % len(LIT_Q)].format(e=entity))
         base = LIT_ANSWERS[i % len(LIT_ANSWERS)]
         tail = LIT_TAILS[(i // len(LIT_ANSWERS)) % len(LIT_TAILS)]
         answer = base + tail
