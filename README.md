@@ -38,7 +38,7 @@ Implementation: `src/minironin/`; configuration: `configs/model-10m.json`; tests
 
 ## Data inheritance status
 
-Sibling inventories have been inspected and recorded, but **no corpus payload has yet been copied into MINIRONIN**. RONIN-IA reports 286,468 train-scoped documents / 684,738,932 bytes; HERETIC-RONIN reports 260,971 documents / 703,593,871 bytes, including a 256,237-document RONIN-derived base plus 4,734 Cosmopedia records. These inventories overlap and must never be summed. See [the inheritance register](data/INHERITANCE.md) for license and admission caveats.
+Sibling inventories have been inspected and recorded. **The first real payload is now imported:** nine owner-authored Markdown papers from the pinned `Papers` revision, authorized for internal research/training only (no redistribution). The other sibling corpus payloads have not been imported. RONIN-IA reports 286,468 train-scoped documents / 684,738,932 bytes; HERETIC-RONIN reports 260,971 documents / 703,593,871 bytes, including a 256,237-document RONIN-derived base plus 4,734 Cosmopedia records. These inventories overlap and must never be summed. See [the inheritance register](data/INHERITANCE.md) for license and admission caveats. The imported papers live in `data/inherited/papers/`; a separate GitHub Actions workflow audits them and emits a SHA-256 manifest.
 
 ## Non-goals
 
