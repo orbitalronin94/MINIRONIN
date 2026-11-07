@@ -38,7 +38,7 @@ jobs:
               m=re.fullmatch(r'evolution-gen-(\d+)-best',r.get('tag_name',''))
               if m and not r.get('draft') and not r.get('prerelease'): found.append((int(m.group(1)),r['tag_name']))
           if found:
-              generation,tag=max(found)+ (1, '') if False else (max(found)[0]+1,max(found)[1])
+              generation=max(found)[0]+1
               parent_tag=max(found)[1]
               parent_kind='previous-generation'
           else:
@@ -142,7 +142,6 @@ jobs:
           python - <<'PY'
           import glob, json, pathlib, shutil
           root=pathlib.Path('evolution-tournament')
-          candidates=[(root/'winner-${{ steps.metadata.outputs.parent_step }}.pt',root/'tournament-report.json')]
           candidates=[(root/f"winner-{int(json.loads((root/'tournament-report.json').read_text())['winner_completed_steps'])}.pt",root/'tournament-report.json')]
           for rp in sorted(root.glob('report-*.json')):
               report=json.loads(rp.read_text())
