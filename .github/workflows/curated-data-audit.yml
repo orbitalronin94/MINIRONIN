@@ -1,0 +1,32 @@
+name: MINIRONIN curated engineering-data audit
+
+on:
+  push:
+    paths:
+      - "data/curated/**"
+      - "scripts/audit_curated_lessons.py"
+      - ".github/workflows/curated-data-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-curated-lessons:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate curated JSONL and provenance
+        run: python scripts/audit_curated_lessons.py
+      - name: Publish SHA-256 manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-engineering-lessons-manifest
+          path: data/manifests/engineering-lessons-v1.sha256.json
+          if-no-files-found: error
+          retention-days: 90
