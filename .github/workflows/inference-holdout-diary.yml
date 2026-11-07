@@ -2,6 +2,12 @@ name: MINIRONIN — inference holdout diary
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/inference-holdout-diary.yml"
+      - "scripts/run_inference_holdout.py"
+      - "benchmarks/inference-holdout-v1.jsonl"
   schedule:
     - cron: "*/15 * * * *"
 
@@ -13,9 +19,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  evaluate-next:
+  evaluate-unseen-checkpoints:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 360
     env:
       GH_TOKEN: ${{ github.token }}
       REPOSITORY: orbitalronin94/MINIRONIN
@@ -37,8 +43,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
 
-      - name: Ensure base is evaluated before checkpoints
-        id: base
+      - name: Evaluate the fixed pre-training base first
         shell: bash
         run: |
           set -euo pipefail
@@ -53,13 +58,11 @@ jobs:
               --holdout benchmarks/inference-holdout-v1.jsonl \
               --output benchmarks/diary/base.json \
               --threads 2
-            echo "created=true" >> "$GITHUB_OUTPUT"
           else
-            echo "created=false" >> "$GITHUB_OUTPUT"
+            echo "Base diary already exists; preserving the original baseline."
           fi
 
-      - name: Evaluate the next unseen checkpoint only
-        if: steps.base.outputs.created != 'true'
+      - name: Evaluate every published checkpoint without a diary
         shell: bash
         run: |
           set -euo pipefail
@@ -70,32 +73,30 @@ jobs:
               | grep -E '^long-train-step-[0-9]+$' \
               | sort -V
           )
-          selected=""
-          selected_step=""
+          evaluated=0
           for tag in "${tags[@]}"; do
             step="${tag#long-train-step-}"
-            if [[ ! -f "benchmarks/diary/checkpoint-${step}.json" ]]; then
-              selected="$tag"
-              selected_step="$step"
-              break
+            output="benchmarks/diary/checkpoint-${step}.json"
+            if [[ -f "$output" ]]; then
+              echo "Already evaluated: $tag"
+              continue
             fi
-          done
-          if [[ -z "$selected" ]]; then
-            echo "No unseen checkpoint release is available."
-            exit 0
-          fi
 
-          gh release download "$selected" --repo "$REPOSITORY" \
-            --pattern "checkpoint-${selected_step}.pt" --dir .tmp/inference
-          checkpoint=".tmp/inference/checkpoint-${selected_step}.pt"
-          python scripts/run_inference_holdout.py \
-            --checkpoint "$checkpoint" \
-            --label "long-train-step-${selected_step}" \
-            --steps "$selected_step" \
-            --holdout benchmarks/inference-holdout-v1.jsonl \
-            --base-diary benchmarks/diary/base.json \
-            --output "benchmarks/diary/checkpoint-${selected_step}.json" \
-            --threads 2
+            echo "Evaluating $tag against the immutable base holdout."
+            gh release download "$tag" --repo "$REPOSITORY" \
+              --pattern "checkpoint-${step}.pt" --dir .tmp/inference
+            checkpoint=".tmp/inference/checkpoint-${step}.pt"
+            python scripts/run_inference_holdout.py \
+              --checkpoint "$checkpoint" \
+              --label "$tag" \
+              --steps "$step" \
+              --holdout benchmarks/inference-holdout-v1.jsonl \
+              --base-diary benchmarks/diary/base.json \
+              --output "$output" \
+              --threads 2
+            evaluated=$((evaluated + 1))
+          done
+          echo "New checkpoints evaluated in this run: $evaluated"
 
       - name: Refresh human-readable diary index
         run: |
@@ -105,7 +106,14 @@ jobs:
 
           root = Path("benchmarks/diary")
           rows = []
-          for path in sorted(root.glob("*.json"), key=lambda p: (p.name != "base.json", int(p.stem.split("-")[-1]) if p.stem.startswith("checkpoint-") else -1)):
+          paths = sorted(
+              root.glob("*.json"),
+              key=lambda p: (
+                  p.name != "base.json",
+                  int(p.stem.split("-")[-1]) if p.stem.startswith("checkpoint-") else -1,
+              ),
+          )
+          for path in paths:
               data = json.loads(path.read_text(encoding="utf-8"))
               comparison = data.get("comparison_to_base") or {}
               rows.append({
@@ -113,6 +121,7 @@ jobs:
                   "steps": data["completed_steps"],
                   "count": data["holdout_count"],
                   "sha": data["checkpoint_sha256"],
+                  "holdout_sha": data["holdout_sha256"],
                   "date": data["created_at_utc"],
                   "changed": comparison.get("changed_answers", "—"),
                   "change_rate": comparison.get("answer_change_rate", "—"),
@@ -121,16 +130,20 @@ jobs:
           lines = [
               "# MINIRONIN — diario de inferencia",
               "",
-              "Las respuestas completas, prompts, rúbricas y hashes están en los JSON enlazados. ",
+              "Todos los modelos se evalúan con los mismos IDs, prompts, generación greedy y holdout SHA-256.",
               "«Respuestas cambiadas» mide diferencia literal frente a base, no calidad.",
               "No hay puntuación automática de inteligencia: requiere revisión humana ciega.",
               "",
-              "| Modelo | Pasos completados | Preguntas | Respuestas distintas vs base | Tasa de cambio | Fecha UTC | Diario |",
-              "|---|---:|---:|---:|---:|---|---|",
+              "| Modelo | Pasos | Preguntas | Respuestas distintas vs base | Tasa de cambio | SHA-256 checkpoint | SHA-256 holdout | Diario |",
+              "|---|---:|---:|---:|---:|---|---|---|",
           ]
           for row in rows:
               rate = f'{row["change_rate"]:.1%}' if isinstance(row["change_rate"], (int, float)) else row["change_rate"]
-              lines.append(f'| {row["label"]} | {row["steps"]} | {row["count"]} | {row["changed"]} | {rate} | {row["date"]} | [{row["file"]}]({row["file"]}) |')
+              lines.append(
+                  f'| {row["label"]} | {row["steps"]} | {row["count"]} | '
+                  f'{row["changed"]} | {rate} | `{row["sha"]}` | '
+                  f'`{row["holdout_sha"]}` | [{row["file"]}]({row["file"]}) |'
+              )
           (root / "index.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
           PY
 
