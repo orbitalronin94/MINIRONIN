@@ -123,3 +123,7 @@ El trabajo 128353150091 registró un bloque de continuación desde el paso 600 h
 - Corpus auditado declarado: 256.237 documentos y 680.665.972 bytes, después de excluir 68 registros duplicados.
 
 **Interpretación:** la pérdida de entrenamiento bajó durante ese bloque. No se puede inferir una mejora del holdout a partir de ese dato. El artefacto de 6.001.698.610 bytes incluye archivos `holdout-before.json` y `holdout-after.json`, pero no se descargó el checkpoint completo y el fragmento de log consultado no expone las métricas de esos informes. Por eso el ejemplo curado enseña a separar pérdida de entrenamiento y generalización, sin inventar un resultado de evaluación.
+
+## 7. Ampliación a otros repositorios propios
+
+Se incorporaron 16 registros adicionales a partir de ejecuciones verificadas de `cobol2py`, `ronin-lang`, `Sycophancy-audit` y `Agent-Eval`. La suite COBOL de 363 pruebas se ha utilizado para curar propiedades distintas (análisis de literales, comentarios, destinos ambiguos, referencias dinámicas, rutas, ramificaciones simbólicas y caché), no para contar ejecuciones repetidas como nuevos casos. El total actual de la biblioteca es 31; el objetivo es 1.000 y el progreso se documenta en `docs/ENGINEERING_CASES_1000.md`.
