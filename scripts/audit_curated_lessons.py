@@ -28,6 +28,9 @@ ALLOWED_RUNS = {
     ("ronin-lang", "41697731306", "126132605280"),
     ("Sycophancy-audit", "40388502880", "121802992304"),
     ("Agent-Eval", "41129688540", "124317135721"),
+    ("cobol2py", "42272058320", "128078833121"),
+    ("HERETIC-RONIN", "42379476052", "128423870408"),
+    ("RoninRPG", "42376711339", "128415676582"),
 }
 
 def main() -> int:
@@ -84,6 +87,9 @@ def main() -> int:
             {"repository": "ronin-lang", "run_id": "41697731306", "job_ids": ["126132605197", "126132605280"]},
             {"repository": "Sycophancy-audit", "run_id": "40388502880", "job_id": "121802992304"},
             {"repository": "Agent-Eval", "run_id": "41129688540", "job_id": "124317135721"},
+            {"repository": "cobol2py", "run_id": "42272058320", "job_id": "128078833121"},
+            {"repository": "HERETIC-RONIN", "run_id": "42379476052", "job_id": "128423870408"},
+            {"repository": "RoninRPG", "run_id": "42376711339", "job_id": "128415676582"},
         ],
         "limitations": [
             "Not raw logs",
