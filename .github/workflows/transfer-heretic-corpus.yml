@@ -1,0 +1,39 @@
+name: MINIRONIN — transferir corpus aprobado de HERETIC
+
+on:
+  push:
+    paths:
+      - ".github/workflows/transfer-heretic-corpus.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  transfer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Descargar artefacto aprobado de HERETIC-RONIN
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/actions/artifacts/13570463226/zip"
+          curl --fail --location --retry 4 --retry-delay 5 \
+            -H "Accept: application/vnd.github+json" \
+            "$url" -o heretic-approved-corpus.zip
+          test -s heretic-approved-corpus.zip
+          unzip -tq heretic-approved-corpus.zip
+          sha256sum heretic-approved-corpus.zip | tee heretic-approved-corpus.zip.sha256
+          du -h heretic-approved-corpus.zip
+      - name: Conservar copia transferida en Actions de MINIRONIN
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-heretic-approved-corpus-13570463226
+          path: |
+            heretic-approved-corpus.zip
+            heretic-approved-corpus.zip.sha256
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
