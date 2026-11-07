@@ -247,13 +247,16 @@ def batch_for_step(train_docs, names, probs, global_step):
     return torch.stack(rows)
 
 
-def learning_rate(global_step: int) -> float:
+def learning_rate(global_step: int, total_steps: int = TOTAL_STEPS,
+                  schedule_start_step: int = 0, schedule_start_lr: float = 3e-4) -> float:
     warmup_steps = 500
-    if global_step <= warmup_steps:
+    if schedule_start_step == 0 and global_step <= warmup_steps:
         return 3e-4 * global_step / warmup_steps
-    progress = min(1.0, (global_step - warmup_steps) / (TOTAL_STEPS - warmup_steps))
+    if total_steps <= schedule_start_step:
+        raise ValueError("total_steps must exceed schedule_start_step")
+    progress = min(1.0, max(0.0, (global_step - schedule_start_step) / (total_steps - schedule_start_step)))
     cosine = 0.5 * (1.0 + math.cos(math.pi * progress))
-    return 3e-5 + (3e-4 - 3e-5) * cosine
+    return 3e-5 + (schedule_start_lr - 3e-5) * cosine
 
 
 def main():
@@ -266,14 +269,19 @@ def main():
     parser.add_argument("--steps", type=int, default=CHECKPOINT_EVERY)
     parser.add_argument("--threads", type=int, default=2)
     parser.add_argument("--dataset-cache", default="long-training/full-corpus-cache.pt")
+    parser.add_argument("--total-steps", type=int, default=TOTAL_STEPS)
+    parser.add_argument("--schedule-start-step", type=int, default=0)
+    parser.add_argument("--schedule-start-lr", type=float, default=1.0404e-4)
     args = parser.parse_args()
 
-    if args.start_step < 0 or args.start_step >= TOTAL_STEPS:
-        parser.error("start-step must be in [0, 199999]")
+    if args.total_steps <= 0 or args.start_step < 0 or args.start_step >= args.total_steps:
+        parser.error("total-steps must be positive and start-step must be below it")
+    if args.schedule_start_step < 0 or args.schedule_start_step >= args.total_steps:
+        parser.error("schedule-start-step must be below total-steps")
     if args.steps != CHECKPOINT_EVERY or args.start_step % CHECKPOINT_EVERY:
         parser.error("Each segment must be exactly 10,000 steps, aligned to a checkpoint")
-    if args.start_step + args.steps > TOTAL_STEPS:
-        parser.error("Segment exceeds the 200,000-step plan")
+    if args.start_step + args.steps > args.total_steps:
+        parser.error("Segment exceeds total-steps")
 
     torch.set_num_threads(args.threads)
     torch.use_deterministic_algorithms(True)
@@ -315,7 +323,7 @@ def main():
 
     for local_step in range(1, args.steps + 1):
         global_step = args.start_step + local_step
-        lr = learning_rate(global_step)
+        lr = learning_rate(global_step, args.total_steps, args.schedule_start_step, args.schedule_start_lr)
         for group in optimizer.param_groups:
             group["lr"] = lr
         batch = batch_for_step(train_docs, names, probs, global_step).to(device)
@@ -341,7 +349,7 @@ def main():
     report = {
         "status": "segment_completed",
         "completed_steps": completed,
-        "total_steps": TOTAL_STEPS,
+        "total_steps": args.total_steps,
         "segment_steps": args.steps,
         "seed_from_tournament": source.get("seed"),
         "parameter_count": parameter_count,
@@ -350,7 +358,7 @@ def main():
         "validation_loss": validation_loss,
         "validation_loss_by_domain": validation_by_domain,
         "elapsed_seconds": elapsed,
-        "learning_rate_next": learning_rate(min(completed + 1, TOTAL_STEPS)),
+        "learning_rate_next": learning_rate(min(completed + 1, args.total_steps), args.total_steps, args.schedule_start_step, args.schedule_start_lr),
         "dataset_manifest": manifest,
     }
     checkpoint = {
