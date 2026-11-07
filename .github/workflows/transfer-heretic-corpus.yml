@@ -15,13 +15,25 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
-      - name: Descargar artefacto aprobado de HERETIC-RONIN
+      - name: Comprobar credencial de lectura del repositorio de origen
+        env:
+          HERETIC_READ_TOKEN: ${{ secrets.HERETIC_READ_TOKEN }}
+        run: |
+          if [ -z "$HERETIC_READ_TOKEN" ]; then
+            echo "::error::Falta el secreto HERETIC_READ_TOKEN en MINIRONIN."
+            echo "Añade un fine-grained PAT con Actions: read sobre orbitalronin94/HERETIC-RONIN."
+            exit 1
+          fi
+      - name: Descargar y verificar el artefacto aprobado de HERETIC-RONIN
+        env:
+          HERETIC_READ_TOKEN: ${{ secrets.HERETIC_READ_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
           url="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/actions/artifacts/13570463226/zip"
           curl --fail --location --retry 4 --retry-delay 5 \
             -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $HERETIC_READ_TOKEN" \
             "$url" -o heretic-approved-corpus.zip
           test -s heretic-approved-corpus.zip
           unzip -tq heretic-approved-corpus.zip
