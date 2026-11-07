@@ -21,7 +21,7 @@ La primera implementación automatiza directo vs RAG. No modifica ni detiene el 
 - Vectores float16 y búsqueda por bloques para reducir memoria.
 
 ## Ejecución
-Lanzar manualmente `.github/workflows/semantic-rag-benchmark.yml`. Selecciona el mejor release de ciclo disponible; si no existe, usa el checkpoint bootstrap verificado de 130k. Descarga y verifica el corpus, crea el índice, evalúa el holdout y publica `minironin-direct-vs-rag`.
+El primer benchmark se lanza automáticamente al fusionar el PR; las repeticiones pueden lanzarse manualmente desde `.github/workflows/semantic-rag-benchmark.yml`. Selecciona el mejor release de ciclo disponible; si no existe, usa el checkpoint bootstrap verificado de 130k. Descarga y verifica el corpus, crea el índice, evalúa el holdout y publica `minironin-direct-vs-rag`.
 
 ## Interpretación y límites
 - Coseno no equivale a relevancia validada ni a respuesta correcta.
