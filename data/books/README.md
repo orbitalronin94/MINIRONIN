@@ -32,6 +32,6 @@ El workflow `.github/workflows/acquire-reasoning-books.yml` descarga PRODATPHIL 
 ## Estado inicial
 
 - Objetivo: 5.000 obras/documentos únicos.
-- Obras completas incorporadas en esta carpeta: 0.
-- Lote PRODATPHIL v0.3: adquisición automatizada añadida; pendiente de que termine el workflow.
+- Obras completas adquiridas: 147 (PRODATPHIL v0.3; release persistente). No están versionadas dentro del árbol Git: se distribuyen como asset de release para no inflar el historial.
+- Lote PRODATPHIL v0.3: 147 obras declaradas por el editor; ZIP descargado, comprobado, extraído (151 archivos de paquete, 31.453.941 bytes extraídos) y publicado como release asset.
 - Biblioteca HERETIC heredada: 16 archivos / 2.136.389.480 bytes extraídos en Actions, publicados en el artefacto `minironin-heretic-corpus-prepared`; aún no está persistida en el árbol Git de `main`.
