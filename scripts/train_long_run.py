@@ -278,8 +278,8 @@ def main():
         parser.error("total-steps must be positive and start-step must be below it")
     if args.schedule_start_step < 0 or args.schedule_start_step >= args.total_steps:
         parser.error("schedule-start-step must be below total-steps")
-    if args.steps != CHECKPOINT_EVERY or args.start_step % CHECKPOINT_EVERY:
-        parser.error("Each segment must be exactly 10,000 steps, aligned to a checkpoint")
+    if args.steps != CHECKPOINT_EVERY or (args.start_step - args.schedule_start_step) % CHECKPOINT_EVERY:
+        parser.error("Each segment must be exactly 10,000 steps, aligned to the continuation schedule")
     if args.start_step + args.steps > args.total_steps:
         parser.error("Segment exceeds total-steps")
 
@@ -368,7 +368,7 @@ def main():
         "parameter_count": parameter_count,
         "seed": source.get("seed"),
         "completed_steps": completed,
-        "total_steps": TOTAL_STEPS,
+        "total_steps": args.total_steps,
         "active_vocabulary": ACTIVE_VOCAB,
         "tokenization": source.get("tokenization", "UTF-8 bytes + EOS"),
         "validation_loss": validation_loss,
