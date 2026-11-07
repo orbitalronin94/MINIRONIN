@@ -2,6 +2,7 @@
 """Controlled MINIRONIN comparison: direct generation vs semantic retrieval + same checkpoint."""
 from __future__ import annotations
 import argparse, hashlib, json, struct, sys, time
+from importlib.metadata import version
 from datetime import datetime, timezone
 from pathlib import Path
 import torch
@@ -109,7 +110,9 @@ def main():
  train_docs,_,_,_,manifest=load_training_data(a.heretic_root,a.books_root,a.cache)
  from sentence_transformers import SentenceTransformer
  embedder=SentenceTransformer(EMBEDDING_MODEL,device="cpu"); index_dir=a.output/"semantic-index"
+ embedding_revision=getattr(embedder._first_module().auto_model.config,"_commit_hash",None)
  info=build_index(train_docs,embedder,index_dir)
+ index_hashes={name:sha256_file(index_dir/name) for name in ("chunks.jsonl","embeddings.float16","offsets.uint64")}
  config=ModelConfig.load(ROOT/"configs/model-10m.json"); model=MiniRoninLM(config).cpu()
  cp=torch.load(a.checkpoint,map_location="cpu",weights_only=False)
  from dataclasses import asdict
@@ -131,7 +134,7 @@ def main():
    print(json.dumps({"id":row["id"],"top_score":hits[0]["cosine_similarity"] if hits else None}),flush=True)
  summary={"schema_version":1,"experiment":"MINIRONIN direct-vs-semantic-RAG controlled comparison","created_at_utc":datetime.now(timezone.utc).isoformat(),
   "checkpoint_sha256":sha256_file(a.checkpoint),"holdout_sha256":sha256_file(a.holdout),"holdout_count":len(results),
-  "parameter_count":model.parameter_count(),"active_vocabulary":ACTIVE_VOCAB,"embedding_model":EMBEDDING_MODEL,"embedding_dimension":info["dimension"],
+  "parameter_count":model.parameter_count(),"active_vocabulary":ACTIVE_VOCAB,"embedding_model":EMBEDDING_MODEL,"embedding_model_revision":embedding_revision,"sentence_transformers_version":version("sentence-transformers"),"embedding_dimension":info["dimension"],"index_sha256":index_hashes,
   "index":info,"indexed_domains":sorted(train_docs),"corpus_manifest_summary":{k:manifest.get(k) for k in ("documents_total","documents_by_domain","heretic_ingested_files","behavior_examples")},
   "protocol":{"same_checkpoint":True,"same_greedy_decoder":True,"rag_top_k":a.top_k,"chunk_chars":CHUNK_CHARS,"chunk_overlap":CHUNK_OVERLAP,"max_context_chars_per_hit":MAX_CONTEXT_CHARS,"index_uses_training_split_only":True,"holdout_used_for_index":False},
   "scoring":{"status":"unscored_blind_review_required","note":"Cosine similarity is not answer correctness; paired direct/RAG answers require human blind scoring."},"results":results}
