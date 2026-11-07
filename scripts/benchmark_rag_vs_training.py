@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse, hashlib, json, struct, sys, time
 from datetime import datetime, timezone
 from pathlib import Path
-import numpy as np
 import torch
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"src")); sys.path.insert(0,str(ROOT/"scripts"))
@@ -33,6 +32,7 @@ def load_questions(path):
  return rows
 
 def build_index(train_docs,embedder,out,batch_size=128):
+ import numpy as np
  out.mkdir(parents=True,exist_ok=True); mp=out/"chunks.jsonl"; vp=out/"embeddings.float16"; op=out/"offsets.uint64"
  total=0; pending=[]; metadata=[]; dim=embedder.get_sentence_embedding_dimension()
  with mp.open("w",encoding="utf-8") as meta, vp.open("wb") as vectors, op.open("wb") as offsets:
@@ -58,6 +58,7 @@ def build_index(train_docs,embedder,out,batch_size=128):
  return {"chunks":total,"dimension":dim,"embedding_dtype":"float16","metadata":str(mp),"vectors":str(vp),"offsets":str(op)}
 
 def retrieve(query,embedder,index_dir,info,top_k):
+ import numpy as np
  q=embedder.encode([query],convert_to_numpy=True,normalize_embeddings=True)[0].astype(np.float32)
  dim,count=int(info["dimension"]),int(info["chunks"])
  matrix=np.memmap(index_dir/"embeddings.float16",dtype=np.float16,mode="r",shape=(count,dim))
