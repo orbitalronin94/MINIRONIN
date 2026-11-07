@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "dataset": "data/curated/engineering-lessons-v1.jsonl",
+  "language": "es",
+  "curation": "manual",
+  "record_count": 8,
+  "sha256": "013155e7b94ed4278ffb31e21970c1db895f17336f5c7a59c5deba0b7d7d3faa",
+  "sources": [
+    {
+      "repository": "HERETIC-RONIN",
+      "run_id": "42370725970",
+      "job_id": "128398241561",
+      "artifact_id": 13574129542
+    },
+    {
+      "repository": "RONIN-IA",
+      "run_id": "42364138740",
+      "job_ids": ["128378601930", "128378602072"]
+    }
+  ],
+  "audit_run": "42378515927",
+  "limitations": [
+    "No raw logs included",
+    "The 200 teacher-generated examples are excluded as unverified supervision",
+    "Global deduplication and holdout-contamination checks are still required before training"
+  ]
+}
