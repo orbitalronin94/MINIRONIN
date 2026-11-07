@@ -37,3 +37,23 @@ def test_context_limit_is_enforced():
         assert "exceeds context" in str(exc)
     else:
         raise AssertionError("expected context limit failure")
+
+def test_active_vocabulary_training_head():
+    model = MiniRoninLM(ModelConfig(dropout=0.0))
+    tokens = torch.randint(0, 257, (2, 32))
+    logits, loss = model(tokens, labels=tokens, vocab_limit=257)
+    assert logits.shape == (2, 32, 257)
+    assert loss is not None and torch.isfinite(loss)
+    loss.backward()
+    assert model.token_embedding.weight.grad is not None
+
+
+def test_active_vocabulary_rejects_out_of_range_labels():
+    model = MiniRoninLM(ModelConfig(dropout=0.0))
+    tokens = torch.full((1, 8), 300, dtype=torch.long)
+    try:
+        model(tokens, labels=tokens, vocab_limit=257)
+    except ValueError as exc:
+        assert "outside vocab_limit" in str(exc)
+    else:
+        raise AssertionError("expected active vocabulary range failure")
