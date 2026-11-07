@@ -234,8 +234,8 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     return train_docs, names, probs, validation, manifest
 
 
-def batch_for_step(train_docs, names, probs, global_step):
-    rng = random.Random(BASE_SEED + global_step)
+def batch_for_step(train_docs, names, probs, global_step, seed_offset=0):
+    rng = random.Random(BASE_SEED + seed_offset + global_step)
     domains = rng.choices(names, weights=probs, k=BATCH_SIZE)
     rows = []
     for domain in domains:
@@ -272,6 +272,7 @@ def main():
     parser.add_argument("--total-steps", type=int, default=TOTAL_STEPS)
     parser.add_argument("--schedule-start-step", type=int, default=0)
     parser.add_argument("--schedule-start-lr", type=float, default=1.0404e-4)
+    parser.add_argument("--seed-offset", type=int, default=0)
     args = parser.parse_args()
 
     if args.total_steps <= 0 or args.start_step < 0 or args.start_step >= args.total_steps:
@@ -326,7 +327,7 @@ def main():
         lr = learning_rate(global_step, args.total_steps, args.schedule_start_step, args.schedule_start_lr)
         for group in optimizer.param_groups:
             group["lr"] = lr
-        batch = batch_for_step(train_docs, names, probs, global_step).to(device)
+        batch = batch_for_step(train_docs, names, probs, global_step, args.seed_offset).to(device)
         optimizer.zero_grad(set_to_none=True)
         _, loss = model(batch, labels=batch, vocab_limit=ACTIVE_VOCAB)
         if not torch.isfinite(loss):
