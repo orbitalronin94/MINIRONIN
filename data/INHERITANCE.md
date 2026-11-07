@@ -53,7 +53,7 @@ The RONIN-IA README reports 286,468 train-scoped documents / 684,738,932 bytes a
 
 ## Import status
 
-No corpus payload has yet been copied into MINIRONIN. The figures above are source inventory references, not MINIRONIN-owned files. Import will proceed source-by-source with immutable manifests, SHA-256 verification, global exact deduplication, and a separate holdout-contamination check.
+**One source payload is now imported:** the nine owner-authored Markdown papers from `orbitalronin94/Papers`, pinned at revision `d7bf3ae446f666ce3be73b11aab7090e1605a889`. They are stored under `data/inherited/papers/` and authorized for internal MINIRONIN research/training only; redistribution is not authorized. The other sibling corpus inventories remain unimported. The dedicated `data-audit.yml` workflow checks the exact file count, UTF-8 integrity, empties, exact duplicates, and computes SHA-256 values into an artifact manifest. Import does not yet mean tokenization, split assignment, or training consumption.
 
 ## Source links
 
