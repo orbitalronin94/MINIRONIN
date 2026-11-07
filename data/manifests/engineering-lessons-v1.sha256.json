@@ -4,7 +4,7 @@
   "language": "es",
   "curation": "manual",
   "record_count": 50,
-  "sha256": "pending-audit",
+  "sha256": "b5a960edff02e21126741796a4de6987daf41befa7fc4a878c45097ccafe8762",
   "sources": [
     {
       "repository": "HERETIC-RONIN",
@@ -66,9 +66,24 @@
       "repository": "cobol2py",
       "run_id": "42268813592",
       "job_id": "128067764385"
+    },
+    {
+      "repository": "cobol2py",
+      "run_id": "42272058320",
+      "job_id": "128078833121"
+    },
+    {
+      "repository": "HERETIC-RONIN",
+      "run_id": "42379476052",
+      "job_id": "128423870408"
+    },
+    {
+      "repository": "RoninRPG",
+      "run_id": "42376711339",
+      "job_id": "128415676582"
     }
   ],
-  "audit_run": null,
+  "audit_run": "42379845447",
   "limitations": [
     "No raw logs included",
     "The 200 teacher-generated examples are excluded as unverified supervision",
