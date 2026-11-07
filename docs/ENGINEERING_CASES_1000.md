@@ -3,10 +3,10 @@
 ## Objetivo y progreso
 
 - **Objetivo:** 1.000 casos válidos, individualizados, en castellano.
-- **Estado actual:** 31 casos curados manualmente.
+- **Estado actual:** 50 casos curados manualmente.
 - **Auditoría del lote:** [MINIRONIN run 42379452577](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42379452577), correcta.
 - **SHA-256 actual:** `f96218280922a1a8cfe2ac9d7520b0c554b72e4aa600aae95a9581350a30e204`.
-- **Progreso:** 3,1 %. No se contarán logs, tests repetidos ni filas generadas automáticamente como casos válidos sin curación.
+- **Progreso:** 5,0 %. No se contarán logs, tests repetidos ni filas generadas automáticamente como casos válidos sin curación.
 
 ## Repositorios de extracción
 
