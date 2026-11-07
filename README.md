@@ -68,3 +68,8 @@ Además, ya hay **50 lecciones de ingeniería en castellano** curadas manualment
 - Reutilizar recetas de entrenamiento o YAML de workflows de los repositorios hermanos.
 - Afirmar que el volumen del corpus produce capacidad por sí solo.
 - Promocionar checkpoints sin evaluación independiente.
+
+
+### Entrenamiento largo con biblioteca textual completa
+
+El torneo inicial de semillas fue una criba muestreada. El entrenamiento posterior de 200.000 pasos utiliza un cargador independiente que recorre todo HERETIC recursivamente, sin límites de bytes ni documentos por fuente, procesa formatos textuales compatibles y fragmenta documentos largos sin truncarlos. También incorpora los textos completos de PRODATPHIL. El manifiesto de cada checkpoint incluye inventario, hashes, documentos por dominio y exclusiones; el cache se reutiliza entre los 20 segmentos. Audio, imagen, vídeo y formatos binarios no se contabilizan como texto entrenado, aunque las transcripciones textuales compatibles sí se incorporan. Véase [protocolo y auditoría del entrenamiento largo](docs/SEED_TOURNAMENT.md#entrenamiento-largo-del-ganador-uso-completo-de-la-biblioteca).
