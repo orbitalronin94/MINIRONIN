@@ -4,7 +4,7 @@
 
 - Upstream: https://github.com/orbitalronin94/Papers
 - Pinned revision: d7bf3ae446f666ce3be73b11aab7090e1605a889
-- Imported files: 9 Markdown papers (README excluded)
+- Imported files: 9 Markdown papers (README excluded), 750,857 bytes
 - Import date: 2026-11-07
 - Source scope: only the nine Markdown files listed below; no repository workflows, scripts, binaries, or other files were imported.
 
