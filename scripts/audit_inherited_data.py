@@ -9,7 +9,7 @@ ROOT = Path("data/inherited/papers")
 EXPECTED = 9
 
 def main() -> int:
-    files = sorted(p for p in ROOT.glob("*.md") if p.is_file())
+    files = sorted(p for p in ROOT.glob("*.md") if p.is_file() and p.name != "README.md")
     if len(files) != EXPECTED:
         raise SystemExit(f"expected {EXPECTED} markdown files, found {len(files)}")
     seen = {}
