@@ -1,0 +1,979 @@
+{
+  "status": "segment_completed",
+  "completed_steps": 60000,
+  "total_steps": 200000,
+  "segment_steps": 10000,
+  "seed_from_tournament": 9519,
+  "parameter_count": 9970176,
+  "active_vocabulary": 257,
+  "mean_train_loss_last_100": 1.229391745775938,
+  "validation_loss": 1.5334453225135802,
+  "validation_loss_by_domain": {
+    "behavior": 2.020353138446808,
+    "books": 1.2230644822120667,
+    "general": 2.460385113954544,
+    "math": 1.4588240385055542,
+    "science": 1.5209929645061493
+  },
+  "elapsed_seconds": 756.35,
+  "learning_rate_next": 0.0002449500461320676,
+  "dataset_manifest": {
+    "source_files": [
+      {
+        "path": "data/inherited/heretic-corpus/open-web-math__open-web-math__default__train.jsonl",
+        "domain": "math",
+        "sampled_bytes": 1634479,
+        "sample_sha256": "631a1f8888af8e78873a8ff7cc1ee06b2ba2287a8927d96ffe4fc1f2abafe0d3",
+        "documents_added": 350
+      },
+      {
+        "path": "data/inherited/heretic-corpus/HuggingFaceTB__cosmopedia__auto_math_text__train.jsonl",
+        "domain": "math",
+        "sampled_bytes": 1665998,
+        "sample_sha256": "61922e22869b1141c26a9902067bbb3a4d461cb4265149855e9315be43cd8046",
+        "documents_added": 350
+      },
+      {
+        "path": "data/inherited/heretic-corpus/secemp9__arxiv-complete__paper_text__train.jsonl",
+        "domain": "science",
+        "sampled_bytes": 15928228,
+        "sample_sha256": "2c7facee4b40c0d6b182c17cf117ac9c64cd7056e7567b94343f1b3372577d99",
+        "documents_added": 350
+      },
+      {
+        "path": "data/inherited/heretic-corpus/HuggingFaceTB__smollm-corpus__cosmopedia-v2__train.jsonl",
+        "domain": "science",
+        "sampled_bytes": 1954094,
+        "sample_sha256": "37cd2c5ea784dd26a678d6c5e7ddbf8edd107cc04b117127b16f51977982b701",
+        "documents_added": 350
+      },
+      {
+        "path": "data/inherited/heretic-corpus/HuggingFaceFW__fineweb-edu__sample-10BT__train.jsonl",
+        "domain": "science",
+        "sampled_bytes": 1349534,
+        "sample_sha256": "cc2565255a593758bba1ae20f4572c0589424c0f98e7beca2ac7940bf210f618",
+        "documents_added": 350
+      },
+      {
+        "path": "data/inherited/heretic-corpus/CohereLabs__aya_dataset__default__train.jsonl",
+        "domain": "general",
+        "sampled_bytes": 597572,
+        "sample_sha256": "3a3afa59efa01c7ce603b5d153f0b6335e23a53a50105602842993de00a429f3",
+        "documents_added": 350
+      }
+    ],
+    "book_files": [
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/AlgebraOfLogic.txt",
+        "bytes_read": 175803,
+        "sample_sha256": "ac2c2d36fb660e1f2261deb84e39c776f783b6d537a1fa935e77b7f85ce54b56",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/README.md",
+        "bytes_read": 789,
+        "sample_sha256": "e0951b048a0a00d9eddbf5c964b371a340e758f4436dc21ca7540a7e7ae27927",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bsb10042817.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "b3b66ec317add7686ec39ba713a6e8b5a15a52340ab3e068cfaf5e269ff1ef10",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bsb10043727.txt",
+        "bytes_read": 411634,
+        "sample_sha256": "1794d62a5c1404b72f78c74b3111f19bb1530d99bb6bef25e18b954ff63c1ab5",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bsb10044772.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "975aefd8e818a0fe7f97f3965efe88aff1bf468b2f8c006e6a8e053590c3acaf",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bsb10400996.txt",
+        "bytes_read": 379883,
+        "sample_sha256": "3814455b74c47792bc2cd6e3f0771f598a5d4b94c3034205978cc1a79172e8e0",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bsb11163764.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "d5c732b159068b43b204e6a0dd26aaa61e7cc140fc98b0ea3bef3b4f6979ca0f",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bsb11163765.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "d4eb5faf41f536ef7b437538740aaaf8e534d28fc2ce39473a4ba719c7d8670c",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bsb11171076.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "66b2cde1f4a859203f5549754b5fdd31f1b23a03e16c5de6d91fc77b5564c282",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bsb11378153.txt",
+        "bytes_read": 401764,
+        "sample_sha256": "0a20835228817ff4aa460323b3f1c69d15a3a36176432acfc4eacfa94dbfc01a",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bsb11534762.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "6b6114363da08cb8aa251ecb83b79cfd8565f1b64d26cdd296b538b9975a6efc",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bsb11534763.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "908568161aa80e129efac8a572eba857d46146aa0c867e9f3c44165faaf8f73f",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bsb11878689.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "deccaf04efe5f228e0c5b539ca6b4b88530701eeef789b8ab0e29cc4db59b00e",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bsb11879020.txt",
+        "bytes_read": 257717,
+        "sample_sha256": "656bbde5ce4a7a1dd55875d688bba8c34b0acd42de4ba5adbacc3502714d8dd7",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bub_gb_Od3jgF5rZtgC.txt",
+        "bytes_read": 158660,
+        "sample_sha256": "6fc5d2fb7c4f43db7e21c8f06443f2128e7bdcf1e7c547e7b96b2877d795b750",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/bub_gb_V8EtAAAAMAAJ.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "f7f631f2576b4b888c6cc719cbf4f54fc524b23f802b047698b3ce27de3d0fc8",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/chaptersinlogicc00hamiuoft.txt",
+        "bytes_read": 371924,
+        "sample_sha256": "8182c4e25cd48b760fb0d0e0d7501b4746bde8f1a1fe253c67bcc5dc6088d5e3",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/classpsych-00009.txt",
+        "bytes_read": 65573,
+        "sample_sha256": "824e7251c4277c876be717526f23f847e93beff6198ce7f74fce2ae02d56af9c",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/corpus_description.html",
+        "bytes_read": 296288,
+        "sample_sha256": "5e76a41bf272202af4d4d0f2bc248cf8a36b1d58e26470ebad3eecdb6015186f",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/dli.ernet.17031.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "4b870bec69b4ed1df653bfb7f62601d81aa9e0c36a6b5a0dcf98fd9f913f2419",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/dli.ernet.470152.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "727265db9dcac1432839c456441a9f1fbd0292dfd0a3fd587846a83296b68652",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/essentialsoflogi0000bosa.txt",
+        "bytes_read": 289194,
+        "sample_sha256": "a323a415c93469a8dd2edbc9c514a13a2ed5f8126d9487ce334482347c99a0f0",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/firstnotionsoflo00demoiala.txt",
+        "bytes_read": 55233,
+        "sample_sha256": "0aa3de8fdff6df42ad520a2301f3ad9bee43dc834a16969d49404a0ab4a5e427",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00008.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "689b33d381c7ae8c97789c7cb0e8e5b6197788b0c1b544fe251e4c3e086a3a04",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00012.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "4b84a3d1ab1f0e98563b994ce3298c0c15e8f224a5e63a0a6d6a6c75bb7d1371",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00013.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "5d61fe8547898002c3b43f7751a76cde04bd347f93f3a47d917f80b26e526e05",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00016.txt",
+        "bytes_read": 265064,
+        "sample_sha256": "78b884098843f3f4fa365e8999b8e53d0d9cc5022340aa9f145f98aa7dea6769",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00017.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "af38d6ab10a6e8ea1de30e6544d513cbbf00621c5bc563cdb5117066df70d9f4",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00023.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "c10e464cdd292da17d95e8db9044d50008c8cc22f548a475c9dda56929c48c0c",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00024.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "008ecfc334f5c06ff5f63b396c109ccaa2e7101f13a35387c4654efd359ff637",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00025.txt",
+        "bytes_read": 225525,
+        "sample_sha256": "ebc0e9124f7e8aefc8e681dca39b922333e3ed19bdee5183b52049b5afdd293d",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00028.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "528f4ad83420c52cbe585c8134c76ee86c595e8d17aafa9233011f984fdd2ff0",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00029.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "39809ad002114a39872ffdb2a2360f431f803a8212fe911232dbbc87920259e3",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00038.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "8c74095de8d93befd34d5c6e13716c2f696670bb0cafeffad46b39b2afaf884e",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00041.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "5bea999ab3ccbc647410815443a2acf7784470c9e25f61d748d3c342bba84463",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00042.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "6b548448b8b0029163bd4e012d15ecdcac927c8736929d96e434c29248f82afd",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/guten-00043.txt",
+        "bytes_read": 54369,
+        "sample_sha256": "62354f8af3dcc078e723be1cc2c7a892f1845ad7b9a0770200a55b80929a3247",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/implicationlinea0000bosa_j7g9.txt",
+        "bytes_read": 326310,
+        "sample_sha256": "22a1199aa8a9d80c9e2a0bf8aef9f4f606ed8b45ebf69e794a9b070bbebdec1f",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/in.ernet.dli.2015.461148.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "e4e05876c4599932a1ce26fd77b9c586f065aeca8e73cb9ba9b518e748e1777a",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/inductionwithes00whewgoog.txt",
+        "bytes_read": 121750,
+        "sample_sha256": "2afe8369ff6366162d7f543f52063df7e242296212bcc2bd8f6b3aa00bf4073d",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-1322630.txt",
+        "bytes_read": 11657,
+        "sample_sha256": "15c50d53d2ecf6f92a38b755797586a777e7eeb47fbebdf8f8dc42eef6cfbc04",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-1323054.txt",
+        "bytes_read": 8093,
+        "sample_sha256": "b21dba952a6a8e5d59b3acf43fadb8a082d1f53347a83c95c29db0c4acf3603a",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-1326498.txt",
+        "bytes_read": 43423,
+        "sample_sha256": "0ae87bb01092c68d63aa446bd7ff8a96ca30032d9db6fd742d418ce322d7a97c",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-1411857.txt",
+        "bytes_read": 45121,
+        "sample_sha256": "4e6de08dc3514aba741b757d383a564fa4df05ccad45d4b59eb8525a944d36f9",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-1624954.txt",
+        "bytes_read": 8695,
+        "sample_sha256": "b596bdd064ea8373ba6cf05a2b8e4892624e2f2fe5c47accf7cfd79773e2fcfc",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-1633199.txt",
+        "bytes_read": 8169,
+        "sample_sha256": "68beff6d58d0c01ce6f71f50a4bde4ff7be8edae8e4d692c40dd4ccad7a84035",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-1635237.txt",
+        "bytes_read": 56471,
+        "sample_sha256": "a70d3e659fb7e195fe0eede50166c0af157a6cd6c3e334c7753a2df9b3c60d8e",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-1646130.txt",
+        "bytes_read": 3896,
+        "sample_sha256": "85254f6ad725df136499c24e5822abf888a9724eb1ad8bc5bb49d8d24d21ba00",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-1760198.txt",
+        "bytes_read": 33177,
+        "sample_sha256": "b361105363865b7932b9195d3d3c057afa9d46cd0a9bb70e34c3942d048a4132",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-1760316.txt",
+        "bytes_read": 10738,
+        "sample_sha256": "e8bc0f2d121412eb7106cb7fa857dde6760fd3613d0e34124ab763f9f3d7b2f6",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-1762020.txt",
+        "bytes_read": 7170,
+        "sample_sha256": "32f0c32495cd5de9036e00d3c15745610fdde7c0458d44341a355bd17d22597e",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-1763914.txt",
+        "bytes_read": 27574,
+        "sample_sha256": "4d23b719cfd3dd63fe99647688629198d0f73fd2e42b2fdfc6df1b74fb150172",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-1986227.txt",
+        "bytes_read": 189003,
+        "sample_sha256": "493f2499c1eaef72987ea7cea041eb857b36322da192a89f93f41490f287aaa6",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-20021427.txt",
+        "bytes_read": 3019,
+        "sample_sha256": "d7914bfb232ec2813ba9979ec93b5e7513a3c4261f6570c2fc5e3184214c4be5",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2010795.txt",
+        "bytes_read": 14026,
+        "sample_sha256": "2cfb83522c1e21fac80e82d92143f4f5bd01bca0cb95360571af3405b7fa5218",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2011130.txt",
+        "bytes_read": 11042,
+        "sample_sha256": "0dffb91ea46c59b5a0e50423c021d2dc18ae3bc7554cb7feee3fd5abd0c90aba",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2011440.txt",
+        "bytes_read": 22299,
+        "sample_sha256": "31cb4ebd895d31eddf82ca59fb75efd9ced981a2f1ee369c8654e03d89bdec04",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2011490.txt",
+        "bytes_read": 16541,
+        "sample_sha256": "264aeb7f8f8fe4e55dff23a69ba1f99bed20d869f988db9af44355563849de79",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2011648.txt",
+        "bytes_read": 16788,
+        "sample_sha256": "b0ddfb30fa588121d81d940bcfe65e865cadc9746ecfc40f7f361b873743e52d",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2011705.txt",
+        "bytes_read": 13751,
+        "sample_sha256": "41172ad7938d3d1d3bfee30133ca9a4ba255d18d9f172b95ffac754f9084d3da",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2011944.txt",
+        "bytes_read": 7942,
+        "sample_sha256": "bd4c0d4862dcf080fd81167412bb7adced6461b24383a357349ef0540f7acd3d",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2011990.txt",
+        "bytes_read": 7368,
+        "sample_sha256": "24f268be9c246f4ea3141248c77ae9e27bb05d6372baf28c478dfc48715dcc5a",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2012132.txt",
+        "bytes_read": 16457,
+        "sample_sha256": "0d44770489dfbf760502e611d1b75342fc3cd7f9a4b31d93c9976eeee154ba16",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2012366.txt",
+        "bytes_read": 11295,
+        "sample_sha256": "a6335d43a1b46ddc0b74e8db35dd77b902914826d77280bcae937c9c127dd1a9",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2012392.txt",
+        "bytes_read": 19580,
+        "sample_sha256": "a3349e172587ebbbe6f2faa0941b45d051de23ab5733ae0fddc9931ea4f60520",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2012477.txt",
+        "bytes_read": 40609,
+        "sample_sha256": "3a15d8577134d8f8c85cd3eecad408d15148cfadad7bf9b516f3c2db306f2f58",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2012536.txt",
+        "bytes_read": 5331,
+        "sample_sha256": "565261a6a321fe926b2699afe86303c400078dde38d75df1bef5662cf9f21896",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2012537.txt",
+        "bytes_read": 8420,
+        "sample_sha256": "01aa4562b27717f5eac1ab730bd9c41a64eceb6b0a8409bf2bac5b0c0611b854",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2012642.txt",
+        "bytes_read": 19281,
+        "sample_sha256": "c2e43f0abb915d07ea2744a034aab5edacc2dc1c8dc12a853670881944ba337e",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2012995.txt",
+        "bytes_read": 53845,
+        "sample_sha256": "b59e42266a1fe97f50094792e5b6a1120c9864582881bf774c90448fcf62c952",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2013287.txt",
+        "bytes_read": 17516,
+        "sample_sha256": "7f91eab132b66279daab293be27df8bd6a712929ddde79e9bdc9893b1bff05b3",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2013364.txt",
+        "bytes_read": 8033,
+        "sample_sha256": "165c8b8f6df37f8a22b163551a2bb264ca5732d38a77b15d884e72f97c21eee3",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2013511.txt",
+        "bytes_read": 43185,
+        "sample_sha256": "1cfacbf956e01fd165607b1a42c5144b8620e7f804258bf52c5041114800a45a",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2013586.txt",
+        "bytes_read": 8419,
+        "sample_sha256": "ef1f52dbb6f2fca57ccafcc3b2ecad0a51abe8919f32d145b19e8ed7f7903c0d",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2013688.txt",
+        "bytes_read": 30984,
+        "sample_sha256": "1df65c81712d5dcf869859c736c7d7583ef05581a255eff01a43579fc178cff2",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2013698.txt",
+        "bytes_read": 36022,
+        "sample_sha256": "ee9d32e359bf0910c38d19fe9646b658ee540be43333e211af25005fe211bcf0",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2013787.txt",
+        "bytes_read": 16451,
+        "sample_sha256": "d142ee2833a7548532112d3534947a689da80ff58f082622e549acceb7e90b39",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2175584.txt",
+        "bytes_read": 37608,
+        "sample_sha256": "8ed02ef56eb6980a0d34d93ff34e19f909728bd5dbe59767f9a72ebaed0e0536",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2176037.txt",
+        "bytes_read": 40097,
+        "sample_sha256": "ac6f100cec08d4ac74de7f839237633f7c491a77aa3c42122814c6ab6f110a17",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2176134.txt",
+        "bytes_read": 35975,
+        "sample_sha256": "eee3effe33feb27d3de839e24eb1d5b9af18230d4b98bb1467cf999e2a279c45",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2176171.txt",
+        "bytes_read": 48215,
+        "sample_sha256": "9e37642eb0f39459abf3e4c95a625819617df3514209c8e0d0879fffd1acb437",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2176282.txt",
+        "bytes_read": 32609,
+        "sample_sha256": "749e7d0372d3872f66c6dffb2ee2a5548ed23dd42d90db3d55313a2e9feb0c65",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2176692.txt",
+        "bytes_read": 56316,
+        "sample_sha256": "5cb7850697e179041cbcdb945c5992d381a8f09542598129b322219cdbcc43ea",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2176742.txt",
+        "bytes_read": 26167,
+        "sample_sha256": "cf73d40c431897f7b50e720139dace0dd8af58d869dc18078343c0417b1cc8cc",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2177639.txt",
+        "bytes_read": 23362,
+        "sample_sha256": "b5c5562e729f9e145fc33031d2bcf3b6e33432729d8b53a6647248787d88440d",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2178062.txt",
+        "bytes_read": 57712,
+        "sample_sha256": "f5f1f4c99fad96eadc6fafbff78f579e9d5f0cfd1a182f36a8ad3c8f0cd07eaa",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2178269.txt",
+        "bytes_read": 28931,
+        "sample_sha256": "9a4056cb287cfe6139add050f3c8b9518883b3fc99a4070b637f77ccc2ee5377",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2178560.txt",
+        "bytes_read": 28047,
+        "sample_sha256": "5a590d0f5b56145065d8f6caed05f22e83e53177af4a184ea47b3f29f6f1423e",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2369151.txt",
+        "bytes_read": 22836,
+        "sample_sha256": "c10a10acfb502a3ff285b0f5bea08d0a6bc39136b54b6fea834aa5315a0b92c7",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2369269.txt",
+        "bytes_read": 13572,
+        "sample_sha256": "4782c474d49c5dcdc9e84512c28ab3b2a3155938435f5a5454bd63d311dc6323",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2369442.txt",
+        "bytes_read": 86758,
+        "sample_sha256": "c460f785c7f6a1a6f4472cf0ab2c433fa9c3881eb08ef8c242033b3d7a8dded5",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2369451.txt",
+        "bytes_read": 37608,
+        "sample_sha256": "464a68f4ff45ce8d41d8bf05906564903c59ba1d08ed0257ddb5bc400b70781e",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2369684.txt",
+        "bytes_read": 46792,
+        "sample_sha256": "5573769db412a37bce2b19571e2813ffe9c2faa379ae942e4e4c8fcb64033160",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2369896.txt",
+        "bytes_read": 40077,
+        "sample_sha256": "deff2ac65e9690bfe148b04b3fd51da5756ecf83c9a63ca1915e19462d8eaed2",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2370132.txt",
+        "bytes_read": 36426,
+        "sample_sha256": "9a757cce568305005dfe5cd4583005995951676546c9b36fe7ad39a487ea672c",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-25120063.txt",
+        "bytes_read": 28501,
+        "sample_sha256": "d95f773098473a8800fcd16d9c6ba32b9c44487df04e4c5de4fa326e0e75b393",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-25121899.txt",
+        "bytes_read": 3316,
+        "sample_sha256": "3e1eb8e49b4402ba8e333eb23e8e982c66bbe67d64eccc1ed7a95cc08da0bd68",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-25129824.txt",
+        "bytes_read": 8898,
+        "sample_sha256": "3a6c3ebbf96d914e5ec9e83ef45f6774c6a65e56e5451b9d390b9de883227589",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-25665846.txt",
+        "bytes_read": 23157,
+        "sample_sha256": "d3deb87a8d872e69ea3e106a2784f19dcf3bcb7c6760d54991eb5fb16e5973cc",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-25665909.txt",
+        "bytes_read": 9499,
+        "sample_sha256": "4862359d77b27e3a62363db3124e3847a2605668d731175b247d6018e494dbde",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-25665961.txt",
+        "bytes_read": 52397,
+        "sample_sha256": "02db5ba0f86037ea0091bd023e7c7922868bd2309bfbefb2750d3ea53ac82618",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-25666102.txt",
+        "bytes_read": 18974,
+        "sample_sha256": "5ca3049580531d5331e05b7d81b53b599af4ad46c74d0eac00b0bead835bf42f",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-25666112.txt",
+        "bytes_read": 12919,
+        "sample_sha256": "5dbc24c14d9a31d2abfcee9518d34b2ccfc2f3b96678ac5817c4d8b88dc24c74",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-25667964.txt",
+        "bytes_read": 10237,
+        "sample_sha256": "ab5ccbcabfed0a7b762f2fb9f94049c169e00d61d1c01394c2e5d7a76502fc67",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-25667995.txt",
+        "bytes_read": 18639,
+        "sample_sha256": "7ab71bc0ee61995102609e181f974067f98bfb9058cb0d223d7d37e85301308a",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-25668028.txt",
+        "bytes_read": 31845,
+        "sample_sha256": "8bc683e5533807894baecc916ba46b2bd39ac9cfef6f746bc0d6960edb51149b",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-25668037.txt",
+        "bytes_read": 65263,
+        "sample_sha256": "de133d1be36dbeb1a955086ecd2168dff9b530271353facc14ac8f2c40473e93",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-25668043.txt",
+        "bytes_read": 79190,
+        "sample_sha256": "768dca39eff67cff08fd3bb31cd71b191286ee9129151b38f6de51909b77d7cd",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27897385.txt",
+        "bytes_read": 48720,
+        "sample_sha256": "a628f1c018bfc386cebbb6cd820eb1c506d1bd72e50d9797bd8522522ca23602",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27897407.txt",
+        "bytes_read": 123121,
+        "sample_sha256": "d1233aae99ad380ee449558c2fc84ee4c92e6ea3decb2f8480fd9af361446b47",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27899603.txt",
+        "bytes_read": 28316,
+        "sample_sha256": "414a261f4a2d4df01f977148d22686180d8ee14f7c2f8ef5d67dbb67e339305d",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27899679.txt",
+        "bytes_read": 19471,
+        "sample_sha256": "7762a5d8d1a5e73df23c607577378162cff4ac2ed765e9bf707c9355cd948e90",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27900022.txt",
+        "bytes_read": 31187,
+        "sample_sha256": "32c4ca28230dd91ff3488bfbbfb49beb5ae999afa1e7ec627953457184cb34cc",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27900245.txt",
+        "bytes_read": 3478,
+        "sample_sha256": "d46d008c8c5bbb58e76522a7a4c94968f5aee8086ea3e508bb2331eb83011540",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27900334.txt",
+        "bytes_read": 14953,
+        "sample_sha256": "c291552e14eed871adc944a02d02389bec42681944cfcea511d3a70d06dd0d19",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27900347.txt",
+        "bytes_read": 4955,
+        "sample_sha256": "149352b667cb85e7141a660adf4ec78ae359e9a59c1b9333846ca058221ff7cf",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27900350.txt",
+        "bytes_read": 9896,
+        "sample_sha256": "1169e4f7b6f402fe9c8c3ffd535de0856785a58b312560f493c0ef0e33716a4f",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27900393.txt",
+        "bytes_read": 7218,
+        "sample_sha256": "c6d1f8e40ae9e1d0ef160c89db1d84259f11a48b489ce02d3ebb1d79e42fdcbd",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27900394.txt",
+        "bytes_read": 86665,
+        "sample_sha256": "07bef4f214f452558b2a97f64be616f076c6cf4fe81c6d3b8f3ede6c7e433eb4",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27900584.txt",
+        "bytes_read": 34179,
+        "sample_sha256": "0d7d10839602a9dda4f539f5ffc10aa5663d83f6e1423347b5483d641728c64d",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27900598.txt",
+        "bytes_read": 33606,
+        "sample_sha256": "b12b1992e9c886857b806868ddb1b3a4915338f3389ef5e6b27b37c46ede50a2",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27900652.txt",
+        "bytes_read": 19717,
+        "sample_sha256": "5e115eb120004c2242fe28e4506a3272fa991a90cae197d24be5e0099a61f778",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-27900687.txt",
+        "bytes_read": 32757,
+        "sample_sha256": "f178add5c1434627df04e2db6dd2ae82d6153246bb71e1af35af2d8fde866c44",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-282823.txt",
+        "bytes_read": 22638,
+        "sample_sha256": "ac2adfa4db20fe2dda5df4c3b7b4f819d10ea339f2f0cd0b818362f043547d1f",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2939919.txt",
+        "bytes_read": 13782,
+        "sample_sha256": "3a941443880b48459a16ca8148a31fbecb4919131d0cba38ea187de740edf5a7",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2939947.txt",
+        "bytes_read": 16418,
+        "sample_sha256": "3242cbed89bbeda72e85bab012b3c1c120a088106bc4006dd538fa96ffd2065a",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2939980.txt",
+        "bytes_read": 45545,
+        "sample_sha256": "3633e16130399b3a3bfb8846c6d7a904e27d1b57b68b0ef32a72040cfc40c792",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2939987.txt",
+        "bytes_read": 44969,
+        "sample_sha256": "25dc148c4efb1aac70d18b631229ab23badaf1e616f2a1593294b0858a2e2152",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2940039.txt",
+        "bytes_read": 27236,
+        "sample_sha256": "182360587aa99847cb1470146f232a939a5264137db7dbede2522e9b64c7f9d1",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2940140.txt",
+        "bytes_read": 13728,
+        "sample_sha256": "3018cffeb39592169c99acbd25c5c8d54dc9e8e39f53575220889fb3804e5df2",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2940522.txt",
+        "bytes_read": 12585,
+        "sample_sha256": "b872f9e89a12313d33803420a45228c273cfbb22987f772130d837eb0e95546f",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2940588.txt",
+        "bytes_read": 25367,
+        "sample_sha256": "39e674e31898a024d990f7850ae0ad30aecf72c567552f857618c9be6f8a21af",
+        "chunks_added": 3
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2940639.txt",
+        "bytes_read": 19206,
+        "sample_sha256": "13743b5ecb14121ffc10c39545c00f1aa27d1e8906a19e258f23da435391a712",
+        "chunks_added": 2
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2940708.txt",
+        "bytes_read": 8672,
+        "sample_sha256": "b70e94a805a82b6dec609eaa4aa5cdf4aa26fe765c5df5dc75898739220a961b",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/jstor-2971038.txt",
+        "bytes_read": 8933,
+        "sample_sha256": "8fe78bd17db89f37630a5c46ab2c7b759b7cc5fe6a8517b56956e138405ca9b0",
+        "chunks_added": 1
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/mathematicalanal00booluoft.txt",
+        "bytes_read": 131996,
+        "sample_sha256": "cebe017c8520e5ef616f1e9e1dbeb7b6457d2bf37a251e7156d9172dafc93d50",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/outlineslogican01laddgoog.txt",
+        "bytes_read": 245459,
+        "sample_sha256": "3edfea881086753756b5baaeea31785fc25538f6af99732d9e4996ac42b42cc4",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/prolegomenalogic01mans_0.txt",
+        "bytes_read": 524288,
+        "sample_sha256": "a15a22bbab0393fb48e6fc7fc8aaac0a5ca28baeaca39881c6293655d0649fea",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/remarksonprofess00youn.txt",
+        "bytes_read": 49490,
+        "sample_sha256": "882088226d2ee419804720c9b12fad7c3fb2e10af697a79be9559f63be121d28",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/studiesindeduct02jevogoog.txt",
+        "bytes_read": 453413,
+        "sample_sha256": "50ba9020bbe023cb405082f10f94ff1d8bb2bba4b2f241198d915f55c034cdfe",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/studiesinlogic00gilmgoog.txt",
+        "bytes_read": 323170,
+        "sample_sha256": "4e3d48e2eabc5a4c97de3b88040d7d0b0027255adb7e78a94580ceafed5c05a5",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/substitutionofsi00jevorich.txt",
+        "bytes_read": 153325,
+        "sample_sha256": "311d491c36c852a30c84ef00699a3352f314c484743cc0d7edf78332ee589314",
+        "chunks_added": 6
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/wikis_eng-00023.txt",
+        "bytes_read": 37611,
+        "sample_sha256": "9822d953e257cf4b46dd68ff1200426a1ed91d8be8bb9f283717100ef729b7c5",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/wikis_eng-00025.txt",
+        "bytes_read": 46640,
+        "sample_sha256": "d8c9c889f64bcda7ca10eb82e85042746699d1401a57acb9f7384b745ebed932",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/wikis_eng-00027.txt",
+        "bytes_read": 35122,
+        "sample_sha256": "9d6c449ccca7c7851a81b3a3a1fb03020319eb5a02110d25572f3c321766c216",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/wikis_eng-00028.txt",
+        "bytes_read": 40314,
+        "sample_sha256": "22acc61f9b8c5fd7ff3a1327092aea54cc182b49f98a9297834bedcc28ca027e",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/wikis_eng-00031.txt",
+        "bytes_read": 33652,
+        "sample_sha256": "64b6b7d5edf6a90e1124c43bfd158dadf245ca92c0dcad08a85cea8a64c1c407",
+        "chunks_added": 4
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/wikis_eng-00036.txt",
+        "bytes_read": 40914,
+        "sample_sha256": "fe8c22e8c24d54964cb274629041c262f12605a77dad4554d506df10313d5fe0",
+        "chunks_added": 5
+      },
+      {
+        "path": "data/inherited/prodatphil-en-v0.3/wikis_eng-00158.txt",
+        "bytes_read": 2823,
+        "sample_sha256": "57ef8dd94cd8a5db5b2837ac381d125402ca402c7de8b681ca5a85b6c3c5705c",
+        "chunks_added": 1
+      }
+    ],
+    "behavior_examples": 7,
+    "documents_total": 2666,
+    "documents_by_domain": {
+      "math": 700,
+      "science": 1050,
+      "books": 559,
+      "behavior": 7,
+      "general": 350
+    },
+    "training_mix": {
+      "math": 0.4,
+      "science": 0.25,
+      "books": 0.2,
+      "behavior": 0.1,
+      "general": 0.05
+    },
+    "validation": "fixed document-disjoint windows; same corpus and seed-tournament split"
+  }
+}

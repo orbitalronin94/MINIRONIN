@@ -1,0 +1,324 @@
+{
+  "reports": [
+    {
+      "file": "report-10000.json",
+      "bytes": 38260,
+      "sha256": "c07bb42c2bf4fd3ca3634174863584ca5911a88281b1f5eb1fe800897a40d84f",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-100000.json",
+      "bytes": 38258,
+      "sha256": "3fbf52bb7bf0bab1b4c757a570ce07131b55b29191656f920aac542916ec27a5",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-110000.json",
+      "bytes": 38257,
+      "sha256": "1a0b4b9d2f21f6e56a631323cc3ed242df28c4e97aeb2070f6f1abfc3d48ba4f",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-120000.json",
+      "bytes": 38261,
+      "sha256": "f2fc77d43ba97e77924d32df01c68a409bd031157e5aa7c3be648213a4b7c0f3",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-130000.json",
+      "bytes": 38260,
+      "sha256": "cf9f6e3bbbdf2aab8faaee9f9eaad8f9959fe09d802031d739e4ab55ff87beab",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-140000.json",
+      "bytes": 38260,
+      "sha256": "217a6a14f24a894749ad9ba0c5a714058fd29968a2b49c4a73ddca70554974b5",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-150000.json",
+      "bytes": 38260,
+      "sha256": "fbf8e7821ba2d3916bbba31a639bcc961a9fcfbb653645cb48619034c11953cb",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-160000.json",
+      "bytes": 38259,
+      "sha256": "2f5b63280b5878cb0497628b8933f7c966b10f4104765a9ec01d7bd0121ff8b1",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-20000.json",
+      "bytes": 38257,
+      "sha256": "6c27bf52f7e3fef406132cd2a778c5981f92017c3b1f53ab04a5bdaff17e705a",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-30000.json",
+      "bytes": 38260,
+      "sha256": "68b6570de37eebbc306a33349b74145bc678f00aff7a0686d3dbfdcd74634b2b",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-40000.json",
+      "bytes": 38257,
+      "sha256": "5bdbb2def8e32f3e7823346ccba1953b01397402182694500d8912780618214c",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-50000.json",
+      "bytes": 38261,
+      "sha256": "04b23f0ad532a8e9e38ec6beee541e73242a70a6f5a2f642e04b17b5cc4089bc",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-60000.json",
+      "bytes": 38257,
+      "sha256": "4f683bbec9fdfa45e00317c60f63219f35ef4efbdfd1f137f7ac1ca774fe63fe",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-70000.json",
+      "bytes": 38259,
+      "sha256": "907dc58ed58ab5e5b8f2591c522f257be45d5ac444c0842363799836bf7a52b1",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-80000.json",
+      "bytes": 38260,
+      "sha256": "5e4cd922785b9d778323b3c7ac0dd17040a3c79a6900994a9837e29192045bca",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    },
+    {
+      "file": "report-90000.json",
+      "bytes": 38261,
+      "sha256": "d4ae98fdb359ef8945bad91b72e8a4ac67dc2e5788bdc5398c9bd7248bead707",
+      "top_level_keys": [
+        "active_vocabulary",
+        "completed_steps",
+        "dataset_manifest",
+        "elapsed_seconds",
+        "learning_rate_next",
+        "mean_train_loss_last_100",
+        "parameter_count",
+        "seed_from_tournament",
+        "segment_steps",
+        "status",
+        "total_steps",
+        "validation_loss",
+        "validation_loss_by_domain"
+      ]
+    }
+  ]
+}
