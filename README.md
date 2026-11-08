@@ -344,3 +344,8 @@ También se genera un grafo semántico entre MINIRONIN, HERETIC, PRODATPHIL, RON
 El corpus incorpora un segundo catálogo curado de 17 obras candidatas en ciencia, economía política, filosofía, feminismo, historia social y literatura. La adquisición solo descarga las 11 fuentes originales que pasan el filtro territorial preliminar; las traducciones quedan bloqueadas para revisión de derechos. Consulta [la política y el inventario de bibliotecas](docs/ANARCHIST_LIBRARY.md), [el registro de fuentes](data/classics/SOURCES.json) y [el registro semántico](data/semantic/LIBRARY_REGISTRY.json).
 
 La biblioteca de clásicos se entrena en un dominio separado (`classics`, peso inicial 0,025), con manifiesto y hashes propios. El grafo relaciona seis bibliotecas y 68 conceptos mediante conexiones tipadas: solapamientos, puentes metodológicos, tensiones históricas y analogías no equivalentes. Las etiquetas `SEM:*` siguen siendo anotaciones textuales, no IDs nuevos del tokenizador. La ampliación no promociona checkpoints; requiere adquisición real, CI y evaluación por dominio/holdout.
+
+
+## Currículo elemental: matemáticas y hechos cotidianos
+
+Se ha añadido un generador independiente de **24 datasets × 50.000 filas (1,2 millones)**: 12 de operaciones y aritmética básica, y 12 de hechos cotidianos y ciencias elementales. La generación se ejecuta mediante [GitHub Actions](.github/workflows/generate-basic-curricula.yml); el diseño, los límites de los datos y el criterio para hechos variables están descritos en [docs/basic-maths-facts-curriculum.md](docs/basic-maths-facts-curriculum.md). **No se incorporan automáticamente al entrenamiento ni alteran el checkpoint.**
