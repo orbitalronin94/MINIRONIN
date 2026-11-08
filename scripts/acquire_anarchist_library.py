@@ -62,33 +62,33 @@ def main() -> None:
     }
     with ThreadPoolExecutor(max_workers=6) as pool:
         for row, raw in zip(approved, pool.map(download_source, approved)):
-        body = clean_gutenberg(raw)
-        tokens = row.get("semantic_token_ids", [])
-        tagged = " ".join(f"[{token}]" for token in tokens) + "\n\n" + body + "\n"
-        slug = re.sub(r"[^a-z0-9]+", "-", row["id"].lower()).strip("-")
-        destination = output / f"{slug}.txt"
-        destination.write_text(tagged, encoding="utf-8")
-        digest = hashlib.sha256(destination.read_bytes()).hexdigest()
-        manifest["sources"].append({
-            "id": row["id"],
-            "title": row["title"],
-            "author": row["author"],
-            "translator": row.get("translator"),
-            "language": row["language"],
-            "upstream_url": row["url"],
-            "download_url": row["plain_text_url"],
-            "rights_status": row["rights_status"],
-            "license_note": row["license"],
-            "tradition": row.get("tradition", []),
-            "concepts": row.get("concepts", []),
-            "semantic_token_ids": tokens,
-            "path": destination.name,
-            "bytes": destination.stat().st_size,
-            "characters": len(tagged),
-            "sha256": digest,
-            "upstream_sha256": hashlib.sha256(raw).hexdigest(),
-        })
-        print(json.dumps(manifest["sources"][-1], ensure_ascii=False))
+            body = clean_gutenberg(raw)
+            tokens = row.get("semantic_token_ids", [])
+            tagged = " ".join(f"[{token}]" for token in tokens) + "\n\n" + body + "\n"
+            slug = re.sub(r"[^a-z0-9]+", "-", row["id"].lower()).strip("-")
+            destination = output / f"{slug}.txt"
+            destination.write_text(tagged, encoding="utf-8")
+            digest = hashlib.sha256(destination.read_bytes()).hexdigest()
+            manifest["sources"].append({
+                "id": row["id"],
+                "title": row["title"],
+                "author": row["author"],
+                "translator": row.get("translator"),
+                "language": row["language"],
+                "upstream_url": row["url"],
+                "download_url": row["plain_text_url"],
+                "rights_status": row["rights_status"],
+                "license_note": row["license"],
+                "tradition": row.get("tradition", []),
+                "concepts": row.get("concepts", []),
+                "semantic_token_ids": tokens,
+                "path": destination.name,
+                "bytes": destination.stat().st_size,
+                "characters": len(tagged),
+                "sha256": digest,
+                "upstream_sha256": hashlib.sha256(raw).hexdigest(),
+            })
+            print(json.dumps(manifest["sources"][-1], ensure_ascii=False))
     manifest["total_documents"] = len(manifest["sources"])
     manifest["total_bytes"] = sum(x["bytes"] for x in manifest["sources"])
     (output / "ANARCHIST-LIBRARY-MANIFEST.json").write_text(
