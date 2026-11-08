@@ -4,6 +4,12 @@
   "token_semantics": "SEM:<concept_id> labels are stable semantic annotations. MINIRONIN currently uses a byte-level vocabulary (257 IDs); these labels are NOT atomic tokenizer IDs and do not change the model vocabulary.",
   "nodes": [
     {
+      "id": "concept:abolition",
+      "type": "concept",
+      "label": "Abolicionismo",
+      "semantic_token": "SEM:abolition"
+    },
+    {
       "id": "concept:anarchism",
       "type": "concept",
       "label": "Anarquismo",
@@ -16,10 +22,28 @@
       "semantic_token": "SEM:authority"
     },
     {
+      "id": "concept:biology",
+      "type": "concept",
+      "label": "Biología",
+      "semantic_token": "SEM:biology"
+    },
+    {
+      "id": "concept:capitalism",
+      "type": "concept",
+      "label": "Capitalismo",
+      "semantic_token": "SEM:capitalism"
+    },
+    {
       "id": "concept:ci_cd",
       "type": "concept",
       "label": "Integración y entrega continuas",
       "semantic_token": "SEM:ci_cd"
+    },
+    {
+      "id": "concept:class",
+      "type": "concept",
+      "label": "Clase social",
+      "semantic_token": "SEM:class"
     },
     {
       "id": "concept:community",
@@ -40,16 +64,46 @@
       "semantic_token": "SEM:decentralization"
     },
     {
+      "id": "concept:democracy",
+      "type": "concept",
+      "label": "Democracia",
+      "semantic_token": "SEM:democracy"
+    },
+    {
       "id": "concept:distribution",
       "type": "concept",
       "label": "Distribución",
       "semantic_token": "SEM:distribution"
     },
     {
+      "id": "concept:division_of_labor",
+      "type": "concept",
+      "label": "División del trabajo",
+      "semantic_token": "SEM:division_of_labor"
+    },
+    {
+      "id": "concept:ecology",
+      "type": "concept",
+      "label": "Ecología",
+      "semantic_token": "SEM:ecology"
+    },
+    {
+      "id": "concept:economics",
+      "type": "concept",
+      "label": "Economía",
+      "semantic_token": "SEM:economics"
+    },
+    {
       "id": "concept:education",
       "type": "concept",
       "label": "Educación",
       "semantic_token": "SEM:education"
+    },
+    {
+      "id": "concept:empiricism",
+      "type": "concept",
+      "label": "Empirismo",
+      "semantic_token": "SEM:empiricism"
     },
     {
       "id": "concept:engineering",
@@ -62,6 +116,12 @@
       "type": "concept",
       "label": "Epistemología",
       "semantic_token": "SEM:epistemology"
+    },
+    {
+      "id": "concept:ethics",
+      "type": "concept",
+      "label": "Ética",
+      "semantic_token": "SEM:ethics"
     },
     {
       "id": "concept:evidence",
@@ -112,6 +172,12 @@
       "semantic_token": "SEM:hierarchy"
     },
     {
+      "id": "concept:history",
+      "type": "concept",
+      "label": "Historia",
+      "semantic_token": "SEM:history"
+    },
+    {
       "id": "concept:justice",
       "type": "concept",
       "label": "Justicia",
@@ -130,16 +196,40 @@
       "semantic_token": "SEM:law"
     },
     {
+      "id": "concept:liberty",
+      "type": "concept",
+      "label": "Libertad civil",
+      "semantic_token": "SEM:liberty"
+    },
+    {
+      "id": "concept:literature",
+      "type": "concept",
+      "label": "Literatura",
+      "semantic_token": "SEM:literature"
+    },
+    {
       "id": "concept:logic",
       "type": "concept",
       "label": "Lógica",
       "semantic_token": "SEM:logic"
     },
     {
+      "id": "concept:markets",
+      "type": "concept",
+      "label": "Mercados",
+      "semantic_token": "SEM:markets"
+    },
+    {
       "id": "concept:materialism",
       "type": "concept",
       "label": "Materialismo",
       "semantic_token": "SEM:materialism"
+    },
+    {
+      "id": "concept:metaphysics",
+      "type": "concept",
+      "label": "Metafísica",
+      "semantic_token": "SEM:metaphysics"
     },
     {
       "id": "concept:method",
@@ -160,10 +250,28 @@
       "semantic_token": "SEM:mutualism"
     },
     {
+      "id": "concept:narrative",
+      "type": "concept",
+      "label": "Narrativa",
+      "semantic_token": "SEM:narrative"
+    },
+    {
       "id": "concept:nationalism",
       "type": "concept",
       "label": "Nacionalismo",
       "semantic_token": "SEM:nationalism"
+    },
+    {
+      "id": "concept:natural_selection",
+      "type": "concept",
+      "label": "Selección natural",
+      "semantic_token": "SEM:natural_selection"
+    },
+    {
+      "id": "concept:nature",
+      "type": "concept",
+      "label": "Naturaleza",
+      "semantic_token": "SEM:nature"
     },
     {
       "id": "concept:needs",
@@ -178,10 +286,22 @@
       "semantic_token": "SEM:political_economy"
     },
     {
+      "id": "concept:political_theory",
+      "type": "concept",
+      "label": "Teoría política",
+      "semantic_token": "SEM:political_theory"
+    },
+    {
       "id": "concept:possession",
       "type": "concept",
       "label": "Posesión",
       "semantic_token": "SEM:possession"
+    },
+    {
+      "id": "concept:poverty",
+      "type": "concept",
+      "label": "Pobreza",
+      "semantic_token": "SEM:poverty"
     },
     {
       "id": "concept:prisons",
@@ -226,6 +346,12 @@
       "semantic_token": "SEM:revolution"
     },
     {
+      "id": "concept:rights",
+      "type": "concept",
+      "label": "Derechos",
+      "semantic_token": "SEM:rights"
+    },
+    {
       "id": "concept:science",
       "type": "concept",
       "label": "Ciencia",
@@ -236,6 +362,12 @@
       "type": "concept",
       "label": "Autoorganización",
       "semantic_token": "SEM:self_organization"
+    },
+    {
+      "id": "concept:slavery",
+      "type": "concept",
+      "label": "Esclavitud",
+      "semantic_token": "SEM:slavery"
     },
     {
       "id": "concept:sociability",
@@ -268,6 +400,18 @@
       "semantic_token": "SEM:systems"
     },
     {
+      "id": "concept:trade",
+      "type": "concept",
+      "label": "Comercio",
+      "semantic_token": "SEM:trade"
+    },
+    {
+      "id": "concept:war",
+      "type": "concept",
+      "label": "Guerra",
+      "semantic_token": "SEM:war"
+    },
+    {
       "id": "library:minironin-core",
       "type": "library",
       "label": "MINIRONIN core and curated behavior",
@@ -298,42 +442,219 @@
       "project": "MINIRONIN"
     },
     {
+      "id": "library:classics-library",
+      "type": "library",
+      "label": "Classics: science, philosophy, political economy, literature and social history",
+      "project": "MINIRONIN"
+    },
+    {
       "id": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
       "type": "work",
       "label": "What Is Property? (First Memoir)",
       "author": "Pierre-Joseph Proudhon",
-      "rights_status": "approved_for_spain_training"
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
     },
     {
       "id": "work:BAKUNIN-GOD-AND-THE-STATE-EN",
       "type": "work",
       "label": "God and the State",
       "author": "Mikhail Bakunin",
-      "rights_status": "approved_for_spain_training"
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
     },
     {
       "id": "work:KROPOTKIN-CONQUEST-OF-BREAD-EN",
       "type": "work",
       "label": "The Conquest of Bread",
       "author": "Peter Kropotkin",
-      "rights_status": "rights_review_required"
+      "rights_status": "rights_review_required",
+      "language": "en"
     },
     {
       "id": "work:GOLDMAN-ANARCHISM-AND-OTHER-ESSAYS-EN",
       "type": "work",
       "label": "Anarchism and Other Essays",
       "author": "Emma Goldman",
-      "rights_status": "rights_review_required"
+      "rights_status": "rights_review_required",
+      "language": "en"
     },
     {
       "id": "work:KROPOTKIN-MUTUAL-AID-EN",
       "type": "work",
       "label": "Mutual Aid: A Factor of Evolution",
       "author": "Peter Kropotkin",
-      "rights_status": "approved_for_spain_training"
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
+    },
+    {
+      "id": "work:DARWIN-ORIGIN-OF-SPECIES",
+      "type": "work",
+      "label": "On the Origin of Species",
+      "author": "Charles Darwin",
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
+    },
+    {
+      "id": "work:MARX-CAPITAL-V1",
+      "type": "work",
+      "label": "Capital: A Critique of Political Economy, Vol. I",
+      "author": "Karl Marx",
+      "rights_status": "rights_review_required",
+      "language": "en"
+    },
+    {
+      "id": "work:SMITH-WEALTH-OF-NATIONS",
+      "type": "work",
+      "label": "An Inquiry into the Nature and Causes of the Wealth of Nations",
+      "author": "Adam Smith",
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
+    },
+    {
+      "id": "work:MILL-ON-LIBERTY",
+      "type": "work",
+      "label": "On Liberty",
+      "author": "John Stuart Mill",
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
+    },
+    {
+      "id": "work:WOLLSTONECRAFT-VINDICATION",
+      "type": "work",
+      "label": "A Vindication of the Rights of Woman",
+      "author": "Mary Wollstonecraft",
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
+    },
+    {
+      "id": "work:DOUGLASS-NARRATIVE",
+      "type": "work",
+      "label": "Narrative of the Life of Frederick Douglass",
+      "author": "Frederick Douglass",
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
+    },
+    {
+      "id": "work:PLATO-REPUBLIC",
+      "type": "work",
+      "label": "The Republic",
+      "author": "Plato",
+      "rights_status": "rights_review_required",
+      "language": "en"
+    },
+    {
+      "id": "work:THOREAU-WALDEN",
+      "type": "work",
+      "label": "Walden; or, Life in the Woods",
+      "author": "Henry David Thoreau",
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
+    },
+    {
+      "id": "work:SHELLEY-FRANKENSTEIN",
+      "type": "work",
+      "label": "Frankenstein; or, The Modern Prometheus",
+      "author": "Mary Shelley",
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
+    },
+    {
+      "id": "work:DICKENS-OLIVER-TWIST",
+      "type": "work",
+      "label": "Oliver Twist",
+      "author": "Charles Dickens",
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
+    },
+    {
+      "id": "work:MELVILLE-MOBY-DICK",
+      "type": "work",
+      "label": "Moby-Dick; or, The Whale",
+      "author": "Herman Melville",
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
+    },
+    {
+      "id": "work:TWAIN-HUCKLEBERRY-FINN",
+      "type": "work",
+      "label": "Adventures of Huckleberry Finn",
+      "author": "Mark Twain",
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
+    },
+    {
+      "id": "work:AUSTEN-PRIDE-PREJUDICE",
+      "type": "work",
+      "label": "Pride and Prejudice",
+      "author": "Jane Austen",
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
+    },
+    {
+      "id": "work:WHITMAN-LEAVES-GRASS",
+      "type": "work",
+      "label": "Leaves of Grass",
+      "author": "Walt Whitman",
+      "rights_status": "approved_for_spain_training",
+      "language": "en"
+    },
+    {
+      "id": "work:MACHIAVELLI-PRINCE",
+      "type": "work",
+      "label": "The Prince",
+      "author": "Niccolò Machiavelli",
+      "rights_status": "rights_review_required",
+      "language": "en"
+    },
+    {
+      "id": "work:TOLSTOY-WAR-PEACE",
+      "type": "work",
+      "label": "War and Peace",
+      "author": "Leo Tolstoy",
+      "rights_status": "rights_review_required",
+      "language": "en"
+    },
+    {
+      "id": "work:HUGO-LES-MISERABLES",
+      "type": "work",
+      "label": "Les Misérables",
+      "author": "Victor Hugo",
+      "rights_status": "rights_review_required",
+      "language": "en"
     }
   ],
   "edges": [
+    {
+      "source": "concept:abolition",
+      "target": "concept:slavery",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:abolition",
+      "target": "concept:freedom",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:abolition",
+      "target": "concept:rights",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:abolition",
+      "target": "concept:education",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:abolition",
+      "target": "concept:history",
+      "type": "related_concept",
+      "weight": 1
+    },
     {
       "source": "concept:anarchism",
       "target": "concept:authority",
@@ -389,6 +710,54 @@
       "weight": 1
     },
     {
+      "source": "concept:biology",
+      "target": "concept:evolution",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:biology",
+      "target": "concept:natural_selection",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:biology",
+      "target": "concept:science",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:capitalism",
+      "target": "concept:class",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:capitalism",
+      "target": "concept:labor",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:capitalism",
+      "target": "concept:political_economy",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:capitalism",
+      "target": "concept:property",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:capitalism",
+      "target": "concept:economics",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
       "source": "concept:ci_cd",
       "target": "concept:engineering",
       "type": "related_concept",
@@ -403,6 +772,30 @@
     {
       "source": "concept:ci_cd",
       "target": "concept:reliability",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:class",
+      "target": "concept:labor",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:class",
+      "target": "concept:poverty",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:class",
+      "target": "concept:political_economy",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:class",
+      "target": "concept:history",
       "type": "related_concept",
       "weight": 1
     },
@@ -461,6 +854,24 @@
       "weight": 1
     },
     {
+      "source": "concept:democracy",
+      "target": "concept:liberty",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:democracy",
+      "target": "concept:political_theory",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:democracy",
+      "target": "concept:rights",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
       "source": "concept:distribution",
       "target": "concept:needs",
       "type": "related_concept",
@@ -479,6 +890,60 @@
       "weight": 1
     },
     {
+      "source": "concept:division_of_labor",
+      "target": "concept:labor",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:division_of_labor",
+      "target": "concept:production",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:division_of_labor",
+      "target": "concept:economics",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:ecology",
+      "target": "concept:nature",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:ecology",
+      "target": "concept:systems",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:economics",
+      "target": "concept:political_economy",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:economics",
+      "target": "concept:markets",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:economics",
+      "target": "concept:trade",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:economics",
+      "target": "concept:production",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
       "source": "concept:education",
       "target": "concept:science",
       "type": "related_concept",
@@ -493,6 +958,30 @@
     {
       "source": "concept:education",
       "target": "concept:self_organization",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:empiricism",
+      "target": "concept:evidence",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:empiricism",
+      "target": "concept:science",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:empiricism",
+      "target": "concept:method",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:empiricism",
+      "target": "concept:epistemology",
       "type": "related_concept",
       "weight": 1
     },
@@ -517,6 +1006,30 @@
     {
       "source": "concept:epistemology",
       "target": "concept:reasoning",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:ethics",
+      "target": "concept:justice",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:ethics",
+      "target": "concept:freedom",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:ethics",
+      "target": "concept:science",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:ethics",
+      "target": "concept:political_theory",
       "type": "related_concept",
       "weight": 1
     },
@@ -605,6 +1118,24 @@
       "weight": 1
     },
     {
+      "source": "concept:history",
+      "target": "concept:political_theory",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:history",
+      "target": "concept:war",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:history",
+      "target": "concept:literature",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
       "source": "concept:justice",
       "target": "concept:law",
       "type": "related_concept",
@@ -641,8 +1172,32 @@
       "weight": 1
     },
     {
+      "source": "concept:liberty",
+      "target": "concept:rights",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
       "source": "concept:logic",
       "target": "concept:reasoning",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:markets",
+      "target": "concept:trade",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:markets",
+      "target": "concept:property",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:markets",
+      "target": "concept:political_economy",
       "type": "related_concept",
       "weight": 1
     },
@@ -655,6 +1210,12 @@
     {
       "source": "concept:materialism",
       "target": "concept:political_economy",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:metaphysics",
+      "target": "concept:political_theory",
       "type": "related_concept",
       "weight": 1
     },
@@ -683,6 +1244,12 @@
       "weight": 1
     },
     {
+      "source": "concept:natural_selection",
+      "target": "concept:science",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
       "source": "concept:needs",
       "target": "concept:production",
       "type": "related_concept",
@@ -697,6 +1264,12 @@
     {
       "source": "concept:political_economy",
       "target": "concept:production",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:political_theory",
+      "target": "concept:state",
       "type": "related_concept",
       "weight": 1
     },
@@ -1049,6 +1622,256 @@
       "weight": 1
     },
     {
+      "source": "library:classics-library",
+      "target": "concept:abolition",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:authority",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:biology",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:capitalism",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:class",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:community",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:cooperation",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:democracy",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:division_of_labor",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:ecology",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:economics",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:education",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:empiricism",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:ethics",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:evolution",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:feminism",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:freedom",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:history",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:justice",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:labor",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:liberty",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:literature",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:markets",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:metaphysics",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:narrative",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:natural_selection",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:nature",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:political_economy",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:political_theory",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:poverty",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:prisons",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:property",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:rights",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:science",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:slavery",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:state",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:trade",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:classics-library",
+      "target": "concept:war",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "library:classics-library",
+      "type": "cross_library_semantic_overlap",
+      "weight": 0.241379,
+      "shared_concepts": [
+        "authority",
+        "community",
+        "cooperation",
+        "education",
+        "evolution",
+        "feminism",
+        "freedom",
+        "justice",
+        "labor",
+        "political_economy",
+        "prisons",
+        "property",
+        "science",
+        "state"
+      ]
+    },
+    {
       "source": "library:anarchist-classics",
       "target": "library:heretic",
       "type": "cross_library_semantic_overlap",
@@ -1063,6 +1886,25 @@
       "target": "library:prodatphil",
       "type": "cross_library_semantic_overlap",
       "weight": 0.025641,
+      "shared_concepts": [
+        "science"
+      ]
+    },
+    {
+      "source": "library:classics-library",
+      "target": "library:heretic",
+      "type": "cross_library_semantic_overlap",
+      "weight": 0.04878,
+      "shared_concepts": [
+        "cooperation",
+        "science"
+      ]
+    },
+    {
+      "source": "library:classics-library",
+      "target": "library:prodatphil",
+      "type": "cross_library_semantic_overlap",
+      "weight": 0.023256,
       "shared_concepts": [
         "science"
       ]
@@ -1161,6 +2003,90 @@
       "type": "cross_domain_bridge",
       "weight": 0.5,
       "note": "Autoorganización como concepto común en sistemas sociales y técnicos."
+    },
+    {
+      "source": "concept:science",
+      "target": "concept:empiricism",
+      "type": "methodological_connection",
+      "weight": 0.5,
+      "note": "Observation and evidence connect scientific practice to philosophical accounts of knowledge."
+    },
+    {
+      "source": "concept:biology",
+      "target": "concept:cooperation",
+      "type": "cross_domain_bridge",
+      "weight": 0.5,
+      "note": "Biological accounts of cooperation can inform social analysis without reducing social institutions to biology."
+    },
+    {
+      "source": "concept:division_of_labor",
+      "target": "concept:cooperation",
+      "type": "cross_domain_bridge",
+      "weight": 0.5,
+      "note": "Specialization can increase interdependence while also creating coordination and power questions."
+    },
+    {
+      "source": "concept:capitalism",
+      "target": "concept:anarchism",
+      "type": "historical_debate",
+      "weight": 0.5,
+      "note": "Political-economic traditions disagree about property, markets and authority; preserve disagreement rather than flattening it."
+    },
+    {
+      "source": "concept:capitalism",
+      "target": "concept:political_economy",
+      "type": "subfield_relation",
+      "weight": 0.5,
+      "note": "Capitalism is a central object of political-economic analysis."
+    },
+    {
+      "source": "concept:abolition",
+      "target": "concept:freedom",
+      "type": "historical_theme",
+      "weight": 0.5,
+      "note": "Abolitionist writing links emancipation to freedom and rights."
+    },
+    {
+      "source": "concept:literature",
+      "target": "concept:ethics",
+      "type": "interpretive_bridge",
+      "weight": 0.5,
+      "note": "Narratives can stage ethical conflicts; fiction is not empirical evidence by itself."
+    },
+    {
+      "source": "concept:ecology",
+      "target": "concept:systems",
+      "type": "cross_domain_bridge",
+      "weight": 0.5,
+      "note": "Ecological systems and social/technical systems can share tools of systems analysis, not identical mechanisms."
+    },
+    {
+      "source": "concept:democracy",
+      "target": "concept:authority",
+      "type": "tension_relation",
+      "weight": 0.5,
+      "note": "Democratic legitimacy and concentrated authority can be in tension; relation does not imply a single conclusion."
+    },
+    {
+      "source": "concept:class",
+      "target": "concept:feminism",
+      "type": "intersectional_bridge",
+      "weight": 0.5,
+      "note": "Class and gender analyses can intersect while remaining distinct dimensions."
+    },
+    {
+      "source": "concept:science",
+      "target": "concept:political_theory",
+      "type": "methodological_boundary",
+      "weight": 0.5,
+      "note": "Scientific claims and political judgments require different kinds of justification."
+    },
+    {
+      "source": "concept:history",
+      "target": "concept:epistemology",
+      "type": "methodological_connection",
+      "weight": 0.5,
+      "note": "Historical interpretation depends on evidence, provenance and competing explanations."
     },
     {
       "source": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
@@ -1449,6 +2375,648 @@
       "target": "concept:solidarity",
       "type": "work_covers_concept",
       "weight": 1
+    },
+    {
+      "source": "work:DARWIN-ORIGIN-OF-SPECIES",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:DARWIN-ORIGIN-OF-SPECIES",
+      "target": "concept:biology",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DARWIN-ORIGIN-OF-SPECIES",
+      "target": "concept:evidence",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DARWIN-ORIGIN-OF-SPECIES",
+      "target": "concept:evolution",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DARWIN-ORIGIN-OF-SPECIES",
+      "target": "concept:method",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DARWIN-ORIGIN-OF-SPECIES",
+      "target": "concept:natural_selection",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DARWIN-ORIGIN-OF-SPECIES",
+      "target": "concept:science",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MARX-CAPITAL-V1",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:MARX-CAPITAL-V1",
+      "target": "concept:capitalism",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MARX-CAPITAL-V1",
+      "target": "concept:class",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MARX-CAPITAL-V1",
+      "target": "concept:history",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MARX-CAPITAL-V1",
+      "target": "concept:labor",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MARX-CAPITAL-V1",
+      "target": "concept:political_economy",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MARX-CAPITAL-V1",
+      "target": "concept:production",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MARX-CAPITAL-V1",
+      "target": "concept:property",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:SMITH-WEALTH-OF-NATIONS",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:SMITH-WEALTH-OF-NATIONS",
+      "target": "concept:division_of_labor",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:SMITH-WEALTH-OF-NATIONS",
+      "target": "concept:economics",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:SMITH-WEALTH-OF-NATIONS",
+      "target": "concept:markets",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:SMITH-WEALTH-OF-NATIONS",
+      "target": "concept:political_economy",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:SMITH-WEALTH-OF-NATIONS",
+      "target": "concept:production",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:SMITH-WEALTH-OF-NATIONS",
+      "target": "concept:trade",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MILL-ON-LIBERTY",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:MILL-ON-LIBERTY",
+      "target": "concept:authority",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MILL-ON-LIBERTY",
+      "target": "concept:democracy",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MILL-ON-LIBERTY",
+      "target": "concept:ethics",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MILL-ON-LIBERTY",
+      "target": "concept:freedom",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MILL-ON-LIBERTY",
+      "target": "concept:liberty",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MILL-ON-LIBERTY",
+      "target": "concept:political_theory",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:WOLLSTONECRAFT-VINDICATION",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:WOLLSTONECRAFT-VINDICATION",
+      "target": "concept:education",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:WOLLSTONECRAFT-VINDICATION",
+      "target": "concept:ethics",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:WOLLSTONECRAFT-VINDICATION",
+      "target": "concept:feminism",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:WOLLSTONECRAFT-VINDICATION",
+      "target": "concept:liberty",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:WOLLSTONECRAFT-VINDICATION",
+      "target": "concept:political_theory",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:WOLLSTONECRAFT-VINDICATION",
+      "target": "concept:rights",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DOUGLASS-NARRATIVE",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:DOUGLASS-NARRATIVE",
+      "target": "concept:abolition",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DOUGLASS-NARRATIVE",
+      "target": "concept:education",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DOUGLASS-NARRATIVE",
+      "target": "concept:freedom",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DOUGLASS-NARRATIVE",
+      "target": "concept:history",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DOUGLASS-NARRATIVE",
+      "target": "concept:rights",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DOUGLASS-NARRATIVE",
+      "target": "concept:slavery",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PLATO-REPUBLIC",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:PLATO-REPUBLIC",
+      "target": "concept:democracy",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PLATO-REPUBLIC",
+      "target": "concept:education",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PLATO-REPUBLIC",
+      "target": "concept:ethics",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PLATO-REPUBLIC",
+      "target": "concept:justice",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PLATO-REPUBLIC",
+      "target": "concept:metaphysics",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PLATO-REPUBLIC",
+      "target": "concept:political_theory",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:THOREAU-WALDEN",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:THOREAU-WALDEN",
+      "target": "concept:community",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:THOREAU-WALDEN",
+      "target": "concept:ecology",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:THOREAU-WALDEN",
+      "target": "concept:ethics",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:THOREAU-WALDEN",
+      "target": "concept:nature",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:SHELLEY-FRANKENSTEIN",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:SHELLEY-FRANKENSTEIN",
+      "target": "concept:ethics",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:SHELLEY-FRANKENSTEIN",
+      "target": "concept:literature",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:SHELLEY-FRANKENSTEIN",
+      "target": "concept:science",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DICKENS-OLIVER-TWIST",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:DICKENS-OLIVER-TWIST",
+      "target": "concept:class",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DICKENS-OLIVER-TWIST",
+      "target": "concept:education",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DICKENS-OLIVER-TWIST",
+      "target": "concept:justice",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DICKENS-OLIVER-TWIST",
+      "target": "concept:literature",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DICKENS-OLIVER-TWIST",
+      "target": "concept:poverty",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:DICKENS-OLIVER-TWIST",
+      "target": "concept:prisons",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MELVILLE-MOBY-DICK",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:MELVILLE-MOBY-DICK",
+      "target": "concept:ethics",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MELVILLE-MOBY-DICK",
+      "target": "concept:literature",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MELVILLE-MOBY-DICK",
+      "target": "concept:nature",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:TWAIN-HUCKLEBERRY-FINN",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:TWAIN-HUCKLEBERRY-FINN",
+      "target": "concept:community",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:TWAIN-HUCKLEBERRY-FINN",
+      "target": "concept:ethics",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:TWAIN-HUCKLEBERRY-FINN",
+      "target": "concept:freedom",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:TWAIN-HUCKLEBERRY-FINN",
+      "target": "concept:literature",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:TWAIN-HUCKLEBERRY-FINN",
+      "target": "concept:slavery",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:AUSTEN-PRIDE-PREJUDICE",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:AUSTEN-PRIDE-PREJUDICE",
+      "target": "concept:class",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:AUSTEN-PRIDE-PREJUDICE",
+      "target": "concept:community",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:AUSTEN-PRIDE-PREJUDICE",
+      "target": "concept:ethics",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:AUSTEN-PRIDE-PREJUDICE",
+      "target": "concept:gender",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:AUSTEN-PRIDE-PREJUDICE",
+      "target": "concept:literature",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:WHITMAN-LEAVES-GRASS",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:WHITMAN-LEAVES-GRASS",
+      "target": "concept:community",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:WHITMAN-LEAVES-GRASS",
+      "target": "concept:democracy",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:WHITMAN-LEAVES-GRASS",
+      "target": "concept:freedom",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:WHITMAN-LEAVES-GRASS",
+      "target": "concept:literature",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MACHIAVELLI-PRINCE",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:MACHIAVELLI-PRINCE",
+      "target": "concept:authority",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MACHIAVELLI-PRINCE",
+      "target": "concept:ethics",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MACHIAVELLI-PRINCE",
+      "target": "concept:history",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MACHIAVELLI-PRINCE",
+      "target": "concept:political_theory",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MACHIAVELLI-PRINCE",
+      "target": "concept:state",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:MACHIAVELLI-PRINCE",
+      "target": "concept:war",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:TOLSTOY-WAR-PEACE",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:TOLSTOY-WAR-PEACE",
+      "target": "concept:community",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:TOLSTOY-WAR-PEACE",
+      "target": "concept:ethics",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:TOLSTOY-WAR-PEACE",
+      "target": "concept:history",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:TOLSTOY-WAR-PEACE",
+      "target": "concept:literature",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:TOLSTOY-WAR-PEACE",
+      "target": "concept:war",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:HUGO-LES-MISERABLES",
+      "target": "library:classics-library",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:HUGO-LES-MISERABLES",
+      "target": "concept:class",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:HUGO-LES-MISERABLES",
+      "target": "concept:justice",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:HUGO-LES-MISERABLES",
+      "target": "concept:law",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:HUGO-LES-MISERABLES",
+      "target": "concept:literature",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:HUGO-LES-MISERABLES",
+      "target": "concept:poverty",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:HUGO-LES-MISERABLES",
+      "target": "concept:prisons",
+      "type": "work_covers_concept",
+      "weight": 1
     }
   ],
   "library_concepts": {
@@ -1515,13 +3083,53 @@
       "sociability",
       "solidarity",
       "state"
+    ],
+    "classics-library": [
+      "abolition",
+      "authority",
+      "biology",
+      "capitalism",
+      "class",
+      "community",
+      "cooperation",
+      "democracy",
+      "division_of_labor",
+      "ecology",
+      "economics",
+      "education",
+      "empiricism",
+      "ethics",
+      "evolution",
+      "feminism",
+      "freedom",
+      "history",
+      "justice",
+      "labor",
+      "liberty",
+      "literature",
+      "markets",
+      "metaphysics",
+      "narrative",
+      "natural_selection",
+      "nature",
+      "political_economy",
+      "political_theory",
+      "poverty",
+      "prisons",
+      "property",
+      "rights",
+      "science",
+      "slavery",
+      "state",
+      "trade",
+      "war"
     ]
   },
   "counts": {
-    "libraries": 5,
-    "concepts": 44,
-    "nodes": 54,
-    "edges": 180,
-    "semantic_tokens": 44
+    "libraries": 6,
+    "concepts": 68,
+    "nodes": 96,
+    "edges": 387,
+    "semantic_tokens": 68
   }
 }
