@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: minironin-scale-50m-from-390k
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   scale-and-train:
