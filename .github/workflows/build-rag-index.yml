@@ -7,16 +7,16 @@ on:
         type: boolean
         required: true
         default: true
-      heretic_path:
-        description: Optional runner path to pre-approved HERETIC corpus
-        type: string
-        required: false
-        default: ""
-      roninia_path:
-        description: Optional runner path to approved RONIN-IA corpus
-        type: string
-        required: false
-        default: ""
+      include_heretic:
+        description: Download and index the approved HERETIC corpus artifact
+        type: boolean
+        required: true
+        default: true
+      include_roninia:
+        description: Checkout and index the approved RONIN-IA data/datasets library
+        type: boolean
+        required: true
+        default: true
 permissions:
   contents: read
 concurrency:
@@ -28,8 +28,21 @@ jobs:
     timeout-minutes: 360
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        if: inputs.include_heretic
         with:
-          ref: feat/checkpoint-bridge
+          name: minironin-heretic-corpus-prepared
+          repository: orbitalronin94/MINIRONIN
+          run-id: 42382055693
+          github-token: ${{ github.token }}
+          path: external/heretic-artifact
+      - uses: actions/checkout@v4
+        if: inputs.include_roninia
+        with:
+          repository: orbitalronin94/RONIN-IA
+          ref: main
+          path: external/roninia
+          fetch-depth: 1
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
