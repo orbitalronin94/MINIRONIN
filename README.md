@@ -136,7 +136,7 @@ La primera prueba Small-World genera prompts reproducibles de puentes conceptual
 
 ## Corpus Eliza-cínico en dos fases
 
-Se añade una preparación reproducible de solicitudes de conversación con cinco familias etiquetadas: competencia técnica (30%), humor/cinismo (25%), espejo (20%), abstención (15%) y rigor factual neutral (10%). Los pesos son una hipótesis inicial configurable, no una mezcla óptima demostrada. El pipeline conserva respuesta de referencia, hashes y procedencia; Stage A resuelve y verifica, y Stage B aplica el tono sin alterar hechos, unidades, advertencias ni incertidumbre.
+Se añade una preparación reproducible de solicitudes de conversación con cinco familias etiquetadas: competencia técnica (30%), humor/cinismo (25%), espejo (20%), abstención (15%) y rigor factual neutral (10%). Las cinco reciben reglas globales: sin saludos ni preámbulos, reflejo cínico sin culpabilización inventada, jerga solo pertinente y máximo tres frases explicativas salvo necesidad técnica o de seguridad. Los pesos son una hipótesis inicial configurable, no una mezcla óptima demostrada. El pipeline conserva respuesta de referencia, hashes y procedencia; Stage A resuelve y verifica, y Stage B aplica el tono sin alterar hechos, unidades, advertencias ni incertidumbre.
 
 - Generador: `scripts/build_eliza_corpus.py`
 - Diseño y controles: [docs/ELIZA-CYNIC-CORPUS.md](docs/ELIZA-CYNIC-CORPUS.md)
