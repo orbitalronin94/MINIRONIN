@@ -37,7 +37,11 @@ def as_record(obj, path, line_no):
         q=obj.get("question") or obj.get("prompt") or obj.get("input")
         a=obj.get("answer") or obj.get("target") or obj.get("completion")
         if q is not None and a is not None:
-            body=str(q).strip()+"\n"+str(a).strip()
+            context=obj.get("context") or obj.get("evidence") or obj.get("evidencia") or ""
+            parts=[]
+            if str(context).strip(): parts.append("Contexto: "+str(context).strip())
+            parts.extend(("Pregunta: "+str(q).strip(),"Respuesta: "+str(a).strip()))
+            body="\n".join(parts)
         else:
             preferred=[]
             for key in ("text","content","body","document","passage"):
@@ -67,7 +71,7 @@ def read_json(path):
     for i,row in enumerate(rows,1): yield as_record(row,path,i)
 
 def read_delimited(path):
-    delimiter="\\t" if path.suffix.lower()==".tsv" else ","
+    delimiter="\t" if path.suffix.lower()==".tsv" else ","
     with path.open("r",encoding="utf-8",errors="replace",newline="") as f:
         for i,row in enumerate(csv.DictReader(f,delimiter=delimiter),1): yield as_record(row,path,i)
 
