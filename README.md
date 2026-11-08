@@ -62,7 +62,8 @@ El corpus cargado incluye todo el texto compatible de HERETIC-RONIN y PRODATPHIL
 
 - Baseline MAIN: [release 390k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-390000-main).
 - Registro canónico: [`models/MAIN.json`](models/MAIN.json).
-- Workflow y ejecución: enlace a Actions en cuanto se dispare tras el merge.
+- Workflow: [`.github/workflows/train-10m-from-390k-10k.yml`](.github/workflows/train-10m-from-390k-10k.yml).
+- Ejecución activa: [run 42480987470 — Transformer 10M, 390k → 400k](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42480987470). Estado inicial: checkpoint 390k descargado y SHA-256 verificado; publicación del alias MAIN en curso.
 
 ---
 
