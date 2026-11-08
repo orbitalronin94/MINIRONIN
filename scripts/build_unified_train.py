@@ -51,7 +51,7 @@ def as_record(obj, path, line_no):
     else:
         body="\n".join(strings(obj)); metadata={"raw_type":type(obj).__name__}
     if not body.strip(): body=json.dumps(obj,ensure_ascii=False,sort_keys=True,default=str)
-    synthetic=bool(path.name.endswith((".jsonl.gz",".jsonl")) and ("curricula" in str(path) or "behavioral" in str(path)))
+    synthetic=bool(path.name.endswith((".jsonl.gz",".jsonl")) and ("curricula" in str(path) or "behavioral" in str(path) or path.name=="minironin-abstention-50k.jsonl"))
     return {"id":str(metadata.get("id",f"{path.name}:{line_no}")) if isinstance(metadata,dict) else f"{path.name}:{line_no}",
       "source_id":str(path),"domain":str(metadata.get("domain") or metadata.get("subject") or path.parent.name) if isinstance(metadata,dict) else path.parent.name,
       "source":str(metadata.get("source") or path.name) if isinstance(metadata,dict) else path.name,
