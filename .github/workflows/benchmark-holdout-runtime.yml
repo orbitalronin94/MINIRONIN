@@ -8,6 +8,7 @@ on:
       - 'scripts/run_inference_holdout.py'
       - 'scripts/minironin.py'
       - 'tests/test_model.py'
+      - '.github/workflows/benchmark-holdout-runtime.yml'
   workflow_dispatch:
     inputs:
       release_tag:
