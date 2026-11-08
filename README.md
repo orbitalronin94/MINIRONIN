@@ -109,3 +109,8 @@ El bot de [inference holdout diary](.github/workflows/inference-holdout-diary.ym
 ## Experimento: entrenamiento frente a RAG semántico
 
 Se ha añadido un benchmark independiente para comparar el mismo checkpoint MINIRONIN en dos condiciones: inferencia directa y recuperación semántica sobre el split de entrenamiento de la biblioteca completa. Usa embeddings `all-MiniLM-L6-v2`, fragmentos con solapamiento, búsqueda coseno exacta por bloques y conserva respuestas pareadas, fuentes recuperadas, latencias y hashes. No altera el entrenamiento evolutivo ni promociona modelos. Protocolo: [docs/RAG_VS_TRAINING.md](docs/RAG_VS_TRAINING.md). Ejecución automática al fusionar y repetible manualmente: [workflow de comparación](.github/workflows/semantic-rag-benchmark.yml). La puntuación de calidad queda pendiente de revisión humana ciega; similitud coseno no equivale a exactitud.
+
+
+## RAG unificado de todas las bibliotecas
+
+El benchmark anterior es una prueba de concepto, no el índice completo. La siguiente fase define un RAG multilingüe común para las bibliotecas admitidas: registro de fuentes, extracción y deduplicación con procedencia, embeddings multilingües, recuperación híbrida vectorial + BM25, citas y adaptadores compartidos por Transformer y Mamba. El índice será externo a los pesos y actualizable sin reentrenar. Se excluyen holdouts, checkpoints, secretos y logs brutos. Diseño y fases: [RAG unificado de bibliotecas](docs/UNIFIED-RAG-LIBRARIES.md).
