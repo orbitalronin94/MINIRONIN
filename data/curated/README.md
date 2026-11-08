@@ -148,3 +148,18 @@ Se añade `minironin-verifiable-personality-50k-v1`, generado por `scripts/build
 - Follow-ups probe evidence, limits, uncertainty, counterarguments and scope; the response must preserve the seed's source status and abstention behavior.
 - Output is sharded gzip JSONL under `data/generated/conversation-candidates-v1` by default.
 - This 10M corpus is a **candidate only**. It is not included in the training mix and no 10M generation or model training is started automatically. Use `--dry-run` or a small `--target` first, inspect quality, then decide whether to materialize the full set.
+
+
+## Corpus factual World Bank — 2M ejemplos
+
+`scripts/build_worldbank_verifiable_dataset.py` obtiene observaciones numéricas de World Development Indicators mediante la API v2 oficial del Banco Mundial. Cubre 36 indicadores de población, economía, salud, educación, energía, conectividad, comercio y medioambiente, para países y años entre 1960 y 2025.
+
+- Objetivo: 2.000.000 de ejemplos en shards gzip JSONL de 100.000 registros.
+- Unidad factual independiente: combinación país + indicador + año (`fact_id`), no cada paráfrasis.
+- Cada fila conserva código ISO3, código y nombre de indicador, año, valor, unidad, estado epistemológico, URL de consulta, nota de fuente y hash del hecho.
+- Solo se admiten valores numéricos no nulos; las observaciones marcadas como previsión (`F`) se excluyen. Las observaciones marcadas como estimadas se identifican explícitamente.
+- Las preguntas y remates de humor son redacción original; no se añaden causalidades ni conclusiones que los datos no permitan.
+- La licencia general por defecto del Banco Mundial es CC BY 4.0, pero algunos conjuntos/indicadores pueden tener avisos o fuentes de terceros. El manifiesto conserva la organización y nota de cada indicador: revisar esas condiciones antes de redistribuir fuera del proyecto.
+- El corpus es candidato independiente y **no se incorpora automáticamente al entrenamiento**. Primero se auditan cobertura, calidad, distribución y posibles sesgos.
+
+Workflow aislado: `.github/workflows/build-worldbank-verifiable-dataset.yml`. Genera y audita datos; no ejecuta ningún entrenamiento ni modifica checkpoints.
