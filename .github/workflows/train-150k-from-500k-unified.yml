@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   train:
-    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_sha == 'ff2d6645153f1feeca23e7b5f6e2998324ef3d2d'
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_sha == 'ded8469b77038afbd60b8fa4282ef42852173026'
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
@@ -60,9 +60,9 @@ jobs:
           counts=report.get("synthetic_and_source_counts",{})
           synthetic=int(counts.get("synthetic",0))
           datasets=report.get("datasets",{})
-          assert rows >= 2_850_000, f"Unified corpus unexpectedly small: {rows:,} rows"
-          assert synthetic >= 2_000_000, f"Synthetic rows missing: {synthetic:,}"
-          assert len(datasets) >= 58, f"Expected 58 synthetic/curated datasets, found {len(datasets)}"
+          assert rows >= 2_900_000, f"Unified corpus unexpectedly small: {rows:,} rows"
+          assert synthetic >= 2_900_000, f"Synthetic rows missing: {synthetic:,}"
+          assert len(datasets) >= 64, f"Expected 58 synthetic/curated datasets, found {len(datasets)}"
           assert sources.get("record_count",rows) == rows
           print(json.dumps({"records":rows,"synthetic_records":synthetic,"datasets":len(datasets),
               "unique_normalized_texts":report.get("unique_normalized_texts"),
