@@ -79,7 +79,7 @@ def main():
         slug=work["slug"]; page_url=f"{BASE}/works/{slug}/"
         try:
             page=fetch(page_url).decode("utf-8","replace")
-            if not re.search(r'href=["\'][^"\']*public-domain',page,re.I):
+            if not re.search(r'href=["\'][^"\']*public.?domain',page,re.I):
                 manifest["skipped"].append({"slug":slug,"title":work.get("title"),"reason":"individual page did not confirm public-domain status"})
                 continue
             raw=fetch(f"{BASE}/works/{slug}/plaintext")
