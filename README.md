@@ -54,7 +54,7 @@ Que un modelo de apenas 9.970.176 parámetros cargue con semejante catedral de c
 
 El checkpoint MAIN experimental es el Transformer decoder-only de **9.970.176 parámetros / 390.000 pasos**. El Mamba 50M está archivado y no forma parte de esta línea.
 
-El workflow preparado [`train-10m-from-390k-10k.yml`](.github/workflows/train-10m-from-390k-10k.yml) continuará exactamente desde el checkpoint de 390k verificado por SHA-256. Ejecuta **10.000 pasos adicionales** (objetivo 400.000) en un runner estándar gratuito de GitHub Actions, CPU, 2 hilos, batch 2, secuencia 128 y caché de corpus durante la ejecución. La planificación cosenoidal conserva el horizonte de 60.000 pasos usado por el entrenamiento largo registrado; este trabajo ejecuta solo el primer segmento de 10k.
+El workflow en ejecución [`train-10m-from-390k-10k.yml`](.github/workflows/train-10m-from-390k-10k.yml) continúa exactamente desde el checkpoint de 390k verificado por SHA-256. Ejecuta **10.000 pasos adicionales** (objetivo 400.000) en un runner estándar gratuito de GitHub Actions, CPU, 2 hilos, batch 2, secuencia 128 y caché de corpus durante la ejecución. La planificación cosenoidal conserva el horizonte de 60.000 pasos usado por el entrenamiento largo registrado; este trabajo ejecuta solo el primer segmento de 10k.
 
 El corpus cargado incluye todo el texto compatible de HERETIC-RONIN y PRODATPHIL v0.3, más los conjuntos curados actuales de identidad, conducta, ingeniería, personalidad, abstención y lexicón. El manifiesto informa documentos por dominio, mezcla, exclusiones y hashes. Los generadores conductuales se ejecutan y verifican antes de cargar el corpus.
 
@@ -110,7 +110,7 @@ Código: `src/minironin/`; configuración: `configs/model-10m.json`; pruebas: `t
 
 ## Currículo de razonamiento y primer entrenamiento real
 
-Se ha añadido un torneo de adaptación de corpus: [run 42383056882](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42382935205). Por defecto compara 30 semillas × 100 pasos (3.000 actualizaciones), descargando y verificando HERETIC y PRODATPHIL v0.3. La mezcla inicial reserva 40% a matemáticas, 25% a ciencia/educación, 20% a libros históricos, 10% a ejemplos conductuales y 5% a Aya multilingüe. El ganador se elige por pérdida de validación con documentos separados y se publica como candidato, nunca como promoción automática. El primer piloto usa bytes UTF-8 (257 símbolos activos) mientras se decide el tokenizador definitivo; conserva la arquitectura de 9.970.176 parámetros, pero no debe confundirse con un modelo de vocabulario semántico ya entrenado. Protocolo y limitaciones: [docs/SEED_TOURNAMENT.md](docs/SEED_TOURNAMENT.md).
+Se ha añadido un torneo de adaptación de corpus: [run 42383056882](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42382935205). Por defecto compara 30 semillas × 100 pasos (3.000 actualizaciones), descargando y verificando HERETIC y PRODATPHIL v0.3. La mezcla inicial reserva 40% a matemáticas, 25% a ciencia/educación, 20% a libros históricos, 10% a ejemplos conductuales y 5% a Aya multilingüe. El ganador se elige por pérdida de validación con documentos separados y se publica como candidato, nunca como promoción automática. El primer piloto y el checkpoint actual usan bytes UTF-8 (257 símbolos activos); conserva la arquitectura de 9.970.176 parámetros y no debe confundirse con un modelo de vocabulario semántico. Protocolo y limitaciones: [docs/SEED_TOURNAMENT.md](docs/SEED_TOURNAMENT.md).
 
 ## Lexicón del Esperpento Algorítmico — corpus entrenable
 
