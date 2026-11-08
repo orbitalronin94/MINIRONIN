@@ -66,7 +66,7 @@ smooth weighted round-robin library -> shuffled document cycle -> token window.
 - The seed, document IDs and sampled library are deterministic.
 - Token windows are selected after the document, with no text tokenization in
   the training step.
-- Validation/holdout rows are rejected rather than silently admitted.
+- `validate_sequence_length(sequence_length)` preflights every weighted library\n  before training and fails with the full list of libraries whose documents\n  are too short.\n- Validation/holdout rows are rejected rather than silently admitted.
 
 The report includes target share versus observed target-token share, sampled
 target tokens, document uses, unique documents, eligible-document coverage
@@ -89,7 +89,7 @@ batch construction on the GitHub runner before selecting final weights.
 
 ## Deferred integration
 
-After the activation gate passes, integrate the provenance adapter and
+Before the first training step, call `validate_sequence_length(128)` (or the\nconfigured context window) and persist its eligible-document counts. After the\nactivation gate passes, integrate the provenance adapter and
 memory-mapped store into `train_long_run.py`, then replace domain-only batch
 selection with `LibrarySampler`. Keep the existing validation windows fixed
 and independent. Every checkpoint/report must include the exact effective
