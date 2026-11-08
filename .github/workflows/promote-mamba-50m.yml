@@ -1,0 +1,86 @@
+name: MINIRONIN — publish promoted Mamba 50M main checkpoint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "models/MAIN.json"
+      - ".github/workflows/promote-mamba-50m.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: minironin-promote-mamba-50m-main
+  cancel-in-progress: false
+
+jobs:
+  publish-main-checkpoint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout promoted model registry
+        uses: actions/checkout@v5
+
+      - name: Download immutable training artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          artifact_id="$(jq -r '.checkpoint.artifact_id' models/MAIN.json)"
+          expected_archive_sha="$(jq -r '.checkpoint.artifact_sha256' models/MAIN.json)"
+          expected_checkpoint_sha="$(jq -r '.checkpoint.sha256' models/MAIN.json)"
+          release_tag="$(jq -r '.checkpoint.release_tag' models/MAIN.json)"
+
+          mkdir -p release candidate
+          curl --fail --location --retry 6 --retry-all-errors --retry-delay 3 \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" \
+            -o release/mamba-training-artifact.zip
+
+          echo "${expected_archive_sha}  release/mamba-training-artifact.zip" | sha256sum --check -
+          unzip -q release/mamba-training-artifact.zip -d candidate
+          checkpoint="$(find candidate -type f -name 'mamba-checkpoint-1000.pt' -print -quit)"
+          test -n "$checkpoint"
+          echo "${expected_checkpoint_sha}  $checkpoint" | sha256sum --check -
+          cp "$checkpoint" release/mamba-checkpoint-1000.pt
+          cp benchmarks/diary/mamba-50m-1000.json release/mamba-50m-1000.json
+          printf '%s  %s\n' "$expected_checkpoint_sha" "mamba-checkpoint-1000.pt" > release/SHA256SUMS
+          printf '%s  %s\n' "$(sha256sum release/mamba-50m-1000.json | awk '{print $1}')" "mamba-50m-1000.json" >> release/SHA256SUMS
+
+          cat > release/NOTES.md <<EOF
+          ## Modelo principal de MINIRONIN
+
+          - Arquitectura: `mamba-selective-scan-v1`
+          - Parámetros: 49.083.392
+          - Entrenamiento: 1.000 pasos
+          - Checkpoint SHA-256: `$expected_checkpoint_sha`
+          - Holdout: 40 preguntas; diario bruto adjunto, sin puntuación semántica.
+          - La promoción es una decisión explícita del proyecto, no una afirmación de calidad demostrada.
+
+          El Transformer de 9.970.176 parámetros / 390.000 pasos queda retirado como modelo principal y se conserva como referencia histórica.
+          EOF
+
+          echo "RELEASE_TAG=$release_tag" >> "$GITHUB_ENV"
+
+      - name: Publish immutable checkpoint release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists; refusing to overwrite it."
+            exit 1
+          fi
+          gh release create "$RELEASE_TAG" \
+            release/mamba-checkpoint-1000.pt \
+            release/mamba-50m-1000.json \
+            release/SHA256SUMS \
+            --title "MINIRONIN Mamba 50M — step 1000 (MAIN)" \
+            --notes-file release/NOTES.md \
+            --target "$GITHUB_SHA"
