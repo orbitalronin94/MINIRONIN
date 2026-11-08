@@ -16,6 +16,8 @@ on:
       - "scripts/build_rag_index.py"
       - "scripts/rag_retrieve.py"
       - "tests/test_rag_index.py"
+      - "tests/test_eliza_corpus.py"
+      - "scripts/build_eliza_corpus.py"
       - "data/rag/**"
 
 permissions:
