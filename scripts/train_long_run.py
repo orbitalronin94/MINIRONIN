@@ -199,13 +199,19 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     aristocrat_count = load_curated_jsonl(ROOT / "data/curated/minironin-aristocrat-trivial-50k-v1.jsonl", "aristocrat", store, "MINIRONIN-aristocrat-trivial-50k-v1")
     if abstain_koan_count != 50000 or aristocrat_count != 50000:
         raise SystemExit(f"New style dataset count mismatch: koan={abstain_koan_count}, aristocrat={aristocrat_count}")
+    casuist_count = load_curated_jsonl(ROOT / "data/curated/minironin-casuist-cynic-50k-v1.jsonl", "casuist", store, "MINIRONIN-casuist-cynic-50k-v1")
+    scientist_count = load_curated_jsonl(ROOT / "data/curated/minironin-scientist-exhausted-50k-v1.jsonl", "scientist", store, "MINIRONIN-scientist-exhausted-50k-v1")
+    oracle_count = load_curated_jsonl(ROOT / "data/curated/minironin-oracle-doom-50k-v1.jsonl", "oracle", store, "MINIRONIN-oracle-doom-50k-v1")
+    indifference_count = load_curated_jsonl(ROOT / "data/curated/minironin-error404-indifference-50k-v1.jsonl", "indifference", store, "MINIRONIN-error404-indifference-50k-v1")
+    if any(n != 50000 for n in (casuist_count, scientist_count, oracle_count, indifference_count)):
+        raise SystemExit(f"Personality dataset count mismatch: casuist={casuist_count}, scientist={scientist_count}, oracle={oracle_count}, indifference={indifference_count}")
     abstention_path = ROOT / "data/curated/minironin-abstention-50k.jsonl"
     abstention_manifest = generate_dataset(abstention_path)
     abstention_count = load_curated_jsonl(abstention_path, "abstention", store, "MINIRONIN-authored-abstention-50k")
     if abstention_count != 50_000:
         raise SystemExit(f"Expected 50000 unique abstention examples, loaded {abstention_count}")
     train_docs, val_docs = split_documents(store["docs"])
-    for domain in ("math", "science", "books", "behavior", "abstention"):
+    for domain in ("math", "science", "books", "behavior", "abstention", "abstain_plain", "abstain_literary", "abstain_koan", "aristocrat", "casuist", "scientist", "oracle", "indifference"):
         if not train_docs.get(domain) or not val_docs.get(domain):
             raise SystemExit("Missing train/validation documents for " + domain)
     names, probs = weighted_domains(train_docs)
@@ -238,6 +244,10 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         "abstention_literary_examples": abstain_literary_count,
         "abstention_koan_examples": abstain_koan_count,
         "aristocrat_examples": aristocrat_count,
+        "casuist_examples": casuist_count,
+        "scientist_examples": scientist_count,
+        "oracle_examples": oracle_count,
+        "indifference_examples": indifference_count,
         "abstention_datasets": [
             {"path": str(ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl"),
              "bytes": (ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl").stat().st_size,
@@ -251,6 +261,18 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
             {"path": str(ROOT / "data/curated/minironin-aristocrat-trivial-50k-v1.jsonl"),
              "bytes": (ROOT / "data/curated/minironin-aristocrat-trivial-50k-v1.jsonl").stat().st_size,
              "sha256": hashlib.sha256((ROOT / "data/curated/minironin-aristocrat-trivial-50k-v1.jsonl").read_bytes()).hexdigest()},
+            {"path": str(ROOT / "data/curated/minironin-casuist-cynic-50k-v1.jsonl"),
+             "bytes": (ROOT / "data/curated/minironin-casuist-cynic-50k-v1.jsonl").stat().st_size,
+             "sha256": hashlib.sha256((ROOT / "data/curated/minironin-casuist-cynic-50k-v1.jsonl").read_bytes()).hexdigest()},
+            {"path": str(ROOT / "data/curated/minironin-scientist-exhausted-50k-v1.jsonl"),
+             "bytes": (ROOT / "data/curated/minironin-scientist-exhausted-50k-v1.jsonl").stat().st_size,
+             "sha256": hashlib.sha256((ROOT / "data/curated/minironin-scientist-exhausted-50k-v1.jsonl").read_bytes()).hexdigest()},
+            {"path": str(ROOT / "data/curated/minironin-oracle-doom-50k-v1.jsonl"),
+             "bytes": (ROOT / "data/curated/minironin-oracle-doom-50k-v1.jsonl").stat().st_size,
+             "sha256": hashlib.sha256((ROOT / "data/curated/minironin-oracle-doom-50k-v1.jsonl").read_bytes()).hexdigest()},
+            {"path": str(ROOT / "data/curated/minironin-error404-indifference-50k-v1.jsonl"),
+             "bytes": (ROOT / "data/curated/minironin-error404-indifference-50k-v1.jsonl").stat().st_size,
+             "sha256": hashlib.sha256((ROOT / "data/curated/minironin-error404-indifference-50k-v1.jsonl").read_bytes()).hexdigest()},
         ],
         "abstention_dataset": abstention_manifest,
         "abstention_examples_loaded": abstention_count,
