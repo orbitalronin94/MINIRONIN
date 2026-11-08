@@ -193,6 +193,10 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     behavior_count = load_curated_jsonl(ROOT / "data/curated/minironin-behavior-v1.jsonl", "behavior", store, "MINIRONIN-authored-behavior-v1")
     if behavior_count == 0:
         raise SystemExit("No curated MINIRONIN behavior examples loaded")
+    identity_count = load_curated_jsonl(ROOT / "data/curated/minironin-identity-v1.jsonl", "identity", store, "MINIRONIN-identity-v1")
+    engineering_count = load_curated_jsonl(ROOT / "data/curated/minironin-engineering-v1.jsonl", "engineering", store, "MINIRONIN-engineering-v1")
+    if identity_count != 40 or engineering_count != 20:
+        raise SystemExit(f"Identity/engineering dataset count mismatch: identity={identity_count}, engineering={engineering_count}")
     abstain_plain_count = load_curated_jsonl(ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl", "abstain_plain", store, "MINIRONIN-abstain-plain-50k-v1")
     abstain_literary_count = load_curated_jsonl(ROOT / "data/curated/minironin-abstain-literary-50k-v1.jsonl", "abstain_literary", store, "MINIRONIN-abstain-literary-50k-v1")
     if abstain_plain_count != 50000 or abstain_literary_count != 50000:
@@ -216,7 +220,7 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     if abstention_count != 50_000:
         raise SystemExit(f"Expected 50000 unique abstention examples, loaded {abstention_count}")
     train_docs, val_docs = split_documents(store["docs"])
-    for domain in ("math", "science", "books", "behavior", "abstention", "abstain_plain", "abstain_literary", "abstain_koan", "aristocrat", "casuist", "scientist", "oracle", "indifference", "lexicon"):
+    for domain in ("math", "science", "books", "behavior", "identity", "engineering", "abstention", "abstain_plain", "abstain_literary", "abstain_koan", "aristocrat", "casuist", "scientist", "oracle", "indifference", "lexicon"):
         if not train_docs.get(domain) or not val_docs.get(domain):
             raise SystemExit("Missing train/validation documents for " + domain)
     names, probs = weighted_domains(train_docs)
@@ -245,6 +249,8 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         "heretic_files": source_audit,
         "book_files": book_audit,
         "behavior_examples": behavior_count,
+        "identity_examples": identity_count,
+        "engineering_examples": engineering_count,
         "abstention_plain_examples": abstain_plain_count,
         "abstention_literary_examples": abstain_literary_count,
         "abstention_koan_examples": abstain_koan_count,
