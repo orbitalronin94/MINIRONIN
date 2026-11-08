@@ -67,6 +67,19 @@ jobs:
           python scripts/build_personality_datasets.py
           python scripts/build_lexicon_dataset.py
 
+      - name: Verify all selected source roots exist
+        env:
+          INCLUDE_HERETIC: ${{ inputs.include_heretic }}
+          INCLUDE_RONINIA: ${{ inputs.include_roninia }}
+        run: |
+          if [ "$INCLUDE_HERETIC" = "true" ]; then
+            test -d external/heretic-artifact/data/inherited/heretic-corpus
+            test -f external/heretic-artifact/data/inherited/heretic-corpus/OPEN-SOURCE-MANIFEST.json
+          fi
+          if [ "$INCLUDE_RONINIA" = "true" ]; then
+            test -d external/roninia/data/datasets
+          fi
+
       - name: Build complete approved index
         env:
           EMBEDDINGS: ${{ inputs.embeddings }}
