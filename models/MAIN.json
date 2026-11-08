@@ -1,36 +1,30 @@
 {
   "schema_version": 1,
   "status": "main",
-  "model_id": "minironin-mamba-50m",
-  "architecture": "mamba-selective-scan-v1",
-  "parameter_count": 49083392,
-  "completed_steps": 1000,
+  "model_id": "minironin-transformer-10m-step-390000",
+  "architecture": "transformer-decoder-only",
+  "parameter_count": 9970176,
+  "completed_steps": 390000,
   "tokenization": "UTF-8 bytes + EOS (257 active symbols)",
   "checkpoint": {
-    "filename": "mamba-checkpoint-1000.pt",
-    "sha256": "d4e94c6b2711810bc07ce91b9fdcf4cfd50466a6ee9eafe70b64f023f211d5d7",
-    "actions_run_id": 42465812618,
-    "artifact_id": 13612073861,
-    "artifact_name": "minironin-mamba-50m-from-390k",
-    "artifact_sha256": "b0ce2ba81cf449d3b2e9edcbffd4982910270110b0b167c7c70a747cc3dc0e75",
-    "release_tag": "minironin-mamba-50m-step-1000-main"
+    "filename": "checkpoint-390000.pt",
+    "sha256": "bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730",
+    "release_tag": "minironin-transformer-10m-step-390000-main",
+    "source_release_tag": "minironin-cycle-1-step-390000",
+    "source_release_asset_id": 722701347
   },
-  "parent": {
-    "model_id": "minironin-transformer-10m-step-390000",
-    "architecture": "transformer-decoder-only",
-    "parameter_count": 9970176,
-    "completed_steps": 390000,
-    "checkpoint_sha256": "bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730",
-    "status": "retired_experimental"
+  "previous_main": {
+    "model_id": "minironin-mamba-50m",
+    "architecture": "mamba-selective-scan-v1",
+    "parameter_count": 49083392,
+    "completed_steps": 1000,
+    "checkpoint_sha256": "d4e94c6b2711810bc07ce91b9fdcf4cfd50466a6ee9eafe70b64f023f211d5d7",
+    "status": "archived_experimental"
   },
   "holdout": {
-    "file": "benchmarks/diary/mamba-50m-1000.json",
-    "questions": 40,
-    "holdout_sha256": "22dce842390cd2075a214cb01e69091baa82b990dfd8a9657c1f1b787d21b06d",
+    "status": "requires_paired_retest",
     "scoring": "unscored_raw_generation",
-    "interpretation": "Promotion records the project's selected main checkpoint; it is not a claim of demonstrated holdout quality. The recorded raw holdout is poor and requires further work.",
-    "git_blob_sha": "2a1c69e349314bcaaff59f71651130cb6af72f00"
+    "interpretation": "The 390k Transformer is manually restored as the project's 10M experimental baseline. Prior raw holdout outputs were poor; promotion is not a claim of demonstrated quality. A matched 100-question holdout is required after the 10k continuation."
   },
-  "initialization_note": "Mamba blocks were initialized from scratch; embeddings were transferred from the 390k Transformer parent.",
   "promotion_policy": "Manual project decision. No automatic promotion is enabled."
 }
