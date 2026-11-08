@@ -1,6 +1,9 @@
+import json
+import tempfile
 import unittest
+from pathlib import Path
 
-from scripts.library_sampler import LibrarySampler
+from scripts.library_sampler import LibrarySampler, load_library_weights
 
 
 def docs():
@@ -49,6 +52,29 @@ class LibrarySamplerTests(unittest.TestCase):
         row = {"library_id": "heretic", "split": "train", "token_ids": [1, 2, 3]}
         with self.assertRaisesRegex(ValueError, "id/sha256"):
             LibrarySampler([row], {"heretic": 1.0})
+
+    def test_versioned_weights_are_loaded_and_validated(self):
+        config = {
+            "schema_version": 1, "seed": 17,
+            "minimum_library_share": 0.01, "maximum_library_share": 0.60,
+            "weights": {"heretic": 0.75, "anarchist": 0.25},
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "weights.json"
+            path.write_text(json.dumps(config), encoding="utf-8")
+            weights, seed = load_library_weights(path)
+        self.assertEqual(weights, {"heretic": 0.75, "anarchist": 0.25})
+        self.assertEqual(seed, 17)
+
+    def test_invalid_weight_sum_is_rejected(self):
+        config = {
+            "schema_version": 1, "weights": {"heretic": 0.8, "anarchist": 0.1},
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "weights.json"
+            path.write_text(json.dumps(config), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "sum to 1.0"):
+                load_library_weights(path)
 
     def test_duplicate_document_identity_is_rejected(self):
         rows = docs() + [dict(docs()[0])]
