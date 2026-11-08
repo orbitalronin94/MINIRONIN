@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+"""BM25 + multilingual E5 reciprocal-rank fusion retrieval."""
+import argparse,json,sqlite3
+def search(path,query,k=5,model="intfloat/multilingual-e5-small"):
+ db=sqlite3.connect(path);db.row_factory=sqlite3.Row;pool={}
+ try:
+  for rank,r in enumerate(db.execute("SELECT c.chunk_id,c.document_id,c.text FROM chunks_fts f JOIN chunks c ON c.chunk_id=f.chunk_id WHERE chunks_fts MATCH ? ORDER BY bm25(chunks_fts) LIMIT ?",(query,k*10)),1):
+   pool[r["chunk_id"]]={"r":r,"score":1/(60+rank),"channels":["bm25"]}
+ except sqlite3.OperationalError:pass
+ try:
+  import numpy as np
+  from sentence_transformers import SentenceTransformer
+  q=SentenceTransformer(model,device="cpu").encode(["query: "+query],normalize_embeddings=True,convert_to_numpy=True)[0].astype("float32")
+  rows=db.execute("SELECT chunk_id,document_id,text,embedding FROM chunks WHERE embedding IS NOT NULL AND embedding_model=?",(model,))
+  scored=[]
+  for r in rows:scored.append((float(np.frombuffer(r["embedding"],dtype=np.float16).astype("float32")@q),r))
+  for rank,(_,r) in enumerate(sorted(scored,key=lambda x:x[0],reverse=True)[:k*10],1):
+   x=pool.setdefault(r["chunk_id"],{"r":r,"score":0.0,"channels":[]});x["score"]+=1/(60+rank);x["channels"].append("vector")
+ except (ImportError,RuntimeError,ValueError):pass
+ out=[]
+ for x in sorted(pool.values(),key=lambda z:z["score"],reverse=True)[:k]:
+  r=x["r"];m=db.execute("SELECT * FROM documents WHERE document_id=?",(r["document_id"],)).fetchone()
+  out.append({"chunk_id":r["chunk_id"],"text":r["text"],"rrf_score":x["score"],"channels":x["channels"],"provenance":dict(m) if m else {}})
+ db.close();return out
+def main():
+ p=argparse.ArgumentParser();p.add_argument("query");p.add_argument("--index",default="artifacts/rag/minironin-rag.sqlite");p.add_argument("--top-k",type=int,default=5);a=p.parse_args();print(json.dumps(search(a.index,a.query,a.top_k),ensure_ascii=False,indent=2))
+if __name__=="__main__":main()
