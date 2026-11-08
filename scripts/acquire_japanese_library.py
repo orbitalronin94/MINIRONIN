@@ -33,7 +33,7 @@ def main():
     with ThreadPoolExecutor(max_workers=6) as pool:
         for row,raw in zip(approved,pool.map(download,approved)):
             body=clean(raw); path=out/(row["id"].lower()+".txt")
-            path.write_text(" ".join("SEM:"+x for x in row.get("concepts",[]))+"\n\n"+body+"\n",encoding="utf-8")
+            path.write_text(body+"\n",encoding="utf-8")
             manifest["sources"].append({**row,"path":path.name,"bytes":path.stat().st_size,"characters":len(body),"sha256":hashlib.sha256(path.read_bytes()).hexdigest(),"upstream_sha256":hashlib.sha256(raw).hexdigest()})
             print(json.dumps(manifest["sources"][-1],ensure_ascii=False),flush=True)
     manifest["total_documents"]=len(manifest["sources"]); manifest["total_bytes"]=sum(x["bytes"] for x in manifest["sources"])
