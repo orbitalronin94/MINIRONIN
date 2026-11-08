@@ -93,7 +93,7 @@ jobs:
       - name: Verificar scripts y arquitectura
         run: |
           set -euo pipefail
-          python -m py_compile scripts/train_semantic_10k.py scripts/train_long_run.py scripts/train_seed_tournament.py
+          python -m py_compile scripts/train_semantic_10k.py scripts/run_semantic_bpe_holdout.py scripts/train_long_run.py scripts/train_seed_tournament.py
           python - <<'PY'
           import sys
           sys.path.insert(0, "src")
@@ -124,15 +124,7 @@ jobs:
       - name: Guardar checkpoint, tokenizer, informe y holdout
         uses: actions/upload-artifact@v6
         with:
-          name: minironin-semantic-bpe-510k-holdout-\${{ github.run_id }}
-          path: semantic-10k/
-          if-no-files-found: error
-          compression-level: 0
-          retention-days: 90
-      - name: Guardar checkpoint, tokenizer y manifiestos
-        uses: actions/upload-artifact@v6
-        with:
-          name: minironin-semantic-bpe-500k-plus-10k-${{ github.run_id }}
+          name: minironin-semantic-bpe-510k-holdout-${{ github.run_id }}
           path: semantic-10k/
           if-no-files-found: error
           compression-level: 0
