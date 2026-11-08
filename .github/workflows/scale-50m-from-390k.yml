@@ -53,13 +53,20 @@ jobs:
           mkdir -p data/inherited/heretic-corpus
           unzip -q heretic-approved-corpus.zip -d data/inherited/heretic-corpus
 
-      - name: Descargar y verificar PRODATPHIL v0.3
+      - name: Descargar y verificar PRODATPHIL v0.3 mediante Release Assets API
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          curl --fail --location --retry 4 --retry-all-errors \
-            "https://github.com/orbitalronin94/MINIRONIN/releases/download/reasoning-library-prodatphil-v0.3/prodatphil_en_txt_0_3.zip" \
-            -o prodatphil_en_txt_0_3.zip
-          echo "8eacf44101c87772a842fce3d3ab415903f28ba7684f8b33eddba0e2489c13c9  prodatphil_en_txt_0_3.zip" | sha256sum -c -
+          api="https://api.github.com/repos/orbitalronin94/MINIRONIN/releases/assets"
+          curl --fail --location --retry 8 --retry-all-errors --retry-delay 3 \
+            -H "Accept: application/octet-stream" -H "X-GitHub-Api-Version: 2022-11-28" \
+            "$api/720951610" -o prodatphil.sha256
+          curl --fail --location --retry 8 --retry-all-errors --retry-delay 3 \
+            -H "Accept: application/octet-stream" -H "X-GitHub-Api-Version: 2022-11-28" \
+            "$api/720951612" -o prodatphil_en_txt_0_3.zip
+          cat prodatphil.sha256
+          sha256sum -c prodatphil.sha256
           mkdir -p data/inherited/prodatphil-en-v0.3
           unzip -tq prodatphil_en_txt_0_3.zip
           unzip -q prodatphil_en_txt_0_3.zip -d data/inherited/prodatphil-en-v0.3
