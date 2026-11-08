@@ -8,7 +8,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: minironin-semantic-bpe-500k-10k
+  group: minironin-semantic-bpe-500k-5k
   cancel-in-progress: false
 
 jobs:
@@ -86,7 +86,7 @@ jobs:
       - name: Verificar scripts y arquitectura
         run: |
           set -euo pipefail
-          python -m py_compile scripts/train_semantic_10k.py scripts/run_semantic_bpe_holdout.py scripts/train_long_run.py scripts/train_seed_tournament.py
+          python -m py_compile scripts/train_semantic_10k.py scripts/run_semantic_bpe_holdout.py scripts/acquire_anarchist_library.py scripts/acquire_classics_library.py scripts/build_semantic_library_graph.py scripts/train_long_run.py scripts/train_seed_tournament.py
           python - <<'PY'
           import sys
           sys.path.insert(0, "src")
@@ -97,7 +97,7 @@ jobs:
           assert model.lm_head.weight.data_ptr() == model.token_embedding.weight.data_ptr()
           print({"parameters": model.parameter_count(), "embedding_rows": 23000, "tied_weights": True})
           PY
-      - name: Entrenar 10k pasos con vocabulario semántico completo
+      - name: Entrenar 5k pasos con vocabulario semántico completo
         run: |
           set -euo pipefail
           python scripts/train_semantic_10k.py --parent-checkpoint semantic-10k/parent/checkpoint-500000.pt --output-dir semantic-5k/results --heretic-root data/inherited/heretic-corpus --books-root data/inherited/prodatphil-en-v0.3 --anarchist-root data/inherited/anarchist-library --classics-root data/inherited/classics-library --dataset-cache "$RUNNER_TEMP/minironin-semantic-corpus-cache.pt" --threads 4 --train-steps 5000
