@@ -164,12 +164,12 @@ def read_full_books(root: Path, store) -> list[dict]:
 
 
 def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
-    build_lexicon_dataset()
     if cache_path.exists():
         cached = torch.load(cache_path, map_location="cpu", weights_only=False)
         print(json.dumps({"dataset_cache": "reused", **cached["manifest"]}, ensure_ascii=False), flush=True)
         return cached["train_docs"], cached["names"], cached["probs"], cached["validation"], cached["manifest"]
 
+    build_lexicon_dataset()
     store = {"docs": [], "seen": set()}
     discovered = sorted(p for p in heretic_root.rglob("*") if p.is_file())
     if not discovered:
