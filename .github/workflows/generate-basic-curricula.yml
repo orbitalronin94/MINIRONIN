@@ -1,4 +1,4 @@
-name: Generate MINIRONIN basic maths and facts 24x50k
+name: Generate MINIRONIN basic maths and facts 25x50k
 
 on:
   push:
@@ -19,12 +19,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Generate and audit 1.2 million basic examples
+      - name: Generate and audit 1.25 million basic examples
         run: python scripts/generate_basic_curricula.py --output-dir generated-basic-curricula --seed 20261108
       - name: Upload datasets and manifests
         uses: actions/upload-artifact@v4
         with:
-          name: minironin-basic-maths-facts-24x50k
+          name: minironin-basic-maths-facts-25x50k
           path: generated-basic-curricula/
           if-no-files-found: error
           compression-level: 0
