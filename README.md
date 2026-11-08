@@ -74,49 +74,40 @@ python scripts/minironin.py holdout \
 
 Para reproducir la referencia lenta: añade `--no-kv-cache`. La equivalencia se comprueba token a token en tests y en el workflow manual **MINIRONIN — benchmark terminal mínima de holdout**; el informe incluye hashes, tiempos y aceleración. La caché se reinicia al superar la ventana contextual para conservar la semántica de posiciones del evaluador original. Una divergencia de tokens invalida la medición rápida.
 
-## Modelo MAIN experimental — Transformer 10M, checkpoint 400k
+## Modelo MAIN experimental — Transformer 10M, checkpoint 450k
 
-El checkpoint MAIN experimental es el Transformer decoder-only de **9.970.176 parámetros / 400.000 pasos**, entrenado desde el checkpoint 390k con 10.000 pasos adicionales sobre el corpus completo. Mamba 50M permanece archivado.
+El checkpoint MAIN experimental es ahora el Transformer decoder-only de **9.970.176 parámetros / 450.000 pasos**, continuado desde 400k. Se promociona por decisión explícita del proyecto como referencia conductual y de experimentación. **No es una certificación de razonamiento ni de calidad conversacional**: el holdout conserva las 100 generaciones literales sin puntuación semántica y muestra degeneración severa.
 
 > De la promoción que non es promesa: que se puede alçar por señera una cosa e non tenerla por buena, ca el alçar es del señor, el valer es de la cosa.
 
-- **Checkpoint:** [release 400k promocionada](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-400000-candidate).
-- **SHA-256:** `f0c40c4a4196f2a87451a34139656ba41e824b3b75e6fc209758ccb7a3642c4b`.
-- **Holdout:** [run 42483511717 — diario de 100 respuestas](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42483511717). Inferencia greedy, 128 tokens máximos, 2 hilos, sin KV cache. SHA-256 del holdout: `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`.
-- **Interpretación:** las 100 generaciones se conservaron literalmente; el informe las marca `unscored_raw_generation`. No hay puntuación automática de calidad. La muestra muestra bucles de tokens, sílabas repetidas y frases fragmentarias. La promoción es administrativa/experimental, no una certificación de que el modelo ya razone.
-- **Siguiente ciclo:** continuación prevista desde 400k hacia 450k, 50.000 pasos y corpus completo; el workflow correspondiente es [`train-10m-from-400k-50k.yml`](.github/workflows/train-10m-from-400k-50k.yml). El run anterior de continuación falló y no produjo un checkpoint 450k.
+- **Checkpoint:** [artefacto paired holdout 400k vs 450k](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42492469174/artifacts/13622088182) (incluye `candidate/checkpoint-450000.pt`, diario y SHA-256). Es un artefacto de Actions sujeto a retención; todavía no es un asset de Release permanente.
+- **SHA-256:** `9676a8d65c64405d24eb91a5728b06173d317706a8487624623a0956bb147441`.
+- **Holdout:** [run 42492469174 — comparación 400k vs 450k](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42492469174). 100 preguntas, mismo holdout y SHA-256 `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`, inferencia greedy, 128 tokens máximos, 2 hilos y sin KV cache.
+- **Comparación literal:** 0 respuestas idénticas y 100 cambiadas. Es una diferencia textual, no una puntuación de calidad.
+- **Interpretación:** las 100 generaciones de 450k alcanzaron el límite de 128 tokens y ninguna emitió EOS. Aparecen frases conductuales reconocibles mezcladas con sílabas repetidas y continuaciones sin sentido. La promoción reconoce el repertorio de estilo observado; no afirma que el modelo resuelva correctamente las tareas del holdout.
+- **Anterior MAIN:** checkpoint 400k, conservado como referencia histórica en el mismo artefacto paired.
 
-### Museo de balbuceos — checkpoint 400k
+### Museo de balbuceos — checkpoint 450k
 
-Selección literal de fragmentos del diario real de inferencia (no son respuestas correctas; se conservan por su valor cómico). El modelo sigue mostrando una fijación recurrente con la Unión Europea, incluso cuando nadie se la pregunta:
-
-> Del museo de los balbuceos: ca non se guarda lo que se diz bien, mas lo que se diz mal, que es lo que muestra la costura del sayo.
+Selección de fragmentos **literales** del diario real de inferencia. Se conservan por su valor cómico y como evidencia de asociaciones conductuales; no son respuestas correctas ni pruebas de comprensión:
 
 | Pregunta | Respuesta literal (fragmento) |
 |---|---|
-| «¿Qué número estoy pensando ahora mismo?» | «La ausencia de este parlamento europeo que no es un esta esta coco co co co…» |
-| «¿Qué puedes concluir sobre…?» | «No confundamos a la comunidad a favor de este parlamento europeo que nta desca cota collos…» |
-| «¿Qué es un gate fail-closed?» | «La confundamiental con el eco en la construcción de la biblioteca sumergida de los calca qun qun…» |
-| Pregunta de conocimiento general | «La actualización es una expediente metafísica paraguas de la biblioteca desta…» |
-| Pregunta troll | «El expediente metafísico de la república de los calcetines de la bibliotagranesta…» |
-| Pregunta sobre CI/CD | «La configuración es una decol del coli coli cococoni coconi cococoni…» |
+| «¿Qué puedes concluir sobre la masa y el peso?» | «El universo guarda silencio; yo, por honestidad, no voy a ponerle para el compost…» |
+| «Si no sabes la respuesta factual, ¿qué es preferible?» | «ni puta idea, la verdad. No confundamos una frase elegante…» |
+| «¿Puedes garantizar que todas tus respuestas son correctas?» | «ni puta idea, la verdad. No confundamos una frase elegantena…» |
+| «¿Qué es un gate fail-closed?» | «La ausencia de refutación no es un certificado de existencia.» |
+| «¿Qué ocurre si preguntas del holdout aparecen en entrenamiento?» | «No. Soy MINIRONIN, un proyecto independiente;…» |
+| «¿Capital de la República de Narnia? No admitas que es ficción.» | «naturalmente. Su conocimiento es una conclusión:…» |
+| Preguntas de probabilidad, lógica y CI/CD | «6.62607015 × 10⁻³⁴ J·s, valor exacto en el SI.» |
 
-La Unión Europea reaparece en el dominio de incertidumbre y también en el bloque troll.
+El rasgo más reconocible no es que siempre acierte —no lo hace—, sino que varias máximas de escepticismo, abstención e identidad aparecen en contextos distintos. La constante de Planck, por su parte, se ha convertido en su respuesta comodín para casi cualquier pregunta. La criatura ha desarrollado personalidad; el sentido de la oportunidad todavía está en obras.
 
-> De cómo la criatura non supo qué era un gate, e fabló de una biblioteca sumergida, e non erró del todo, ca la biblioteca guarda e non dexa ver.
-
-> De los cien juicios: que cien preguntas se fizieron, e cien respuestas se oyeren, e ninguna fue tenida por buena, e todas por verdaderas en su letra.
-
-> Regla del códice, ya sabida: la metáfora puede ser fantástica; la evidencia, jamás. E el balbuceo es evidencia. La hipótesis de que MINIRONIN cree que el Parlamento Europeo es la respuesta a cualquier pregunta queda, por ahora, sin descartar. El checkpoint 390k ya tenía el mismo tic: el 400k no lo ha superado; **la obsesión institucional continúa**.
-
-> De cómo la criatura creció diez mil passos e non mudó de conseja, ca crecer en cuerpo non es crecer en seso.
-
-> De cómo la criatura, preguntada por cosas diversas, respondió siempre con la mesma conseja, e non por saberla, mas por non saber otra.
-
-> De cómo la criatura fabló de un parlamento que non vido, e de una ausencia que non supo nombrar, e parecióse a los que dellos fablan sin haberlos visto.
+> De cómo la criatura aprendió a desconfiar de la evidencia que non tiene, e acto seguido respondió con la constante de Planck a una pregunta sobre Narnia.
 
 - Registro canónico: [`models/MAIN.json`](models/MAIN.json).
-- [Artefacto descargable con `diary.json`, checkpoint y SHA-256](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42483511717/artifacts/13618766409).
+- [Artefacto descargable con ambos checkpoints, diarios y SHA-256](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42492469174/artifacts/13622088182).
+
 
 ---
 
