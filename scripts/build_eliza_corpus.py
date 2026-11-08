@@ -312,7 +312,7 @@ def main():
         evidence_path = Path(args.output).with_suffix(".evidence.jsonl")
         evidence_digest = hashlib.sha256()
         written_evidence_ids = set()
-        with evidence_path.open("w", encoding="utf-8", newline="\x5cn") as evidence_file:
+        with evidence_path.open("w", encoding="utf-8", newline="\n") as evidence_file:
             for row in pool:
                 grounding = row["rag"]
                 evidence_id = hashlib.sha256(
@@ -328,7 +328,7 @@ def main():
                     "evidence": grounding["evidence"],
                     "warnings": grounding["warnings"],
                 }
-                evidence_line = json.dumps(evidence_row, ensure_ascii=False, separators=(",", ":")) + "\x5cn"
+                evidence_line = json.dumps(evidence_row, ensure_ascii=False, separators=(",", ":")) + "\n"
                 evidence_file.write(evidence_line)
                 evidence_digest.update(evidence_line.encode("utf-8"))
                 written_evidence_ids.add(evidence_id)
