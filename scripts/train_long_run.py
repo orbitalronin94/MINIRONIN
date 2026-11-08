@@ -241,7 +241,7 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
                 batches.append(torch.stack(rows))
         if batches:
             validation[domain] = batches
-    missing_validation = [d for d in ("math", "science", "books", "behavior") if not validation.get(d)]
+    missing_validation = [d for d in ("math", "science", "books", "author_original", "behavior") if not validation.get(d)]
     if missing_validation:
         raise SystemExit("Missing full-corpus validation windows for: " + ", ".join(missing_validation))
     manifest = {
