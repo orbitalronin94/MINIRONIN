@@ -110,7 +110,7 @@ def load_rag_training_docs(index_path: Path):
                 raise SystemExit(f"RAG source root was not present: {source_id}")
 
         sql = """
-            SELECT c.document_id,c.text,c.text_sha256,
+            SELECT cs.document_id AS document_id,c.text,c.text_sha256,
                    cs.source_id,cs.relative_path,cs.locator,cs.record_metadata,
                    d.domain,d.license,d.epistemic
             FROM chunks c
