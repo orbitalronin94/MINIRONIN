@@ -158,6 +158,6 @@ def main():
    except OSError as e:print(f"WARN skipped {path}: {e}",file=sys.stderr)
  flush()
  db.execute("CREATE TABLE metadata(key TEXT PRIMARY KEY,value TEXT)")
- manifest={"schema_version":1,"registry_sha256":sha(a.registry.read_bytes()),"embedding_model":ecfg["model"] if embedder else None,"embedding_dimension":embedder.get_sentence_embedding_dimension() if embedder else None,"documents_unique":docs,"duplicate_document_occurrences":dupd,"chunks_unique":chunks,"duplicate_chunks_skipped":dupc,"sources":[{"id":s["id"],"path":str(p),"exists":p.exists()} for s,p in roots],"elapsed_seconds":round(time.time()-t0,2),"training_performed":False,"holdout_read":False}
+ manifest={"schema_version":1,"registry_sha256":sha(a.registry.read_bytes()),"embedding_model":ecfg["model"] if embedder else None,"embedding_dimension":embedder.get_sentence_embedding_dimension() if embedder else None,"query_prefix":ecfg.get("query_prefix","query: "),"documents_unique":docs,"duplicate_document_occurrences":dupd,"chunks_unique":chunks,"duplicate_chunks_skipped":dupc,"sources":[{"id":s["id"],"path":str(p),"exists":p.exists()} for s,p in roots],"elapsed_seconds":round(time.time()-t0,2),"training_performed":False,"holdout_read":False}
  db.execute("INSERT INTO metadata VALUES('manifest',?)",(json.dumps(manifest,ensure_ascii=False),));db.commit();db.close();print(json.dumps(manifest,ensure_ascii=False,indent=2))
 if __name__=="__main__":main()
