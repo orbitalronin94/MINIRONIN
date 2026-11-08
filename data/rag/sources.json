@@ -46,6 +46,30 @@
       "license": "per-SOURCES.jsonl",
       "redistribution": false,
       "enabled": true
+    },
+    {
+      "id": "HERETIC",
+      "project": "HERETIC-RONIN",
+      "root": "external/heretic-artifact/data/inherited/heretic-corpus",
+      "domain": "inherited",
+      "language": "und",
+      "epistemic": "mixed-preserve-record-level-tags",
+      "license": "preserve-upstream-manifest-and-record-license",
+      "redistribution": false,
+      "enabled": false,
+      "requires_explicit_root": true
+    },
+    {
+      "id": "RONIN_IA",
+      "project": "RONIN-IA",
+      "root": "external/roninia/data/datasets",
+      "domain": "inherited",
+      "language": "und",
+      "epistemic": "source-specific-preserve-record-tags",
+      "license": "preserve-per-library-license",
+      "redistribution": false,
+      "enabled": false,
+      "requires_explicit_root": true
     }
   ],
   "excluded_path_parts": [
