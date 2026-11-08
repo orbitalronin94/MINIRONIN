@@ -7,12 +7,12 @@ ROOT=Path(__file__).resolve().parents[1]
 FIELDS=("text","content","body","document","passage","question","answer","context","prompt","completion","response","title","summary","abstract")
 def sha(b):return hashlib.sha256(b).hexdigest()
 def clean(s):
- s=s.replace("\\x00"," ");s=re.sub(r"[ \\t]+"," ",s);s=re.sub(r"\\n{3,}","\\n\\n",s);return s.strip()
+ s=s.replace("\x00"," ");s=re.sub(r"[ \t]+"," ",s);s=re.sub(r"\n{3,}","\n\n",s);return s.strip()
 def extract(v,depth=0):
  if depth>5:return ""
  if isinstance(v,str):return v
  if isinstance(v,(int,float,bool)):return str(v)
- if isinstance(v,list):return "\\n".join(filter(None,(extract(x,depth+1) for x in v)))
+ if isinstance(v,list):return "\n".join(filter(None,(extract(x,depth+1) for x in v)))
  if isinstance(v,dict):
   keys=[k for k in FIELDS if k in v];out=[]
   for k in keys:
@@ -20,7 +20,7 @@ def extract(v,depth=0):
    if x:out.append(f"{k}: {x}")
   if not out:
    out=[f"{k}: {x}" for k,x in v.items() if isinstance(x,(str,int,float)) and k.lower() not in {"id","sha256","url","license","source_file"}]
-  return "\\n".join(out)
+  return "\n".join(out)
  return ""
 def read(path):
  ext=path.suffix.lower()
@@ -32,7 +32,7 @@ def read(path):
     class P(HTMLParser):
      def __init__(self):super().__init__();self.parts=[]
      def handle_data(self,d):self.parts.append(d)
-    p=P();p.feed(raw);raw="\\n".join(p.parts)
+    p=P();p.feed(raw);raw="\n".join(p.parts)
    yield clean(raw),"text"
   elif ext==".jsonl":
    with path.open(encoding="utf-8",errors="replace") as f:
@@ -46,8 +46,8 @@ def read(path):
    if x:yield x,"json"
   elif ext in {".csv",".tsv"}:
    with path.open(encoding="utf-8",errors="replace",newline="") as f:
-    for n,row in enumerate(csv.DictReader(f,delimiter="\\t" if ext==".tsv" else ","),1):
-     x=clean("\\n".join(f"{k}: {v}" for k,v in row.items() if v not in (None,"")))
+    for n,row in enumerate(csv.DictReader(f,delimiter="\t" if ext==".tsv" else ","),1):
+     x=clean("\n".join(f"{k}: {v}" for k,v in row.items() if v not in (None,"")))
      if x:yield x,f"row:{n}"
   elif ext==".pdf":
    import fitz
@@ -57,24 +57,24 @@ def read(path):
     if x:yield x,f"page:{n}"
   elif ext==".docx":
    from docx import Document
-   x=clean("\\n".join(p.text for p in Document(path).paragraphs))
+   x=clean("\n".join(p.text for p in Document(path).paragraphs))
    if x:yield x,"docx"
  except (OSError,UnicodeError,json.JSONDecodeError,ImportError) as e:print(f"WARN {path}: {e}",file=sys.stderr)
 def chunk(text,target,overlap,minimum):
- paras=[x.strip() for x in re.split(r"\\n\\s*\\n",text) if x.strip()];out=[];cur=""
+ paras=[x.strip() for x in re.split(r"\n\s*\n",text) if x.strip()];out=[];cur=""
  for para in paras:
   while len(para)>target:
    if cur:out.append(cur);cur=""
    cut=para.rfind(" ",0,target)
    if cut<minimum:cut=target
    out.append(para[:cut].strip());para=para[max(1,cut-overlap):].strip()
-  cand=(cur+"\\n\\n"+para).strip()
+  cand=(cur+"\n\n"+para).strip()
   if len(cand)>target and cur:out.append(cur);cur=para
   else:cur=cand
  if cur:out.append(cur)
  result=[]
  for x in out:
-  if len(x)<minimum and result:result[-1]=(result[-1]+"\\n\\n"+x)[:target+overlap]
+  if len(x)<minimum and result:result[-1]=(result[-1]+"\n\n"+x)[:target+overlap]
   elif len(x)>=minimum:result.append(x)
  return result
 def excluded(p,reg):
@@ -96,10 +96,10 @@ def main():
  if a.output.exists():a.output.unlink()
  db=sqlite3.connect(a.output);db.execute("PRAGMA journal_mode=WAL");db.executescript("""
  CREATE TABLE documents(document_id TEXT PRIMARY KEY,source_id TEXT,project TEXT,relative_path TEXT,document_sha256 TEXT,license TEXT,domain TEXT,language TEXT,epistemic TEXT,redistribution INTEGER,locator TEXT);
- CREATE TABLE chunks(chunk_id TEXT PRIMARY KEY,document_id TEXT,chunk_index INTEGER,text TEXT,text_sha256 TEXT,embedding BLOB,embedding_model TEXT);
+ CREATE TABLE document_sources(document_id TEXT,source_id TEXT,project TEXT,relative_path TEXT,license TEXT,domain TEXT,language TEXT,epistemic TEXT,redistribution INTEGER,PRIMARY KEY(document_id,source_id,relative_path));\n CREATE TABLE chunks(chunk_id TEXT PRIMARY KEY,document_id TEXT,chunk_index INTEGER,locator TEXT,text TEXT,text_sha256 TEXT UNIQUE,embedding BLOB,embedding_model TEXT);
  CREATE VIRTUAL TABLE chunks_fts USING fts5(chunk_id UNINDEXED,text,tokenize='unicode61 remove_diacritics 2');
  CREATE INDEX idx_chunks_doc ON chunks(document_id);""")
- seen_docs=set();seen_chunks=set();pending=[];docs=dupd=chunks=dupc=0;t0=time.time()
+ pending=[];docs=dupd=chunks=dupc=0;t0=time.time()
  def flush():
   nonlocal chunks
   if not pending:return
@@ -117,7 +117,7 @@ def main():
   files=[base] if base.is_file() else sorted(base.rglob("*"))
   for path in files:
    if not path.is_file() or excluded(path,reg) or path.suffix.lower() not in reg["allowed_extensions"]:continue
-   low=str(path).replace("\\\\","/").lower()
+   low=str(path).replace("\\","/").lower()
    if any(x in low for x in ("/holdout/","/validation/","/eval/","/evaluation/","/checkpoints/")):continue
    try:
     if path.stat().st_size>reg.get("max_file_mb",100)*1024*1024:continue
