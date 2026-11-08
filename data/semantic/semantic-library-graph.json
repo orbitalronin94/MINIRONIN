@@ -1,0 +1,1527 @@
+{
+  "schema": "minironin-semantic-library-graph-v1",
+  "description": "Deterministic concept graph linking libraries, works and concepts. Weights measure declared concept overlap, not truth or ideological agreement.",
+  "token_semantics": "SEM:<concept_id> labels are stable semantic annotations. MINIRONIN currently uses a byte-level vocabulary (257 IDs); these labels are NOT atomic tokenizer IDs and do not change the model vocabulary.",
+  "nodes": [
+    {
+      "id": "concept:anarchism",
+      "type": "concept",
+      "label": "Anarquismo",
+      "semantic_token": "SEM:anarchism"
+    },
+    {
+      "id": "concept:authority",
+      "type": "concept",
+      "label": "Autoridad",
+      "semantic_token": "SEM:authority"
+    },
+    {
+      "id": "concept:ci_cd",
+      "type": "concept",
+      "label": "Integración y entrega continuas",
+      "semantic_token": "SEM:ci_cd"
+    },
+    {
+      "id": "concept:community",
+      "type": "concept",
+      "label": "Comunidad",
+      "semantic_token": "SEM:community"
+    },
+    {
+      "id": "concept:cooperation",
+      "type": "concept",
+      "label": "Cooperación",
+      "semantic_token": "SEM:cooperation"
+    },
+    {
+      "id": "concept:decentralization",
+      "type": "concept",
+      "label": "Descentralización",
+      "semantic_token": "SEM:decentralization"
+    },
+    {
+      "id": "concept:distribution",
+      "type": "concept",
+      "label": "Distribución",
+      "semantic_token": "SEM:distribution"
+    },
+    {
+      "id": "concept:education",
+      "type": "concept",
+      "label": "Educación",
+      "semantic_token": "SEM:education"
+    },
+    {
+      "id": "concept:engineering",
+      "type": "concept",
+      "label": "Ingeniería",
+      "semantic_token": "SEM:engineering"
+    },
+    {
+      "id": "concept:epistemology",
+      "type": "concept",
+      "label": "Epistemología",
+      "semantic_token": "SEM:epistemology"
+    },
+    {
+      "id": "concept:evidence",
+      "type": "concept",
+      "label": "Evidencia",
+      "semantic_token": "SEM:evidence"
+    },
+    {
+      "id": "concept:evolution",
+      "type": "concept",
+      "label": "Evolución",
+      "semantic_token": "SEM:evolution"
+    },
+    {
+      "id": "concept:exchange",
+      "type": "concept",
+      "label": "Intercambio",
+      "semantic_token": "SEM:exchange"
+    },
+    {
+      "id": "concept:federalism",
+      "type": "concept",
+      "label": "Federalismo",
+      "semantic_token": "SEM:federalism"
+    },
+    {
+      "id": "concept:feminism",
+      "type": "concept",
+      "label": "Feminismo",
+      "semantic_token": "SEM:feminism"
+    },
+    {
+      "id": "concept:freedom",
+      "type": "concept",
+      "label": "Libertad",
+      "semantic_token": "SEM:freedom"
+    },
+    {
+      "id": "concept:gender",
+      "type": "concept",
+      "label": "Género",
+      "semantic_token": "SEM:gender"
+    },
+    {
+      "id": "concept:hierarchy",
+      "type": "concept",
+      "label": "Jerarquía",
+      "semantic_token": "SEM:hierarchy"
+    },
+    {
+      "id": "concept:justice",
+      "type": "concept",
+      "label": "Justicia",
+      "semantic_token": "SEM:justice"
+    },
+    {
+      "id": "concept:labor",
+      "type": "concept",
+      "label": "Trabajo",
+      "semantic_token": "SEM:labor"
+    },
+    {
+      "id": "concept:law",
+      "type": "concept",
+      "label": "Derecho y ley",
+      "semantic_token": "SEM:law"
+    },
+    {
+      "id": "concept:logic",
+      "type": "concept",
+      "label": "Lógica",
+      "semantic_token": "SEM:logic"
+    },
+    {
+      "id": "concept:materialism",
+      "type": "concept",
+      "label": "Materialismo",
+      "semantic_token": "SEM:materialism"
+    },
+    {
+      "id": "concept:method",
+      "type": "concept",
+      "label": "Método",
+      "semantic_token": "SEM:method"
+    },
+    {
+      "id": "concept:mutual_aid",
+      "type": "concept",
+      "label": "Apoyo mutuo",
+      "semantic_token": "SEM:mutual_aid"
+    },
+    {
+      "id": "concept:mutualism",
+      "type": "concept",
+      "label": "Mutualismo",
+      "semantic_token": "SEM:mutualism"
+    },
+    {
+      "id": "concept:nationalism",
+      "type": "concept",
+      "label": "Nacionalismo",
+      "semantic_token": "SEM:nationalism"
+    },
+    {
+      "id": "concept:needs",
+      "type": "concept",
+      "label": "Necesidades",
+      "semantic_token": "SEM:needs"
+    },
+    {
+      "id": "concept:political_economy",
+      "type": "concept",
+      "label": "Economía política",
+      "semantic_token": "SEM:political_economy"
+    },
+    {
+      "id": "concept:possession",
+      "type": "concept",
+      "label": "Posesión",
+      "semantic_token": "SEM:possession"
+    },
+    {
+      "id": "concept:prisons",
+      "type": "concept",
+      "label": "Prisiones",
+      "semantic_token": "SEM:prisons"
+    },
+    {
+      "id": "concept:production",
+      "type": "concept",
+      "label": "Producción",
+      "semantic_token": "SEM:production"
+    },
+    {
+      "id": "concept:property",
+      "type": "concept",
+      "label": "Propiedad",
+      "semantic_token": "SEM:property"
+    },
+    {
+      "id": "concept:reasoning",
+      "type": "concept",
+      "label": "Razonamiento",
+      "semantic_token": "SEM:reasoning"
+    },
+    {
+      "id": "concept:reliability",
+      "type": "concept",
+      "label": "Fiabilidad",
+      "semantic_token": "SEM:reliability"
+    },
+    {
+      "id": "concept:religion",
+      "type": "concept",
+      "label": "Religión",
+      "semantic_token": "SEM:religion"
+    },
+    {
+      "id": "concept:revolution",
+      "type": "concept",
+      "label": "Revolución",
+      "semantic_token": "SEM:revolution"
+    },
+    {
+      "id": "concept:science",
+      "type": "concept",
+      "label": "Ciencia",
+      "semantic_token": "SEM:science"
+    },
+    {
+      "id": "concept:self_organization",
+      "type": "concept",
+      "label": "Autoorganización",
+      "semantic_token": "SEM:self_organization"
+    },
+    {
+      "id": "concept:sociability",
+      "type": "concept",
+      "label": "Sociabilidad",
+      "semantic_token": "SEM:sociability"
+    },
+    {
+      "id": "concept:software_testing",
+      "type": "concept",
+      "label": "Pruebas de software",
+      "semantic_token": "SEM:software_testing"
+    },
+    {
+      "id": "concept:solidarity",
+      "type": "concept",
+      "label": "Solidaridad",
+      "semantic_token": "SEM:solidarity"
+    },
+    {
+      "id": "concept:state",
+      "type": "concept",
+      "label": "Estado",
+      "semantic_token": "SEM:state"
+    },
+    {
+      "id": "concept:systems",
+      "type": "concept",
+      "label": "Sistemas",
+      "semantic_token": "SEM:systems"
+    },
+    {
+      "id": "library:minironin-core",
+      "type": "library",
+      "label": "MINIRONIN core and curated behavior",
+      "project": "MINIRONIN"
+    },
+    {
+      "id": "library:prodatphil",
+      "type": "library",
+      "label": "PRODATPHIL science and logic",
+      "project": "MINIRONIN"
+    },
+    {
+      "id": "library:heretic",
+      "type": "library",
+      "label": "HERETIC inherited corpus",
+      "project": "HERETIC-RONIN"
+    },
+    {
+      "id": "library:ronin-papers",
+      "type": "library",
+      "label": "RONIN Papers",
+      "project": "RONIN-IA"
+    },
+    {
+      "id": "library:anarchist-classics",
+      "type": "library",
+      "label": "Anarchist primary texts",
+      "project": "MINIRONIN"
+    },
+    {
+      "id": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
+      "type": "work",
+      "label": "What Is Property? (First Memoir)",
+      "author": "Pierre-Joseph Proudhon",
+      "rights_status": "approved_for_spain_training"
+    },
+    {
+      "id": "work:BAKUNIN-GOD-AND-THE-STATE-EN",
+      "type": "work",
+      "label": "God and the State",
+      "author": "Mikhail Bakunin",
+      "rights_status": "approved_for_spain_training"
+    },
+    {
+      "id": "work:KROPOTKIN-CONQUEST-OF-BREAD-EN",
+      "type": "work",
+      "label": "The Conquest of Bread",
+      "author": "Peter Kropotkin",
+      "rights_status": "rights_review_required"
+    },
+    {
+      "id": "work:GOLDMAN-ANARCHISM-AND-OTHER-ESSAYS-EN",
+      "type": "work",
+      "label": "Anarchism and Other Essays",
+      "author": "Emma Goldman",
+      "rights_status": "rights_review_required"
+    },
+    {
+      "id": "work:KROPOTKIN-MUTUAL-AID-EN",
+      "type": "work",
+      "label": "Mutual Aid: A Factor of Evolution",
+      "author": "Peter Kropotkin",
+      "rights_status": "approved_for_spain_training"
+    }
+  ],
+  "edges": [
+    {
+      "source": "concept:anarchism",
+      "target": "concept:authority",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:anarchism",
+      "target": "concept:state",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:anarchism",
+      "target": "concept:self_organization",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:anarchism",
+      "target": "concept:federalism",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:anarchism",
+      "target": "concept:mutual_aid",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:authority",
+      "target": "concept:state",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:authority",
+      "target": "concept:hierarchy",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:authority",
+      "target": "concept:freedom",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:authority",
+      "target": "concept:law",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:ci_cd",
+      "target": "concept:engineering",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:ci_cd",
+      "target": "concept:software_testing",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:ci_cd",
+      "target": "concept:reliability",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:community",
+      "target": "concept:cooperation",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:community",
+      "target": "concept:federalism",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:community",
+      "target": "concept:mutual_aid",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:community",
+      "target": "concept:self_organization",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:cooperation",
+      "target": "concept:mutual_aid",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:cooperation",
+      "target": "concept:solidarity",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:cooperation",
+      "target": "concept:self_organization",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:decentralization",
+      "target": "concept:federalism",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:decentralization",
+      "target": "concept:self_organization",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:distribution",
+      "target": "concept:needs",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:distribution",
+      "target": "concept:production",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:distribution",
+      "target": "concept:political_economy",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:education",
+      "target": "concept:science",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:education",
+      "target": "concept:freedom",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:education",
+      "target": "concept:self_organization",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:engineering",
+      "target": "concept:systems",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:engineering",
+      "target": "concept:reliability",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:epistemology",
+      "target": "concept:evidence",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:epistemology",
+      "target": "concept:reasoning",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:evidence",
+      "target": "concept:science",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:evolution",
+      "target": "concept:science",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:evolution",
+      "target": "concept:mutual_aid",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:exchange",
+      "target": "concept:property",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:exchange",
+      "target": "concept:labor",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:exchange",
+      "target": "concept:political_economy",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:federalism",
+      "target": "concept:self_organization",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:federalism",
+      "target": "concept:mutualism",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:feminism",
+      "target": "concept:freedom",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:feminism",
+      "target": "concept:solidarity",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:feminism",
+      "target": "concept:gender",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:freedom",
+      "target": "concept:law",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:gender",
+      "target": "concept:solidarity",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:hierarchy",
+      "target": "concept:state",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:justice",
+      "target": "concept:law",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:justice",
+      "target": "concept:property",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:labor",
+      "target": "concept:property",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:labor",
+      "target": "concept:production",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:law",
+      "target": "concept:state",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:law",
+      "target": "concept:property",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:logic",
+      "target": "concept:reasoning",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:materialism",
+      "target": "concept:science",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:materialism",
+      "target": "concept:political_economy",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:method",
+      "target": "concept:science",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:mutual_aid",
+      "target": "concept:solidarity",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:mutualism",
+      "target": "concept:property",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:nationalism",
+      "target": "concept:state",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:needs",
+      "target": "concept:production",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:political_economy",
+      "target": "concept:property",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:political_economy",
+      "target": "concept:production",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:possession",
+      "target": "concept:property",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:prisons",
+      "target": "concept:state",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:religion",
+      "target": "concept:state",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "concept:revolution",
+      "target": "concept:state",
+      "type": "related_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:minironin-core",
+      "target": "concept:ci_cd",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:minironin-core",
+      "target": "concept:engineering",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:minironin-core",
+      "target": "concept:epistemology",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:minironin-core",
+      "target": "concept:reasoning",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:minironin-core",
+      "target": "concept:reliability",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:minironin-core",
+      "target": "concept:software_testing",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:prodatphil",
+      "target": "concept:epistemology",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:prodatphil",
+      "target": "concept:evidence",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:prodatphil",
+      "target": "concept:logic",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:prodatphil",
+      "target": "concept:method",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:prodatphil",
+      "target": "concept:reasoning",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:prodatphil",
+      "target": "concept:science",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:heretic",
+      "target": "concept:cooperation",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:heretic",
+      "target": "concept:engineering",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:heretic",
+      "target": "concept:reasoning",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:heretic",
+      "target": "concept:science",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:heretic",
+      "target": "concept:systems",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:ronin-papers",
+      "target": "concept:epistemology",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:ronin-papers",
+      "target": "concept:method",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:ronin-papers",
+      "target": "concept:reasoning",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:anarchism",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:authority",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:community",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:cooperation",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:decentralization",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:distribution",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:education",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:evolution",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:exchange",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:federalism",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:feminism",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:freedom",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:gender",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:hierarchy",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:justice",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:labor",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:law",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:materialism",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:mutual_aid",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:mutualism",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:nationalism",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:needs",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:political_economy",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:possession",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:prisons",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:production",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:property",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:religion",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:revolution",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:science",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:self_organization",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:sociability",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:solidarity",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "concept:state",
+      "type": "covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "library:heretic",
+      "type": "cross_library_semantic_overlap",
+      "weight": 0.054054,
+      "shared_concepts": [
+        "cooperation",
+        "science"
+      ]
+    },
+    {
+      "source": "library:anarchist-classics",
+      "target": "library:prodatphil",
+      "type": "cross_library_semantic_overlap",
+      "weight": 0.025641,
+      "shared_concepts": [
+        "science"
+      ]
+    },
+    {
+      "source": "library:heretic",
+      "target": "library:minironin-core",
+      "type": "cross_library_semantic_overlap",
+      "weight": 0.222222,
+      "shared_concepts": [
+        "engineering",
+        "reasoning"
+      ]
+    },
+    {
+      "source": "library:heretic",
+      "target": "library:prodatphil",
+      "type": "cross_library_semantic_overlap",
+      "weight": 0.222222,
+      "shared_concepts": [
+        "reasoning",
+        "science"
+      ]
+    },
+    {
+      "source": "library:heretic",
+      "target": "library:ronin-papers",
+      "type": "cross_library_semantic_overlap",
+      "weight": 0.142857,
+      "shared_concepts": [
+        "reasoning"
+      ]
+    },
+    {
+      "source": "library:minironin-core",
+      "target": "library:prodatphil",
+      "type": "cross_library_semantic_overlap",
+      "weight": 0.2,
+      "shared_concepts": [
+        "epistemology",
+        "reasoning"
+      ]
+    },
+    {
+      "source": "library:minironin-core",
+      "target": "library:ronin-papers",
+      "type": "cross_library_semantic_overlap",
+      "weight": 0.285714,
+      "shared_concepts": [
+        "epistemology",
+        "reasoning"
+      ]
+    },
+    {
+      "source": "library:prodatphil",
+      "target": "library:ronin-papers",
+      "type": "cross_library_semantic_overlap",
+      "weight": 0.5,
+      "shared_concepts": [
+        "epistemology",
+        "method",
+        "reasoning"
+      ]
+    },
+    {
+      "source": "concept:anarchism",
+      "target": "concept:ci_cd",
+      "type": "cross_library_analogy_not_equivalence",
+      "weight": 0.5,
+      "note": "Descentralización y coordinación distribuida pueden compararse; no implican identidad entre teoría política y arquitectura técnica."
+    },
+    {
+      "source": "concept:cooperation",
+      "target": "concept:engineering",
+      "type": "cross_domain_bridge",
+      "weight": 0.5,
+      "note": "Cooperación como patrón social y coordinación de componentes; analogía, no equivalencia."
+    },
+    {
+      "source": "concept:epistemology",
+      "target": "concept:anarchism",
+      "type": "cross_domain_bridge",
+      "weight": 0.5,
+      "note": "Crítica de autoridad y evaluación de justificaciones; no asumir que una postura política determina la verdad."
+    },
+    {
+      "source": "concept:science",
+      "target": "concept:anarchism",
+      "type": "historical_theme",
+      "weight": 0.5,
+      "note": "Materialismo y educación científica aparecen en autores clásicos; tratar como posiciones históricas debatibles."
+    },
+    {
+      "source": "concept:self_organization",
+      "target": "concept:systems",
+      "type": "cross_domain_bridge",
+      "weight": 0.5,
+      "note": "Autoorganización como concepto común en sistemas sociales y técnicos."
+    },
+    {
+      "source": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
+      "target": "library:anarchist-classics",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
+      "target": "concept:authority",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
+      "target": "concept:exchange",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
+      "target": "concept:federalism",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
+      "target": "concept:justice",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
+      "target": "concept:labor",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
+      "target": "concept:law",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
+      "target": "concept:mutualism",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
+      "target": "concept:political_economy",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
+      "target": "concept:possession",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:PROUDHON-WHAT-IS-PROPERTY-EN",
+      "target": "concept:property",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:BAKUNIN-GOD-AND-THE-STATE-EN",
+      "target": "library:anarchist-classics",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:BAKUNIN-GOD-AND-THE-STATE-EN",
+      "target": "concept:authority",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:BAKUNIN-GOD-AND-THE-STATE-EN",
+      "target": "concept:freedom",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:BAKUNIN-GOD-AND-THE-STATE-EN",
+      "target": "concept:hierarchy",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:BAKUNIN-GOD-AND-THE-STATE-EN",
+      "target": "concept:materialism",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:BAKUNIN-GOD-AND-THE-STATE-EN",
+      "target": "concept:religion",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:BAKUNIN-GOD-AND-THE-STATE-EN",
+      "target": "concept:revolution",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:BAKUNIN-GOD-AND-THE-STATE-EN",
+      "target": "concept:science",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:BAKUNIN-GOD-AND-THE-STATE-EN",
+      "target": "concept:self_organization",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:BAKUNIN-GOD-AND-THE-STATE-EN",
+      "target": "concept:state",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-CONQUEST-OF-BREAD-EN",
+      "target": "library:anarchist-classics",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-CONQUEST-OF-BREAD-EN",
+      "target": "concept:cooperation",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-CONQUEST-OF-BREAD-EN",
+      "target": "concept:decentralization",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-CONQUEST-OF-BREAD-EN",
+      "target": "concept:distribution",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-CONQUEST-OF-BREAD-EN",
+      "target": "concept:mutual_aid",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-CONQUEST-OF-BREAD-EN",
+      "target": "concept:needs",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-CONQUEST-OF-BREAD-EN",
+      "target": "concept:production",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-CONQUEST-OF-BREAD-EN",
+      "target": "concept:self_organization",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-CONQUEST-OF-BREAD-EN",
+      "target": "concept:solidarity",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:GOLDMAN-ANARCHISM-AND-OTHER-ESSAYS-EN",
+      "target": "library:anarchist-classics",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:GOLDMAN-ANARCHISM-AND-OTHER-ESSAYS-EN",
+      "target": "concept:authority",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:GOLDMAN-ANARCHISM-AND-OTHER-ESSAYS-EN",
+      "target": "concept:education",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:GOLDMAN-ANARCHISM-AND-OTHER-ESSAYS-EN",
+      "target": "concept:feminism",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:GOLDMAN-ANARCHISM-AND-OTHER-ESSAYS-EN",
+      "target": "concept:freedom",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:GOLDMAN-ANARCHISM-AND-OTHER-ESSAYS-EN",
+      "target": "concept:gender",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:GOLDMAN-ANARCHISM-AND-OTHER-ESSAYS-EN",
+      "target": "concept:nationalism",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:GOLDMAN-ANARCHISM-AND-OTHER-ESSAYS-EN",
+      "target": "concept:prisons",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:GOLDMAN-ANARCHISM-AND-OTHER-ESSAYS-EN",
+      "target": "concept:solidarity",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-MUTUAL-AID-EN",
+      "target": "library:anarchist-classics",
+      "type": "member_of_library",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-MUTUAL-AID-EN",
+      "target": "concept:community",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-MUTUAL-AID-EN",
+      "target": "concept:cooperation",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-MUTUAL-AID-EN",
+      "target": "concept:evolution",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-MUTUAL-AID-EN",
+      "target": "concept:federalism",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-MUTUAL-AID-EN",
+      "target": "concept:mutual_aid",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-MUTUAL-AID-EN",
+      "target": "concept:self_organization",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-MUTUAL-AID-EN",
+      "target": "concept:sociability",
+      "type": "work_covers_concept",
+      "weight": 1
+    },
+    {
+      "source": "work:KROPOTKIN-MUTUAL-AID-EN",
+      "target": "concept:solidarity",
+      "type": "work_covers_concept",
+      "weight": 1
+    }
+  ],
+  "library_concepts": {
+    "minironin-core": [
+      "ci_cd",
+      "engineering",
+      "epistemology",
+      "reasoning",
+      "reliability",
+      "software_testing"
+    ],
+    "prodatphil": [
+      "epistemology",
+      "evidence",
+      "logic",
+      "method",
+      "reasoning",
+      "science"
+    ],
+    "heretic": [
+      "cooperation",
+      "engineering",
+      "reasoning",
+      "science",
+      "systems"
+    ],
+    "ronin-papers": [
+      "epistemology",
+      "method",
+      "reasoning"
+    ],
+    "anarchist-classics": [
+      "anarchism",
+      "authority",
+      "community",
+      "cooperation",
+      "decentralization",
+      "distribution",
+      "education",
+      "evolution",
+      "exchange",
+      "federalism",
+      "feminism",
+      "freedom",
+      "gender",
+      "hierarchy",
+      "justice",
+      "labor",
+      "law",
+      "materialism",
+      "mutual_aid",
+      "mutualism",
+      "nationalism",
+      "needs",
+      "political_economy",
+      "possession",
+      "prisons",
+      "production",
+      "property",
+      "religion",
+      "revolution",
+      "science",
+      "self_organization",
+      "sociability",
+      "solidarity",
+      "state"
+    ]
+  },
+  "counts": {
+    "libraries": 5,
+    "concepts": 44,
+    "nodes": 54,
+    "edges": 180,
+    "semantic_tokens": 44
+  }
+}
