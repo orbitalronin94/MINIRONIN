@@ -114,3 +114,21 @@ Se ha añadido un benchmark independiente para comparar el mismo checkpoint MINI
 ## RAG unificado de todas las bibliotecas
 
 El benchmark anterior es una prueba de concepto, no el índice completo. La siguiente fase define un RAG multilingüe común para las bibliotecas admitidas: registro de fuentes, extracción y deduplicación con procedencia, embeddings multilingües, recuperación híbrida vectorial + BM25, citas y adaptadores compartidos por Transformer y Mamba. El índice será externo a los pesos y actualizable sin reentrenar. Se excluyen holdouts, checkpoints, secretos y logs brutos. Diseño y fases: [RAG unificado de bibliotecas](docs/UNIFIED-RAG-LIBRARIES.md).
+
+
+## RAG unificado y asociaciones Small-World
+
+La rama de desarrollo incorpora un constructor RAG SQLite con FTS5/BM25 y embeddings multilingües E5 opcionales. Conserva SHA-256, rutas, dominios, licencias declaradas, etiquetas epistemológicas, localizadores y procedencias de documentos/fragmentos deduplicados. Admite Markdown, texto, RST, JSON/JSONL, CSV/TSV, HTML/XML, PDF y DOCX.
+
+- Registro: data/rag/sources.json
+- Constructor: scripts/build_rag_index.py
+- Consulta híbrida: scripts/rag_retrieve.py
+- Workflow manual: .github/workflows/build-rag-index.yml
+- Dependencias aisladas: requirements-rag.txt
+- Pruebas: tests/test_rag_index.py
+
+El workflow materializa los ocho datasets conductuales (400.000 ejemplos) y el lexicón (50.000) antes de indexar. Puede incorporar el artefacto HERETIC preaprobado y RONIN-IA/data/datasets; deduplica documentos y fragmentos sin sumar inventarios solapados. El índice se publica como artefacto de Actions, no como binario versionado en Git.
+
+**Límites:** los datos World Bank y el generador de conversaciones de 10M no están materializados en esta rama como ficheros indexables; no se cuentan ni se simula su presencia. La disponibilidad del artefacto HERETIC de la ejecución 42382055693 debe verificarse al ejecutar el workflow. Las restricciones de licencia se conservan como metadatos y el uso sigue siendo interno cuando así lo exige cada fuente.
+
+La primera prueba Small-World genera prompts reproducibles de puentes conceptuales, sin respuestas inventadas ni entrenamiento automático: docs/SMALL-WORLD-ASSOCIATIONS.md.
