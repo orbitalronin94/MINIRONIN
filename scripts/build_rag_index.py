@@ -33,32 +33,35 @@ def read(path):
      def __init__(self):super().__init__();self.parts=[]
      def handle_data(self,d):self.parts.append(d)
     p=P();p.feed(raw);raw="\n".join(p.parts)
-   yield clean(raw),"text"
+   yield clean(raw),"text",{}
   elif ext==".jsonl":
    with path.open(encoding="utf-8",errors="replace") as f:
     for n,line in enumerate(f,1):
      if line.strip():
-      try:x=clean(extract(json.loads(line)))
+      try:obj=json.loads(line);x=clean(extract(obj))
       except json.JSONDecodeError:continue
-      if x:yield x,f"jsonl:{n}"
+      if x:
+       keys=("source","source_file","license","url","domain","tag","fact_id","reference","language","epistemic","year","unit","country","indicator","doi","author")
+       meta={k:obj[k] for k in keys if k in obj and isinstance(obj[k],(str,int,float,bool))}
+       yield x,f"jsonl:{n}",meta
   elif ext==".json":
    x=clean(extract(json.loads(path.read_text(encoding="utf-8",errors="replace"))))
-   if x:yield x,"json"
+   if x:yield x,"json",{}
   elif ext in {".csv",".tsv"}:
    with path.open(encoding="utf-8",errors="replace",newline="") as f:
     for n,row in enumerate(csv.DictReader(f,delimiter="\t" if ext==".tsv" else ","),1):
      x=clean("\n".join(f"{k}: {v}" for k,v in row.items() if v not in (None,"")))
-     if x:yield x,f"row:{n}"
+     if x:yield x,f"row:{n}",{}
   elif ext==".pdf":
    import fitz
    doc=fitz.open(path)
    for n,page in enumerate(doc,1):
     x=clean(page.get_text())
-    if x:yield x,f"page:{n}"
+    if x:yield x,f"page:{n}",{}
   elif ext==".docx":
    from docx import Document
    x=clean("\n".join(p.text for p in Document(path).paragraphs))
-   if x:yield x,"docx"
+   if x:yield x,"docx",{}
  except (OSError,UnicodeError,json.JSONDecodeError,ImportError) as e:print(f"WARN {path}: {e}",file=sys.stderr)
 def chunk(text,target,overlap,minimum):
  paras=[x.strip() for x in re.split(r"\n\s*\n",text) if x.strip()];out=[];cur=""
@@ -96,7 +99,7 @@ def main():
  if a.output.exists():a.output.unlink()
  db=sqlite3.connect(a.output);db.execute("PRAGMA journal_mode=WAL");db.executescript("""
  CREATE TABLE documents(document_id TEXT PRIMARY KEY,source_id TEXT,project TEXT,relative_path TEXT,document_sha256 TEXT,license TEXT,domain TEXT,language TEXT,epistemic TEXT,redistribution INTEGER,locator TEXT);
- CREATE TABLE document_sources(document_id TEXT,source_id TEXT,project TEXT,relative_path TEXT,license TEXT,domain TEXT,language TEXT,epistemic TEXT,redistribution INTEGER,PRIMARY KEY(document_id,source_id,relative_path));\n CREATE TABLE chunks(chunk_id TEXT PRIMARY KEY,document_id TEXT,chunk_index INTEGER,locator TEXT,text TEXT,text_sha256 TEXT UNIQUE,embedding BLOB,embedding_model TEXT);
+ CREATE TABLE document_sources(document_id TEXT,source_id TEXT,project TEXT,relative_path TEXT,license TEXT,domain TEXT,language TEXT,epistemic TEXT,redistribution INTEGER,PRIMARY KEY(document_id,source_id,relative_path));\n CREATE TABLE chunks(chunk_id TEXT PRIMARY KEY,document_id TEXT,chunk_index INTEGER,locator TEXT,text TEXT,text_sha256 TEXT UNIQUE,record_metadata TEXT,embedding BLOB,embedding_model TEXT);
  CREATE VIRTUAL TABLE chunks_fts USING fts5(chunk_id UNINDEXED,text,tokenize='unicode61 remove_diacritics 2');
  CREATE INDEX idx_chunks_doc ON chunks(document_id);\n CREATE TABLE chunk_sources(chunk_id TEXT,document_id TEXT,source_id TEXT,relative_path TEXT,locator TEXT,PRIMARY KEY(chunk_id,document_id,source_id,relative_path,locator));""")
  pending=[];docs=dupd=chunks=dupc=0;t0=time.time()
@@ -107,9 +110,9 @@ def main():
   if embedder:
    import numpy as np
    vec=embedder.encode([ecfg["document_prefix"]+r[4] for r in pending],batch_size=a.batch_size,convert_to_numpy=True,normalize_embeddings=True,show_progress_bar=False)
-  for i,(cid,did,ix,loc,txt,th,source_id,relative_path) in enumerate(pending):
+  for i,(cid,did,ix,loc,txt,th,source_id,relative_path,record_metadata) in enumerate(pending):
    blob=vec[i].astype("float16").tobytes() if vec is not None else None
-   cur=db.execute("INSERT OR IGNORE INTO chunks VALUES(?,?,?,?,?,?,?,?)",(cid,did,ix,loc,txt,th,blob,ecfg["model"] if blob is not None else None))
+   cur=db.execute("INSERT OR IGNORE INTO chunks VALUES(?,?,?,?,?,?,?,?,?)",(cid,did,ix,loc,txt,th,record_metadata,blob,ecfg["model"] if blob is not None else None))
    if cur.rowcount:
     actual_cid=cid
     db.execute("INSERT INTO chunks_fts(chunk_id,text) VALUES(?,?)",(cid,txt));chunks+=1
@@ -133,9 +136,9 @@ def main():
     else:dupd+=1
     db.execute("INSERT OR IGNORE INTO document_sources VALUES(?,?,?,?,?,?,?,?,?)",(did,src["id"],src.get("project","unknown"),rel,src.get("license","unknown"),src.get("domain","unknown"),src.get("language","und"),src.get("epistemic","unknown"),int(bool(src.get("redistribution",False)))))
     file_chunk_idx=0
-    for loc,txt in read(path):
+    for loc,txt,record_meta in read(path):
      for chunk_text in chunk(txt,cfg["target_chars"],cfg["overlap_chars"],cfg["min_chars"]):
-      ix=file_chunk_idx;file_chunk_idx+=1;th=sha(chunk_text.encode());cid=sha((did+":"+str(ix)+":"+th).encode());pending.append((cid,did,ix,loc,chunk_text,th,src["id"],rel))
+      ix=file_chunk_idx;file_chunk_idx+=1;th=sha(chunk_text.encode());cid=sha((did+":"+str(ix)+":"+th).encode());pending.append((cid,did,ix,loc,chunk_text,th,src["id"],rel,json.dumps(record_meta,ensure_ascii=False,sort_keys=True)))
       if len(pending)>=a.batch_size:flush()
    except OSError as e:print(f"WARN skipped {path}: {e}",file=sys.stderr)
  flush()
