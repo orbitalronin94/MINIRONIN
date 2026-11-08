@@ -43,7 +43,7 @@ def as_record(obj, path, line_no):
             for key in ("text","content","body","document","passage"):
                 if isinstance(obj.get(key),str) and obj[key].strip(): preferred.append(obj[key].strip())
             body="\n".join(preferred) if preferred else "\n".join(strings(obj))
-        metadata=obj
+        metadata={k:v for k,v in obj.items() if k not in {"text","content","body","document","passage"}}
     else:
         body="\n".join(strings(obj)); metadata={"raw_type":type(obj).__name__}
     if not body.strip(): body=json.dumps(obj,ensure_ascii=False,sort_keys=True)
@@ -88,7 +88,7 @@ def read_source(path):
         yield from read_delimited(path)
     elif suffix in TEXT_EXT:
         text=path.read_text(encoding="utf-8",errors="replace").strip()
-        if text: yield as_record({"text":text,"id":path.name,"source":str(path),"license":"See source catalogue"},path,1)
+        if text: yield {"id":path.name,"source_id":str(path),"domain":path.parent.name,"source":str(path),"license":"See source catalogue; provenance retained","synthetic":False,"dataset":path.name,"text":text,"metadata":{"file_name":path.name}}
 
 def main():
     ap=argparse.ArgumentParser()
