@@ -11,7 +11,7 @@
   "chunking": {
     "target_chars": 1400,
     "overlap_chars": 180,
-    "min_chars": 120
+    "min_chars": 24
   },
   "sources": [
     {
