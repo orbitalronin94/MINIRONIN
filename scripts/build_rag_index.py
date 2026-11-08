@@ -112,7 +112,7 @@ def main():
  CREATE TABLE documents(document_id TEXT PRIMARY KEY,source_id TEXT,project TEXT,relative_path TEXT,document_sha256 TEXT,license TEXT,domain TEXT,language TEXT,epistemic TEXT,redistribution INTEGER,locator TEXT);
  CREATE TABLE document_sources(document_id TEXT,source_id TEXT,project TEXT,relative_path TEXT,license TEXT,domain TEXT,language TEXT,epistemic TEXT,redistribution INTEGER,PRIMARY KEY(document_id,source_id,relative_path));\n CREATE TABLE chunks(chunk_id TEXT PRIMARY KEY,document_id TEXT,chunk_index INTEGER,locator TEXT,text TEXT,text_sha256 TEXT UNIQUE,record_metadata TEXT,embedding BLOB,embedding_model TEXT);
  CREATE VIRTUAL TABLE chunks_fts USING fts5(chunk_id UNINDEXED,text,tokenize='unicode61 remove_diacritics 2');
- CREATE INDEX idx_chunks_doc ON chunks(document_id);\n CREATE TABLE chunk_sources(chunk_id TEXT,document_id TEXT,source_id TEXT,relative_path TEXT,locator TEXT,PRIMARY KEY(chunk_id,document_id,source_id,relative_path,locator));""")
+ CREATE INDEX idx_chunks_doc ON chunks(document_id);\n CREATE TABLE chunk_sources(chunk_id TEXT,document_id TEXT,source_id TEXT,relative_path TEXT,locator TEXT,record_metadata TEXT,PRIMARY KEY(chunk_id,document_id,source_id,relative_path,locator));""")
  pending=[];docs=dupd=chunks=dupc=0;t0=time.time()
  def flush():
   nonlocal chunks,dupc
@@ -130,7 +130,7 @@ def main():
    else:
     dupc+=1
     actual_cid=db.execute("SELECT chunk_id FROM chunks WHERE text_sha256=?",(th,)).fetchone()[0]
-   db.execute("INSERT OR IGNORE INTO chunk_sources VALUES(?,?,?,?,?)",(actual_cid,did,source_id,relative_path,loc))
+   db.execute("INSERT OR IGNORE INTO chunk_sources VALUES(?,?,?,?,?,?)",(actual_cid,did,source_id,relative_path,loc,record_metadata))
   db.commit();pending.clear()
  for src,base in roots:
   if not base.exists():print(f"WARN missing source {src['id']}: {base}",file=sys.stderr);continue
