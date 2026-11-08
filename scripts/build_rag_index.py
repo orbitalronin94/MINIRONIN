@@ -5,7 +5,12 @@ import argparse,csv,hashlib,json,re,sqlite3,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 FIELDS=("text","content","body","document","passage","question","answer","context","prompt","completion","response","title","summary","abstract","messages","conversations","instruction","input","output","chosen","rejected","system","user","assistant")
-def sha(b):return hashlib.sha256(b).hexdigest()\ndef sha_file(path):\n h=hashlib.sha256()\n with Path(path).open("rb") as f:\n  for block in iter(lambda:f.read(1024*1024),b""):h.update(block)\n return h.hexdigest()
+def sha(b):return hashlib.sha256(b).hexdigest()
+def sha_file(path):
+ h=hashlib.sha256()
+ with Path(path).open("rb") as f:
+  for block in iter(lambda:f.read(1024*1024),b""):h.update(block)
+ return h.hexdigest()
 def clean(s):
  s=s.replace("\x00"," ");s=re.sub(r"[ \t]+"," ",s);s=re.sub(r"\n{3,}","\n\n",s);return s.strip()
 def extract(v,depth=0):
