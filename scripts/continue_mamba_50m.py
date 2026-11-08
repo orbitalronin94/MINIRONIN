@@ -212,7 +212,7 @@ def add_rag_docs(train_docs, validation, rag_docs):
             tokens = rng.choice(eligible)
             offset = rng.randrange(0, len(tokens) - eval_length)
             batches.append(torch.tensor([tokens[offset:offset + eval_length + 1]], dtype=torch.long))
-        validation[domain].extend(batches)
+        validation.setdefault(domain, []).extend(batches)
 
     return {
         "added_train_chunks_by_domain": dict(added_train),
