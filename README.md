@@ -405,3 +405,7 @@ El workflow publica `minironin-unified-train-corpus-<run_id>`, con:
 - `SHA256SUMS`: integridad del artefacto.
 
 La construcción no modifica el checkpoint MAIN, no cambia el tokenizador y **no inicia entrenamiento**. El artefacto debe pasar revisión de recuentos, procedencia y calidad antes de usarlo en un ciclo de entrenamiento.
+
+### Prueba de tics ronin (solo evaluación)
+
+`benchmarks/ronin-tic-holdout-v1.jsonl` contiene 55 preguntas fuera del corpus: 40 preguntas neutras para medir contaminación estilística espontánea y 15 preguntas sobre cultura/historia japonesa para medir recuerdo temático. No se incorpora al artefacto ni al entrenamiento. Debe ejecutarse con el mismo checkpoint y configuración antes y después del entrenamiento, comparando exactitud temática y aparición no solicitada de marcadores como «rōnin», «samurái», «katana», «bushidō», «shōgun», «honor» o «dojo» en respuestas neutras.
