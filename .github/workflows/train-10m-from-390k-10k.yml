@@ -156,7 +156,7 @@ jobs:
             --steps 10000 \
             --threads 2 \
             --dataset-cache "$RUNNER_TEMP/minironin-10m-full-corpus-cache.pt" \
-            --total-steps 400000 \
+            --total-steps 450000 \
             --schedule-start-step 390000 \
             --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
 
