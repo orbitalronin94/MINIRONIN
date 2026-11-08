@@ -1,0 +1,175 @@
+name: MINIRONIN — 150k legacy-vocabulary continuation from 500k
+
+on:
+  workflow_run:
+    workflows: ["MINIRONIN — construir corpus unificado de entrenamiento"]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: minironin-legacy-vocab-150k-from-500k
+  cancel-in-progress: false
+
+jobs:
+  train:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PARENT_TAG: minironin-transformer-10m-step-500000-candidate
+      PARENT_SHA256: 80664596095e9ce4d1757b1ca379bbccfa96ad03f67936e70dc39487d8e8fe60
+      START_STEP: "500000"
+      TOTAL_STEPS: "650000"
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v4
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Descargar el artefacto único con todas las bibliotecas admitidas
+        uses: actions/download-artifact@v4
+        with:
+          name: minironin-unified-train-corpus-${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ github.event.workflow_run.id }}
+          path: unified-train
+
+      - name: Verificar volumen, integridad y cobertura del corpus
+        run: |
+          set -euo pipefail
+          test -s unified-train/train.jsonl.gz
+          test -s unified-train/sources.json
+          test -s unified-train/quality-report.json
+          test -s unified-train/SHA256SUMS
+          (cd unified-train && sha256sum -c SHA256SUMS)
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path("unified-train/quality-report.json").read_text())
+          sources=json.loads(Path("unified-train/sources.json").read_text())
+          rows=int(report["record_count"])
+          synthetic=sum(int(v) for v in report["synthetic_and_source_counts"].values() if False)
+          counts=report.get("synthetic_and_source_counts",{})
+          synthetic=int(counts.get("synthetic",0))
+          datasets=report.get("datasets",{})
+          assert rows >= 2_850_000, f"Unified corpus unexpectedly small: {rows:,} rows"
+          assert synthetic >= 2_000_000, f"Synthetic rows missing: {synthetic:,}"
+          assert len(datasets) >= 58, f"Expected 58 synthetic/curated datasets, found {len(datasets)}"
+          assert sources.get("record_count",rows) == rows
+          print(json.dumps({"records":rows,"synthetic_records":synthetic,"datasets":len(datasets),
+              "unique_normalized_texts":report.get("unique_normalized_texts"),
+              "duplicates_reported":report.get("exact_or_normalized_duplicates_reported_not_removed"),
+              "source_files":len(sources.get("sources",[]))},ensure_ascii=False,indent=2))
+          PY
+
+      - name: Descargar y verificar checkpoint base de 500k (bytes UTF-8 + EOS)
+        run: |
+          set -euo pipefail
+          mkdir -p train-150k/parent
+          gh release download "$PARENT_TAG" --repo orbitalronin94/MINIRONIN --pattern "checkpoint-500000.pt" --dir train-150k/parent
+          echo "$PARENT_SHA256  train-150k/parent/checkpoint-500000.pt" | sha256sum -c -
+          python - <<'PY'
+          import json, os, torch
+          path="train-150k/parent/checkpoint-500000.pt"
+          cp=torch.load(path,map_location="cpu",weights_only=False)
+          assert cp.get("completed_steps")==500000, cp.get("completed_steps")
+          assert cp.get("parameter_count")==9970176, cp.get("parameter_count")
+          assert cp.get("active_vocabulary")==257, cp.get("active_vocabulary")
+          assert "optimizer_state_dict" in cp
+          tokenization=cp.get("tokenization","UTF-8 bytes + EOS")
+          assert "byte" in tokenization.lower() or "utf-8" in tokenization.lower(), tokenization
+          groups=cp["optimizer_state_dict"].get("param_groups",[])
+          assert groups and 0<float(groups[0]["lr"])<=3e-4, groups
+          lr=float(groups[0]["lr"])
+          with open(os.environ["GITHUB_OUTPUT"],"a") as out:
+              out.write(f"parent_lr={lr:.12g}\\n")
+          print(json.dumps({"step":cp["completed_steps"],"parameters":cp["parameter_count"],
+              "active_vocabulary":cp["active_vocabulary"],"tokenization":tokenization,"optimizer_lr":lr},indent=2))
+          PY
+        id: parent
+
+      - name: Comprobar espacio e instalar PyTorch CPU
+        run: |
+          set -euo pipefail
+          df -h .
+          test "$(df --output=avail -k . | tail -1 | tr -d ' ')" -gt 8000000
+          python -m pip install --upgrade pip
+          python -m pip install numpy
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Entrenar 150k pasos con el corpus unificado; checkpoint cada 10k
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/train_long_run.py scripts/train_seed_tournament.py
+          input="train-150k/parent/checkpoint-500000.pt"
+          mkdir -p train-150k/checkpoints
+          for start in $(seq 500000 10000 640000); do
+            end=$((start + 10000))
+            echo "::group::Legacy tokenizer — steps $((start + 1))-$end"
+            python scripts/train_long_run.py \\
+              --unified-corpus unified-train/train.jsonl.gz \\
+              --input-checkpoint "$input" \\
+              --output-dir train-150k/current \\
+              --start-step "$start" \\
+              --steps 10000 \\
+              --threads 2 \\
+              --dataset-cache "$RUNNER_TEMP/minironin-unified-corpus-cache.pt" \\
+              --total-steps 650000 \\
+              --schedule-start-step 500000 \\
+              --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
+            printf -v padded "%06d" "$end"
+            checkpoint="train-150k/current/checkpoint-$padded.pt"
+            report="train-150k/current/report-$padded.json"
+            test -s "$checkpoint" && test -s "$report"
+            cp "$checkpoint" "train-150k/checkpoints/checkpoint-$end.pt"
+            cp "$report" "train-150k/checkpoints/report-$end.json"
+            sha256sum "train-150k/checkpoints/checkpoint-$end.pt" "train-150k/checkpoints/report-$end.json" > "train-150k/checkpoints/SHA256SUMS-$end"
+            gh release create "minironin-legacy-150k-step-$end" \\
+              "train-150k/checkpoints/checkpoint-$end.pt" \\
+              "train-150k/checkpoints/report-$end.json" \\
+              "train-150k/checkpoints/SHA256SUMS-$end" \\
+              --title "MINIRONIN legacy tokenizer — step $end" \\
+              --notes "10k segment in the 150k continuation from verified 500k checkpoint. Active vocabulary 257 (UTF-8 bytes + EOS). Unified admitted corpus; RONIN-IA excluded. Candidate only; independent holdout required."
+            input="$checkpoint"
+            echo "::endgroup::"
+          done
+
+      - name: Verificar y publicar candidato de 650k
+        run: |
+          set -euo pipefail
+          cp train-150k/current/checkpoint-650000.pt train-150k/checkpoint-650000.pt
+          cp train-150k/current/report-650000.json train-150k/report-650000.json
+          sha256sum train-150k/checkpoint-650000.pt train-150k/report-650000.json > train-150k/SHA256SUMS-650000
+          python - <<'PY'
+          import json, torch
+          cp=torch.load("train-150k/checkpoint-650000.pt",map_location="cpu",weights_only=False)
+          report=json.load(open("train-150k/report-650000.json"))
+          assert cp["completed_steps"]==650000 and cp["active_vocabulary"]==257
+          assert report["completed_steps"]==650000
+          print(json.dumps({"completed_steps":cp["completed_steps"],"parameters":cp["parameter_count"],
+              "active_vocabulary":cp["active_vocabulary"],"validation_loss":report["validation_loss"],
+              "validation_by_domain":report["validation_loss_by_domain"],
+              "corpus":report["dataset_manifest"]},ensure_ascii=False,indent=2))
+          PY
+          gh release create "minironin-legacy-150k-step-650000-candidate" \\
+            train-150k/checkpoint-650000.pt train-150k/report-650000.json train-150k/SHA256SUMS-650000 \\
+            --title "MINIRONIN legacy tokenizer — 150k continuation / step 650000" \\
+            --notes "150,000 steps from the verified 500k byte-level checkpoint, trained on the unified admitted corpus. Candidate only; no automatic promotion. Matched holdout required."
+
+      - name: Publicar informes y checkpoints intermedios como artefacto de auditoría
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-legacy-vocab-150k-from-500k-${{ github.run_id }}
+          path: train-150k/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
