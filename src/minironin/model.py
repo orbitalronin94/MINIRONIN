@@ -56,10 +56,26 @@ class CausalSelfAttention(nn.Module):
             past_k, past_v = past_key_value
             k = torch.cat((past_k, k), dim=-2)
             v = torch.cat((past_v, v), dim=-2)
+        if past_key_value is None:
+            # The initial prompt is a full sequence and must remain causal.
+            attention_mask = None
+            is_causal = True
+        elif length == 1:
+            # A single new token may attend to every cached key and itself.
+            attention_mask = None
+            is_causal = False
+        else:
+            # For multi-token chunks, allow cached keys plus only prior/current
+            # tokens in this chunk (SDPA's is_causal=True is upper-left aligned).
+            past_length = past_key_value[0].shape[-2]
+            query_positions = past_length + torch.arange(length, device=x.device)
+            key_positions = torch.arange(k.shape[-2], device=x.device)
+            attention_mask = key_positions.unsqueeze(0) <= query_positions.unsqueeze(1)
+            is_causal = False
         y = F.scaled_dot_product_attention(
-            q, k, v, attn_mask=None,
+            q, k, v, attn_mask=attention_mask,
             dropout_p=self.attn_dropout if self.training else 0.0,
-            is_causal=False,
+            is_causal=is_causal,
         )
         y = y.transpose(1, 2).contiguous().view(batch, length, width)
         return self.resid_dropout(self.proj(y)), (k, v)
