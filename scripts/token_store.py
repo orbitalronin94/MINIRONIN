@@ -13,6 +13,8 @@ from pathlib import Path
 from typing import Iterable, Mapping
 
 UINT16_MAX = 65535
+if array("H").itemsize != 2:
+    raise RuntimeError("This token store requires a 16-bit unsigned short array")
 FORMAT = "minironin-u16-v1"
 
 
