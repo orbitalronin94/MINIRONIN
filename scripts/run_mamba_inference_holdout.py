@@ -209,7 +209,7 @@ def main() -> None:
     model.load_state_dict(checkpoint["model_state_dict"], strict=True)
     model.eval()
     equivalence_error = verify_incremental_equivalence(
-        model, list((rows[0]["question"].strip() + "\\nRespuesta:").encode("utf-8"))
+        model, list((rows[0]["question"].strip() + "\nRespuesta:").encode("utf-8"))
     )
     print(json.dumps({"incremental_equivalence_max_abs_error": equivalence_error}), flush=True)
 
@@ -245,7 +245,9 @@ def main() -> None:
         "holdout_sha256": holdout_sha,
         "holdout_count": len(results),
         "generation": {"method": "greedy argmax", "temperature": 0,
-                       "max_new_tokens": args.max_new_tokens, "threads": args.threads,\n                       "decoder": "incremental_recurrent_state",\n                       "equivalence_max_abs_error": equivalence_error},
+                       "max_new_tokens": args.max_new_tokens, "threads": args.threads,
+                       "decoder": "incremental_recurrent_state",
+                       "equivalence_max_abs_error": equivalence_error},
         "comparison_to_390k": {
             "baseline_label": base["label"], "baseline_checkpoint_sha256": base["checkpoint_sha256"],
             "identical_answers": len(results) - changed, "changed_answers": changed,
