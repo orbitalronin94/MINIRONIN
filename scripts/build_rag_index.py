@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Reproducible provenance-preserving RAG index: SQLite FTS5 + optional multilingual vectors."""
 from __future__ import annotations
-import argparse,csv,hashlib,json,re,sqlite3,sys,time
+import argparse,csv,gzip,hashlib,json,re,sqlite3,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 FIELDS=("text","content","body","document","passage","question","answer","context","prompt","completion","response","title","summary","abstract","messages","conversations","instruction","input","output","chosen","rejected","system","user","assistant","instruccion","respuesta","evidencia","fuente","dominio","idioma","tipo","uso","nombre","descripcion")
@@ -28,7 +28,7 @@ def extract(v,depth=0):
   return "\n".join(out)
  return ""
 def read(path):
- ext=path.suffix.lower()
+ ext=".jsonl.gz" if path.name.lower().endswith(".jsonl.gz") else path.suffix.lower()
  try:
   if ext in {".md",".txt",".rst",".yaml",".yml",".xml",".html",".htm"}:
    raw=path.read_text(encoding="utf-8",errors="replace")
@@ -39,8 +39,9 @@ def read(path):
      def handle_data(self,d):self.parts.append(d)
     p=P();p.feed(raw);raw="\n".join(p.parts)
    yield clean(raw),"text",{}
-  elif ext==".jsonl":
-   with path.open(encoding="utf-8",errors="replace") as f:
+  elif ext in {".jsonl",".jsonl.gz"}:
+   opener=gzip.open if ext==".jsonl.gz" else open
+   with opener(path,"rt",encoding="utf-8",errors="replace") as f:
     for n,line in enumerate(f,1):
      if line.strip():
       try:obj=json.loads(line);x=clean(extract(obj))
@@ -87,7 +88,7 @@ def chunk(text,target,overlap,minimum):
  return result
 def excluded(p,reg):
  parts={x.lower() for x in p.parts}
- return bool(parts.intersection(reg["excluded_path_parts"])) or p.suffix.lower() in reg["excluded_extensions"]
+ return bool(parts.intersection(reg["excluded_path_parts"])) or (p.suffix.lower() in reg["excluded_extensions"] and not p.name.lower().endswith(".jsonl.gz"))
 def main():
  ap=argparse.ArgumentParser();ap.add_argument("--registry",type=Path,default=ROOT/"data/rag/sources.json");ap.add_argument("--output",type=Path,default=ROOT/"artifacts/rag/minironin-rag.sqlite");ap.add_argument("--root",action="append",default=[],help="Approved extra root NAME=PATH");ap.add_argument("--no-embeddings",action="store_true");ap.add_argument("--batch-size",type=int,default=64);a=ap.parse_args()
  reg=json.loads(a.registry.read_text());cfg=reg["chunking"];ecfg=reg["embedding"];embedder=None
