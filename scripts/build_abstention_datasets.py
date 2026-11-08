@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build deterministic, auditable 50k+50k abstention datasets for MINIRONIN.
+"""Build four deterministic, auditable 50k style datasets for MINIRONIN.
 
 All wording is project-authored. The literary set uses broad existential,
 aphoristic rhetoric; it does not reproduce or attribute quotations to authors.
