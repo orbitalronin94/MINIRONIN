@@ -74,7 +74,11 @@ jobs:
           import hashlib, json, pathlib
           db = pathlib.Path("artifacts/rag/minironin-rag.sqlite")
           manifest = json.loads(pathlib.Path("artifacts/rag/manifest.json").read_text())
-          digest = hashlib.sha256(db.read_bytes()).hexdigest()
+          h = hashlib.sha256()
+          with db.open("rb") as stream:
+              for block in iter(lambda: stream.read(1024 * 1024), b""):
+                  h.update(block)
+          digest = h.hexdigest()
           assert digest == manifest["sqlite_sha256"], (digest, manifest.get("sqlite_sha256"))
           assert manifest.get("holdout_read") is False
           sources = {item["id"]: item for item in manifest["sources"]}
