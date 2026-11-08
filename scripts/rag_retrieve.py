@@ -26,11 +26,11 @@ def _format_context(hits, max_chars=12000):
     used = 0
     for index, hit in enumerate(hits, 1):
         provenance = hit.get("provenance", {})
-        source_id = provenance.get("source_id", "unknown")
         project = provenance.get("project", "unknown")
-        path = provenance.get("relative_path", "unknown")
         locations = hit.get("all_source_locations", [])
         location = locations[0] if locations else {}
+        source_id = location.get("source_id") or provenance.get("source_id", "unknown")
+        path = location.get("relative_path") or provenance.get("relative_path", "unknown")
         record_metadata = location.get("record_metadata") or hit.get("record_metadata", {})
         locator_text = location.get("locator") or hit.get("locator") or "unspecified"
         epistemic = record_metadata.get("epistemic") or provenance.get("epistemic", "unknown")
