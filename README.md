@@ -371,3 +371,37 @@ La biblioteca de clásicos se entrena en un dominio separado (`classics`, peso i
 ## Currículo elemental: matemáticas y hechos cotidianos
 
 Se ha añadido un generador independiente de **25 datasets × 50.000 filas (1,25 millones)**: 12 de operaciones y aritmética básica, y 13 de hechos cotidianos y ciencias elementales. La generación se ejecuta mediante [GitHub Actions](.github/workflows/generate-basic-curricula.yml); el diseño, los límites de los datos y el criterio para hechos variables están descritos en [docs/basic-maths-facts-curriculum.md](docs/basic-maths-facts-curriculum.md). **No se incorporan automáticamente al entrenamiento ni alteran el checkpoint.**
+
+## Corpus unificado de entrenamiento — Japón, ronin y bibliotecas admitidas
+
+El workflow `.github/workflows/build-unified-train.yml` construye un único artefacto descargable con las bibliotecas admitidas y los currículos sintéticos. **RONIN-IA queda excluido por completo**: no se descarga ni se incorpora su corpus.
+
+### Fuentes incluidas
+
+- HERETIC, descargado desde sus assets publicados y verificado por tamaño y SHA-256.
+- PRODATPHIL v0.3, con SHA-256 fijado.
+- Bibliotecas anarquista y clásica, adquiridas únicamente desde sus registros de fuentes aprobadas para España.
+- Los nueve artículos Markdown de Papers, desde la revisión fijada `d7bf3ae446f666ce3be73b11aab7090e1605a889`; uso interno de entrenamiento, sin redistribución como corpus independiente.
+- Biblioteca japonesa de doce obras en inglés sobre historia, teatro, folklore, estética, samuráis y ronin: *Bushido*, *Chūshingura*, *Tales of Old Japan*, *Warriors of Old Japan*, *Japanese Fairy Tales*, obras de Lafcadio Hearn, *The Book of Tea*, *Japanese Fairy World* y *Japanese Plays and Playfellows*.
+- Selección adicional de literatura original en japonés desde Soranoha/Aozora Bunko. El adquisidor limita la selección a autores incluidos en una lista explícita con fallecimiento no posterior a 1955, excluye obras con traductor/editor registrado y exige que la página individual marque el texto como dominio público. Se conserva la atribución y el identificador de cada obra. No se incorporan novelas modernas de Musashi ni traducciones contemporáneas.
+
+### Currículos sintéticos
+
+El ensamblado genera y conserva los siguientes volúmenes, sin presentarlos como hechos independientes:
+
+- 24 currículos de conducta y Lexicon: 1.200.000 filas.
+- 25 currículos de matemáticas y hechos cotidianos: 1.250.000 filas.
+- 9 currículos curados de abstención, personalidad y diagnóstico Lexicon: 450.000 filas.
+
+**Total previsto: 2.900.000 filas sintéticas/curadas**, además de los documentos de las bibliotecas. La combinatoria amplía los encuadres y las combinaciones de ejercicios, pero no convierte diez hechos semilla en cincuenta mil hechos nuevos. Las filas conservan sus metadatos y marcas de procedencia; las duplicadas o breves se contabilizan en el informe, no se borran, para no perder volumen silenciosamente.
+
+### Artefacto único y controles
+
+El workflow publica `minironin-unified-train-corpus-<run_id>`, con:
+
+- `train.jsonl.gz`: corpus unificado listo para la siguiente fase de entrenamiento.
+- `sources.json`: rutas, hashes, licencias y recuentos por fuente.
+- `quality-report.json`: volumen, duplicados normalizados, filas breves y distribución por dominio/dataset.
+- `SHA256SUMS`: integridad del artefacto.
+
+La construcción no modifica el checkpoint MAIN, no cambia el tokenizador y **no inicia entrenamiento**. El artefacto debe pasar revisión de recuentos, procedencia y calidad antes de usarlo en un ciclo de entrenamiento.
