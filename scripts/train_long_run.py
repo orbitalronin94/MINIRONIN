@@ -272,7 +272,7 @@ def load_training_data(heretic_root: Path, books_root: Path, anarchist_root: Pat
     if missing_validation:
         raise SystemExit("Missing full-corpus validation windows for: " + ", ".join(missing_validation))
     manifest = {
-        "cache_schema_version": 2,
+        "cache_schema_version": 3,
         "anarchist_source_signature": anarchist_signature,
         "anarchist_files": anarchist_audit,
         "classics_source_signature": classics_signature,
