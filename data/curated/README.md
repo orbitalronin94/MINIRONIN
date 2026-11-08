@@ -2,7 +2,7 @@
 
 **Versión:** 1.0  
 **Idioma:** castellano  
-**Registros:** 70  
+**Registros:** 50  
 **Método:** curación manual a partir de logs y metadatos de artefactos de GitHub Actions.
 
 Este conjunto transforma evidencia operativa de RONIN-IA y HERETIC-RONIN en ejemplos explicativos. No contiene logs brutos ni respuestas automáticas del docente.
