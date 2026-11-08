@@ -61,12 +61,12 @@ ANSWER_FRAMES = [
 
 def arithmetic(kind, i):
     # Deterministic, broad integer ranges; all divisions are exact.
-    a = 2 + ((i * 7919 + 17) % 997)
+    a = 2 + i
     b = 1 + ((i * 3571 + 31) % 389)
     c = 1 + ((i * 1013 + 7) % 97)
     if kind == "sums": x,y,op,ans=a,b,"+",a+b
     elif kind == "subtractions": x,y,op,ans=a+b,b,"−",a
-    elif kind == "multiplications": x,y,op,ans=2+(i%99),2+((i*37)%99),"×",(2+i%99)*(2+(i*37)%99)
+    elif kind == "multiplications": x,y,op,ans=2+(i%997),2+((i//997)%997),"×",(2+i%997)*(2+(i//997)%997)
     elif kind == "exact-divisions": y,x=1+(i%97),2+((i*7919)%997); op="÷"; ans=x; x=x*y
     elif kind == "remainders": x,y,op,ans=a,b,"mód",a%b
     elif kind == "comparisons":
@@ -77,14 +77,17 @@ def arithmetic(kind, i):
     elif kind == "order-of-operations":
         x,y,z=2+(i%19),1+((i*13)%17),1+((i*7)%13)
         return f"Calcula {x} + {y} × {z}", str(x+y*z)
-    elif kind == "squares": x=1+(i%300); return f"Calcula {x}²",str(x*x)
-    elif kind == "cubes": x=1+(i%40); return f"Calcula {x}³",str(x**3)
+    elif kind == "squares": x=1+i; return f"Calcula {x}²",str(x*x)
+    elif kind == "cubes": x=1+i; return f"Calcula {x}³",str(x**3)
     elif kind == "percentages":
-        p=[5,10,20,25,50,75,100][i%7]; x=4*(1+(i%250))
-        return f"Calcula el {p}% de {x}",str(x*p//100)
+        p=[5,10,20,25,50,75,100][i%7]; x=100*(1+(i//7))
+        value=x*p/100
+        return f"Calcula el {p}% de {x}",str(int(value)) if value.is_integer() else str(value)
     elif kind == "fractions":
-        den=2+(i%19); num=1+(i%(den-1)); mult=1+(i%30)
-        return f"Simplifica {num*mult}/{den*mult}",f"{num}/{den}"
+        den=2+(i%19); num=1+(i%(den-1)); mult=1+(i//19)
+        import math
+        n,d=num*mult,den*mult; g=math.gcd(n,d)
+        return f"Simplifica {n}/{d}",f"{n//g}/{d//g}"
     elif kind == "mixed":
         x,y,z=2+(i%49),2+((i*17)%31),1+((i*7)%19)
         return f"Calcula ({x} + {y}) × {z} − {y}",str((x+y)*z-y)
