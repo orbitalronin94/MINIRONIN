@@ -149,7 +149,7 @@ def read_full_json(path: Path, domain: str, store) -> dict:
     return {"path": str(path), "format": "json", "domain": domain, "bytes": len(raw), "documents_added": len(store["docs"]) - before, "sha256": hashlib.sha256(raw).hexdigest()}
 
 
-def read_full_books(root: Path, store) -> list[dict]:
+def read_full_books(root: Path, store, domain: str = "books", source_name: str = "PRODATPHIL v0.3") -> list[dict]:
     if not root.exists():
         raise SystemExit("Book corpus missing: " + str(root))
     audit = []
@@ -157,22 +157,35 @@ def read_full_books(root: Path, store) -> list[dict]:
     for path in sorted(p for p in root.rglob("*") if p.is_file() and p.suffix.lower() in allowed):
         if any(part in path.name.lower() for part in SKIP_NAME_PARTS):
             continue
-        audit.append(read_full_text(path, "books", store, "PRODATPHIL v0.3"))
+        audit.append(read_full_text(path, domain, store, source_name))
     if not audit:
-        raise SystemExit("No usable full-text book files found")
+        raise SystemExit("No usable full-text files found in " + str(root))
     return audit
 
 
-def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
+def source_tree_signature(root: Path) -> str:
+    digest = hashlib.sha256()
+    for path in sorted(p for p in root.rglob("*") if p.is_file() and p.suffix.lower() in {".txt", ".md", ".xml", ".tei", ".html", ".htm"}):
+        digest.update(str(path.relative_to(root)).encode("utf-8"))
+        digest.update(hashlib.sha256(path.read_bytes()).digest())
+    return digest.hexdigest()
+
+
+def load_training_data(heretic_root: Path, books_root: Path, anarchist_root: Path, cache_path: Path):
+    if not anarchist_root.exists():
+        raise SystemExit("Anarchist library missing: " + str(anarchist_root))
+    anarchist_signature = source_tree_signature(anarchist_root)
     if cache_path.exists():
         cached = torch.load(cache_path, map_location="cpu", weights_only=False)
         cached_manifest = cached.get("manifest", {})
-        if cached_manifest.get("engineering_performance_examples") == 4:
+        if (cached_manifest.get("cache_schema_version") == 2
+                and cached_manifest.get("anarchist_source_signature") == anarchist_signature
+                and cached_manifest.get("engineering_performance_examples") == 4):
             print(json.dumps({"dataset_cache": "reused", **cached_manifest}, ensure_ascii=False), flush=True)
             return cached["train_docs"], cached["names"], cached["probs"], cached["validation"], cached_manifest
         print(json.dumps({
             "dataset_cache": "invalidated",
-            "reason": "cache predates minironin-performance-engineering-v1.jsonl",
+            "reason": "cache lacks the current anarchist-library source signature/schema",
         }), flush=True)
         cache_path.unlink()
 
@@ -196,7 +209,8 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         elif suffix in TEXT_SUFFIXES or lower.endswith((".txt.gz", ".md.gz")):
             source_audit.append(read_full_text(path, domain, store))
 
-    book_audit = read_full_books(books_root, store)
+    book_audit = read_full_books(books_root, store, "books", "PRODATPHIL v0.3")
+    anarchist_audit = read_full_books(anarchist_root, store, "anarchist", "MINIRONIN-ANARCHIST-LIBRARY-v1")
     behavior_count = load_curated_jsonl(ROOT / "data/curated/minironin-behavior-v1.jsonl", "behavior", store, "MINIRONIN-authored-behavior-v1")
     if behavior_count == 0:
         raise SystemExit("No curated MINIRONIN behavior examples loaded")
@@ -230,7 +244,7 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     if abstention_count != 50_000:
         raise SystemExit(f"Expected 50000 unique abstention examples, loaded {abstention_count}")
     train_docs, val_docs = split_documents(store["docs"])
-    for domain in ("math", "science", "books", "behavior", "identity", "engineering", "abstention", "abstain_plain", "abstain_literary", "abstain_koan", "aristocrat", "casuist", "scientist", "oracle", "indifference", "lexicon"):
+    for domain in ("math", "science", "books", "anarchist", "behavior", "identity", "engineering", "abstention", "abstain_plain", "abstain_literary", "abstain_koan", "aristocrat", "casuist", "scientist", "oracle", "indifference", "lexicon"):
         if not train_docs.get(domain) or not val_docs.get(domain):
             raise SystemExit("Missing train/validation documents for " + domain)
     names, probs = weighted_domains(train_docs)
@@ -249,10 +263,14 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
                 batches.append(torch.stack(rows))
         if batches:
             validation[domain] = batches
-    missing_validation = [d for d in ("math", "science", "books", "behavior") if not validation.get(d)]
+    missing_validation = [d for d in ("math", "science", "books", "anarchist", "behavior") if not validation.get(d)]
     if missing_validation:
         raise SystemExit("Missing full-corpus validation windows for: " + ", ".join(missing_validation))
     manifest = {
+        "cache_schema_version": 2,
+        "anarchist_source_signature": anarchist_signature,
+        "anarchist_files": anarchist_audit,
+        "anarchist_documents": sum(x.get("documents_added", 0) for x in anarchist_audit),
         "corpus_policy": "recursive full textual HERETIC ingest; no per-source byte/document cap",
         "heretic_discovered_files": len(discovered),
         "heretic_ingested_files": len(source_audit),
@@ -344,6 +362,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--heretic-root", required=True)
     parser.add_argument("--books-root", required=True)
+    parser.add_argument("--anarchist-root", required=True)
     parser.add_argument("--input-checkpoint", required=True)
     parser.add_argument("--output-dir", default="long-training")
     parser.add_argument("--start-step", type=int, required=True)
@@ -369,7 +388,7 @@ def main():
     torch.use_deterministic_algorithms(True)
     device = torch.device("cpu")
     train_docs, names, probs, validation, manifest = load_training_data(
-        Path(args.heretic_root), Path(args.books_root), Path(args.dataset_cache)
+        Path(args.heretic_root), Path(args.books_root), Path(args.anarchist_root), Path(args.dataset_cache)
     )
 
     config = ModelConfig.load(ROOT / "configs/model-10m.json")
