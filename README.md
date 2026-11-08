@@ -402,7 +402,7 @@ El workflow publica `minironin-unified-train-corpus-<run_id>`, con:
 - `train.jsonl.gz`: corpus unificado listo para la siguiente fase de entrenamiento.
 - `sources.json`: rutas, hashes, licencias y recuentos por fuente.
 - `quality-report.json`: volumen, duplicados normalizados, filas breves y distribución por dominio/dataset.
-- `SHA256SUMS`: integridad del artefacto.
+- `provenance/`: registros de fuentes, manifiestos, derechos y checksums originales, incluidos los nueve Papers con su aviso de uso interno.\n- `SHA256SUMS`: integridad del artefacto completo.
 
 La construcción no modifica el checkpoint MAIN, no cambia el tokenizador y **no inicia entrenamiento**. El artefacto debe pasar revisión de recuentos, procedencia y calidad antes de usarlo en un ciclo de entrenamiento.
 
