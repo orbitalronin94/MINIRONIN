@@ -107,7 +107,7 @@ jobs:
           python scripts/acquire_anarchist_library.py --output data/inherited/anarchist-library
           python scripts/acquire_classics_library.py --output data/inherited/classics-library
           python scripts/acquire_japanese_library.py --output data/inherited/japanese-library
-          python scripts/acquire_aozora_japanese_originals.py --output data/inherited/japanese-library/aozora-originals --per-author 20 --max-works 280
+          python scripts/acquire_aozora_japanese_originals.py --output data/inherited/japanese-library/aozora-originals --per-author 10 --max-works 160
           python - <<'PY'
           import json
           from pathlib import Path
