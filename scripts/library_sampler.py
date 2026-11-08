@@ -51,7 +51,7 @@ class LibrarySampler:
         self.tokens_seen: Counter[str] = Counter()
         self.document_uses: Counter[str] = Counter()
         self.unique_documents: dict[str, set[str]] = defaultdict(set)
-        self._uses_by_document: Counter[tuple[str, str]] = Counter()
+        self._uses_by_document: Counter[tuple[str, str]] = Counter()\n        self._last_sequence_length: dict[str, int] = {}
 
     def _eligible_documents(self, library: str, sequence_length: int) -> list[Mapping]:
         key = (library, sequence_length)
@@ -111,7 +111,7 @@ class LibrarySampler:
         total = sum(self.tokens_seen.values())
         rows = {}
         for library in self.available:
-            eligible_count = len(self._eligible_documents(library, 1))
+            sequence_length = self._last_sequence_length.get(library, 1)\n            eligible_count = len(self._eligible_documents(library, sequence_length))
             uses = self.document_uses[library]
             unique = len(self.unique_documents[library])
             rows[library] = {
@@ -121,7 +121,7 @@ class LibrarySampler:
                 ),
                 "sampled_target_tokens": self.tokens_seen[library],
                 "document_uses": uses,
-                "eligible_documents_minimum_window_1": eligible_count,
+                "eligible_documents_for_sequence_length": eligible_count,\n                "sequence_length": sequence_length,
                 "unique_documents": unique,
                 "document_coverage": round(unique / eligible_count, 8) if eligible_count else 0.0,
                 "repeat_document_uses": max(0, uses - unique),
