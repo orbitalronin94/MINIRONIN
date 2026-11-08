@@ -143,3 +143,8 @@ Se añade una preparación reproducible de solicitudes de conversación con cinc
 - Test: `tests/test_eliza_corpus.py`
 
 Puede preparar hasta 10M de solicitudes con muestreo determinista y memoria acotada. La mezcla se configura con `--mix`; el resumen informa recuentos reales por familia y SHA-256. Diez millones de variantes no son diez millones de hechos independientes. El script solo prepara solicitudes para los teachers: no llama a modelos, no fabrica respuestas finales, no entrena ni promociona checkpoints.
+
+
+## Mamba 50M: RAG holdout y continuación
+
+El checkpoint Mamba de 1.000 pasos se evalúa con y sin RAG sobre el holdout inmutable de 40 preguntas. Tras completarse el índice RAG aprobado, el workflow `.github/workflows/mamba-rag-continuation.yml` repite la evaluación, continúa desde los pesos exactos durante 1.000 pasos más con las bibliotecas RAG train-admitted y el corpus actual, y vuelve a pasar el mismo holdout al checkpoint de 2.000 pasos. No hay promoción automática. Protocolo y límites: [docs/MAMBA-RAG-CONTINUATION.md](docs/MAMBA-RAG-CONTINUATION.md).
