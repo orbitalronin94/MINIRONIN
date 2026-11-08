@@ -2,7 +2,7 @@
 
 **MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal experimental es ahora el **Transformer decoder-only de 9.970.176 parámetros, checkpoint de 470.000 pasos**. Se promociona por decisión explícita del proyecto como referencia experimental; esto **no** significa que haya demostrado una mejora de calidad: el holdout pareado de 100 preguntas muestra cambios radicales de generación, pero también degeneración severa y ausencia de EOS.
 
-Puede heredar y curar bibliotecas de datos reutilizables de [RONIN-IA](https://github.com/orbitalronin94/RONIN-IA) y [HERETIC-RONIN](https://github.com/orbitalronin94/HERETIC-RONIN). **No** heredará sus procedimientos de entrenamiento, checkpoints, workflows de GitHub Actions, automatizaciones ni sistemas de promoción.
+Puede heredar y curar bibliotecas de datos reutilizables de [HERETIC-RONIN](https://github.com/orbitalronin94/HERETIC-RONIN). **RONIN-IA queda excluido del corpus unificado actual**. MINIRONIN no hereda procedimientos de entrenamiento, checkpoints, workflows de GitHub Actions, automatizaciones ni sistemas de promoción de otros repositorios.
 
 ## Infraestructura: laboratorio de saldo cero
 
