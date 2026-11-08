@@ -20,7 +20,8 @@ from minironin.mamba import MambaRoninLM  # noqa: E402
 ACTIVE_VOCAB = 257
 EOS_ID = 256
 EXPECTED_PARENT_SHA = "bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730"
-EXPECTED_CANDIDATE_SHA = "d4e94c6b2711810bc07ce91b9fdcf4cfd50466a6ee9eafe70b64f023f211d5d7"
+EXPECTED_CANDIDATE_SHA = "3a8166c5f98aae95ba8dd5dee988ec8fa04bb77038ebf4139a09bdb559e9d5c9"
+EXPECTED_BASELINE_SHA = "d4e94c6b2711810bc07ce91b9fdcf4cfd50466a6ee9eafe70b64f023f211d5d7"
 
 
 def sha256_file(path: Path) -> str:
@@ -188,8 +189,8 @@ def main() -> None:
     base_by_id = {}
     if args.baseline_diary:
         base = json.loads(args.baseline_diary.read_text(encoding="utf-8"))
-        if base.get("checkpoint_sha256") != EXPECTED_PARENT_SHA:
-            raise SystemExit("Baseline diary is not from the exact verified parent checkpoint")
+        if base.get("checkpoint_sha256") != EXPECTED_BASELINE_SHA:
+            raise SystemExit("Baseline diary is not from the exact verified 1,000-step Mamba checkpoint")
         if base.get("holdout_sha256") != holdout_sha or base.get("holdout_count") != len(rows):
             raise SystemExit("Baseline diary does not use this exact 100-question holdout")
         base_by_id = {item["id"]: item["answer"] for item in base["results"]}
@@ -199,8 +200,8 @@ def main() -> None:
     checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
     if checkpoint.get("architecture") != "mamba-selective-scan-v1":
         raise SystemExit("Checkpoint architecture is not the expected Mamba model")
-    if checkpoint.get("completed_steps") != 1000:
-        raise SystemExit("Expected the 1,000-step candidate")
+    if checkpoint.get("completed_steps") != 2000:
+        raise SystemExit("Expected the 2,000-step Mamba candidate")
     if checkpoint.get("parent_checkpoint_sha256") != EXPECTED_PARENT_SHA:
         raise SystemExit("Candidate parent checkpoint SHA-256 mismatch")
     if checkpoint.get("active_vocabulary") != ACTIVE_VOCAB:
@@ -244,8 +245,8 @@ def main() -> None:
         }
     diary = {
         "schema_version": 1,
-        "benchmark": "MINIRONIN inference holdout v2 (100 questions)",
-        "label": "mamba-50m-from-390k-step-1000",
+        "benchmark": "MINIRONIN inference holdout v2 (100 questions; same IDs as 1,000-step baseline)",
+        "label": "mamba-50m-from-390k-step-2000",
         "architecture": checkpoint["architecture"],
         "completed_steps": checkpoint["completed_steps"],
         "parameter_count": checkpoint["parameter_count"],
