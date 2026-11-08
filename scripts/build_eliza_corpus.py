@@ -243,7 +243,7 @@ def main():
     parser.add_argument("--rag-index", help="Optional approved SQLite RAG index for source grounding")
     parser.add_argument("--rag-top-k", type=int, default=5)
     parser.add_argument("--rag-max-context-chars", type=int, default=12000)
-    parser.add_argument("--rag-no-vector", action="store_true", help="Use BM25 only; vectors are enabled by default when available")
+    parser.add_argument("--rag-vectors", action="store_true", help="Enable multilingual vector retrieval as well as BM25 (slower; cached per run)")
     parser.add_argument("--require-rag-evidence", action="store_true", help="Drop source records with no retrieved evidence")
     parser.add_argument(
         "--mix",
@@ -291,7 +291,7 @@ def main():
             if question not in grounding_cache:
                 grounding_cache[question] = retrieve_grounding(
                     index_path, question, args.rag_top_k,
-                    args.rag_max_context_chars, not args.rag_no_vector,
+                    args.rag_max_context_chars, args.rag_vectors,
                 )
         for row in pool:
             row["rag"] = grounding_cache[row["question"]]
@@ -302,13 +302,40 @@ def main():
         if not pool:
             parser.error("RAG grounding found no evidence for any eligible source question")
         # The retrieval module returns the same index manifest for every query.
-        first_grounding = next(iter(grounding_cache.values()))
+        evidence_path = Path(args.output).with_suffix(".evidence.jsonl")
+        evidence_digest = hashlib.sha256()
+        with evidence_path.open("w", encoding="utf-8", newline="\\n") as evidence_file:
+            for row in pool:
+                grounding = row["rag"]
+                evidence_id = hashlib.sha256(
+                    f"{rag_index_sha256}|{row['question']}".encode("utf-8")
+                ).hexdigest()[:24]
+                grounding["evidence_id"] = evidence_id
+                if evidence_id in getattr(evidence_file, "_written_ids", set()):
+                    continue
+                evidence_row = {
+                    "id": evidence_id,
+                    "query": grounding["query"],
+                    "status": grounding["status"],
+                    "evidence": grounding["evidence"],
+                    "warnings": grounding["warnings"],
+                }
+                evidence_line = json.dumps(evidence_row, ensure_ascii=False, separators=(",", ":")) + "\\n"
+                evidence_file.write(evidence_line)
+                evidence_digest.update(evidence_line.encode("utf-8"))
+                # The pool is bounded and the sidecar contains one row per unique source question.
+                if not hasattr(evidence_file, "_written_ids"):
+                    evidence_file._written_ids = set()
+                evidence_file._written_ids.add(evidence_id)
         rag_manifest = {
             "index_sha256": rag_index_sha256,
             "status": "enabled",
             "unique_queries": len(grounding_cache),
-            "grounded_queries": sum(bool(item["evidence"]) for item in grounding_cache.values()),
-            "embedding_mode": "bm25_only" if args.rag_no_vector else "hybrid_when_available",
+            "grounded_queries": sum(item["status"] == "evidence_found" for item in grounding_cache.values()),
+            "ungrounded_queries": sum(item["status"] == "no_evidence" for item in grounding_cache.values()),
+            "embedding_mode": "hybrid" if args.rag_vectors else "bm25_only",
+            "evidence_sidecar": str(evidence_path),
+            "evidence_sidecar_sha256": evidence_digest.hexdigest(),
         }
 
     modes = [name for name, weight in args.mix.items() if weight > 0]
@@ -343,9 +370,8 @@ def main():
                         "preserve qualifications, units, uncertainty and actionable steps. Do not "
                         "invent facts or claim that retrieval proves a statement."
                     ),
-                    "retrieved_evidence": source.get("rag", {
-                        "status": "rag_disabled", "query": source["question"], "evidence": []
-                    }),
+                    "retrieved_evidence_ref": source.get("rag", {}).get("evidence_id"),
+                    "retrieval_status": source.get("rag", {}).get("status", "rag_disabled"),
                 },
                 "stage_b": {
                     "style": style_name,
@@ -383,7 +409,7 @@ def main():
         "training_performed": False,
         "rag_grounding": rag_manifest or {"status": "disabled"},
         "ungrounded_pool_records": (
-            sum(not row.get("rag", {}).get("evidence") for row in pool)
+            sum(row.get("rag", {}).get("status") == "no_evidence" for row in pool)
             if args.rag_index else None
         ),
         "output": str(target),
