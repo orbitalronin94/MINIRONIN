@@ -74,9 +74,10 @@ def main():
     out=Path(a.output_dir); out.mkdir(parents=True,exist_ok=True)
     (out/"dataset-manifest.json").write_text(json.dumps({"policy":"ONLY five new cynic/troll-style datasets plus all four abstention datasets; no general corpus, books, HERETIC or legacy behavior","parent_step":390000,"additional_steps":STEPS,"datasets":audit,"sampling":"uniform across nine datasets"},ensure_ascii=False,indent=2)+"\n")
     start_time=time.perf_counter()
+    base_lr=float(optimizer.param_groups[0]["lr"])
     model.train()
     for step in range(1,STEPS+1):
-        lr=3e-5+(float(optimizer.param_groups[0]["lr"])-3e-5)*0.5*(1+__import__("math").cos(__import__("math").pi*step/STEPS))
+        lr=3e-5+(base_lr-3e-5)*0.5*(1+__import__("math").cos(__import__("math").pi*step/STEPS))
         for group in optimizer.param_groups: group["lr"]=lr
         rr=random.Random(20261108+step)
         rows=[]
