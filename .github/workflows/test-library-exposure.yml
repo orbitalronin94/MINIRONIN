@@ -47,8 +47,8 @@ jobs:
 
       - name: Benchmark synthetic token-store and sampler path
         run: |
-          python scripts/benchmark_library_sampler.py \\
-            --documents 250 \\
-            --tokens-per-document 2048 \\
+          python scripts/benchmark_library_sampler.py \
+            --documents 250 \
+            --tokens-per-document 2048 \
             --samples 5000 | tee library-sampler-benchmark.json
           cat library-sampler-benchmark.json >> "$GITHUB_STEP_SUMMARY"
