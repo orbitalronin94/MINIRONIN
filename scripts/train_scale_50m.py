@@ -16,70 +16,100 @@ from build_personality_datasets import main as build_personality_datasets
 
 PARENT_SHA256 = "bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730"
 TARGET_CONFIG = ModelConfig(vocab_size=23000, context_length=512, n_layers=14,
-                            d_model=512, n_heads=16, d_ff=1536,
+                            d_model=512, n_heads=8, d_ff=1536,
                             dropout=0.0, layer_norm_eps=1e-5)
 TOTAL_STEPS = 1000
 CHECKPOINT_STEPS = (250, 500, 750, 1000)
 
 
-def widen_vector(x):
-    return x.repeat_interleave(2, dim=0)
-
-
-def widen_matrix(x, scale=True):
-    y = x.repeat_interleave(2, dim=0).repeat_interleave(2, dim=1)
-    return y * 0.5 if scale else y
-
-
 def transfer_state(old_state, target_model):
-    """Function-preserving 2x channel/head/MLP expansion; added blocks start as identity."""
+    """Exact zero-padded width expansion; preserve all original activations."""
     new = target_model.state_dict()
+    scale_qk = 2.0 ** 0.25
+
+    def copy_prefix(dst, src, rows=None, cols=None, scale=1.0, fill=None):
+        if fill is not None:
+            dst.fill_(fill)
+        if rows is None:
+            rows = src.shape[0]
+        if cols is None:
+            cols = src.shape[1] if src.ndim > 1 else None
+        if src.ndim == 1:
+            dst[:rows].copy_(src[:rows] * scale)
+        else:
+            dst[:rows, :cols].copy_(src[:rows, :cols] * scale)
+
     for key, value in old_state.items():
-        if key == "token_embedding.weight":
-            new[key] = value.repeat_interleave(2, dim=1)
-        elif key == "position_embedding.weight":
-            new[key] = value.repeat_interleave(2, dim=1)
-        elif key == "final_norm.weight" or key == "final_norm.bias":
-            new[key] = widen_vector(value)
+        if key in ("token_embedding.weight", "position_embedding.weight"):
+            new[key].zero_()
+            new[key][:, :256].copy_(value)
+        elif key == "lm_head.weight":
+            # Tied with token_embedding; preserve identical expanded tensor.
+            new[key].zero_()
+            new[key][:, :256].copy_(old_state["token_embedding.weight"])
+        elif key == "final_norm.weight":
+            new[key].fill_(1.0)
+            new[key][:256].copy_(value)
+        elif key == "final_norm.bias":
+            new[key].zero_()
+            new[key][:256].copy_(value)
         elif key.startswith("blocks."):
             parts = key.split(".")
             layer = int(parts[1])
             if layer >= 6:
                 continue
             tail = ".".join(parts[2:])
-            if tail in ("ln_1.weight", "ln_1.bias", "ln_2.weight", "ln_2.bias"):
-                new[key] = widen_vector(value)
+            prefix = f"blocks.{layer}."
+            if tail in ("ln_1.weight", "ln_2.weight"):
+                new[key].fill_(1.0)
+                new[key][:256].copy_(value)
+            elif tail in ("ln_1.bias", "ln_2.bias"):
+                new[key].zero_()
+                new[key][:256].copy_(value)
             elif tail == "attn.qkv.weight":
-                qkv = value.reshape(3, 256, 256)
-                new[key] = qkv.repeat_interleave(2, dim=1).repeat_interleave(2, dim=2).mul(0.5).reshape(3 * 512, 512)
+                new[key].zero_()
+                for group in range(3):
+                    scale = scale_qk if group < 2 else 1.0
+                    new[key][group * 512:group * 512 + 256, :256].copy_(
+                        value[group * 256:(group + 1) * 256, :] * scale
+                    )
             elif tail == "attn.qkv.bias":
-                new[key] = value.reshape(3, 256).repeat_interleave(2, dim=1).reshape(-1)
+                new[key].zero_()
+                for group in range(3):
+                    scale = scale_qk if group < 2 else 1.0
+                    new[key][group * 512:group * 512 + 256].copy_(
+                        value[group * 256:(group + 1) * 256] * scale
+                    )
             elif tail == "attn.proj.weight":
-                new[key] = widen_matrix(value)
+                new[key].zero_()
+                new[key][:256, :256].copy_(value)
             elif tail == "attn.proj.bias":
-                new[key] = widen_vector(value)
+                new[key].zero_()
+                new[key][:256].copy_(value)
             elif tail == "mlp.fc_in.weight":
-                new[key] = widen_matrix(value)
+                new[key].zero_()
+                new[key][:768, :256].copy_(value)
             elif tail == "mlp.fc_in.bias":
-                new[key] = widen_vector(value)
+                new[key].zero_()
+                new[key][:768].copy_(value)
             elif tail == "mlp.fc_out.weight":
-                new[key] = widen_matrix(value)
+                new[key].zero_()
+                new[key][:256, :768].copy_(value)
             elif tail == "mlp.fc_out.bias":
-                new[key] = widen_vector(value)
+                new[key].zero_()
+                new[key][:256].copy_(value)
             else:
                 raise RuntimeError("Unhandled source parameter: " + key)
         else:
             raise RuntimeError("Unhandled source parameter: " + key)
 
-    # Keep the tied input/output embedding explicitly synchronized in the state dict.
-    new["lm_head.weight"] = new["token_embedding.weight"]
-
-    # Eight new residual blocks are exact identities at initialization.
+    # New residual blocks start as exact identities.
     for layer in range(6, 14):
         prefix = f"blocks.{layer}."
         for suffix in ("attn.proj.weight", "attn.proj.bias",
                        "mlp.fc_out.weight", "mlp.fc_out.bias"):
             new[prefix + suffix].zero_()
+
     target_model.load_state_dict(new, strict=True)
 
 
@@ -126,6 +156,8 @@ def main():
                       "dataset_manifest": data_manifest}, ensure_ascii=False), flush=True)
 
     old_config = ModelConfig(**parent["model_config"])
+    if (old_config.d_model, old_config.n_heads, old_config.d_ff, old_config.n_layers) != (256, 8, 768, 6):
+        raise SystemExit("Unexpected 390k parent architecture; refusing unsafe transfer")
     old_model = MiniRoninLM(old_config).to(device)
     old_model.load_state_dict(parent["model_state_dict"], strict=True)
     old_model.eval()
@@ -156,7 +188,7 @@ def main():
         "parent_step": 390000, "parent_sha256": parent_hash,
         "parent_parameter_count": 9970176, "expanded_parameter_count": model.parameter_count(),
         "target_model_config": TARGET_CONFIG.__dict__,
-        "transfer": "2x width/head/MLP function-preserving duplication; 8 new residual blocks zero-output identity initialization",
+        "transfer": "zero-padded 2x width expansion with Q/K scale correction; 8 new residual blocks zero-output identity initialization",
         "transfer_max_abs_logit_error": transfer_error,
         "training_steps": TOTAL_STEPS, "batch_size": 2, "sequence_length": 128,
         "active_vocabulary": ACTIVE_VOCAB, "training_domains": names,
