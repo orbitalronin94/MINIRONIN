@@ -44,24 +44,24 @@ def main() -> None:
     manifest = {"schema":"minironin-classics-acquisition-v1","policy":"Only explicitly approved source rows are downloaded; translated works remain gated pending territorial review.","sources":[]}
     with ThreadPoolExecutor(max_workers=6) as pool:
         for row, raw in zip(approved, pool.map(download_source, approved)):
-        body = clean_gutenberg(raw)
-        tokens = row.get("semantic_token_ids", [])
-        tagged = " ".join(f"[{token}]" for token in tokens) + "\n\n" + body + "\n"
-        slug = re.sub(r"[^a-z0-9]+", "-", row["id"].lower()).strip("-")
-        destination = output / f"{slug}.txt"
-        destination.write_text(tagged, encoding="utf-8")
-        manifest["sources"].append({
-            "id":row["id"],"title":row["title"],"author":row["author"],
-            "author_death_year":row.get("author_death_year"),"translator":row.get("translator"),
-            "translator_death_year":row.get("translator_death_year"),"language":row["language"],
-            "upstream_url":row["url"],"download_url":row["plain_text_url"],
-            "rights_status":row["rights_status"],"license_note":row["license"],
-            "tradition":row.get("tradition",[]),"concepts":row.get("concepts",[]),
-            "semantic_token_ids":tokens,"path":destination.name,"bytes":destination.stat().st_size,
-            "characters":len(tagged),"sha256":hashlib.sha256(destination.read_bytes()).hexdigest(),
-            "upstream_sha256":hashlib.sha256(raw).hexdigest()
-        })
-        print(json.dumps(manifest["sources"][-1],ensure_ascii=False),flush=True)
+            body = clean_gutenberg(raw)
+            tokens = row.get("semantic_token_ids", [])
+            tagged = " ".join(f"[{token}]" for token in tokens) + "\n\n" + body + "\n"
+            slug = re.sub(r"[^a-z0-9]+", "-", row["id"].lower()).strip("-")
+            destination = output / f"{slug}.txt"
+            destination.write_text(tagged, encoding="utf-8")
+            manifest["sources"].append({
+                "id":row["id"],"title":row["title"],"author":row["author"],
+                "author_death_year":row.get("author_death_year"),"translator":row.get("translator"),
+                "translator_death_year":row.get("translator_death_year"),"language":row["language"],
+                "upstream_url":row["url"],"download_url":row["plain_text_url"],
+                "rights_status":row["rights_status"],"license_note":row["license"],
+                "tradition":row.get("tradition",[]),"concepts":row.get("concepts",[]),
+                "semantic_token_ids":tokens,"path":destination.name,"bytes":destination.stat().st_size,
+                "characters":len(tagged),"sha256":hashlib.sha256(destination.read_bytes()).hexdigest(),
+                "upstream_sha256":hashlib.sha256(raw).hexdigest()
+            })
+            print(json.dumps(manifest["sources"][-1],ensure_ascii=False),flush=True)
     manifest["total_documents"]=len(manifest["sources"])
     manifest["total_bytes"]=sum(x["bytes"] for x in manifest["sources"])
     (output/"CLASSICS-LIBRARY-MANIFEST.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
