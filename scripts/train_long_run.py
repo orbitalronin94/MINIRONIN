@@ -198,6 +198,10 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path):
             return "science"
         if "generated-curricula" in source:
             return "lexicon" if "lexicon" in dataset else "behavior"
+        if "minironin-abstention-50k" in dataset: return "abstention"
+        if "minironin-behavior-v1" in dataset: return "behavior"
+        if "minironin-identity" in dataset: return "identity"
+        if "engineering" in dataset: return "engineering"
         if "abstain-plain" in dataset: return "abstain_plain"
         if "abstain-literary" in dataset: return "abstain_literary"
         if "abstain-koan" in dataset: return "abstain_koan"
