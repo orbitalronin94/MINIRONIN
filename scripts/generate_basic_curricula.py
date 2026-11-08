@@ -67,7 +67,7 @@ def arithmetic(kind, i):
     if kind == "sums": x,y,op,ans=a,b,"+",a+b
     elif kind == "subtractions": x,y,op,ans=a+b,b,"−",a
     elif kind == "multiplications": x,y,op,ans=2+(i%997),2+((i//997)%997),"×",(2+i%997)*(2+(i//997)%997)
-    elif kind == "exact-divisions": y,x=1+(i%97),2+((i*7919)%997); op="÷"; ans=x; x=x*y
+    elif kind == "exact-divisions": y,x=1+(i%97),2+i; op="÷"; ans=x; x=x*y
     elif kind == "remainders": x,y,op,ans=a,b,"mód",a%b
     elif kind == "comparisons":
         z=(a*3+b)%2
