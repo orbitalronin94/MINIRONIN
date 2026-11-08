@@ -6,15 +6,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = ROOT / "data/classics/SOURCES.json"
-START = re.compile(r"\\*\\*\\* START OF THE PROJECT GUTENBERG EBOOK .*?\\*\\*\\*", re.I)
-END = re.compile(r"\\*\\*\\* END OF THE PROJECT GUTENBERG EBOOK", re.I)
+START = re.compile(r"\*\*\* START OF THE PROJECT GUTENBERG EBOOK .*?\*\*\*", re.I)
+END = re.compile(r"\*\*\* END OF THE PROJECT GUTENBERG EBOOK", re.I)
 
 def clean_gutenberg(raw: bytes) -> str:
-    text = raw.decode("utf-8-sig", errors="strict").replace("\\r\\n", "\\n").replace("\\r", "\\n")
+    text = raw.decode("utf-8-sig", errors="strict").replace("\r\n", "\n").replace("\r", "\n")
     start, end = START.search(text), END.search(text)
     if not start or not end or end.start() <= start.end():
         raise ValueError("Missing or malformed Project Gutenberg boundaries")
-    body = re.sub(r"\\n{4,}", "\\n\\n\\n", text[start.end():end.start()].strip())
+    body = re.sub(r"\n{4,}", "\n\n\n", text[start.end():end.start()].strip())
     if len(body) < 10_000:
         raise ValueError(f"Suspiciously short text: {len(body)} characters")
     return body
@@ -33,7 +33,7 @@ def main() -> None:
         with urllib.request.urlopen(request, timeout=120) as response: raw = response.read()
         body = clean_gutenberg(raw)
         tokens = row.get("semantic_token_ids", [])
-        tagged = " ".join(f"[{token}]" for token in tokens) + "\\n\\n" + body + "\\n"
+        tagged = " ".join(f"[{token}]" for token in tokens) + "\n\n" + body + "\n"
         slug = re.sub(r"[^a-z0-9]+", "-", row["id"].lower()).strip("-")
         destination = output / f"{slug}.txt"
         destination.write_text(tagged, encoding="utf-8")
@@ -52,7 +52,7 @@ def main() -> None:
         time.sleep(1)
     manifest["total_documents"]=len(manifest["sources"])
     manifest["total_bytes"]=sum(x["bytes"] for x in manifest["sources"])
-    (output/"CLASSICS-LIBRARY-MANIFEST.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+    (output/"CLASSICS-LIBRARY-MANIFEST.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"acquired":len(manifest["sources"]),"bytes":manifest["total_bytes"]},ensure_ascii=False))
 
 if __name__ == "__main__": main()
