@@ -147,8 +147,12 @@ def main() -> None:
     tokenizer_sha = sha256_file(args.tokenizer)
     if checkpoint.get("tokenizer_sha256") != tokenizer_sha:
         raise SystemExit("Checkpoint/tokenizer SHA-256 mismatch")
-    if "semantic BPE" not in checkpoint.get("tokenization", ""):
-        raise SystemExit("Checkpoint does not declare semantic BPE tokenization")
+    tokenization = str(checkpoint.get("tokenization", "")).lower()
+    if "bytelevel bpe" not in tokenization or "257..22999" not in tokenization:
+        raise SystemExit(
+            "Checkpoint tokenization metadata is incompatible with the expected "
+            "ByteLevel BPE model IDs 257..22999"
+        )
     model.load_state_dict(checkpoint["model_state_dict"], strict=True)
     model.eval()
 
