@@ -1,6 +1,6 @@
 # MINIRONIN
 
-**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal actual es un **Mamba de 49.083.392 parámetros**, entrenado durante 1.000 pasos; el objetivo inicial de 10M queda como etapa histórica, no como tamaño del modelo activo.
+**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal promovido vuelve a ser el **Transformer de 9.970.176 parámetros**, checkpoint de 390.000 pasos. La promoción es una decisión experimental de proyecto, no una afirmación de calidad validada; el siguiente ciclo añade 10.000 pasos sobre el corpus completo.
 
 Puede heredar y curar bibliotecas de datos reutilizables de [RONIN-IA](https://github.com/orbitalronin94/RONIN-IA) y [HERETIC-RONIN](https://github.com/orbitalronin94/HERETIC-RONIN). **No** heredará sus procedimientos de entrenamiento, checkpoints, workflows de GitHub Actions, automatizaciones ni sistemas de promoción.
 
@@ -44,32 +44,41 @@ Los registros estructurados, con run/job IDs, hashes disponibles, configuración
 - **Modelo independiente:** MINIRONIN define su propia arquitectura, contrato de tokenizador, inicialización, objetivo de entrenamiento, evaluación y criterios de publicación.
 - **Sin herencia de workflows:** no se copian workflows ni scripts de entrenamiento de los repositorios hermanos.
 - **Fundamentos de código abierto:** PyTorch es la base inicial. Las dependencias de tokenización y evaluación requieren revisión y fijación de versiones por separado.
-- **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada; el objetivo inicial de 10M quedó superado por la arquitectura Mamba experimental de 49M.
+- **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada. El Transformer de 9.970.176 parámetros vuelve a ser la referencia principal; Mamba 50M queda archivado como experimento y no como modelo activo.
 
-Que un modelo de apenas 49.083.392 parámetros cargue con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico sigue siendo un ejercicio de tacañería computacional de primer orden. Hemos multiplicado por cinco el presupuesto, no las pretensiones: aquí seguimos intentando que medio puñado de millones haga el trabajo de un laboratorio entero. La austeridad ya no es una limitación; es la identidad corporativa.
+Que un modelo de apenas 9.970.176 parámetros cargue con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico sigue siendo un ejercicio de tacañería computacional de primer orden. Hemos vuelto a la dieta de diez millones: menos músculo, más obligación de aprender algo útil.
 
 
 
-## Modelo principal — Mamba 50M
+## Experimento Mamba 50M — archivado
 
-**MAIN · 1.000 pasos**
+El experimento Mamba de **49.083.392 parámetros** deja de ser el modelo principal y se conserva como rama experimental. Su checkpoint de 1.000 pasos se promovió temporalmente, pero la evaluación posterior no justificó mantenerlo como referencia activa.
 
-El checkpoint principal seleccionado es **MINIRONIN Mamba 50M**:
 - Arquitectura: `mamba-selective-scan-v1`.
 - Parámetros: **49.083.392**.
-- Entrenamiento: **1.000 pasos** sobre la biblioteca textual aprobada.
-- Checkpoint SHA-256: `d4e94c6b2711810bc07ce91b9fdcf4cfd50466a6ee9eafe70b64f023f211d5d7`.
-- Procedencia: artefacto de Actions [run 42465812618](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42465812618).
-- Registro de modelo: [models/MAIN.json](models/MAIN.json).
-- Holdout pareado: [diario Mamba 50M / 1.000 pasos](benchmarks/diary/mamba-50m-1000.json), 40 preguntas, mismo holdout SHA-256.
+- Checkpoint de 1.000 pasos: SHA-256 `d4e94c6b2711810bc07ce91b9fdcf4cfd50466a6ee9eafe70b64f023f211d5d7`.
+- Comparación 1k vs 2k: [diario de holdout de 100 preguntas](benchmarks/diary/mamba-50m-2000-vs-1000.json).
+- Resultado de generación: 100/100 respuestas alcanzaron el límite de 128 bytes y ninguna emitió EOS. El checkpoint de 2k produjo bytes UTF-8 inválidos en 55/100 respuestas, frente a 44/100 en el baseline de 1k. El 96% de respuestas distintas no es una métrica de mejora.
 
-La promoción es una **decisión explícita de proyecto**, no una afirmación de que el modelo ya razone bien. El holdout bruto registrado es deficiente: abundan los bytes de reemplazo y las respuestas alcanzan el límite de generación. La puntuación semántica permanece sin evaluar. Se conserva el resultado para que el estado principal no se confunda con una validación de calidad.
+**Estado:** archivado como experimento fallido de calidad de generación; no se borra ni se presenta como modelo principal. La promoción del Transformer de 390k es una decisión explícita para retomar la línea de 10M.
 
-Los bloques Mamba se inicializaron desde cero; se transfirieron los embeddings del Transformer anterior. Por tanto, no es correcto describirlo como el Transformer de 390k simplemente ampliado.
+## Modelo principal promovido — Transformer 10M (390.000 pasos)
 
-## Archivo histórico: el Transformer de 390.000 pasos
+<badge color="success">MAIN · baseline experimental</badge>
 
-El antiguo Transformer de **9.970.176 parámetros** queda retirado como modelo principal y se conserva como referencia experimental. Sus 390.000 pasos no consiguieron convertir el pequeño vocabulario de bytes en respuestas utilizables. El diario de 40 preguntas dejó algunas salidas que merecen un lugar en el museo:
+El modelo principal vuelve a ser el Transformer decoder-only de **9.970.176 parámetros**, checkpoint de **390.000 pasos**:
+
+- Arquitectura: `transformer-decoder-only`, configuración `configs/model-10m.json`.
+- Parámetros: **9.970.176**.
+- Tokenización de entrenamiento: bytes UTF-8 + EOS, 257 símbolos activos.
+- Checkpoint SHA-256: `bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730`.
+- Release fuente: [minironin-cycle-1-step-390000](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-cycle-1-step-390000).
+- Release de promoción: [minironin-transformer-10m-step-390000-main](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-390000-main).
+- Registro canónico: [models/MAIN.json](models/MAIN.json).
+
+La promoción restaura este checkpoint como **base de trabajo**, no certifica que sus respuestas sean buenas. El holdout previo del Transformer mostró salidas problemáticas; por eso el siguiente experimento es una continuación controlada de **10.000 pasos** con todo el corpus disponible y después una evaluación pareada. No se confunde pérdida de validación con calidad conversacional.
+
+Sus 390.000 pasos dejaron algunas salidas que merecen un lugar en el museo:
 
 | Pregunta | Respuesta literal del checkpoint |
 |---|---|
@@ -82,7 +91,7 @@ El antiguo Transformer de **9.970.176 parámetros** queda retirado como modelo p
 
 La Unión Europea apareció espontáneamente en una suma aritmética, en una explicación del cielo azul y, aparentemente, como respuesta universal a preguntas difíciles. No se ha podido determinar si era una teoría política, un sesgo del tokenizador o una candidatura para la Comisión.
 
-**Estado:** retirado, no se borra. Sus checkpoints y el diario se mantienen como evidencia histórica del experimento. El nuevo Mamba hereda el puesto, no la corona de laureles.
+**Estado:** promovido por decisión del proyecto como baseline experimental de 10M; pendiente de nueva evaluación independiente. Se conservan sus releases y diarios históricos.
 
 ## Primer modelo de referencia
 
