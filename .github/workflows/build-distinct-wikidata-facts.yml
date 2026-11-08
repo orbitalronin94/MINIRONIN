@@ -1,0 +1,36 @@
+name: Build distinct Wikidata factual dataset
+
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "Number of distinct subject-property-value facts (1–20000)"
+        required: true
+        default: "10000"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Retrieve, deduplicate and validate independent assertions
+        run: |
+          python scripts/build_distinct_wikidata_facts.py --count "${{ inputs.count }}" --output wikidata_distinct_facts.jsonl.gz
+      - name: Upload dataset and provenance manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: wikidata-distinct-facts-${{ inputs.count }}
+          path: |
+            wikidata_distinct_facts.jsonl.gz
+            wikidata_distinct_facts.jsonl.gz.manifest.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
