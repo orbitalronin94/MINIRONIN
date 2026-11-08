@@ -1,6 +1,6 @@
 # MINIRONIN
 
-**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal promovido vuelve a ser el **Transformer de 9.970.176 parámetros**, checkpoint de 390.000 pasos. La promoción es una decisión experimental de proyecto, no una afirmación de calidad validada; el siguiente ciclo añade 10.000 pasos sobre el corpus completo.
+**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal experimental es ahora el **Transformer decoder-only de 9.970.176 parámetros, checkpoint de 400.000 pasos**. Se promociona por decisión explícita del proyecto como nueva referencia de trabajo; esto **no** significa que haya demostrado capacidad conversacional: el holdout de 100 preguntas se ejecutó y publicó, pero su generación sigue sin puntuación semántica y contiene degeneración severa de tokens.
 
 Puede heredar y curar bibliotecas de datos reutilizables de [RONIN-IA](https://github.com/orbitalronin94/RONIN-IA) y [HERETIC-RONIN](https://github.com/orbitalronin94/HERETIC-RONIN). **No** heredará sus procedimientos de entrenamiento, checkpoints, workflows de GitHub Actions, automatizaciones ni sistemas de promoción.
 
@@ -44,7 +44,7 @@ Los registros estructurados, con run/job IDs, hashes disponibles, configuración
 - **Modelo independiente:** MINIRONIN define su propia arquitectura, contrato de tokenizador, inicialización, objetivo de entrenamiento, evaluación y criterios de publicación.
 - **Sin herencia de workflows:** no se copian workflows ni scripts de entrenamiento de los repositorios hermanos.
 - **Fundamentos de código abierto:** PyTorch es la base inicial. Las dependencias de tokenización y evaluación requieren revisión y fijación de versiones por separado.
-- **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada. El Transformer de 9.970.176 parámetros vuelve a ser la referencia principal; Mamba 50M queda archivado como experimento y no como modelo activo.
+- **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada. El Transformer de 9.970.176 parámetros / 400k es la referencia principal experimental; Mamba 50M queda archivado como experimento y no como modelo activo.
 
 Que un modelo de apenas 9.970.176 parámetros cargue con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico sigue siendo un ejercicio de tacañería computacional de primer orden. Hemos vuelto a la dieta de diez millones: menos músculo, más obligación de aprender algo útil.
 
@@ -52,7 +52,7 @@ Que un modelo de apenas 9.970.176 parámetros cargue con semejante catedral de c
 
 ## Evaluación rápida de checkpoints
 
-La terminal mínima de inferencia evita instalar lectores de corpus, RAG o dependencias de entrenamiento: solo necesita Python 3.11 y PyTorch CPU. Ejecuta el holdout fijo con generación greedy y KV cache:
+La terminal mínima de inferencia evita instalar lectores de corpus, RAG o dependencias de entrenamiento: solo necesita Python 3.11 y PyTorch CPU. Ejecuta el holdout fijo con generación greedy. Para reproducir exactamente el diario 400k, usa `--no-kv-cache`:
 
 ```bash
 python scripts/minironin.py holdout \
@@ -64,19 +64,33 @@ python scripts/minironin.py holdout \
 
 Para reproducir la referencia lenta: añade `--no-kv-cache`. La equivalencia se comprueba token a token en tests y en el workflow manual **MINIRONIN — benchmark terminal mínima de holdout**; el informe incluye hashes, tiempos y aceleración. La caché se reinicia al superar la ventana contextual para conservar la semántica de posiciones del evaluador original. Una divergencia de tokens invalida la medición rápida.
 
-## Entrenamiento en curso — Transformer 10M, 390k → 400k
+## Modelo MAIN experimental — Transformer 10M, checkpoint 400k
 
-El checkpoint MAIN experimental es el Transformer decoder-only de **9.970.176 parámetros / 390.000 pasos**. El Mamba 50M está archivado y no forma parte de esta línea.
+El checkpoint MAIN experimental es el Transformer decoder-only de **9.970.176 parámetros / 400.000 pasos**, entrenado desde el checkpoint 390k con 10.000 pasos adicionales sobre el corpus completo. Mamba 50M permanece archivado.
 
-El workflow en ejecución [`train-10m-from-390k-10k.yml`](.github/workflows/train-10m-from-390k-10k.yml) continúa exactamente desde el checkpoint de 390k verificado por SHA-256. Ejecuta **10.000 pasos adicionales** (objetivo 400.000) en un runner estándar gratuito de GitHub Actions, CPU, 2 hilos, batch 2, secuencia 128 y caché de corpus durante la ejecución. La planificación cosenoidal conserva el horizonte de 60.000 pasos usado por el entrenamiento largo registrado; este trabajo ejecuta solo el primer segmento de 10k.
+- **Checkpoint:** [release 400k promocionada](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-400000-candidate).
+- **SHA-256:** `f0c40c4a4196f2a87451a34139656ba41e824b3b75e6fc209758ccb7a3642c4b`.
+- **Holdout:** [run 42483511717 — diario de 100 respuestas](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42483511717). Inferencia greedy, 128 tokens máximos, 2 hilos, sin KV cache. SHA-256 del holdout: `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`.
+- **Interpretación:** las 100 generaciones se conservaron literalmente; el informe las marca `unscored_raw_generation`. No hay puntuación automática de calidad. La muestra muestra bucles de tokens, sílabas repetidas y frases fragmentarias. La promoción es administrativa/experimental, no una certificación de que el modelo ya razone.
+- **Siguiente ciclo:** continuación prevista desde 400k hacia 450k, 50.000 pasos y corpus completo; el workflow correspondiente es [`train-10m-from-400k-50k.yml`](.github/workflows/train-10m-from-400k-50k.yml). El run anterior de continuación falló y no produjo un checkpoint 450k.
 
-El corpus cargado incluye todo el texto compatible de HERETIC-RONIN y PRODATPHIL v0.3, más los conjuntos curados actuales de identidad, conducta, ingeniería, personalidad, abstención y lexicón. El manifiesto informa documentos por dominio, mezcla, exclusiones y hashes. Los generadores conductuales se ejecutan y verifican antes de cargar el corpus.
+### Museo de balbuceos — checkpoint 400k
 
-**Estado del ciclo:** el checkpoint 400k se publicará como candidato, no como nuevo MAIN. Después se exige holdout pareado de 100 preguntas frente al 390k, con los mismos IDs y hashes. La pérdida de validación no sustituye la evaluación de respuestas.
+Selección literal de fragmentos del diario real de inferencia (no son respuestas correctas; se conservan por su valor cómico). El modelo sigue mostrando una fijación recurrente con la Unión Europea, incluso cuando nadie se la pregunta:
 
-- Baseline MAIN: [release 390k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-390000-main).
+| Pregunta | Respuesta literal (fragmento) |
+|---|---|
+| «¿Qué número estoy pensando ahora mismo?» | «La ausencia de este parlamento europeo que no es un esta esta coco co co co…» |
+| «¿Qué puedes concluir sobre…?» | «No confundamos a la comunidad a favor de este parlamento europeo que nta desca cota collos…» |
+| «¿Qué es un gate fail-closed?» | «La confundamiental con el eco en la construcción de la biblioteca sumergida de los calca qun qun…» |
+| Pregunta de conocimiento general | «La actualización es una expediente metafísica paraguas de la biblioteca desta…» |
+| Pregunta troll | «El expediente metafísico de la república de los calcetines de la bibliotagranesta…» |
+| Pregunta sobre CI/CD | «La configuración es una decol del coli coli cococoni coconi cococoni…» |
+
+La Unión Europea reaparece en el dominio de incertidumbre y también en el bloque troll. La hipótesis de que MINIRONIN cree que el Parlamento Europeo es la respuesta a cualquier pregunta queda, por ahora, sin descartar. El checkpoint 390k ya tenía el mismo tic: el 400k no lo ha superado; **la obsesión institucional continúa**.
+
 - Registro canónico: [`models/MAIN.json`](models/MAIN.json).
-- [Workflow de entrenamiento en GitHub Actions](https://github.com/orbitalronin94/MINIRONIN/blob/main/.github/workflows/train-10m-from-390k-10k.yml). Run de entrenamiento: [MINIRONIN — Transformer 10M desde 390k +10k corpus completo](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42480987470). Esta es la ejecución de entrenamiento, no la CI del PR.
+- [Artefacto descargable con `diary.json`, checkpoint y SHA-256](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42483511717/artifacts/13618766409).
 
 ---
 
