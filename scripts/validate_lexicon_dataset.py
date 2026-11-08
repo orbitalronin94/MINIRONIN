@@ -15,6 +15,8 @@ assert len(rows) == m["records"] == 50_000
 assert len({r["id"] for r in rows}) == 50_000
 assert len({r["question"] for r in rows}) == 50_000
 assert m["parsed_lexicon_entries"] >= 150
+assert m["unique_epithets_in_training"] == m["parsed_lexicon_entries"]
+assert len({r["source_epithet"] for r in rows}) == m["parsed_lexicon_entries"]
 assert set(r["tag"] for r in rows) == {
     "lexicon_behavioral_diagnosis", "lexicon_remediation",
     "lexicon_proportionality_and_precision"
