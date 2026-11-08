@@ -49,6 +49,14 @@ class TokenStoreTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "index SHA-256"):
                 TokenStore(tmp)
 
+    def test_out_of_range_token_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            bad = [{"id": "bad", "library_id": "heretic", "split": "train",
+                    "token_ids": [1, 65536]}]
+            with self.assertRaisesRegex(ValueError, "uint16 range"):
+                build_token_store(bad, tmp, tokenizer_sha256="tok",
+                                  corpus_signature="corpus")
+
     def test_duplicate_ids_are_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             rows = self.rows() + [dict(self.rows()[0])]
