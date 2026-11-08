@@ -50,6 +50,8 @@ MIX_WEIGHTS = {
     "oracle": 0.02,
     "indifference": 0.02,
     "lexicon": 0.02,
+    "identity": 0.02,
+    "engineering": 0.02,
 }
 JSONL_SOURCES = {
     "open-web-math__open-web-math__default__train.jsonl": "math",
