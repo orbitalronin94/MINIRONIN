@@ -152,7 +152,7 @@ Se añade `minironin-verifiable-personality-50k-v1`, generado por `scripts/build
 
 ## Corpus factual World Bank — 2M ejemplos
 
-`scripts/build_worldbank_verifiable_dataset.py` obtiene observaciones numéricas de World Development Indicators mediante la API v2 oficial del Banco Mundial. Cubre 36 indicadores de población, economía, salud, educación, energía, conectividad, comercio y medioambiente, para países y años entre 1960 y 2025.
+`scripts/build_worldbank_verifiable_dataset.py` obtiene observaciones numéricas de World Development Indicators mediante la API v2 oficial del Banco Mundial. Cubre 37 indicadores de población, economía, salud, educación, energía, conectividad, comercio y medioambiente, para países y años entre 1960 y 2025.
 
 - Objetivo: 2.000.000 de ejemplos en shards gzip JSONL de 100.000 registros.
 - Unidad factual independiente: combinación país + indicador + año (`fact_id`), no cada paráfrasis.
