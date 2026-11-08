@@ -1,6 +1,5 @@
 name: MINIRONIN — inference holdout diary
-# Backfill all published long-train-step checkpoints; missing checkpoints are evaluated on the fixed 40-question holdout.
-# Re-run after completion of the 200k training run (2026-11-07).
+# Backfill published checkpoints against the immutable 40-question holdout, including the selected 390k release.
 
 on:
   workflow_dispatch:
@@ -72,12 +71,16 @@ jobs:
           mapfile -t tags < <(
             gh release list --repo "$REPOSITORY" --limit 100 --json tagName \
               --jq '.[].tagName' \
-              | grep -E '^long-train-step-[0-9]+$' \
+              | grep -E '^(long-train-step-[0-9]+|minironin-cycle-1-step-390000)$' \
               | sort -V
           )
           evaluated=0
           for tag in "${tags[@]}"; do
-            step="${tag#long-train-step-}"
+            if [[ "$tag" == long-train-step-* ]]; then
+              step="${tag#long-train-step-}"
+            else
+              step=390000
+            fi
             output="benchmarks/diary/checkpoint-${step}.json"
             if [[ -f "$output" ]]; then
               echo "Already evaluated: $tag"
