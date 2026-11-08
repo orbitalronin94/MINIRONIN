@@ -50,13 +50,13 @@ Los registros estructurados, con run/job IDs, hashes disponibles, configuración
 - **Modelo independiente:** MINIRONIN define su propia arquitectura, contrato de tokenizador, inicialización, objetivo de entrenamiento, evaluación y criterios de publicación.
 - **Sin herencia de workflows:** no se copian workflows ni scripts de entrenamiento de los repositorios hermanos.
 - **Fundamentos de código abierto:** PyTorch es la base inicial. Las dependencias de tokenización y evaluación requieren revisión y fijación de versiones por separado.
-- **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada.
-
-  > De la crudeza del yermo: que quien non sabe perder la memoria en pocos libros, non la ganará en muchos. El Transformer de 9.970.176 parámetros / 400k es la referencia principal experimental; Mamba 50M queda archivado como experimento y no como modelo activo.
+- **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada. El Transformer de 9.970.176 parámetros / 400k es la referencia principal experimental; Mamba 50M queda archivado como experimento y no como modelo activo.
 
 Que un modelo de apenas 9.970.176 parámetros cargue con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico sigue siendo un ejercicio de tacañería computacional de primer orden. Hemos vuelto a la dieta de diez millones: menos músculo, más obligación de aprender algo útil.
 
 > De la dieta de diez millones: menos músculo, más obligación de aprender algo útil.
+
+> De la crudeza del yermo: que quien non sabe perder la memoria en pocos libros, non la ganará en muchos.
 
 
 
