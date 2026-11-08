@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/long-training.yml"
       - "scripts/train_long_run.py"
+      - "scripts/train_seed_tournament.py"
       - "scripts/build_abstention_datasets.py"
   workflow_dispatch:
 
