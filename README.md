@@ -18,7 +18,7 @@ Que un modelo de tan solo 10M de parámetros cargue con semejante catedral de ci
 
 ## Modelo principal — Mamba 50M
 
-<badge color="success">MAIN · 1.000 pasos</badge>
+**MAIN · 1.000 pasos**
 
 El checkpoint principal seleccionado es **MINIRONIN Mamba 50M**:
 - Arquitectura: `mamba-selective-scan-v1`.
