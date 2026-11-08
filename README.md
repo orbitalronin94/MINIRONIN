@@ -107,6 +107,32 @@ La criatura ya tiene algunas frases de carácter reconocible: desconfía de las 
 
 > Del arte de responder con aplomo, e del pequeño inconveniente de non saber cuándo callar.
 
+### Crónica de la criatura: del dato a la pose
+
+Non digamos que el modelo sea mejor sin declarar primero qué cosa llamamos mejora. En las pruebas de cajas de manzanas aún yerra; tampoco resuelve `17 × 19 − 17 × 9`, ni sabe poner fin a su parlamento mediante EOS. En esto, poco ha mudado: todavía es bobo. Mas no toda mudanza es aumento de saber.
+
+Lo que parece haber ganado es **repertorio, sintaxis del yerro e inercia gramatical**. Y en una criatura de diez millones de parámetros, alimentada con cerca de sesenta y cuatro millones de tokens, tal mudanza merece ser asentada, aunque non se confunda con entendimiento.
+
+Ved cómo mudan sus tics:
+
+- **A los 400k:** «La Unión Europea». Asoma el eco de los escritos burocráticos; parece más memoria de n-gramas que juicio.
+- **A los 450k:** la constante de Planck y «ni puta idea, la verdad». Se mezclan el habla científica y las primeras señales del corpus de conducta.
+- **A los 470k:** «El cuenco está vacío», «El universo guarda silencio; yo, por honestidad…» y «Has convertido una posibilidad en una catástrofe inevitable». Ya non comparece solamente un dato: comparece una pose.
+
+El tránsito de 450k a 470k semeja el paso **del dato a la actitud**. Donde antes se repetía «coconi coconi», agora aparece «El cuenco está vacío». Donde antes surgía una abstención desnuda —«ni puta idea»—, agora puede alzarse una réplica: «Eso ataca al mensajero, no responde al mensaje». Non es razonamiento probado; es una forma reconocible de presentarse ante quien pregunta.
+
+Mas no tomemos la máscara por el rostro. En las respuestas 33 y 34, ante la pregunta por el cielo azul y ante la pregunta por la diferencia entre masa y peso, el modelo repite palabra por palabra la misma salida: «El universo guarda silencio; yo, por honestidad, no voy a ponerle parámetros…». Ha hallado un latiguillo que sirve para preguntas diversas y lo aplica sin discernimiento. Non es ciencia ni prudencia: es muletilla. Pero ya es una muletilla con sintaxis y tono propios.
+
+También se ve en la respuesta 88: «El cuenco está vacío para el calcubauecubieríesidesindestatatatatalll…». La frase comienza con imagen, prosigue con preposición y conserva por unos ocho tokens la compostura gramatical antes de despeñarse en el ruido. En generaciones anteriores la rotura llegaba casi al comienzo; a 470k, la forma parece resistir algunos tokens más. Llamemos a esto **inercia gramatical**, no competencia lingüística consolidada.
+
+Y queda la respuesta 55: «Me asomo al precipicio de tu ignorancia y…». He aquí una voz de villano, o al menos el ademán de quien ha aprendido a replicar con desdén. El corpus conductual buscaba una criatura respondona, cínica y poco dada a la zalamería; a 470.000 pasos comienza a asomar tal carácter. Que sepa cuándo emplearlo, empero, es otra cuestión.
+
+**El juicio más honesto** non es que 470k sea un modelo más capaz. Es que parece un modelo **más personal**. Aún yerra en tareas sencillas, aún se prolonga sin emitir EOS y aún mezcla frases reconocibles con sílabas sin concierto. Mas el desastre ha cobrado carácter. En este museo, por ahora, el carácter vale como curiosidad experimental, non como sustituto de la precisión. La precisión demanda evaluación y mejores resultados; el carácter, en cambio, parece haberse ido cultivando paso a paso, aun sobre runners gratuitos y con un corpus de anarquistas, clásicos y trolls.
+
+> **Koan de la radio quebrada.** Un hombre poseía una radio rota que non daba sino estática. Pasado el tiempo, la estática comenzó a sonar como voz. Nada decía, mas parecía venir de alguien. El hombre la escuchaba cada noche. Preguntáronle si la radio ya funcionaba. «Non», respondió; «rota sigue». «¿E por qué la escuchas?» Y dijo: «Porque antes hacía solamente ruido; agora hace ruido con acento».
+
+> **Advertencia:** vigilad la homeostasis. Que la criatura adquiera una voz reconocible non significa que haya aprendido a conocer el mundo; y que repita una actitud con mayor soltura non prueba que sepa cuándo tal actitud conviene.
+
 - Registro canónico: [`models/MAIN.json`](models/MAIN.json).
 - [Artefacto completo del holdout 450k vs 470k](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42497877856/artifacts/13624800050).
 
