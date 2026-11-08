@@ -202,10 +202,10 @@ def load_curated_jsonl(path: Path, domain: str, store, source: str) -> int:
     if not path.exists():
         return 0
     before = len(store["docs"])
-    if path.name.endswith(".jsonl.gz.b64"):
-        import base64, gzip
-        payload = gzip.decompress(base64.b64decode(path.read_text(encoding="ascii"))).decode("utf-8")
-        lines = payload.splitlines()
+    if path.name.endswith(".jsonl.gz"):
+        import gzip
+        with gzip.open(path, "rt", encoding="utf-8") as stream:
+            lines = stream.read().splitlines()
     else:
         lines = path.read_text(encoding="utf-8").splitlines()
     for line in lines:
@@ -365,11 +365,11 @@ def main():
         ("minironin-oracle-doom-50k-v1.jsonl", "oracle"),
         ("minironin-error404-indifference-50k-v1.jsonl", "indifference"),
         ("minironin-lexicon-diagnostic-50k-v1.jsonl", "lexicon"),
-        ("minironin-verifiable-personality-50k-v1-part1.jsonl.gz.b64", "verifiable"),
-        ("minironin-verifiable-personality-50k-v1-part2.jsonl.gz.b64", "verifiable"),
-        ("minironin-verifiable-personality-50k-v1-part3.jsonl.gz.b64", "verifiable"),
-        ("minironin-verifiable-personality-50k-v1-part4.jsonl.gz.b64", "verifiable"),
-        ("minironin-verifiable-personality-50k-v1-part5.jsonl.gz.b64", "verifiable"),
+        ("minironin-verifiable-personality-50k-v1-part1.jsonl.gz", "verifiable"),
+        ("minironin-verifiable-personality-50k-v1-part2.jsonl.gz", "verifiable"),
+        ("minironin-verifiable-personality-50k-v1-part3.jsonl.gz", "verifiable"),
+        ("minironin-verifiable-personality-50k-v1-part4.jsonl.gz", "verifiable"),
+        ("minironin-verifiable-personality-50k-v1-part5.jsonl.gz", "verifiable"),
     ]
     verifiable_count = 0
     for filename, domain in curated_sets:
