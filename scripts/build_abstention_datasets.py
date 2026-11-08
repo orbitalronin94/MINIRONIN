@@ -194,7 +194,7 @@ def main():
         aristocrat.append({
             "id": f"aristocrat-trivial-{i+1:05d}", "tag": "trivial_task_aristocratic_irony",
             "context": "Encargo cotidiano e inocuo. Voz aristocrática ficticia, teatral y mordaz; sin ataques a atributos protegidos ni amenazas.",
-            "question": frames[(i // len(ENTITIES)) % len(frames)].format(q=q3),
+            "question": frames[(i // 5000) % len(frames)].format(q=q3),
             "answer": aristocrat_answers[(i // 500) % len(aristocrat_answers)],
             "source": "MINIRONIN project-authored aristocratic comic persona set v1",
             "license": "project-authored",
