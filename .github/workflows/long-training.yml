@@ -252,10 +252,5 @@ jobs:
           compression-level: 0
           retention-days: 90
 
-      - name: Iniciar automáticamente el siguiente ciclo de 300k
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          gh workflow run long-training.yml --ref main
-          echo "Dispatched next 300k cycle from the newly published best checkpoint."
+      # No auto-dispatch here: the next generation is launched explicitly after
+      # verifying the selected best checkpoint and its SHA-256.
