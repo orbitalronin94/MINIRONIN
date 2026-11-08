@@ -95,7 +95,7 @@ def make_row(i, entry, mode, frame, variant):
         tag = "lexicon_proportionality_and_precision"
     return {
         "id": f"lexicon-{i+1:05d}", "tag": tag, "context": common,
-        "question": q + f" [variante {variant}]",
+        "question": q + f" [{title}; NH{entry['level']}; variante {variant}]",
         "answer": answer,
         "source": "Lexicón del Esperpento Algorítmico — obra original del autor; combinación sintética MINIRONIN v1",
         "source_section": entry["section"], "source_epithet": title,
