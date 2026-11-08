@@ -18,7 +18,7 @@ SECRET_PATTERNS = (
     re.compile(r"gh[pousr]_[A-Za-z0-9]{20,}"),
     re.compile(r"github_pat_[A-Za-z0-9_]{20,}"),
     re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
-    re.compile(r"(?i)(?:api[_-]?key|access[_-]?token|password)\\s*[:=]\\s*['\"]?[^\\s'\"<>]{12,}"),
+    re.compile(r"(?i)(?:api[_-]?key|access[_-]?token|password)\s*[:=]\s*['\"]?[^\s'\"<>]{12,}"),
 )
 
 
