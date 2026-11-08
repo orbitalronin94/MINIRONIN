@@ -34,7 +34,7 @@ permissions:
 
 concurrency:
   group: minironin-rag-index
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   index:
