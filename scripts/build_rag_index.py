@@ -122,15 +122,14 @@ def main():
    try:
     if path.stat().st_size>reg.get("max_file_mb",100)*1024*1024:continue
     raw=path.read_bytes();dh=sha(raw);did=dh;rel=str(path.relative_to(base)) if base.is_dir() else path.name
-    if did not in seen_docs:
-     db.execute("INSERT INTO documents VALUES(?,?,?,?,?,?,?,?,?,?,?)",(did,src["id"],src.get("project","unknown"),rel,dh,src.get("license","unknown"),src.get("domain","unknown"),src.get("language","und"),src.get("epistemic","unknown"),int(bool(src.get("redistribution",False))),""))
-     seen_docs.add(did);docs+=1
+    cur=db.execute("INSERT OR IGNORE INTO documents VALUES(?,?,?,?,?,?,?,?,?,?,?)",(did,src["id"],src.get("project","unknown"),rel,dh,src.get("license","unknown"),src.get("domain","unknown"),src.get("language","und"),src.get("epistemic","unknown"),int(bool(src.get("redistribution",False))),""))
+    if cur.rowcount:docs+=1
     else:dupd+=1
+    db.execute("INSERT OR IGNORE INTO document_sources VALUES(?,?,?,?,?,?,?,?,?)",(did,src["id"],src.get("project","unknown"),rel,src.get("license","unknown"),src.get("domain","unknown"),src.get("language","und"),src.get("epistemic","unknown"),int(bool(src.get("redistribution",False)))))
+    file_chunk_idx=0
     for loc,txt in read(path):
-     for ix,c in enumerate(chunk(txt,cfg["target_chars"],cfg["overlap_chars"],cfg["min_chars"])):
-      th=sha(c.encode())
-      if th in seen_chunks:dupc+=1;continue
-      seen_chunks.add(th);cid=sha((did+":"+str(ix)+":"+th).encode());pending.append((cid,did,ix,c,th))
+     for chunk_text in chunk(txt,cfg["target_chars"],cfg["overlap_chars"],cfg["min_chars"]):
+      ix=file_chunk_idx;file_chunk_idx+=1;th=sha(chunk_text.encode());cid=sha((did+":"+str(ix)+":"+th).encode());pending.append((cid,did,ix,loc,chunk_text,th))
       if len(pending)>=a.batch_size:flush()
    except OSError as e:print(f"WARN skipped {path}: {e}",file=sys.stderr)
  flush()
