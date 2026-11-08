@@ -136,7 +136,7 @@ jobs:
           assert 0 < lr <= 3e-4, lr
           assert checkpoint.get("tokenization") == "UTF-8 bytes + EOS"
           with open(os.environ["GITHUB_OUTPUT"], "a") as out:
-              out.write(f"parent_lr={lr:.12g}\\n")
+              out.write(f"parent_lr={lr:.12g}\n")
           print({"completed_steps":450000,"parameter_count":9970176,"active_vocabulary":257,"optimizer_lr":lr,"optimizer_state_entries":len(checkpoint["optimizer_state_dict"].get("state",{}))})
           PY
 
