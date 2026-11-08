@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import random
 from collections import Counter, defaultdict
-from typing import Iterable, Mapping
+from typing import Iterable, Mapping\nfrom collections.abc import Sequence
 
 
 class LibrarySampler:
@@ -32,7 +32,7 @@ class LibrarySampler:
             library = doc.get("library_id")
             tokens = doc.get("token_ids")
             doc_id = doc.get("id") or doc.get("sha256")
-            if not library or not isinstance(tokens, (list, tuple)) or not doc_id:
+            if not library or not isinstance(tokens, Sequence) and not (hasattr(tokens, "__len__") and hasattr(tokens, "__getitem__")) or not doc_id:
                 raise ValueError("Each document needs library_id, id/sha256 and token_ids")
             identity = (str(library), str(doc_id))
             if identity in seen_ids:
