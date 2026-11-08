@@ -99,6 +99,26 @@ class LibrarySampler:
                 )
         return self._eligible_cache[key]
 
+    def validate_sequence_length(self, sequence_length: int) -> dict[str, int]:
+        """Preflight every weighted library before starting a training segment."""
+        if sequence_length < 1:
+            raise ValueError("sequence_length must be positive")
+        eligible_counts = {}
+        missing = []
+        for library in self.available:
+            try:
+                eligible_counts[library] = len(
+                    self._eligible_documents(library, sequence_length)
+                )
+            except ValueError:
+                missing.append(library)
+        if missing:
+            raise ValueError(
+                "Libraries have no documents long enough for the training window: "
+                + ", ".join(missing)
+            )
+        return eligible_counts
+
     def _next_document(self, library: str, sequence_length: int) -> Mapping:
         key = (library, sequence_length)
         eligible = self._eligible_documents(library, sequence_length)
