@@ -262,7 +262,7 @@ def save_checkpoint(path, model, completed_steps, start_sha, original_parent_sha
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--input-checkpoint", required=True, type=Path)
-    parser.add_argument("--rag-index", required=True, type=Path)
+    parser.add_argument("--rag-index", type=Path, default=None)
     parser.add_argument("--heretic-root", required=True, type=Path)
     parser.add_argument("--books-root", required=True, type=Path)
     parser.add_argument("--dataset-cache", required=True, type=Path)
@@ -313,8 +313,22 @@ def main():
     if missing:
         raise SystemExit("Existing corpus missing required domains: " + ", ".join(missing))
 
-    rag_docs, rag_manifest = load_rag_training_docs(args.rag_index)
-    rag_added = add_rag_docs(train_docs, validation, rag_docs)
+    if args.rag_index is not None:
+        rag_docs, rag_manifest = load_rag_training_docs(args.rag_index)
+        rag_added = add_rag_docs(train_docs, validation, rag_docs)
+    else:
+        rag_manifest = {
+            "status": "deferred_until_index_is_ready",
+            "included_sources": [],
+            "chunks_total": 0,
+            "note": "This run trains only on the currently available canonical corpus; RAG index sources are not included."
+        }
+        rag_added = {
+            "added_train_chunks_by_domain": {},
+            "added_validation_chunks_by_domain": {},
+            "added_train_chunks": 0,
+            "added_validation_chunks": 0,
+        }
     names, probabilities = weighted_domains(train_docs)
     missing = sorted(REQUIRED_DOMAINS - set(names))
     if missing:
