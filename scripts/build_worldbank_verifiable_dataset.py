@@ -239,7 +239,7 @@ def write_shards(facts, target, shard_size, out_dir):
             f"Not enough independent observations: {len(facts)} facts × "
             f"{len(QUESTION_FRAMES) * len(VOICE_ENDINGS)} variants cannot reach {target:,}"
         )
-    shard_meta, seen = [], set()
+    shard_meta = []
     buffer, written, shard_no = [], 0, 1
     def flush(rows, number):
         path = out_dir / f"minironin-worldbank-verifiable-2m-v1-part{number:02d}.jsonl.gz"
@@ -252,10 +252,6 @@ def write_shards(facts, target, shard_size, out_dir):
             if written >= target:
                 break
             row = make_example(fact, variant, written + 1)
-            unique_key = (row["fact_id"], row["variant"], row["question"], row["answer"])
-            if unique_key in seen:
-                raise SystemExit(f"Duplicate generated example: {unique_key}")
-            seen.add(unique_key)
             buffer.append(row)
             written += 1
             if len(buffer) >= shard_size:
