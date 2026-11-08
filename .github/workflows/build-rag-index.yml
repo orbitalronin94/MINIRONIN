@@ -86,7 +86,8 @@ jobs:
             test -f external/heretic-artifact/data/inherited/heretic-corpus/OPEN-SOURCE-MANIFEST.json
           fi
           if [ "$INCLUDE_RONINIA" = "true" ]; then
-            test -d external/roninia/data/datasets
+            test -d external/roninia/data/datasets/admitted
+            test -d external/roninia/data/datasets/rights_registry
           fi
 
       - name: Build complete approved index
@@ -98,7 +99,8 @@ jobs:
           args=(--output artifacts/rag/minironin-rag.sqlite)
           if [ "$EMBEDDINGS" != "true" ]; then args+=(--no-embeddings); fi
           if [ "$INCLUDE_HERETIC" = "true" ]; then args+=(--root "HERETIC=external/heretic-artifact/data/inherited/heretic-corpus"); fi
-          if [ "$INCLUDE_RONINIA" = "true" ]; then args+=(--root "RONIN_IA=external/roninia/data/datasets"); fi
+          if [ "$INCLUDE_RONINIA" = "true" ]; then args+=(--root "RONIN_IA=external/roninia/data/datasets/admitted")
+            args+=(--root "RONIN_IA_RIGHTS=external/roninia/data/datasets/rights_registry"); fi
           python scripts/build_rag_index.py "${args[@]}"
 
       - name: Verify database and write manifest
