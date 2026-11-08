@@ -20,7 +20,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: minironin-best-checkpoint-60k-cycle
+  group: minironin-best-checkpoint-300k-cycle
   cancel-in-progress: false
 
 jobs:
@@ -252,7 +252,7 @@ jobs:
       - name: Publicar artefacto auditable del ciclo
         uses: actions/upload-artifact@v6
         with:
-          name: minironin-cycle-${{ steps.parent.outputs.generation }}-300k-${{ github.run_id }}
+          name: minironin-cycle-${{ steps.parent.outputs.generation }}-60k-${{ github.run_id }}
           path: long-training/
           if-no-files-found: error
           compression-level: 0
