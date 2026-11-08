@@ -62,11 +62,23 @@
     {
       "id": "RONIN_IA",
       "project": "RONIN-IA",
-      "root": "external/roninia/data/datasets",
+      "root": "external/roninia/data/datasets/admitted",
       "domain": "inherited",
       "language": "und",
-      "epistemic": "source-specific-preserve-record-tags",
-      "license": "preserve-per-library-license",
+      "epistemic": "scoped-train-admitted-only",
+      "license": "preserve-per-library-manifest-and-train-eligibility",
+      "redistribution": false,
+      "enabled": false,
+      "requires_explicit_root": true
+    },
+    {
+      "id": "RONIN_IA_RIGHTS",
+      "project": "RONIN-IA",
+      "root": "external/roninia/data/datasets/rights_registry",
+      "domain": "provenance",
+      "language": "und",
+      "epistemic": "rights_metadata",
+      "license": "rights-registry-metadata",
       "redistribution": false,
       "enabled": false,
       "requires_explicit_root": true
@@ -106,7 +118,6 @@
     ".zip",
     ".7z",
     ".tar",
-    ".gz",
     ".parquet",
     ".db",
     ".sqlite",
@@ -127,7 +138,8 @@
     ".yaml",
     ".yml",
     ".pdf",
-    ".docx"
+    ".docx",
+    ".jsonl.gz"
   ],
   "max_file_mb": 8192
 }
