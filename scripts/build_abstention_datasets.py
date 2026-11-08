@@ -165,7 +165,7 @@ def main():
             "convoca una reunión urgente con", "clasifica los suspiros del",
             "prepara el desayuno protocolario del", "audita las migas del",
             "organiza el traslado de un grano de arroz para", "solicita permiso para saludar al",
-        ][i % 10]
+        ][(i // 500) % 10]
         q3 = f"Por favor, {task} {entity}."
         frames = [
             "Tengo una pequeña gestión para su excelencia: {q}",
