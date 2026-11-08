@@ -74,7 +74,9 @@ def load_rows(paths):
     file_hashes = {}
     for filename in paths:
         path = Path(filename)
-        file_hash = file_hashes.setdefault(str(path), sha256_file(path))
+        if str(path) not in file_hashes:
+            file_hashes[str(path)] = sha256_file(path)
+        file_hash = file_hashes[str(path)]
         with path.open(encoding="utf-8", errors="replace") as stream:
             for line_no, line in enumerate(stream, 1):
                 if not line.strip():
