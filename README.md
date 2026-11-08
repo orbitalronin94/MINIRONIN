@@ -50,6 +50,20 @@ Que un modelo de apenas 9.970.176 parámetros cargue con semejante catedral de c
 
 
 
+## Evaluación rápida de checkpoints
+
+La terminal mínima de inferencia evita instalar lectores de corpus, RAG o dependencias de entrenamiento: solo necesita Python 3.11 y PyTorch CPU. Ejecuta el holdout fijo con generación greedy y KV cache:
+
+```bash
+python scripts/minironin.py holdout \
+  --checkpoint checkpoint-400000.pt \
+  --label candidate-400k --steps 400000 \
+  --holdout benchmarks/inference-holdout-v1.jsonl \
+  --output holdout.json --threads 2
+```
+
+Para reproducir la referencia lenta: añade `--no-kv-cache`. La equivalencia se comprueba token a token en tests y en el workflow manual **MINIRONIN — benchmark terminal mínima de holdout**; el informe incluye hashes, tiempos y aceleración. La caché se reinicia al superar la ventana contextual para conservar la semántica de posiciones del evaluador original. Una divergencia de tokens invalida la medición rápida.
+
 ## Entrenamiento en curso — Transformer 10M, 390k → 400k
 
 El checkpoint MAIN experimental es el Transformer decoder-only de **9.970.176 parámetros / 390.000 pasos**. El Mamba 50M está archivado y no forma parte de esta línea.
