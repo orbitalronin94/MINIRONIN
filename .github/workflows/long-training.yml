@@ -247,7 +247,7 @@ jobs:
           gh release create "minironin-cycle-${{ steps.parent.outputs.generation }}-best" \
             long-training/best-checkpoint.pt long-training/best-report.json long-training/best-selection.json long-training/best-SHA256SUMS \
             --title "MINIRONIN cycle ${{ steps.parent.outputs.generation }} — selected best checkpoint" \
-            --notes "Best checkpoint selected across the incoming parent and all 30 10k checkpoints using the same validation protocol. Candidate only; independent holdout required before promotion."
+            --notes "Best checkpoint selected across the incoming parent and all 6 10k checkpoints using the same validation protocol. Candidate only; independent holdout required before promotion."
 
       - name: Publicar artefacto auditable del ciclo
         uses: actions/upload-artifact@v6
