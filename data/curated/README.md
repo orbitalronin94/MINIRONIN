@@ -138,3 +138,13 @@ Se añade `minironin-verifiable-personality-50k-v1`, generado por `scripts/build
 - Los 50.000 registros son combinaciones deterministas de 40 fichas, 10 marcos de pregunta, 10 contextos y 15 remates de humor seco. No representan 50.000 hechos independientes ni 50.000 fuentes.
 - El objetivo es practicar una voz mordaz que primero conserva el dato y sus límites; el sarcasmo no debe alterar el contenido factual.
 - Generación y auditoría aisladas en `.github/workflows/build-verifiable-personality-dataset.yml`; no entrena ni modifica checkpoints.
+
+
+## Conversational combinator — 10M candidate dialogues
+
+`scripts/build_conversation_mix.py` prepares up to 10,000,000 multi-turn candidate conversations by combining existing structured Q&A seeds with follow-up intents and voice variants. It scans structured `.jsonl`, `.ndjson` and `.jsonl.gz` records in `data/curated`, `data/inherited` and `data/datasets`; raw prose without an existing question/answer pair is deliberately excluded rather than converted into unsupported answers.
+
+- Each conversation retains the seed ID/hash, source, source URL, source file, tag and topic.
+- Follow-ups probe evidence, limits, uncertainty, counterarguments and scope; the response must preserve the seed's source status and abstention behavior.
+- Output is sharded gzip JSONL under `data/generated/conversation-candidates-v1` by default.
+- This 10M corpus is a **candidate only**. It is not included in the training mix and no 10M generation or model training is started automatically. Use `--dry-run` or a small `--target` first, inspect quality, then decide whether to materialize the full set.
