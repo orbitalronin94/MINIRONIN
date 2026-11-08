@@ -1,4 +1,4 @@
-name: MINIRONIN — selección del mejor checkpoint + 60k
+name: MINIRONIN — continuación legacy 150k desde 500k
 # Merge-trigger: this workflow intentionally listens to pushes touching this file on main.
 
 on:
@@ -27,7 +27,7 @@ permissions:
 
 concurrency:
   group: minironin-legacy-150k-from-500k
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   train-select-repeat:
@@ -35,9 +35,9 @@ jobs:
     timeout-minutes: 360
     env:
       GH_TOKEN: ${{ github.token }}
-      BOOTSTRAP_TAG: long-train-step-130000
-      BOOTSTRAP_SHA256: 4eea4efe7e1c65da0ee7985ae3c09a7f69eab3cce90e2cabaa8694b6857cc986
-      CYCLE_STEPS: "60000"
+      BOOTSTRAP_TAG: minironin-transformer-10m-step-500000-candidate
+      BOOTSTRAP_SHA256: 80664596095e9ce4d1757b1ca379bbccfa96ad03f67936e70dc39487d8e8fe60
+      CYCLE_STEPS: "150000"
     steps:
       - name: Checkout MINIRONIN
         uses: actions/checkout@v4
@@ -46,12 +46,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Esperar 10 minutos desde el fin del ciclo anterior
-        run: |
-          set -euo pipefail
-          echo "El ciclo anterior ya ha liberado el grupo de concurrencia. Esperando 600 segundos antes de resolver y descargar su checkpoint campeón."
-          sleep 600
 
       - name: Resolver el mejor checkpoint de la generación anterior
         id: parent
@@ -198,13 +192,13 @@ jobs:
           assert "model_state_dict" in cp and "optimizer_state_dict" in cp
           groups=cp["optimizer_state_dict"].get("param_groups",[])
           assert groups and 0 < float(groups[0]["lr"]) <= 3e-4
-          total=step+60000
+          total=step+int(os.environ["CYCLE_STEPS"])
           with open(os.environ["GITHUB_OUTPUT"],"a") as f:
               f.write(f"parent_step={step}\ntotal_steps={total}\nparent_lr={float(groups[0]['lr']):.12g}\n")
           print({"parent_step":step,"total_steps":total,"parameter_count":cp["parameter_count"],"optimizer_lr":groups[0]["lr"],"parent_validation_loss":report["validation_loss"]})
           PY
 
-      - name: Entrenar 60k adicionales con todo el texto entrenable; checkpoint cada 10k
+      - name: Entrenar 150k adicionales con las bibliotecas legacy; checkpoint cada 10k
         run: |
           set -euo pipefail
           parent_step="${{ steps.metadata.outputs.parent_step }}"
@@ -242,7 +236,7 @@ jobs:
             gh release create "minironin-cycle-${{ steps.parent.outputs.generation }}-step-$end" \
               "long-training/checkpoint-$end.pt" "long-training/report-$end.json" "long-training/SHA256SUMS-$end" \
               --title "MINIRONIN cycle ${{ steps.parent.outputs.generation }} — step $end" \
-              --notes "10k segment in a 60k continuation from the previous selected best checkpoint. Full recursively ingested eligible textual HERETIC + PRODATPHIL v0.3 + curated behavior set. Candidate only."
+              --notes "10k segment in a 150k continuation from the previous selected best checkpoint. Full recursively ingested eligible textual HERETIC + PRODATPHIL v0.3 + curated behavior set. Candidate only."
             input="long-training/checkpoint-$end.pt"
             echo "::endgroup::"
           done
@@ -281,7 +275,7 @@ jobs:
       - name: Publicar artefacto auditable del ciclo
         uses: actions/upload-artifact@v6
         with:
-          name: minironin-cycle-${{ steps.parent.outputs.generation }}-60k-${{ github.run_id }}
+          name: minironin-cycle-${{ steps.parent.outputs.generation }}-150k-${{ github.run_id }}
           path: long-training/
           if-no-files-found: error
           compression-level: 0
