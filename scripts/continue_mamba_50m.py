@@ -115,7 +115,8 @@ def load_rag_training_docs(index_path: Path):
                    d.domain,d.license,d.epistemic
             FROM chunks c
             JOIN chunk_sources cs ON cs.chunk_id=c.chunk_id
-            JOIN documents d ON d.document_id=cs.document_id
+            JOIN document_sources d
+              ON d.document_id=cs.document_id AND d.source_id=cs.source_id
             WHERE cs.source_id IN (?,?)
             ORDER BY cs.source_id,cs.relative_path,cs.locator,c.chunk_id
         """
