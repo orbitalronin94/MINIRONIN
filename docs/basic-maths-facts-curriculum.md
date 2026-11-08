@@ -1,9 +1,9 @@
-# Currículo básico de matemáticas y hechos — 24 × 50k
+# Currículo básico de matemáticas y hechos — 25 × 50k
 
-Este currículo añade **1.200.000 ejemplos** en 24 datasets independientes:
+Este currículo añade **1.250.000 ejemplos** en 25 datasets independientes:
 
 - **12 de matemáticas (600.000 filas):** sumas, restas, multiplicaciones, divisiones exactas, restos, comparaciones, prioridad de operaciones, cuadrados, cubos, porcentajes, fracciones y operaciones mixtas.
-- **12 de hechos cotidianos (600.000 filas):** animales, cuerpo humano, astronomía, geografía, ciencias, plantas, calendario, unidades, informática, alimentos, materiales, lengua y trivialidades generales.
+- **13 de hechos cotidianos (650.000 filas):** animales, cuerpo humano, astronomía, geografía, ciencias, plantas, calendario, unidades, informática, alimentos, materiales, lengua y trivialidades generales.
 
 ## Generación y trazabilidad
 
