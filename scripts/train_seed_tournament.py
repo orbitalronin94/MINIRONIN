@@ -30,6 +30,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from minironin import MiniRoninLM, ModelConfig  # noqa: E402
 from build_abstention_datasets import main as build_abstention_datasets  # noqa: E402
 from build_personality_datasets import main as build_personality_datasets  # noqa: E402
+from build_lexicon_dataset import main as build_lexicon_dataset  # noqa: E402
 
 BYTE_EOS = 256
 ACTIVE_VOCAB = 257
@@ -48,6 +49,7 @@ MIX_WEIGHTS = {
     "scientist": 0.02,
     "oracle": 0.02,
     "indifference": 0.02,
+    "lexicon": 0.02,
 }
 JSONL_SOURCES = {
     "open-web-math__open-web-math__default__train.jsonl": "math",
@@ -318,6 +320,7 @@ def main():
     # Materialize deterministic behavioral datasets before constructing the corpus.
     build_abstention_datasets()
     build_personality_datasets()
+    build_lexicon_dataset()
     torch.set_num_threads(args.threads)
     torch.use_deterministic_algorithms(True)
     device = torch.device("cpu")
@@ -354,6 +357,7 @@ def main():
         ("minironin-scientist-exhausted-50k-v1.jsonl", "scientist"),
         ("minironin-oracle-doom-50k-v1.jsonl", "oracle"),
         ("minironin-error404-indifference-50k-v1.jsonl", "indifference"),
+        ("minironin-lexicon-diagnostic-50k-v1.jsonl", "lexicon"),
     ]
     for filename, domain in curated_sets:
         count = load_curated_jsonl(ROOT / "data/curated" / filename, domain, store, "MINIRONIN-" + domain)

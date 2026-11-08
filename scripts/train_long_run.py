@@ -22,6 +22,7 @@ from train_seed_tournament import (  # noqa: E402
     load_curated_jsonl, weighted_domains, split_documents,
 )
 from generate_abstention_dataset import generate_dataset  # noqa: E402
+from build_lexicon_dataset import main as build_lexicon_dataset  # noqa: E402
 
 TOTAL_STEPS = 200_000
 CHECKPOINT_EVERY = 10_000
@@ -168,6 +169,7 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         print(json.dumps({"dataset_cache": "reused", **cached["manifest"]}, ensure_ascii=False), flush=True)
         return cached["train_docs"], cached["names"], cached["probs"], cached["validation"], cached["manifest"]
 
+    build_lexicon_dataset()
     store = {"docs": [], "seen": set()}
     discovered = sorted(p for p in heretic_root.rglob("*") if p.is_file())
     if not discovered:
@@ -205,13 +207,16 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     indifference_count = load_curated_jsonl(ROOT / "data/curated/minironin-error404-indifference-50k-v1.jsonl", "indifference", store, "MINIRONIN-error404-indifference-50k-v1")
     if any(n != 50000 for n in (casuist_count, scientist_count, oracle_count, indifference_count)):
         raise SystemExit(f"Personality dataset count mismatch: casuist={casuist_count}, scientist={scientist_count}, oracle={oracle_count}, indifference={indifference_count}")
+    lexicon_count = load_curated_jsonl(ROOT / "data/curated/minironin-lexicon-diagnostic-50k-v1.jsonl", "lexicon", store, "MINIRONIN-Lexicon-author-authorized-v1")
+    if lexicon_count != 50000:
+        raise SystemExit(f"Lexicon dataset count mismatch: {lexicon_count}")
     abstention_path = ROOT / "data/curated/minironin-abstention-50k.jsonl"
     abstention_manifest = generate_dataset(abstention_path)
     abstention_count = load_curated_jsonl(abstention_path, "abstention", store, "MINIRONIN-authored-abstention-50k")
     if abstention_count != 50_000:
         raise SystemExit(f"Expected 50000 unique abstention examples, loaded {abstention_count}")
     train_docs, val_docs = split_documents(store["docs"])
-    for domain in ("math", "science", "books", "behavior", "abstention", "abstain_plain", "abstain_literary", "abstain_koan", "aristocrat", "casuist", "scientist", "oracle", "indifference"):
+    for domain in ("math", "science", "books", "behavior", "abstention", "abstain_plain", "abstain_literary", "abstain_koan", "aristocrat", "casuist", "scientist", "oracle", "indifference", "lexicon"):
         if not train_docs.get(domain) or not val_docs.get(domain):
             raise SystemExit("Missing train/validation documents for " + domain)
     names, probs = weighted_domains(train_docs)
@@ -248,6 +253,7 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         "scientist_examples": scientist_count,
         "oracle_examples": oracle_count,
         "indifference_examples": indifference_count,
+        "lexicon_examples": lexicon_count,
         "abstention_datasets": [
             {"path": str(ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl"),
              "bytes": (ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl").stat().st_size,

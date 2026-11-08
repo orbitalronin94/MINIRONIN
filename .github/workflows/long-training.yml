@@ -9,6 +9,9 @@ on:
       - "scripts/train_seed_tournament.py"
       - "scripts/build_abstention_datasets.py"
       - "scripts/build_personality_datasets.py"
+      - "scripts/build_lexicon_dataset.py"
+      - "scripts/validate_lexicon_dataset.py"
+      - "data/curated/sources/LEXICON-DEL-ESPERPENTO-ALGORITMICO.md"
   workflow_dispatch:
 
 permissions:
@@ -66,6 +69,8 @@ jobs:
           set -euo pipefail
           python scripts/build_abstention_datasets.py
           python scripts/build_personality_datasets.py
+          python scripts/build_lexicon_dataset.py
+          python scripts/validate_lexicon_dataset.py
           python - <<'PY'
           import json
           from pathlib import Path
@@ -79,6 +84,7 @@ jobs:
               print(json.dumps(m, ensure_ascii=False, indent=2))
           PY
           mkdir -p long-training/behavioral-datasets
+          cp data/curated/minironin-lexicon-diagnostic-50k-v1.jsonl data/curated/lexicon-50k-manifest.json data/curated/sources/LEXICON-DEL-ESPERPENTO-ALGORITMICO.md long-training/behavioral-datasets/
           cp data/curated/minironin-abstain-plain-50k-v1.jsonl data/curated/minironin-abstain-literary-50k-v1.jsonl data/curated/minironin-abstain-koan-50k-v1.jsonl data/curated/minironin-aristocrat-trivial-50k-v1.jsonl data/curated/abstention-50k-manifest.json data/curated/minironin-casuist-cynic-50k-v1.jsonl data/curated/minironin-scientist-exhausted-50k-v1.jsonl data/curated/minironin-oracle-doom-50k-v1.jsonl data/curated/minironin-error404-indifference-50k-v1.jsonl data/curated/personality-50k-manifest.json long-training/behavioral-datasets/
 
       - name: Comprobar espacio

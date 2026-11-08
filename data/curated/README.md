@@ -97,3 +97,19 @@ Estos conjuntos enseñan registros estilísticos concretos; no justifican aplica
 5. activación del tono solo cuando el contexto lo pide, evitando que la personalidad contamine matemáticas, ciencia, instrucciones útiles o peticiones legítimas.
 
 Ningún checkpoint se promueve por haber aprendido estos estilos: sigue siendo necesaria una evaluación holdout independiente y una comparación antes/después con el mismo protocolo.
+
+
+## Lexicón del Esperpento Algorítmico — fuente propia autorizada
+
+El texto original se conserva en `sources/LEXICON-DEL-ESPERPENTO-ALGORITMICO.md`.
+Por autorización expresa del autor, `scripts/build_lexicon_dataset.py`
+extrae los epítetos estructurados y construye 50.000 ejemplos reproducibles
+para tres tareas: diagnóstico conductual, remediación y proporcionalidad/
+precisión. Cada ejemplo incluye sección, epíteto, nivel NH y atribución.
+El manifiesto `lexicon-50k-manifest.json` registra SHA-256 del texto fuente
+y del JSONL generado. La validación se ejecuta con
+`scripts/validate_lexicon_dataset.py`.
+
+El corpus es un dominio de entrenamiento independiente (`lexicon`, peso
+inicial experimental 2%). Su inclusión no implica que un checkpoint concreto
+ya haya consumido los ejemplos ni que haya mejorado en evaluación.

@@ -31,6 +31,29 @@ Código: `src/minironin/`; configuración: `configs/model-10m.json`; pruebas: `t
 
 Se ha añadido un torneo de adaptación de corpus: [run 42383056882](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42382935205). Por defecto compara 30 semillas × 100 pasos (3.000 actualizaciones), descargando y verificando HERETIC y PRODATPHIL v0.3. La mezcla inicial reserva 40% a matemáticas, 25% a ciencia/educación, 20% a libros históricos, 10% a ejemplos conductuales y 5% a Aya multilingüe. El ganador se elige por pérdida de validación con documentos separados y se publica como candidato, nunca como promoción automática. El primer piloto usa bytes UTF-8 (257 símbolos activos) mientras se decide el tokenizador definitivo; conserva la arquitectura de 9.970.176 parámetros, pero no debe confundirse con un modelo de vocabulario semántico ya entrenado. Protocolo y limitaciones: [docs/SEED_TOURNAMENT.md](docs/SEED_TOURNAMENT.md).
 
+## Lexicón del Esperpento Algorítmico — corpus entrenable
+
+Se ha incorporado la obra original del autor del proyecto en
+`data/curated/sources/LEXICON-DEL-ESPERPENTO-ALGORITMICO.md`, conservando
+su texto y atribución. Con permiso expreso del autor, el generador
+`scripts/build_lexicon_dataset.py` deriva un lote determinista de **50.000
+ejemplos entrenables** a partir de los epítetos y niveles NH del documento.
+
+El lote cubre tres tareas diferenciadas: diagnóstico conductual basado en
+evidencia, remediación y aplicación proporcional/precisa del diagnóstico.
+No enseña a lanzar etiquetas indiscriminadamente: incorpora el protocolo de
+autorreparación, exige contexto y distingue conducta de identidad personal.
+El manifiesto conserva SHA-256 del original y del JSONL, número de entradas
+extraídas, procedencia y licencia de entrenamiento autorizada. Validación:
+`scripts/validate_lexicon_dataset.py`.
+
+El dominio `lexicon` está integrado tanto en el torneo de semillas como en
+el cargador del entrenamiento largo, con peso inicial experimental del 2%.
+Esto significa que el material se **genera y se incorpora al corpus de
+entrenamiento** cuando se ejecuta el workflow; no significa que un checkpoint
+ya haya sido entrenado con él ni que haya mejorado. La evaluación holdout
+independiente sigue siendo obligatoria.
+
 ## Currículo de razonamiento
 
 El objetivo conductual es un empirismo escéptico: lógica, demostraciones, evidencia falsable, causalidad y probabilidad por delante de autoridad, popularidad o atractivo retórico. El humor seco es estilo, no sustituto de la exactitud. La abstención canónica sigue siendo `ni puta idea, la verdad`.
