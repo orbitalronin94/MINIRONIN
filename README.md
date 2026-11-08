@@ -132,3 +132,14 @@ El workflow materializa los ocho datasets conductuales (400.000 ejemplos) y el l
 **Límites:** los datos World Bank y el generador de conversaciones de 10M no están materializados en esta rama como ficheros indexables; no se cuentan ni se simula su presencia. La disponibilidad del artefacto HERETIC de la ejecución 42382055693 debe verificarse al ejecutar el workflow. Las restricciones de licencia se conservan como metadatos y el uso sigue siendo interno cuando así lo exige cada fuente.
 
 La primera prueba Small-World genera prompts reproducibles de puentes conceptuales, sin respuestas inventadas ni entrenamiento automático: docs/SMALL-WORLD-ASSOCIATIONS.md.
+
+
+## Corpus Eliza-cínico en dos fases
+
+Se añade una preparación reproducible de solicitudes de conversación con cuatro estrategias etiquetadas: espejo cínico (`frustracion_usuario`), competencia concisa (`validacion_tecnica`), fricción teatral (`friccion_teatral`) y abstención (`consulta_ambigua`). El pipeline conserva la respuesta canónica y la procedencia de cada fuente; Stage A resuelve y Stage B aplica el tono sin alterar hechos, unidades, advertencias ni incertidumbre.
+
+- Generador: `scripts/build_eliza_corpus.py`
+- Diseño y controles: [docs/ELIZA-CYNIC-CORPUS.md](docs/ELIZA-CYNIC-CORPUS.md)
+- Test: `tests/test_eliza_corpus.py`
+
+Puede preparar hasta 10M de solicitudes con muestreo determinista y memoria acotada. Diez millones de variantes no son diez millones de hechos independientes. El script no llama a modelos, no fabrica respuestas, no entrena ni promociona checkpoints.
