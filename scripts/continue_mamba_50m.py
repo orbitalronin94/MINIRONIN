@@ -49,8 +49,9 @@ def sha256_file(path: Path) -> str:
 def normalize_domain(source_id: str, declared_domain: str, metadata: dict, relative_path: str) -> str:
     candidates = [
         metadata.get("domain"), metadata.get("dominio"), metadata.get("tag"),
-        metadata.get("category"), metadata.get("categoria"), declared_domain,
-        relative_path,
+        metadata.get("category"), metadata.get("categoria"), metadata.get("topic"),
+        metadata.get("subject"), metadata.get("area"), metadata.get("materia"),
+        declared_domain, relative_path,
     ]
     value = " ".join(str(item).lower() for item in candidates if item is not None)
     exact = {str(item).strip().lower() for item in candidates if item is not None}
