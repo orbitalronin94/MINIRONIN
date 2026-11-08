@@ -237,7 +237,11 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path):
             if not body: continue
             domain=map_domain(row)
             domains[domain]=domains.get(domain,0)+1
-            if len(body)>=200:
+            if row.get("synthetic"):
+                key=(domain,str(row.get("dataset","unknown")))
+                pending.setdefault(key,[]).append(body)
+                if len(pending[key])>=8: flush(key)
+            elif len(body)>=200:
                 add_full_text(store,domain,body,"MINIRONIN-UNIFIED:"+str(row.get("source","unknown")),str(row.get("source_id","")))
             else:
                 key=(domain,str(row.get("dataset","unknown")))
