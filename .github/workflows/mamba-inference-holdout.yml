@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/mamba-inference-holdout.yml"
       - "scripts/run_mamba_inference_holdout.py"
+      - "benchmarks/inference-holdout-v1.jsonl"
 
 permissions:
   contents: write
