@@ -175,10 +175,10 @@ def load_rag_training_docs(index_path: Path):
 
 def add_rag_docs(train_docs, validation, rag_docs):
     """Merge RAG chunks into the existing 15-domain corpus with document-disjoint validation."""
+    # Validation contains prebuilt tensors, not document dictionaries.
     known = {
         doc.get("sha256")
-        for group in (train_docs, validation)
-        for rows in group.values()
+        for rows in train_docs.values()
         for doc in rows
         if doc.get("sha256")
     }
