@@ -57,7 +57,6 @@ jobs:
           report=json.loads(Path("unified-train/quality-report.json").read_text())
           sources=json.loads(Path("unified-train/sources.json").read_text())
           rows=int(report["record_count"])
-          synthetic=sum(int(v) for v in report["synthetic_and_source_counts"].values() if False)
           counts=report.get("synthetic_and_source_counts",{})
           synthetic=int(counts.get("synthetic",0))
           datasets=report.get("datasets",{})
@@ -115,16 +114,16 @@ jobs:
           for start in $(seq 500000 10000 640000); do
             end=$((start + 10000))
             echo "::group::Legacy tokenizer — steps $((start + 1))-$end"
-            python scripts/train_long_run.py \\
-              --unified-corpus unified-train/train.jsonl.gz \\
-              --input-checkpoint "$input" \\
-              --output-dir train-150k/current \\
-              --start-step "$start" \\
-              --steps 10000 \\
-              --threads 2 \\
-              --dataset-cache "$RUNNER_TEMP/minironin-unified-corpus-cache.pt" \\
-              --total-steps 650000 \\
-              --schedule-start-step 500000 \\
+            python scripts/train_long_run.py \
+              --unified-corpus unified-train/train.jsonl.gz \
+              --input-checkpoint "$input" \
+              --output-dir train-150k/current \
+              --start-step "$start" \
+              --steps 10000 \
+              --threads 2 \
+              --dataset-cache "$RUNNER_TEMP/minironin-unified-corpus-cache.pt" \
+              --total-steps 650000 \
+              --schedule-start-step 500000 \
               --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
             printf -v padded "%06d" "$end"
             checkpoint="train-150k/current/checkpoint-$padded.pt"
@@ -133,11 +132,11 @@ jobs:
             cp "$checkpoint" "train-150k/checkpoints/checkpoint-$end.pt"
             cp "$report" "train-150k/checkpoints/report-$end.json"
             sha256sum "train-150k/checkpoints/checkpoint-$end.pt" "train-150k/checkpoints/report-$end.json" > "train-150k/checkpoints/SHA256SUMS-$end"
-            gh release create "minironin-legacy-150k-step-$end" \\
-              "train-150k/checkpoints/checkpoint-$end.pt" \\
-              "train-150k/checkpoints/report-$end.json" \\
-              "train-150k/checkpoints/SHA256SUMS-$end" \\
-              --title "MINIRONIN legacy tokenizer — step $end" \\
+            gh release create "minironin-legacy-150k-step-$end" \
+              "train-150k/checkpoints/checkpoint-$end.pt" \
+              "train-150k/checkpoints/report-$end.json" \
+              "train-150k/checkpoints/SHA256SUMS-$end" \
+              --title "MINIRONIN legacy tokenizer — step $end" \
               --notes "10k segment in the 150k continuation from verified 500k checkpoint. Active vocabulary 257 (UTF-8 bytes + EOS). Unified admitted corpus; RONIN-IA excluded. Candidate only; independent holdout required."
             input="$checkpoint"
             echo "::endgroup::"
@@ -160,9 +159,9 @@ jobs:
               "validation_by_domain":report["validation_loss_by_domain"],
               "corpus":report["dataset_manifest"]},ensure_ascii=False,indent=2))
           PY
-          gh release create "minironin-legacy-150k-step-650000-candidate" \\
-            train-150k/checkpoint-650000.pt train-150k/report-650000.json train-150k/SHA256SUMS-650000 \\
-            --title "MINIRONIN legacy tokenizer — 150k continuation / step 650000" \\
+          gh release create "minironin-legacy-150k-step-650000-candidate" \
+            train-150k/checkpoint-650000.pt train-150k/report-650000.json train-150k/SHA256SUMS-650000 \
+            --title "MINIRONIN legacy tokenizer — 150k continuation / step 650000" \
             --notes "150,000 steps from the verified 500k byte-level checkpoint, trained on the unified admitted corpus. Candidate only; no automatic promotion. Matched holdout required."
 
       - name: Publicar informes y checkpoints intermedios como artefacto de auditoría
