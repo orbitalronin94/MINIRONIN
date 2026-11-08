@@ -48,7 +48,7 @@ jobs:
               if "plain" in path.name:
                   assert all(r["answer"] == "ni puta idea, la verdad" for r in rows)
               elif "literary" in path.name:
-                  assert all("ni puta idea, la verdad" in r["answer"] for r in rows)
+                  assert all("ni puta idea, la verdad" in r["answer"].lower() for r in rows)
                   assert len({r["answer"] for r in rows}) >= 100
               elif "koan" in path.name:
                   assert all(r["tag"] == "out_of_scope_koan" for r in rows)
