@@ -190,6 +190,12 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
             source_audit.append(read_full_text(path, domain, store))
 
     book_audit = read_full_books(books_root, store)
+    author_source = ROOT / "data/curated/sources/EL-BUS-DE-DATOS-PERTENECE-AL-AMO.md"
+    if not author_source.is_file():
+        raise SystemExit("Author-owned technopolitics source missing: " + str(author_source))
+    author_original_audit = read_full_text(author_source, "author_original", store, "MINIRONIN-author-original")
+    if author_original_audit["documents_added"] < 1:
+        raise SystemExit("Author-owned source produced no usable training documents")
     behavior_count = load_curated_jsonl(ROOT / "data/curated/minironin-behavior-v1.jsonl", "behavior", store, "MINIRONIN-authored-behavior-v1")
     if behavior_count == 0:
         raise SystemExit("No curated MINIRONIN behavior examples loaded")
@@ -216,7 +222,7 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     if abstention_count != 50_000:
         raise SystemExit(f"Expected 50000 unique abstention examples, loaded {abstention_count}")
     train_docs, val_docs = split_documents(store["docs"])
-    for domain in ("math", "science", "books", "behavior", "abstention", "abstain_plain", "abstain_literary", "abstain_koan", "aristocrat", "casuist", "scientist", "oracle", "indifference", "lexicon"):
+    for domain in ("math", "science", "books", "author_original", "behavior", "abstention", "abstain_plain", "abstain_literary", "abstain_koan", "aristocrat", "casuist", "scientist", "oracle", "indifference", "lexicon"):
         if not train_docs.get(domain) or not val_docs.get(domain):
             raise SystemExit("Missing train/validation documents for " + domain)
     names, probs = weighted_domains(train_docs)
@@ -244,6 +250,7 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         "heretic_ingested_files": len(source_audit),
         "heretic_files": source_audit,
         "book_files": book_audit,
+        "author_original_source": author_original_audit,
         "behavior_examples": behavior_count,
         "abstention_plain_examples": abstain_plain_count,
         "abstention_literary_examples": abstain_literary_count,
