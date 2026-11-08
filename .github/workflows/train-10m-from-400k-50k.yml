@@ -144,22 +144,30 @@ jobs:
           print({"completed_steps": 400000, "parameter_count": 9970176, "active_vocabulary": 257, "continuation_lr": lr})
           PY
 
-      - name: Entrenar exactamente 50.000 pasos con todo el corpus; 2 hilos y caché
+      - name: Entrenar 50.000 pasos como cinco segmentos reanudables de 10k
         run: |
           set -euo pipefail
           python -m py_compile scripts/train_long_run.py scripts/train_seed_tournament.py
-          python scripts/train_long_run.py \
-            --heretic-root data/inherited/heretic-corpus \
-            --books-root data/inherited/prodatphil-en-v0.3 \
-            --input-checkpoint train-10m/parent/checkpoint-400000.pt \
-            --output-dir train-10m/results \
-            --start-step 400000 \
-            --steps 50000 \
-            --threads 2 \
-            --dataset-cache "$RUNNER_TEMP/minironin-10m-full-corpus-cache.pt" \
-            --total-steps 450000 \
-            --schedule-start-step 400000 \
-            --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
+          input_checkpoint="train-10m/parent/checkpoint-400000.pt"
+          for start_step in 400000 410000 420000 430000 440000; do
+            end_step=$((start_step + 10000))
+            echo "::group::Segmento $start_step -> $end_step"
+            python scripts/train_long_run.py \
+              --heretic-root data/inherited/heretic-corpus \
+              --books-root data/inherited/prodatphil-en-v0.3 \
+              --input-checkpoint "$input_checkpoint" \
+              --output-dir train-10m/results \
+              --start-step "$start_step" \
+              --steps 10000 \
+              --threads 2 \
+              --dataset-cache "$RUNNER_TEMP/minironin-10m-full-corpus-cache.pt" \
+              --total-steps 450000 \
+              --schedule-start-step 400000 \
+              --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
+            input_checkpoint="train-10m/results/checkpoint-${end_step}.pt"
+            test -s "$input_checkpoint"
+            echo "::endgroup::"
+          done
 
       - name: Verificar y publicar checkpoint candidato 450k
         run: |
@@ -175,7 +183,7 @@ jobs:
           assert cp["completed_steps"] == 450000
           assert cp["parameter_count"] == 9970176
           assert report["completed_steps"] == 450000
-          assert report["segment_steps"] == 50000
+          assert report["segment_steps"] == 10000
           assert report["dataset_manifest"]["documents_total"] > 0
           print(json.dumps({
               "completed_steps": cp["completed_steps"],
@@ -192,7 +200,7 @@ jobs:
           else
             gh release create "$CANDIDATE_TAG" "$checkpoint" "$report" train-10m/results/SHA256SUMS-450000 \
               --title "MINIRONIN Transformer 10M — candidate / step 450000" \
-              --notes "50,000 additional steps from the promoted 400k checkpoint, using the complete current trainable corpus. Candidate only; independent matched holdout required before any further promotion."
+              --notes "50,000 additional steps from the promoted 400k checkpoint, executed as five resumable 10,000-step segments, using the complete current trainable corpus. Candidate only; independent matched holdout required before any further promotion."
           fi
 
       - name: Guardar artefactos completos y manifiesto
