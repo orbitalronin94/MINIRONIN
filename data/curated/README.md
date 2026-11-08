@@ -51,44 +51,49 @@ El objetivo es llegar a 1.000 casos válidos. El progreso y los criterios de adm
 Estos registros pueden servir para entrenar al modelo a interpretar métricas, diagnosticar fallos y explicar controles de reproducibilidad. No sustituyen los corpus lingüísticos generales ni los benchmarks reservados. Antes de una mezcla de entrenamiento, deben pasar deduplicación global y revisión de contaminación del holdout.
 
 
-## Dataset de abstención fuera de ámbito
+## Biblioteca conductual de MINIRONIN: datasets creados y conectados al entrenamiento
 
-**Versión:** 1.0  
-**Registros:** 50.000 preguntas únicas generadas de forma determinista.  
-**Respuesta objetivo:** `ni puta idea`.  
-**Generador:** `scripts/generate_abstention_dataset.py` (semilla fija `20261108`).
+**Estado:** los ocho datasets de esta sección ya tienen generadores deterministas, validación automática y carga explícita en el entrenamiento largo. Se generan en GitHub Actions antes de cada ciclo; no se mantienen como ocho ficheros JSONL gigantes versionados en Git. Actions los materializa, verifica sus 50.000 registros y SHA-256, los incorpora a dominios separados del entrenador y conserva los JSONL y manifiestos como artefactos del ciclo.
 
-El dataset cubre preguntas absurdas, premisas ficticias, sucesos imposibles, entidades inventadas y datos inaccesibles o no proporcionados. Cada registro incluye contexto explícito de ausencia de evidencia, pregunta y respuesta objetivo. El generador verifica unicidad, cardinalidad y uniformidad de la respuesta.
+**Volumen conductual generado por ciclo:** 8 datasets × 50.000 registros = **400.000 ejemplos**.
 
-El conjunto se genera automáticamente en cada ejecución limpia del entrenamiento, se incorpora al dominio independiente `abstention` y queda reflejado en el manifiesto con tamaño y SHA-256. La mezcla reserva un 5% del muestreo para abstención y conserva un dominio `behavior` separado para no diluir los ejemplos de comportamiento ya curados.
+### Eje de abstención y estilo
 
-**Límite de interpretación:** el corpus enseña una respuesta para preguntas sintéticas claramente fuera de ámbito; no demuestra por sí solo una capacidad general de calibración. La evaluación debe medir también abstenciones indebidas ante preguntas respondibles.
+| Dataset | Registros | Finalidad |
+|---|---:|---|
+| `minironin-abstain-plain-50k-v1.jsonl` | 50.000 | Preguntas deliberadamente fuera de ámbito; respuesta canónica exacta `ni puta idea, la verdad`. |
+| `minironin-abstain-literary-50k-v1.jsonl` | 50.000 | Reconocer desconocimiento con aforismos originales y tono existencial. |
+| `minironin-abstain-koan-50k-v1.jsonl` | 50.000 | Reconocer falta de evidencia mediante koans originales y paradójicos. |
+| `minironin-aristocrat-trivial-50k-v1.jsonl` | 50.000 | Encargos nimios e inocuos respondidos con desdén aristocrático teatral y cómico. |
 
-## Nuevos datasets de abstención (v1)
+### Arsenal de cuatro personalidades nuevas
 
-El workflow genera de forma determinista cuatro conjuntos independientes de **50.000 registros cada uno** (200.000 en total):
+| Dataset | Registros | Finalidad |
+|---|---:|---|
+| `minironin-casuist-cynic-50k-v1.jsonl` | 50.000 | Detectar falacias informales y devolver preguntas socráticas con sarcasmo intelectual. |
+| `minironin-scientist-exhausted-50k-v1.jsonl` | 50.000 | Responder preguntas científicas conocidas con datos, fórmulas y unidades correctas, acompañados de exasperación académica teatral. |
+| `minironin-oracle-doom-50k-v1.jsonl` | 50.000 | Dar orientación cotidiana envuelta en profecías cósmicas pesimistas y desproporcionadas. |
+| `minironin-error404-indifference-50k-v1.jsonl` | 50.000 | Voz absurda, fría e indiferente ante preguntas cotidianas, sin hostilidad ni falsa incapacidad. |
 
-- `minironin-abstain-plain-50k-v1.jsonl`: preguntas deliberadamente fuera de alcance con respuesta canónica exacta `ni puta idea, la verdad`.
-- `minironin-abstain-literary-50k-v1.jsonl`: límites epistémicos expresados mediante respuestas aforísticas originales.
-- `minironin-abstain-koan-50k-v1.jsonl`: límites epistémicos expresados mediante koans originales.
-- `minironin-aristocrat-trivial-50k-v1.jsonl`: encargos triviales respondidos con una voz aristocrática ficticia, teatral y mordaz.
+### Generación, auditoría e integración
 
-Los prompts son sintéticos y tratan entidades y acontecimientos inventados; no se presentan como hechos. El generador `scripts/build_abstention_datasets.py` produce los cuatro JSONL y un manifiesto con número de registros, bytes y SHA-256. El workflow conserva los tres archivos junto a los artefactos del ciclo.
+- `scripts/build_abstention_datasets.py`: genera los cuatro conjuntos del eje de abstención.
+- `scripts/build_personality_datasets.py`: genera los cuatro conjuntos de personalidades adicionales.
+- `scripts/validate_personality_datasets.py` y el workflow `.github/workflows/abstention-dataset-check.yml`: comprueban cardinalidad, IDs, preguntas únicas, etiquetas, referencias científicas y SHA-256. La auditoría del primer bloque comprueba además las respuestas canónicas y los koans.
+- `scripts/train_long_run.py`: carga los ocho JSONL directamente en ocho dominios de entrenamiento separados; exige exactamente 50.000 ejemplos por dominio y registra bytes, SHA-256 y recuentos en el manifiesto.
+- `.github/workflows/long-training.yml`: regenera los ocho conjuntos antes de cada ciclo, los valida y los archiva junto con los manifiestos en los artefactos de entrenamiento.
+- `scripts/train_seed_tournament.py`: reserva un peso separado para cada dominio. Los pesos se normalizan al construir el muestreo.
 
-### Mezcla de entrenamiento
+Los datasets son contenido original del proyecto. Las constantes SI del conjunto científico se apoyan en las definiciones del folleto SI del BIPM; las demás muestras usan ecuaciones estándar claramente identificadas. Las respuestas no deben presentar estimaciones como valores exactos ni omitir las condiciones de validez de una fórmula.
 
-Los cuatro conjuntos se cargan en dominios separados (`abstain_plain`, `abstain_literary`, `abstain_koan` y `aristocrat`) con un peso inicial de 0,02 cada uno. El dominio `abstention` anterior conserva otro 0,02. Las fuentes principales se reescalan proporcionalmente y el total de pesos se mantiene en 1,0. El conjunto original de comportamiento permanece separado.
+### Salvaguardas de evaluación
 
-La validación se separa por documento mediante el split determinista del entrenador. Antes de promover un checkpoint se debe medir abstención correcta, abstención indebida en preguntas respondibles y generalización a preguntas absurdas no vistas. Este entrenamiento enseña un patrón de calibración; no demuestra por sí solo que el modelo sepa reconocer todos los límites de su conocimiento.
+Estos conjuntos enseñan registros estilísticos concretos; no justifican aplicar todos los tonos a cualquier conversación. La evaluación debe medir por separado:
 
+1. abstención correcta ante preguntas realmente fuera de ámbito y abstención indebida ante preguntas respondibles;
+2. detección de falacias sin confundir desacuerdo con error lógico;
+3. exactitud factual, unidades y condiciones de validez en ciencia, incluso bajo el tono de personaje;
+4. utilidad práctica residual en el oráculo, y ausencia de respuestas hostiles en el modo indiferente;
+5. activación del tono solo cuando el contexto lo pide, evitando que la personalidad contamine matemáticas, ciencia, instrucciones útiles o peticiones legítimas.
 
-## Estilos adicionales: koan y aristócrata (v1)
-
-Se amplía la generación determinista a cuatro datasets de 50.000 registros cada uno (200.000 en total):
-
-- `minironin-abstain-plain-50k-v1.jsonl`: abstención directa y canónica.
-- `minironin-abstain-literary-50k-v1.jsonl`: abstención aforística original.
-- `minironin-abstain-koan-50k-v1.jsonl`: preguntas sintéticas fuera de ámbito respondidas con koans originales; la paradoja sustituye la invención de datos, pero el contexto mantiene explícita la falta de evidencia.
-- `minironin-aristocrat-trivial-50k-v1.jsonl`: encargos cotidianos e inocuos respondidos por una persona ficticia de aristócrata teatral, con desdén cómico y sin ataques discriminatorios.
-
-Cada conjunto tiene dominio, etiqueta e identificadores propios. Los cuatro se generan en Actions, se validan por cardinalidad, unicidad de preguntas e integridad SHA-256 y se archivan junto al manifiesto de cada ciclo. La mezcla de entrenamiento reserva un 2% normalizado para cada uno de estos cinco estilos (los cuatro nuevos/anteriores más el dataset general `abstention`); las fuentes principales se reescalan proporcionalmente para mantener el total de pesos en 1,0. La evaluación debe separar reconocimiento de falta de evidencia, utilidad del koan y adecuación del tono aristocrático: no se debe premiar que el modelo responda con un koan a preguntas factuales respondibles ni que insulte ante peticiones legítimas.
+Ningún checkpoint se promueve por haber aprendido estos estilos: sigue siendo necesaria una evaluación holdout independiente y una comparación antes/después con el mismo protocolo.
