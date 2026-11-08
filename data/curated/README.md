@@ -78,3 +78,15 @@ Los prompts son sintéticos y tratan entidades y acontecimientos inventados; no 
 Los dos conjuntos se cargan en dominios separados (`abstain_plain` y `abstain_literary`) con un peso inicial de 0,05 cada uno. Esto reserva aproximadamente el 9,1 % de la mezcla normalizada para abstención, sin convertir todas las muestras del dominio de comportamiento en respuestas de desconocimiento. El conjunto original de comportamiento permanece separado.
 
 La validación se separa por documento mediante el split determinista del entrenador. Antes de promover un checkpoint se debe medir abstención correcta, abstención indebida en preguntas respondibles y generalización a preguntas absurdas no vistas. Este entrenamiento enseña un patrón de calibración; no demuestra por sí solo que el modelo sepa reconocer todos los límites de su conocimiento.
+
+
+## Estilos adicionales: koan y aristócrata (v1)
+
+Se amplía la generación determinista a cuatro datasets de 50.000 registros cada uno (200.000 en total):
+
+- `minironin-abstain-plain-50k-v1.jsonl`: abstención directa y canónica.
+- `minironin-abstain-literary-50k-v1.jsonl`: abstención aforística original.
+- `minironin-abstain-koan-50k-v1.jsonl`: preguntas sintéticas fuera de ámbito respondidas con koans originales; la paradoja sustituye la invención de datos, pero el contexto mantiene explícita la falta de evidencia.
+- `minironin-aristocrat-trivial-50k-v1.jsonl`: encargos cotidianos e inocuos respondidos por una persona ficticia de aristócrata teatral, con desdén cómico y sin ataques discriminatorios.
+
+Cada conjunto tiene dominio, etiqueta e identificadores propios. Los cuatro se generan en Actions, se validan por cardinalidad, unicidad de preguntas e integridad SHA-256 y se archivan junto al manifiesto de cada ciclo. La mezcla de entrenamiento reserva un 2% normalizado para cada uno de estos cinco estilos (los cuatro nuevos/anteriores más el dataset general `abstention`); las fuentes principales se reescalan proporcionalmente para mantener el total de pesos en 1,0. La evaluación debe separar reconocimiento de falta de evidencia, utilidad del koan y adecuación del tono aristocrático: no se debe premiar que el modelo responda con un koan a preguntas factuales respondibles ni que insulte ante peticiones legítimas.
