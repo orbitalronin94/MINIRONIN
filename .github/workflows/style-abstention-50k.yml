@@ -44,7 +44,7 @@ jobs:
             ("minironin-oracle-doom-50k-v1.jsonl", 50000),
             ("minironin-error404-indifference-50k-v1.jsonl", 50000),
             ("minironin-lexicon-diagnostic-50k-v1.jsonl", 50000),
-            ("minironin-abstention-50k.jsonl", 50000),
+            ("minironin-aristocrat-trivial-50k-v1.jsonl", 50000),
             ("minironin-abstain-plain-50k-v1.jsonl", 50000),
             ("minironin-abstain-literary-50k-v1.jsonl", 50000),
             ("minironin-abstain-koan-50k-v1.jsonl", 50000),
