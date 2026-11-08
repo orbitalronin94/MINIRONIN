@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
     paths:
-      - "models/MAIN.json"
       - ".github/workflows/promote-mamba-50m.yml"
 
 permissions:
@@ -74,8 +73,8 @@ jobs:
         run: |
           set -euo pipefail
           if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
-            echo "Release $RELEASE_TAG already exists; refusing to overwrite it."
-            exit 1
+            echo "Release $RELEASE_TAG is already published; leaving its immutable assets untouched."
+            exit 0
           fi
           gh release create "$RELEASE_TAG" \
             release/mamba-checkpoint-1000.pt \
