@@ -40,5 +40,5 @@ jobs:
           python-version: "3.11"
       - run: python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
       - run: python -m pip install pytest
-      - run: python -m py_compile scripts/continue_mamba_50m.py scripts/run_mamba_rag_holdout.py
+      - run: python -m py_compile scripts/continue_mamba_50m.py scripts/run_mamba_rag_holdout.py tests/test_mamba_rag_continuation.py
       - run: python -m pytest -q tests/test_rag_index.py tests/test_eliza_corpus.py tests/test_mamba_rag_continuation.py
