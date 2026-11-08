@@ -23,7 +23,7 @@ from minironin import MiniRoninLM, ModelConfig  # noqa: E402
 from train_long_run import load_training_data, BATCH_SIZE, SEQUENCE_LENGTH, BASE_SEED  # noqa: E402
 
 PARENT_STEPS = 500_000
-TRAIN_STEPS = 10_000
+DEFAULT_TRAIN_STEPS = 5_000
 EOS_ID = 256
 ACTIVE_VOCAB = 23_000
 TOKENIZER_INTERNAL_SIZE = ACTIVE_VOCAB - 1  # 256 byte symbols + 22,743 learned merges
@@ -178,8 +178,15 @@ def main():
     parser.add_argument("--classics-root", required=True)
     parser.add_argument("--dataset-cache", required=True)
     parser.add_argument("--threads", type=int, default=2)
+    parser.add_argument("--train-steps", type=int, default=DEFAULT_TRAIN_STEPS)
+    parser.add_argument("--parent-steps", type=int, default=PARENT_STEPS)
     args = parser.parse_args()
 
+    global TRAIN_STEPS, PARENT_STEPS
+    TRAIN_STEPS = args.train_steps
+    PARENT_STEPS = args.parent_steps
+    if TRAIN_STEPS < 1:
+        parser.error("--train-steps must be positive")
     torch.set_num_threads(args.threads)
     torch.use_deterministic_algorithms(True)
     device = torch.device("cpu")
@@ -297,15 +304,16 @@ def main():
 
     after_loss, after_by_domain = evaluate(model, validation, device)
     elapsed = round(time.perf_counter() - started, 2)
-    checkpoint_path = out / "checkpoint-510000-semantic-bpe.pt"
+    completed_steps = PARENT_STEPS + TRAIN_STEPS
+    checkpoint_path = out / f"checkpoint-{completed_steps}-semantic-bpe.pt"
     checkpoint = {
         "model_state_dict": {k: v.detach().cpu() for k, v in model.state_dict().items()},
         "optimizer_state_dict": optimizer.state_dict(),
         "model_config": parent["model_config"],
         "parameter_count": 9_970_176,
         "seed": parent.get("seed"),
-        "completed_steps": 510_000,
-        "total_steps": 510_000,
+        "completed_steps": completed_steps,
+        "total_steps": completed_steps,
         "active_vocabulary": ACTIVE_VOCAB,
         "tokenization": "UTF-8 byte fallback IDs 0..255; EOS=256; corpus-trained ByteLevel BPE IDs 257..22999",
         "tokenizer_file": "semantic-tokenizer.json",
