@@ -26,7 +26,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: minironin-best-checkpoint-300k-cycle
+  group: minironin-legacy-150k-from-500k
   cancel-in-progress: false
 
 jobs:
@@ -71,7 +71,7 @@ jobs:
               generation += 1
               kind="cycle-best"
           else:
-              generation, tag, kind=1, os.environ["BOOTSTRAP_TAG"], "bootstrap-130k"
+              generation, tag, kind=1, os.environ["BOOTSTRAP_TAG"], "bootstrap-500k"
           with open(os.environ["GITHUB_OUTPUT"],"a") as out:
               out.write(f"generation={generation}\nparent_tag={tag}\nparent_kind={kind}\n")
           print({"generation":generation,"parent_release":tag,"parent_kind":kind})
@@ -110,12 +110,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p long-training/parent
-          if [ "${{ steps.parent.outputs.parent_kind }}" = "bootstrap-130k" ]; then
+          if [ "${{ steps.parent.outputs.parent_kind }}" = "bootstrap-500k" ]; then
             curl --fail --location --retry 4 --retry-all-errors \
-              "https://github.com/orbitalronin94/MINIRONIN/releases/download/$BOOTSTRAP_TAG/checkpoint-130000.pt" \
+              "https://github.com/orbitalronin94/MINIRONIN/releases/download/$BOOTSTRAP_TAG/checkpoint-500000.pt" \
               -o long-training/parent/parent-checkpoint.pt
             curl --fail --location --retry 4 --retry-all-errors \
-              "https://github.com/orbitalronin94/MINIRONIN/releases/download/$BOOTSTRAP_TAG/report-130000.json" \
+              "https://github.com/orbitalronin94/MINIRONIN/releases/download/$BOOTSTRAP_TAG/report-500000.json" \
               -o long-training/parent/parent-report.json
             echo "$BOOTSTRAP_SHA256  long-training/parent/parent-checkpoint.pt" | sha256sum -c -
           else
