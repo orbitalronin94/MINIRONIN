@@ -46,7 +46,7 @@ def as_record(obj, path, line_no):
         metadata={k:v for k,v in obj.items() if k not in {"text","content","body","document","passage"}}
     else:
         body="\n".join(strings(obj)); metadata={"raw_type":type(obj).__name__}
-    if not body.strip(): body=json.dumps(obj,ensure_ascii=False,sort_keys=True)
+    if not body.strip(): body=json.dumps(obj,ensure_ascii=False,sort_keys=True,default=str)
     synthetic=bool(path.name.endswith(".jsonl.gz") and ("curricula" in str(path) or "behavioral" in str(path)))
     return {"id":str(metadata.get("id",f"{path.name}:{line_no}")) if isinstance(metadata,dict) else f"{path.name}:{line_no}",
       "source_id":str(path),"domain":str(metadata.get("domain") or metadata.get("subject") or path.parent.name) if isinstance(metadata,dict) else path.parent.name,
@@ -120,7 +120,7 @@ def main():
             else: seen.add(digest)
             domains[record["domain"]]+=1; datasets[record["dataset"]]+=1
             synthetic["synthetic" if record["synthetic"] else "source_text"]+=1
-            line=(json.dumps(record,ensure_ascii=False,separators=(",",":"))+"\n").encode("utf-8")
+            line=(json.dumps(record,ensure_ascii=False,separators=(",",":"),default=str)+"\n").encode("utf-8")
             gz.write(line); rows+=1
           source_manifest.append({"path":str(path),"sha256":input_hash,"records":rows-before,"bytes":path.stat().st_size})
     if rows==0: raise SystemExit("Unified corpus is empty")
