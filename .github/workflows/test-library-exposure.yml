@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout preparation branch
+      - name: Checkout source branch
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
