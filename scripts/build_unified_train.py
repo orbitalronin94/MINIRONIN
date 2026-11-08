@@ -6,7 +6,7 @@ retains its source, licence note, dataset and original metadata. Exact duplicate
 are reported, not discarded, so row volume is preserved.
 """
 from __future__ import annotations
-import argparse, csv, gzip, hashlib, json, re
+import argparse, csv, gzip, hashlib, json, re, shutil
 from collections import Counter
 from pathlib import Path
 
@@ -133,6 +133,23 @@ def main():
       "train_jsonl_gz_bytes":output_path.stat().st_size,"train_jsonl_gz_sha256":sha_file(output_path)}
     (out/"sources.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     (out/"quality-report.json").write_text(json.dumps({k:summary[k] for k in ("record_count","unique_normalized_texts","exact_or_normalized_duplicates_reported_not_removed","empty_records","short_records_under_24_chars","synthetic_and_source_counts","domains","datasets","quality_policy","volume_policy")},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    (out/"SHA256SUMS").write_text(f"{sha_file(output_path)}  train.jsonl.gz\n{sha((out/'sources.json').read_bytes())}  sources.json\n{sha((out/'quality-report.json').read_bytes())}  quality-report.json\n",encoding="utf-8")
-    print(json.dumps({"records":rows,"source_files":len(source_manifest),"duplicates_reported":duplicates,"artifact_bytes":output_path.stat().st_size},ensure_ascii=False))
+    provenance_dir=out/"provenance"; provenance_dir.mkdir(exist_ok=True)
+    provenance_paths=[]
+    for root in roots:
+        provenance_paths.extend(p for p in root.rglob("*") if p.is_file() and ("manifest" in p.name.lower() or p.name.lower()=="readme.md" or p.suffix.lower()==".sha256"))
+    provenance_paths.extend(Path(x) for x in (
+        "data/japan/SOURCES.json","data/classics/SOURCES.json",
+        "data/anarchist/SOURCES.jsonl","data/inherited/papers/README.md"
+    ) if Path(x).is_file())
+    copied=[]
+    for path in sorted(set(provenance_paths)):
+        dest=provenance_dir/(path.parent.name+"--"+path.name)
+        shutil.copy2(path,dest)
+        copied.append({"path":str(dest.relative_to(out)),"source_path":str(path),"bytes":dest.stat().st_size,"sha256":sha_file(dest)})
+    (provenance_dir/"PRODATPHIL-SHA256.txt").write_text("8eacf44101c87772a842fce3d3ab415903f28ba7684f8b33eddba0e2489c13c9  prodatphil_en_txt_0_3.zip\\n",encoding="utf-8")
+    (provenance_dir/"HERETIC-SHA256.txt").write_text("HERETIC source archive SHA-256 is recorded in the source workflow and source file hashes in sources.json.\\n",encoding="utf-8")
+    checks=[("train.jsonl.gz",output_path),("sources.json",out/"sources.json"),("quality-report.json",out/"quality-report.json")]
+    checks.extend((str(p.relative_to(out)),p) for p in sorted(provenance_dir.rglob("*")) if p.is_file())
+    (out/"SHA256SUMS").write_text("".join(f"{sha_file(path)}  {name}\\n" for name,path in checks),encoding="utf-8")
+    print(json.dumps({"records":rows,"source_files":len(source_manifest),"provenance_files":len(copied)+2,"duplicates_reported":duplicates,"artifact_bytes":sum(p.stat().st_size for p in out.rglob("*") if p.is_file())},ensure_ascii=False))
 if __name__=="__main__": main()
