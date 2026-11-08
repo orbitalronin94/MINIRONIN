@@ -129,6 +129,7 @@ def main():
         "source": str(SOURCE.relative_to(ROOT)),
         "source_sha256": hashlib.sha256(SOURCE.read_bytes()).hexdigest(),
         "parsed_lexicon_entries": len(entries),
+        "unique_epithets_in_training": len({r["source_epithet"] for r in rows}),
         "unique_prompts": len({r["question"] for r in rows}),
         "modes": {m: sum(1 for r in rows if r["tag"] == {
             "diagnosis":"lexicon_behavioral_diagnosis",
