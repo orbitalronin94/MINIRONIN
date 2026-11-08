@@ -19,6 +19,20 @@ def clean_gutenberg(raw: bytes) -> str:
         raise ValueError(f"Suspiciously short text: {len(body)} characters")
     return body
 
+def download_source(row):
+    request = urllib.request.Request(
+        row["plain_text_url"],
+        headers={"User-Agent": "MINIRONIN-classics-corpus/1.0 (GitHub Actions; provenance retained)"},
+    )
+    for attempt in range(4):
+        try:
+            with urllib.request.urlopen(request, timeout=120) as response:
+                return response.read()
+        except Exception:
+            if attempt == 3:
+                raise
+            time.sleep(2 ** attempt)
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", default="data/inherited/classics-library")
@@ -28,9 +42,8 @@ def main() -> None:
     approved = [x for x in registry["sources"] if x.get("rights_status") == "approved_for_spain_training"]
     if not approved: raise SystemExit("No approved classics sources")
     manifest = {"schema":"minironin-classics-acquisition-v1","policy":"Only explicitly approved source rows are downloaded; translated works remain gated pending territorial review.","sources":[]}
-    for row in approved:
-        request = urllib.request.Request(row["plain_text_url"], headers={"User-Agent":"MINIRONIN-classics-corpus/1.0 (GitHub Actions; provenance retained)"})
-        with urllib.request.urlopen(request, timeout=120) as response: raw = response.read()
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        for row, raw in zip(approved, pool.map(download_source, approved)):
         body = clean_gutenberg(raw)
         tokens = row.get("semantic_token_ids", [])
         tagged = " ".join(f"[{token}]" for token in tokens) + "\n\n" + body + "\n"
@@ -49,7 +62,6 @@ def main() -> None:
             "upstream_sha256":hashlib.sha256(raw).hexdigest()
         })
         print(json.dumps(manifest["sources"][-1],ensure_ascii=False),flush=True)
-        time.sleep(1)
     manifest["total_documents"]=len(manifest["sources"])
     manifest["total_bytes"]=sum(x["bytes"] for x in manifest["sources"])
     (output/"CLASSICS-LIBRARY-MANIFEST.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
