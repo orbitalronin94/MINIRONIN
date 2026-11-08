@@ -98,7 +98,7 @@ def main():
  CREATE TABLE documents(document_id TEXT PRIMARY KEY,source_id TEXT,project TEXT,relative_path TEXT,document_sha256 TEXT,license TEXT,domain TEXT,language TEXT,epistemic TEXT,redistribution INTEGER,locator TEXT);
  CREATE TABLE document_sources(document_id TEXT,source_id TEXT,project TEXT,relative_path TEXT,license TEXT,domain TEXT,language TEXT,epistemic TEXT,redistribution INTEGER,PRIMARY KEY(document_id,source_id,relative_path));\n CREATE TABLE chunks(chunk_id TEXT PRIMARY KEY,document_id TEXT,chunk_index INTEGER,locator TEXT,text TEXT,text_sha256 TEXT UNIQUE,embedding BLOB,embedding_model TEXT);
  CREATE VIRTUAL TABLE chunks_fts USING fts5(chunk_id UNINDEXED,text,tokenize='unicode61 remove_diacritics 2');
- CREATE INDEX idx_chunks_doc ON chunks(document_id);""")
+ CREATE INDEX idx_chunks_doc ON chunks(document_id);\n CREATE TABLE chunk_sources(chunk_id TEXT,document_id TEXT,source_id TEXT,relative_path TEXT,locator TEXT,PRIMARY KEY(chunk_id,document_id,source_id,relative_path,locator));""")
  pending=[];docs=dupd=chunks=dupc=0;t0=time.time()
  def flush():
   nonlocal chunks
@@ -107,7 +107,7 @@ def main():
   if embedder:
    import numpy as np
    vec=embedder.encode([ecfg["document_prefix"]+r[4] for r in pending],batch_size=a.batch_size,convert_to_numpy=True,normalize_embeddings=True,show_progress_bar=False)
-  for i,(cid,did,ix,loc,txt,th) in enumerate(pending):
+  for i,(cid,did,ix,loc,txt,th,source_id,relative_path) in enumerate(pending):
    blob=vec[i].astype("float16").tobytes() if vec is not None else None
    cur=db.execute("INSERT OR IGNORE INTO chunks VALUES(?,?,?,?,?,?,?,?)",(cid,did,ix,loc,txt,th,blob,ecfg["model"] if blob is not None else None))
    if cur.rowcount:
@@ -131,7 +131,7 @@ def main():
     file_chunk_idx=0
     for loc,txt in read(path):
      for chunk_text in chunk(txt,cfg["target_chars"],cfg["overlap_chars"],cfg["min_chars"]):
-      ix=file_chunk_idx;file_chunk_idx+=1;th=sha(chunk_text.encode());cid=sha((did+":"+str(ix)+":"+th).encode());pending.append((cid,did,ix,loc,chunk_text,th))
+      ix=file_chunk_idx;file_chunk_idx+=1;th=sha(chunk_text.encode());cid=sha((did+":"+str(ix)+":"+th).encode());pending.append((cid,did,ix,loc,chunk_text,th,src["id"],rel))
       if len(pending)>=a.batch_size:flush()
    except OSError as e:print(f"WARN skipped {path}: {e}",file=sys.stderr)
  flush()
