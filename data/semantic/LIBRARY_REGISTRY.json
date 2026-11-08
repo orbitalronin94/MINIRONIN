@@ -636,6 +636,33 @@
         "distribution",
         "cooperation"
       ]
+    },
+    {
+      "id": "religion",
+      "label": "Religión",
+      "aliases": [
+        "religion",
+        "theology",
+        "church"
+      ],
+      "relations": [
+        "authority",
+        "state",
+        "freedom"
+      ]
+    },
+    {
+      "id": "systems",
+      "label": "Sistemas",
+      "aliases": [
+        "systems",
+        "complex systems"
+      ],
+      "relations": [
+        "self_organization",
+        "engineering",
+        "cooperation"
+      ]
     }
   ],
   "concept_relations": [
