@@ -290,7 +290,7 @@ def main():
                        "question":Q[i%len(Q)].format(expr=expr),"answer":answer,
                        "operation":kind,"answer_type":"computed"}
         manifests.append(write_dataset(out,"math-"+kind,math_rows(),{
-            "type":"computed_arithmetic","generator_seed":args.seed,
+            "type":"computed_arithmetic","curriculum_version":"v1","generator_seed":args.seed,
             "method":"deterministic integer arithmetic; answers computed by Python",
             "limitations":"Elementary exercises; not a proof of broad mathematical reasoning."}))
     for subject, facts in FACTS.items():
