@@ -52,13 +52,24 @@ def sha256(path: Path) -> str:
 
 def build_tokenizer(train_docs, work_dir: Path):
     work_dir.mkdir(parents=True, exist_ok=True)
-    corpus_file = work_dir / "tokenizer-training-only.txt"
-    with corpus_file.open("w", encoding="utf-8", newline="\n") as out:
+    # Four balanced corpus shards let the Rust BPE trainer process files in parallel.
+    # They are four inputs to ONE tokenizer, not four independently trained vocabularies.
+    shard_count = 4
+    shard_paths = [work_dir / f"tokenizer-training-shard-{i + 1}-of-{shard_count}.txt" for i in range(shard_count)]
+    shard_docs = [0] * shard_count
+    shard_bytes = [0] * shard_count
+    with [path.open("w", encoding="utf-8", newline="\n") for path in shard_paths] as handles:
         for domain in sorted(train_docs):
-            for doc in train_docs[domain]:
+            for doc_index, doc in enumerate(train_docs[domain]):
                 text = doc["text"].replace("\r", " ").replace("\n", " ")
                 if text:
-                    out.write(text + "\n")
+                    shard = (doc_index + sum(shard_docs)) % shard_count
+                    payload = text + "\n"
+                    handles[shard].write(payload)
+                    shard_docs[shard] += 1
+                    shard_bytes[shard] += len(payload.encode("utf-8"))
+    for i in range(shard_count):
+        print(json.dumps({"tokenizer_shard": i + 1, "documents": shard_docs[i], "bytes": shard_bytes[i]}), flush=True)
 
     tokenizer = Tokenizer(models.BPE(unk_token=None))
     tokenizer.pre_tokenizer = pre_tokenizers.ByteLevel(add_prefix_space=False)
@@ -70,7 +81,7 @@ def build_tokenizer(train_docs, work_dir: Path):
         show_progress=True,
         special_tokens=[],
     )
-    tokenizer.train([str(corpus_file)], trainer=trainer)
+    tokenizer.train([str(path) for path in shard_paths], trainer=trainer)
     actual = tokenizer.get_vocab_size(with_added_tokens=False)
     if actual != TOKENIZER_INTERNAL_SIZE:
         raise RuntimeError(
@@ -99,7 +110,7 @@ def build_tokenizer(train_docs, work_dir: Path):
 
     tokenizer_path = work_dir / "semantic-tokenizer.json"
     tokenizer.save(str(tokenizer_path))
-    return tokenizer, id_to_model, reverse, tokenizer_path, corpus_file
+    return tokenizer, id_to_model, reverse, tokenizer_path, shard_paths
 
 
 def encode_text(tokenizer, id_to_model, text: str) -> list[int]:
@@ -182,7 +193,7 @@ def main():
         Path(args.heretic_root), Path(args.books_root), Path(args.anarchist_root),
         Path(args.classics_root), Path(args.dataset_cache)
     )
-    tokenizer, id_to_model, byte_reverse, tokenizer_path, corpus_file = build_tokenizer(
+    tokenizer, id_to_model, byte_reverse, tokenizer_path, shard_paths = build_tokenizer(
         train_docs, out / "tokenizer"
     )
 
