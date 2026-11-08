@@ -40,6 +40,15 @@ class TokenStoreTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "tokenizer SHA-256"):
                 TokenStore(tmp, expected_tokenizer_sha256="wrong")
 
+    def test_index_tampering_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            build_token_store(self.rows(), tmp, tokenizer_sha256="tok",
+                              corpus_signature="corpus")
+            index = __import__("pathlib").Path(tmp) / "index.json"
+            index.write_text("[]", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "index SHA-256"):
+                TokenStore(tmp)
+
     def test_duplicate_ids_are_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             rows = self.rows() + [dict(self.rows()[0])]
