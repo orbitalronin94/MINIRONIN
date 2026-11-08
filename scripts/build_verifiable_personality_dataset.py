@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Generate 50,000 auditable MINIRONIN fact/persona examples.
 
+Generator revision: 1.0.1
+
 These are deterministic combinations of 40 institutional fact cards and
 original templates, not 50,000 independent facts. Claims retain source,
 period and projection/observation status. No source prose is copied.
