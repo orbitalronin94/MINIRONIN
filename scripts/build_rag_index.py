@@ -136,7 +136,8 @@ def main():
   if not base.exists():print(f"WARN missing source {src['id']}: {base}",file=sys.stderr);continue
   files=[base] if base.is_file() else sorted(base.rglob("*"))
   for path in files:
-   if not path.is_file() or excluded(path,reg) or path.suffix.lower() not in reg["allowed_extensions"]:continue
+   ext=".jsonl.gz" if path.name.lower().endswith(".jsonl.gz") else path.suffix.lower()
+   if not path.is_file() or excluded(path,reg) or ext not in reg["allowed_extensions"]:continue
    low=str(path).replace("\\","/").lower()
    if any(x in low for x in ("/holdout/","/validation/","/eval/","/evaluation/","/checkpoints/")):continue
    try:
