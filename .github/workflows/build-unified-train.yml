@@ -88,6 +88,7 @@ jobs:
           unzip -tq heretic-approved-corpus.zip
           mkdir -p data/inherited/heretic-corpus
           unzip -q heretic-approved-corpus.zip -d data/inherited/heretic-corpus
+          cp parts.sha256 corpus.sha256 data/inherited/heretic-corpus/
 
       - name: Descargar y verificar PRODATPHIL v0.3
         run: |
