@@ -52,6 +52,13 @@ jobs:
               --notes "Manual project promotion of the verified 9,970,176-parameter Transformer checkpoint. This is an experimental baseline, not a claim of validated holdout quality. Source release: minironin-cycle-1-step-390000."
           fi
 
+      - name: Comprobar espacio disponible en runner gratuito
+        run: |
+          set -euo pipefail
+          df -h .
+          available="$(df --output=avail -k . | tail -1 | tr -d ' ')"
+          test "$available" -gt 8000000 || { echo "Insufficient disk space: ${available} KiB"; exit 1; }
+
       - name: Descargar y verificar corpus textual HERETIC completo
         run: |
           set -euo pipefail
