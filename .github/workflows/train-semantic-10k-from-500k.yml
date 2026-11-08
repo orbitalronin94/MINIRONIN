@@ -2,13 +2,21 @@ name: MINIRONIN — semantic BPE 23k from 500k +5k
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/train-semantic-10k-from-500k.yml"
+      - "scripts/train_semantic_10k.py"
+      - "scripts/run_semantic_bpe_holdout.py"
+      - "scripts/acquire_anarchist_library.py"
+      - "scripts/acquire_classics_library.py"
 
 permissions:
   contents: write
   actions: read
 
 concurrency:
-  group: minironin-semantic-bpe-500k-5k
+  group: minironin-semantic-bpe-500k-505k
   cancel-in-progress: false
 
 jobs:
