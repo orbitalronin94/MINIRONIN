@@ -1,3 +1,4 @@
+# Import-path guard: src/minironin must take precedence over scripts/minironin.py.
 name: MINIRONIN — Transformer 10M desde 400k +50k corpus completo
 
 on:
