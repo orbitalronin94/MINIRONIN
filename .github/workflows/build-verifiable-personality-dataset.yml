@@ -5,6 +5,8 @@ on:
     branches: [feat/technopolitics-corpus-mix]
     paths:
       - "scripts/build_verifiable_personality_dataset.py"
+      - "scripts/train_seed_tournament.py"
+      - "scripts/train_long_run.py"
   workflow_dispatch:
 
 permissions:
@@ -21,6 +23,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Check Python syntax without training
+        run: python -m py_compile scripts/build_verifiable_personality_dataset.py scripts/train_seed_tournament.py scripts/train_long_run.py
       - name: Generate and audit 50,000 source-traceable examples
         run: |
           python scripts/build_verifiable_personality_dataset.py
