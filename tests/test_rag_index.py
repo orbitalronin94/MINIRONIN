@@ -1,4 +1,4 @@
-import importlib.util,json,sqlite3,subprocess,sys
+import gzip,importlib.util,json,sqlite3,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location("rag_builder",ROOT/"scripts/build_rag_index.py")
@@ -10,6 +10,10 @@ def test_read_markdown_and_chunk(tmp_path):
  rows=list(m.read(p));assert rows;assert m.chunk(rows[0][0],220,30,40)
 def test_jsonl_fields():
  x=m.extract({"id":"a","question":"What is entropy?","answer":"A state function."});assert "entropy" in x and "state function" in x
+def test_gzip_jsonl_metadata(tmp_path):
+ p=tmp_path/"train.jsonl.gz"
+ with gzip.open(p,"wt",encoding="utf-8") as f:f.write(json.dumps({"question":"What is entropy?","answer":"A state function.","license":"CC0-1.0","domain":"science"})+"\n")
+ rows=list(m.read(p));assert rows and "entropy" in rows[0][0];assert rows[0][2]["license"]=="CC0-1.0"
 def test_holdout_excluded():
  r=json.loads((ROOT/"data/rag/sources.json").read_text());assert m.excluded(Path("benchmarks/holdout/a.jsonl"),r)
 def test_end_to_end(tmp_path):
