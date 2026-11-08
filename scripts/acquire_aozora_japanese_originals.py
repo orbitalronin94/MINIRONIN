@@ -34,7 +34,7 @@ HEADERS = {"User-Agent":"MINIRONIN-Japanese-originals/1.0 (research corpus; attr
 
 def fetch(url: str) -> bytes:
     req=urllib.request.Request(url,headers=HEADERS)
-    with urllib.request.urlopen(req,timeout=90) as response: return response.read()
+    with urllib.request.urlopen(req,timeout=25) as response: return response.read()
 
 def person_name(row):
     return "".join(x or "" for x in (row.get("family_name"),row.get("given_name")))
