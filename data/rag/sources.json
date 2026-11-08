@@ -63,7 +63,14 @@
     "node_modules",
     "__pycache__",
     "rag-index",
-    "rag_index"
+    "rag_index",
+    "test",
+    "tests",
+    "benchmark",
+    "benchmarks",
+    "gold",
+    "answer_keys",
+    "private"
   ],
   "excluded_extensions": [
     ".pt",
@@ -98,5 +105,5 @@
     ".pdf",
     ".docx"
   ],
-  "max_file_mb": 100
+  "max_file_mb": 8192
 }
