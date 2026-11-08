@@ -1,0 +1,68 @@
+name: Build MINIRONIN 2M World Bank factual corpus
+
+on:
+  push:
+    branches: [feat/technopolitics-corpus-mix]
+    paths:
+      - "scripts/build_worldbank_verifiable_dataset.py"
+      - ".github/workflows/build-worldbank-verifiable-dataset.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-worldbank-corpus:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/technopolitics-corpus-mix
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Syntax and deterministic self-tests
+        run: |
+          python -m py_compile scripts/build_worldbank_verifiable_dataset.py
+          python scripts/build_worldbank_verifiable_dataset.py --self-test
+      - name: Fetch institutional observations and build two million examples
+        run: |
+          python scripts/build_worldbank_verifiable_dataset.py --target 2000000 --shard-size 100000
+      - name: Audit independent facts, rows, shard hashes and provenance
+        run: |
+          python - <<'PY'
+          import gzip, hashlib, json, pathlib
+          root=pathlib.Path("data/curated/minironin-worldbank-verifiable-2m-v1")
+          m=json.loads((root/"manifest.json").read_text(encoding="utf-8"))
+          assert m["records_written"] == 2_000_000, m["records_written"]
+          assert m["independent_observations"] == m["unique_fact_ids"]
+          assert m["independent_observations"] >= 20_000, m["independent_observations"]
+          assert m["source_id"] == 2 and m["source_database"] == "World Development Indicators"
+          assert m["quality_policy"]["forecast_status_F_excluded"]
+          total=0
+          for item in m["shards"]:
+              p=pathlib.Path(item["file"])
+              raw=p.read_bytes()
+              assert hashlib.sha256(raw).hexdigest() == item["sha256"], p
+              with gzip.open(p, "rt", encoding="utf-8") as stream:
+                  count=sum(1 for line in stream if line.strip())
+              assert count == item["records"], (p,count,item["records"])
+              total += count
+          assert total == 2_000_000, total
+          print(json.dumps({
+              "examples": total,
+              "independent_observations": m["independent_observations"],
+              "indicators_with_data": m["indicators_with_observations"],
+              "shards": len(m["shards"]),
+              "variants_per_fact": m["variants_per_fact"],
+              "license": m["source_license"]
+          }, ensure_ascii=False))
+          PY
+      - name: Commit generated factual corpus to feature branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/curated/minironin-worldbank-verifiable-2m-v1/
+          git commit -m "Add 2M World Bank source-traceable factual examples"
+          git push origin HEAD:feat/technopolitics-corpus-mix
