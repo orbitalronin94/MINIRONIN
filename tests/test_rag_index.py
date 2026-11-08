@@ -34,16 +34,16 @@ def test_hybrid_retrieval_context_and_record_level_citation(tmp_path):
     registry={
         "chunking":{"target_chars":220,"overlap_chars":30,"min_chars":40},
         "embedding":{"model":"none","document_prefix":"passage: ","query_prefix":"query: "},
-        "sources":[{"id":"fixture","project":"TEST","root":"docs","domain":"science","language":"en","epistemic":"verified","license":"CC0-1.0","redistribution":True,"enabled":True}],
+        "sources":[{"id":"fixture","project":"TEST","root":"unused","domain":"science","language":"en","epistemic":"verified","license":"CC0-1.0","redistribution":True,"enabled":False}],
         "excluded_path_parts":["holdout"],"excluded_extensions":[".pt"],
         "allowed_extensions":[".md"],"max_file_mb":5,
     }
     rp=tmp_path/"registry.json";rp.write_text(json.dumps(registry),encoding="utf-8")
     index=tmp_path/"index.sqlite"
-    subprocess.run([sys.executable,str(ROOT/"scripts/build_rag_index.py"),"--registry",str(rp),"--no-embeddings","--output",str(index)],check=True,capture_output=True,text=True)
+    subprocess.run([sys.executable,str(ROOT/"scripts/build_rag_index.py"),"--registry",str(rp),"--root",f"fixture={docs}","--no-embeddings","--output",str(index)],check=True,capture_output=True,text=True)
     retrieval_spec=importlib.util.spec_from_file_location("rag_retriever",ROOT/"scripts/rag_retrieve.py")
     retrieval=importlib.util.module_from_spec(retrieval_spec);retrieval_spec.loader.exec_module(retrieval)
-    result=retrieval.search(index,"Define entropy",k=3,use_vectors=False)
+    result=retrieval.search(index,"Entropy state function",k=3,use_vectors=False)
     assert result["hits"]
     context=retrieval.format_context(result,max_chars=4000)
     assert "[S1]" in context
