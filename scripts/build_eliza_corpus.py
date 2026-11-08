@@ -182,13 +182,18 @@ def strategy_schedule(count, mix, rng):
         yield chosen
 
 
+_RAG_MODULE = None
+
+
 def retrieve_grounding(index_path, query, top_k, max_chars, use_vectors):
     """Retrieve bounded, provenance-bearing evidence for one source question."""
-    module_path = Path(__file__).with_name("rag_retrieve.py")
-    spec = importlib.util.spec_from_file_location("minironin_rag_retrieve", module_path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    result = module.search(
+    global _RAG_MODULE
+    if _RAG_MODULE is None:
+        module_path = Path(__file__).with_name("rag_retrieve.py")
+        spec = importlib.util.spec_from_file_location("minironin_rag_retrieve", module_path)
+        _RAG_MODULE = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(_RAG_MODULE)
+    result = _RAG_MODULE.search(
         index_path, query, k=top_k, use_vectors=use_vectors
     )
     evidence = []
@@ -304,6 +309,7 @@ def main():
         # The retrieval module returns the same index manifest for every query.
         evidence_path = Path(args.output).with_suffix(".evidence.jsonl")
         evidence_digest = hashlib.sha256()
+        written_evidence_ids = set()
         with evidence_path.open("w", encoding="utf-8", newline="\\n") as evidence_file:
             for row in pool:
                 grounding = row["rag"]
@@ -311,7 +317,7 @@ def main():
                     f"{rag_index_sha256}|{row['question']}".encode("utf-8")
                 ).hexdigest()[:24]
                 grounding["evidence_id"] = evidence_id
-                if evidence_id in getattr(evidence_file, "_written_ids", set()):
+                if evidence_id in written_evidence_ids:
                     continue
                 evidence_row = {
                     "id": evidence_id,
@@ -323,10 +329,7 @@ def main():
                 evidence_line = json.dumps(evidence_row, ensure_ascii=False, separators=(",", ":")) + "\\n"
                 evidence_file.write(evidence_line)
                 evidence_digest.update(evidence_line.encode("utf-8"))
-                # The pool is bounded and the sidecar contains one row per unique source question.
-                if not hasattr(evidence_file, "_written_ids"):
-                    evidence_file._written_ids = set()
-                evidence_file._written_ids.add(evidence_id)
+                written_evidence_ids.add(evidence_id)
         rag_manifest = {
             "index_sha256": rag_index_sha256,
             "status": "enabled",
