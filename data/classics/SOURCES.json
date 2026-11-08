@@ -129,11 +129,11 @@
       "gutenberg_id": 34901,
       "url": "https://www.gutenberg.org/ebooks/34901",
       "plain_text_url": "https://www.gutenberg.org/cache/epub/34901/pg34901.txt",
-      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
-      "rights_status": "approved_for_spain_training",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance. This edition contains a separately credited introduction by W. L. Courtney; keep excluded pending a documented Spain-specific rights check for that contribution.",
+      "rights_status": "rights_review_required",
       "editorial_exclusions": [
-        "Project Gutenberg boilerplate",
-        "separately credited third-party editorial matter"
+        "W. L. Courtney introduction pending territorial review",
+        "Project Gutenberg boilerplate"
       ],
       "tradition": [
         "classical-literature",
@@ -154,7 +154,9 @@
         "SEM:freedom",
         "SEM:authority",
         "SEM:political_theory"
-      ]
+      ],
+      "editorial_contributor": "W. L. Courtney",
+      "editorial_contributor_death_year": null
     },
     {
       "id": "WOLLSTONECRAFT-VINDICATION",
