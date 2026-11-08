@@ -88,7 +88,9 @@ def chunk(text,target,overlap,minimum):
  return result
 def excluded(p,reg):
  parts={x.lower() for x in p.parts}
- return bool(parts.intersection(reg["excluded_path_parts"])) or (p.suffix.lower() in reg["excluded_extensions"] and not p.name.lower().endswith(".jsonl.gz"))
+ if parts.intersection(reg["excluded_path_parts"]):return True
+ if re.search(r"(^|[._-])(test|tests|validation|eval|evaluation|holdout|benchmark|benchmarks|answer_key)([._-]|$)",p.name.lower()):return True
+ return p.suffix.lower() in reg["excluded_extensions"] and not p.name.lower().endswith(".jsonl.gz")
 def main():
  ap=argparse.ArgumentParser();ap.add_argument("--registry",type=Path,default=ROOT/"data/rag/sources.json");ap.add_argument("--output",type=Path,default=ROOT/"artifacts/rag/minironin-rag.sqlite");ap.add_argument("--root",action="append",default=[],help="Approved extra root NAME=PATH");ap.add_argument("--no-embeddings",action="store_true");ap.add_argument("--batch-size",type=int,default=64);a=ap.parse_args()
  reg=json.loads(a.registry.read_text());cfg=reg["chunking"];ecfg=reg["embedding"];embedder=None
