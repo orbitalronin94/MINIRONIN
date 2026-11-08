@@ -44,6 +44,21 @@ def test_eliza_requests_use_weighted_five_family_mix_and_keep_provenance(tmp_pat
     assert all(row["source"]["record_sha256"] for row in rows)
     assert all(row["synthetic_status"] == "teacher_request_only" for row in rows)
     assert all(row["stage_b"]["must_preserve"] for row in rows)
+    assert all(
+        set(row["stage_b"]["global_rewrite_rules"]) == {
+            "no_welcome_mat", "aggressive_empathy", "lexicon_discipline",
+            "token_economy", "factual_invariance"
+        }
+        for row in rows
+    )
+    assert all(
+        "at most three sentences" in row["stage_b"]["global_rewrite_rules"]["token_economy"]
+        for row in rows
+    )
+    assert all(
+        "Do not assign blame" in row["stage_b"]["global_rewrite_rules"]["aggressive_empathy"]
+        for row in rows
+    )
     assert summary["answers_generated"] is False
     assert summary["training_performed"] is False
 
