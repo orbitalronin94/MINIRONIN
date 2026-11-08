@@ -1,0 +1,526 @@
+{
+  "dataset": "MINIRONIN World Bank verifiable statistics with erudite cynical voice",
+  "version": 1,
+  "target_examples": 2000000,
+  "records_written": 2000000,
+  "independent_observations": 383440,
+  "unique_fact_ids": 383440,
+  "indicators_requested": 37,
+  "indicators_with_observations": 36,
+  "year_range": [
+    1960,
+    2025
+  ],
+  "source_database": "World Development Indicators",
+  "source_id": 2,
+  "source_api": "https://api.worldbank.org/v2",
+  "source_license": "CC BY 4.0 (World Bank default; verify indicator-specific metadata)",
+  "attribution": "World Bank, World Development Indicators; data retrieved through the World Bank Indicators API v2. Changes: Spanish questions/answers and original dry-humour framing generated from numeric observations.",
+  "variants_per_fact": 6,
+  "maximum_templates_per_fact": 100,
+  "method": "country-indicator-year observations × controlled question frames × original dry-humour voice endings",
+  "indicator_audit": [
+    {
+      "indicator_code": "AG.LND.FRST.ZS",
+      "indicator_name": "Forest area (% of land area)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 8748,
+      "source_note": "Forest area (% of land area) is the share of total land area that is under natural or planted stands of trees of at least 5 meters in situ, whether productive or not, and excludes tree stands in agricultural production systems (for example, in fruit plantations and agroforestry systems) and trees in urban parks and gardens.",
+      "source_organization": "FAOSTAT, Food and Agriculture Organization of the United Nations (FAO), uri: https://www.fao.org/faostat/en/#data/RL, publisher: Food and Agriculture Organization of the United Nations (FAO)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/AG.LND.FRST.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "EG.ELC.ACCS.ZS",
+      "indicator_name": "Access to electricity (% of population)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 8005,
+      "source_note": "Access to electricity is the percentage of population with access to electricity. Electrification data are collected from industry, national surveys and international sources.",
+      "source_organization": "SDG 7.1.1 Electrification Dataset, World Bank (WB), uri: https://trackingsdg7.esmap.org/downloads, note: Data is downloaded from ESMAP website. Data is released when a new Tracking SDG7 report is released., publisher: World Bank (WB), date accessed: 2024-05-16, date published: 2023",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/EG.ELC.ACCS.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "EG.FEC.RNEW.ZS",
+      "indicator_name": "Renewable energy consumption (% of total final energy consumption)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 8110,
+      "source_note": "Renewable energy consumption is the share of renewable energy in total final energy consumption.",
+      "source_organization": "IEA Energy Statistics Data Browser, International Energy Agency (IEA), uri: https://www.iea.org/data-and-statistics/data-tools/energy-statistics-data-browser, publisher: International Energy Agency (IEA), date accessed: 2025-03-25",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/EG.FEC.RNEW.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "EG.USE.ELEC.KH.PC",
+      "indicator_name": "Electric power consumption (kWh per capita)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 6654,
+      "source_note": "Electric power consumption measures the production of power plants and combined heat and power plants less transmission, distribution, and transformation losses and own use by heat and power plants.",
+      "source_organization": "IEA Energy Statistics Data Browser, International Energy Agency (IEA), uri: https://www.iea.org/data-and-statistics/data-tools/energy-statistics-data-browser, publisher: International Energy Agency (IEA), date accessed: 2025-03-25",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/EG.USE.ELEC.KH.PC?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "EN.ATM.CO2E.PC",
+      "indicator_name": "CO2 emissions (metric tons per capita)",
+      "api_records_returned": 0,
+      "independent_observations_accepted": 0,
+      "source_note": "",
+      "source_organization": "",
+      "source_url": "https://api.worldbank.org/v2/indicator/EN.ATM.CO2E.PC?format=json&source=2",
+      "metadata_available": false
+    },
+    {
+      "indicator_code": "EN.ATM.PM25.MC.M3",
+      "indicator_name": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 8296,
+      "source_note": "Population-weighted exposure to ambient PM2.5 pollution is defined as the average level of exposure of a nation's population to concentrations of suspended particles measuring less than 2.5 microns in aerodynamic diameter, which are capable of penetrating deep into the respiratory tract and causing severe health damage. Exposure is calculated by weighting mean annual concentrations of PM2.5 by population in both urban and rural areas.",
+      "source_organization": "Global Burden of Disease Study 2023 (GBD 2023) Air Pollution Exposure Estimates and Risk Curves 1990-2023, GBD Collaborator Network, uri: https://ghdx.healthdata.org/record/ihme-data/gbd-2023-air-pollution-exposure-estimates-1990-2023, note: Need to create account to retrieve data., publisher: Institute for Health Metrics and Evaluation (IHME), date accessed: 2026-04-03, date published: 2026-01-23",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/EN.ATM.PM25.MC.M3?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "FP.CPI.TOTL.ZG",
+      "indicator_name": "Inflation, consumer prices (annual %)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 11364,
+      "source_note": "Inflation as measured by the consumer price index reflects the annual percentage change in the cost to the average consumer of acquiring a basket of goods and services that may be fixed or changed at specified intervals, such as yearly.",
+      "source_organization": "International Financial Statistics database, International Monetary Fund (IMF)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/FP.CPI.TOTL.ZG?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "GC.DOD.TOTL.GD.ZS",
+      "indicator_name": "Central government debt, total (% of GDP)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 1799,
+      "source_note": "Debt is the entire stock of direct government fixed-term contractual obligations to others outstanding on a particular date. It includes domestic and foreign liabilities such as currency and money deposits, securities other than shares, and loans. It is the gross amount of government liabilities reduced by the amount of equity and financial derivatives held by the government. Because debt is a stock rather than a flow, it is measured as of a given date, usually the last day of the fiscal year. Central government is the part of general government that includes all administrative departments of the national executive, legislative, and judicial functions, other central agencies and those non-market producers controlled by the central government, whose competence extends normally over the whole economic territory. This indicator is expressed as a percentage of Gross Domestic Product (GDP) which is the total income earned through the production of goods and services in an economic territory during an accounting period.",
+      "source_organization": "Government Finance Statistics Yearbook and data files, International Monetary Fund (IMF)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/GC.DOD.TOTL.GD.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "IT.CEL.SETS.P2",
+      "indicator_name": "Mobile cellular subscriptions (per 100 people)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 12912,
+      "source_note": "Mobile cellular telephone subscriptions are subscriptions to a public mobile telephone service that provide access to the PSTN using cellular technology. The indicator includes (and is split into) the number of postpaid subscriptions, and the number of active prepaid accounts (i.e. that have been used during the last three months). The indicator applies to all mobile cellular subscriptions that offer voice communications. It excludes subscriptions via data cards or USB modems, subscriptions to public mobile data services, private trunked mobile radio, telepoint, radio paging and telemetry services.",
+      "source_organization": "World Telecommunication/ICT Indicators Database, International Telecommunication Union (ITU)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/IT.CEL.SETS.P2?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "IT.NET.USER.ZS",
+      "indicator_name": "Individuals using the Internet (% of population)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 6812,
+      "source_note": "Internet users are individuals who have used the Internet (from any location) in the last 3 months. The Internet can be used via a computer, mobile phone, personal digital assistant, games machine, digital TV etc.",
+      "source_organization": "World Telecommunication/ICT Indicators Database, International Telecommunication Union (ITU), uri: https://datahub.itu.int/",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/IT.NET.USER.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "MS.MIL.XPND.GD.ZS",
+      "indicator_name": "Military expenditure (% of GDP)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 10679,
+      "source_note": "Military expenditure by country as percentage of gross domestic product",
+      "source_organization": "SIPRI Military Expenditure Database, Stockholm International Peace Research Institute (SIPRI), uri: https://www.sipri.org/databases",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/MS.MIL.XPND.GD.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "NE.EXP.GNFS.ZS",
+      "indicator_name": "Exports of goods and services (% of GDP)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 11207,
+      "source_note": "Exports of goods includes changes in the economic ownership of goods from residents of the compiling economy to non-residents, irrespective of physical movement of goods across national borders. Exports of services includes services provided by residents to non-residents. This indicator is expressed as a percentage of Gross Domestic Product (GDP) which is the total income earned through the production of goods and services in an economic territory during an accounting period.",
+      "source_organization": "Country official statistics, National Statistical Offices (NSOs);\nNational Accounts data files, Central Banks;\nStaff estimates, World Bank (WB)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/NE.EXP.GNFS.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "NE.IMP.GNFS.ZS",
+      "indicator_name": "Imports of goods and services (% of GDP)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 11259,
+      "source_note": "Imports of goods includes change in the economic ownership of goods from non-residents to\n\n\n\n\nresidents of the compiling economy, irrespective of physical movement of goods across national borders. Imports of services includes services provided by non-residents to residents. This indicator is expressed as a percentage of Gross Domestic Product (GDP) which is the total income earned through the production of goods and services in an economic territory during an accounting period.",
+      "source_organization": "Country official statistics, National Statistical Offices (NSOs);\nNational Accounts data files, Central Banks;\nStaff estimates, World Bank (WB)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/NE.IMP.GNFS.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "NE.TRD.GNFS.ZS",
+      "indicator_name": "Trade (% of GDP)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 10999,
+      "source_note": "Trade is the sum of exports and imports of goods and services. This indicator is expressed as a percentage of Gross Domestic Product (GDP) which is the total income earned through the production of goods and services in an economic territory during an accounting period.",
+      "source_organization": "Country official statistics, National Statistical Organizations and/or Central Banks;\nNational Accounts data files, Organisation for Economic Co-operation and Development (OECD);\nStaff estimates, World Bank (WB)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/NE.TRD.GNFS.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "NV.AGR.TOTL.ZS",
+      "indicator_name": "Agriculture, forestry, and fishing, value added (% of GDP)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 11205,
+      "source_note": "Agriculture, forestry, and fishing corresponds to ISIC (Rev. 4) divisions 01-03 and includes the exploitation of vegetal and animal natural resources, comprising the activities of growing of crops, raising and breeding of animals, harvesting of timber and other plants, animals or animal products from a farm or their natural habitats.Value added is the contribution to the economy by a producer or an industry or an institutional sector, which is estimated by the total value of output produced and deducting the total value of intermediate consumption of goods and services used to produce that output. This indicator is expressed as a percentage of Gross Domestic Product (GDP) which is the total income earned through the production of goods and services in an economic territory during an accounting period. Note: For VAB countries, gross value added at factor cost is used as the denominator.",
+      "source_organization": "Country official statistics, National Statistical Organizations and/or Central Banks;\nNational Accounts data files, Organisation for Economic Co-operation and Development (OECD);\nStaff estimates, World Bank (WB)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/NV.AGR.TOTL.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "NV.IND.TOTL.ZS",
+      "indicator_name": "Industry (including construction), value added (% of GDP)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 11196,
+      "source_note": "Industry (including construction) corresponds to ISIC (Rev.4) divisions 05-43. It is comprised of mining, manufacturing, construction, electricity, water, and gas industries. Value added is the contribution to the economy by a producer or an industry or an institutional sector, which is estimated by the total value of output produced and deducting the total value of intermediate consumption of goods and services used to produce that output. This indicator is expressed as a percentage of Gross Domestic Product (GDP) which is the total income earned through the production of goods and services in an economic territory during an accounting period.",
+      "source_organization": "Country official statistics, National Statistical Offices (NSOs);\nNational Accounts data files, Central Banks;\nStaff estimates, World Bank (WB)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/NV.IND.TOTL.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "NV.SRV.TOTL.ZS",
+      "indicator_name": "Services, value added (% of GDP)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 10622,
+      "source_note": "Services industries correspond to ISIC (Rev. 4) divisions 45-99 and includes wholesale and retail trade, repair of motor vehicles, hotels and restaurants, transport, storage and communication, financial intermediation, real estate, renting and business activities, public administration and defence, compulsory social security, education, health and social work, other community, social and personal service activities, private households with employed persons, and extra-territorial organizations and bodies. Value added is the contribution to the economy by a producer or an industry or an institutional sector, which is estimated by the total value of output produced and deducting the total value of intermediate consumption of goods and services used to produce that output. This indicator is expressed as a percentage of Gross Domestic Product (GDP) which is the total income earned through the production of goods and services in an economic territory during an accounting period.",
+      "source_organization": "Country official statistics, National Statistical Offices (NSOs);\nNational Accounts data files, Central Banks;\nStaff estimates, World Bank (WB)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/NV.SRV.TOTL.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "NY.GDP.MKTP.CD",
+      "indicator_name": "GDP (current US$)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 14547,
+      "source_note": "Gross domestic product is the total income earned through the production of goods and services in an economic territory during an accounting period. It can be measured in three different ways: using either the expenditure approach, the income approach, or the production approach. This indicator is expressed in current prices, meaning no adjustment has been made to account for price changes over time. This indicator is expressed in United States dollars.",
+      "source_organization": "Country official statistics, National Statistical Organizations and/or Central Banks;\nNational Accounts data files, Organisation for Economic Co-operation and Development (OECD);\nStaff estimates, World Bank (WB)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.CD?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "indicator_name": "GDP growth (annual %)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 14135,
+      "source_note": "Gross domestic product is the total income earned through the production of goods and services in an economic territory during an accounting period. It can be measured in three different ways: using either the expenditure approach, the income approach, or the production approach. This indicator denotes the percentage change over each previous year of the constant price (base year 2015) series in United States dollars.",
+      "source_organization": "Country official statistics, National Statistical Organizations and/or Central Banks;\nNational Accounts data files, Organisation for Economic Co-operation and Development (OECD);\nStaff estimates, World Bank (WB)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.KD.ZG?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "NY.GDP.PCAP.CD",
+      "indicator_name": "GDP per capita (current US$)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 14547,
+      "source_note": "Gross domestic product is the total income earned through the production of goods and services in an economic territory during an accounting period. It can be measured in three different ways: using either the expenditure approach, the income approach, or the production approach. The core indicator has been divided by the general population to achieve a per capita estimate.This indicator is expressed in current prices, meaning no adjustment has been made to account for price changes over time. This indicator is expressed in United States dollars.",
+      "source_organization": "Country official statistics, National Statistical Organizations and/or Central Banks;\nNational Accounts data files, Organisation for Economic Co-operation and Development (OECD);\nStaff estimates, World Bank (WB)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.CD?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "NY.GDP.PCAP.KD.ZG",
+      "indicator_name": "GDP per capita growth (annual %)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 14135,
+      "source_note": "Gross domestic product is the total income earned through the production of goods and services in an economic territory during an accounting period. It can be measured in three different ways: using either the expenditure approach, the income approach, or the production approach. The core indicator has been divided by the general population to achieve a per capita estimate.This indicator denotes the percentage change over each previous year of the constant price (base year 2015) series in United States dollars.",
+      "source_organization": "Country official statistics, National Statistical Organizations and/or Central Banks;\nNational Accounts data files, Organisation for Economic Co-operation and Development (OECD);\nStaff estimates, World Bank (WB)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.KD.ZG?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "NY.GNP.PCAP.CD",
+      "indicator_name": "GNI per capita, Atlas method (current US$)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 12997,
+      "source_note": "Gross national income is the total income earned by all residents within an economic territory during an accounting period. It is equal to gross domestic product plus earned income receivable from abroad minus earned income payable abroad. This figure is converted to U.S. dollars using the World Bank Atlas method, and divided by the midyear population. GNI, calculated in national currency, is usually converted to U.S. dollars at official exchange rates for comparisons across economies, although an alternative rate is used when the official exchange rate is judged to diverge by an exceptionally large margin from the rate actually applied in international transactions. To smooth fluctuations in prices and exchange rates, a special Atlas method of conversion is used by the World Bank. This applies a conversion factor that averages the exchange rate for a given year and the two preceding years, adjusted for differences in rates of inflation between the country, and through 2000, the G-5 countries (France, Germany, Japan, the United Kingdom, and the United States). From 2001, these countries include the Euro area, Japan, the United Kingdom, and the United States. This indicator is expressed in current prices, meaning no adjustment has been made to account for price changes over time. This indicator is expressed in United States dollars.",
+      "source_organization": "Country official statistics, National Statistical Organizations and/or Central Banks;\nNational Accounts data files, Organisation for Economic Co-operation and Development (OECD);\nStaff estimates, World Bank (WB)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/NY.GNP.PCAP.CD?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SE.ADT.LITR.ZS",
+      "indicator_name": "Literacy rate, adult total (% of people ages 15 and above)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 2665,
+      "source_note": "Adult literacy rate is the percentage of people ages 15 and above who can both read and write with understanding a short simple statement about their everyday life.",
+      "source_organization": "Data API, UN Educational, Scientific and Cultural Organization (UNESCO), uri: https://databrowser.uis.unesco.org/resources, note: The data are obtained through the UIS API.  Detailed documentation is available at: https://api.uis.unesco.org/api/public/documentation/, publisher: UNESCO Institute for Statistics (UIS), type: Excel (bulk file), date accessed: 2026-03-19, date published: 2026-02",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SE.ADT.LITR.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SE.PRM.ENRR",
+      "indicator_name": "School enrollment, primary (% gross)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 9351,
+      "source_note": "Gross enrollment ratio is the ratio of total enrollment, regardless of age, to the population of the age group that officially corresponds to the level of education shown. Primary education provides children with basic reading, writing, and mathematics skills along with an elementary understanding of such subjects as history, geography, natural science, social science, art, and music.",
+      "source_organization": "Data API, UN Educational, Scientific and Cultural Organization (UNESCO), uri: https://databrowser.uis.unesco.org/resources, note: The data are obtained through the UIS API.  Detailed documentation is available at: https://api.uis.unesco.org/api/public/documentation/, publisher: UNESCO Institute for Statistics (UIS), type: Bulk file (csv), date accessed: 2026-03-19, date published: 2026-02",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SE.PRM.ENRR?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SE.XPD.TOTL.GD.ZS",
+      "indicator_name": "Government expenditure on education, total (% of GDP)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 6265,
+      "source_note": "General government expenditure on education (current, capital, and transfers) is expressed as a percentage of GDP. It includes expenditure funded by transfers from international sources to government. General government usually refers to local, regional and central governments.",
+      "source_organization": "Data API, UN Educational, Scientific and Cultural Organization (UNESCO), uri: https://databrowser.uis.unesco.org/resources, note: The data are obtained through the UIS API.  Detailed documentation is available at: https://api.uis.unesco.org/api/public/documentation/, publisher: UNESCO Institute for Statistics (UIS), date accessed: 2026-03-19, date published: 2026-02",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SE.XPD.TOTL.GD.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SH.H2O.BASW.ZS",
+      "indicator_name": "People using at least basic drinking water services (% of population)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 6298,
+      "source_note": "The percentage of people using at least basic water services.  This indicator encompasses both people using basic water services as well as those using safely managed water services.  Basic drinking water services is defined as drinking water from an improved source, provided collection time is not more than 30 minutes for a round trip.  Improved water sources include piped water, boreholes or tubewells, protected dug wells, protected springs, and packaged or delivered water.",
+      "source_organization": "WHO/UNICEF Joint Monitoring Programme (JMP) for Water Supply, Sanitation and Hygiene, World Health Organization (WHO), uri: washdata.org, publisher: WHO/UNICEF Joint Monitoring Programme (JMP) for Water Supply, Sanitation and Hygiene (washdata.org), date accessed: 2025-09-30, date published: 2025-08-25;\nUN Children's Fund (UNICEF), uri: washdata.org, note: WHO/UNICEF Joint Monitoring Programme (JMP) for Water Supply, Sanitation and Hygiene",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SH.H2O.BASW.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SH.STA.BASS.ZS",
+      "indicator_name": "People using at least basic sanitation services (% of population)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 6263,
+      "source_note": "The percentage of people using at least basic sanitation services, that is, improved sanitation facilities that are not shared with other households.  This indicator encompasses both people using basic sanitation services as well as those using safely managed sanitation services.   Improved sanitation facilities include flush/pour flush to piped sewer systems, septic tanks or pit latrines; ventilated improved pit latrines, composting toilets or pit latrines with slabs.",
+      "source_organization": "WHO/UNICEF Joint Monitoring Programme (JMP) for Water Supply, Sanitation and Hygiene, World Health Organization (WHO), uri: washdata.org, publisher: WHO/UNICEF Joint Monitoring Programme (JMP) for Water Supply, Sanitation and Hygiene (washdata.org), date accessed: 2025-09-30, date published: 2025-08-25;\nUN Children's Fund (UNICEF), uri: washdata.org, note: WHO/UNICEF Joint Monitoring Programme (JMP) for Water Supply, Sanitation and Hygiene",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SH.STA.BASS.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SH.XPD.CHEX.GD.ZS",
+      "indicator_name": "Current health expenditure (% of GDP)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 5620,
+      "source_note": "Level of current health expenditure expressed as a percentage of GDP.  Estimates of current health expenditures include healthcare goods and services consumed during each year. This indicator does not include capital health expenditures such as buildings, machinery, IT and stocks of vaccines for emergency or outbreaks.",
+      "source_organization": "Global Health Expenditure Database, updated December 12th, 2025, World Health Organization (WHO), uri: https://apps.who.int/nha/database",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SH.XPD.CHEX.GD.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SI.POV.DDAY",
+      "indicator_name": "Poverty headcount ratio at $3.00 a day (2021 PPP) (% of population)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 2864,
+      "source_note": "Poverty headcount ratio at $3.00 a day is the percentage of the population living on less than $3.00 a day at 2021 purchasing power adjusted prices. As a result of revisions in PPP exchange rates, poverty rates for individual countries cannot be compared with poverty rates reported in earlier editions.",
+      "source_organization": "World Bank, Poverty and Inequality Platform. Data are based on primary household survey data obtained from government statistical agencies and World Bank country departments. Data for high-income economies are mostly from the Luxembourg Income Study database. For more information and methodology, please see http://pip.worldbank.org., World Bank (WB), uri: http://pip.worldbank.org, note: Data are based on primary household survey data obtained from government statistical agencies and World Bank country departments. Data for high-income economies are mostly from the Luxembourg Income Study database.",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SI.POV.DDAY?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SL.UEM.TOTL.ZS",
+      "indicator_name": "Unemployment, total (% of total labor force) (modeled ILO estimate)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 8071,
+      "source_note": "Unemployment refers to the share of the labor force that is without work but available for and seeking employment.",
+      "source_organization": "ILO Modelled Estimates database (ILOEST), International Labour Organization (ILO), uri: https://ilostat.ilo.org/data/bulk/, publisher: ILOSTAT, type: external database, date accessed: January 17, 2026",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SL.UEM.TOTL.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SP.DYN.IMRT.IN",
+      "indicator_name": "Mortality rate, infant (per 1,000 live births)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 13370,
+      "source_note": "Infant mortality rate is the number of infants dying before reaching one year of age, per 1,000 live births in a given year.",
+      "source_organization": "UN Inter-agency Group for Child Mortality Estimation, UN Children's Fund (UNICEF), uri: www.childmortality.org;\nWorld Health Organization (WHO), uri: www.childmortality.org, note: UN Inter-agency Group for Child Mortality Estimation;\nWorld Bank (WB), uri: www.childmortality.org, note: UN Inter-agency Group for Child Mortality Estimation;\nUnited Nations (UN), uri: www.childmortality.org, note: UN Inter-agency Group for Child Mortality Estimation, publisher: UN Population Division",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SP.DYN.IMRT.IN?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SP.DYN.LE00.IN",
+      "indicator_name": "Life expectancy at birth, total (years)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 16931,
+      "source_note": "Life expectancy at birth indicates the number of years a newborn infant would live if prevailing patterns of mortality at the time of its birth were to stay the same throughout its life.",
+      "source_organization": "World Population Prospects, United Nations (UN), uri: UN Population Division;\nStatistical databases and publications from national statistical offices, National Statistical Offices (NSOs), note: Derived from male and female life expectancy at birth from sources such as statistical databases and publications from national statistical offices.;\nDemographic Statistics, Eurostat (ESTAT), note: Derived from male and female life expectancy at birth from sources such as Eurostat: Demographic Statistics.",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SP.DYN.LE00.IN?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SP.DYN.TFRT.IN",
+      "indicator_name": "Fertility rate, total (births per woman)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 16933,
+      "source_note": "Total fertility rate represents the number of children that would be born to a woman if she were to live to the end of her childbearing years and bear children in accordance with age-specific fertility rates of the specified year.",
+      "source_organization": "World Population Prospects, United Nations (UN), publisher: UN Population Division;\nStatistical databases and publications from national statistical offices, National Statistical Offices (NSOs);\nDemographic Statistics, Eurostat (ESTAT)",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SP.DYN.TFRT.IN?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SP.POP.GROW",
+      "indicator_name": "Population growth (annual %)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 16933,
+      "source_note": "Annual population growth rate for year t is the exponential rate of growth of midyear population from year t-1 to t, expressed as a percentage. Population is based on the de facto definition of population, which counts all residents regardless of legal status or citizenship.",
+      "source_organization": "World Population Prospects, United Nations (UN), note: Derived from total population, publisher: UN Population Division;\nStatistical databases and publications from national statistical offices, National Statistical Offices (NSOs), note: Derived from total population;\nDemographic Statistics, Eurostat (ESTAT), note: Derived from total population;\nPopulation and Vital Statistics Report (various years), United Nations (UN), note: Derived from total population, publisher: UN Statistical Division",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SP.POP.GROW?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SP.POP.TOTL",
+      "indicator_name": "Population, total",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 17196,
+      "source_note": "Total population is based on the de facto definition of population, which counts all residents regardless of legal status or citizenship. The values shown are midyear estimates.",
+      "source_organization": "World Population Prospects, United Nations (UN), uri: https://population.un.org/wpp/, publisher: UN Population Division;\nStatistical databases and publications from national statistical offices, National Statistical Offices (NSOs), uri: https://unstats.un.org/home/nso_sites/, publisher: National Statistical Offices;\nEurostat: Demographic Statistics, Eurostat (ESTAT), uri: https://ec.europa.eu/eurostat/data/database?node_code=earn_ses_monthly, publisher: Eurostat;\nPopulation and Vital Statistics Report (various years), United Nations (UN), uri: https://unstats.un.org, publisher: UN Statistics Division",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SP.RUR.TOTL.ZS",
+      "indicator_name": "Rural population (% of total population)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 17226,
+      "source_note": "Rural population refers to people living in rural areas as defined by national statistical offices. It is calculated as the difference between total population and urban population.",
+      "source_organization": "World Urbanization Prospects, United Nations (UN), uri: https://population.un.org/wup/, note: World Bank staff estimates based on the United Nations Population Division's World Urbanization Prospects, National definitions, publisher: UN Population Division;\nStaff estimates, World Bank (WB), note: World Bank staff estimates based on the United Nations Population Division's World Urbanization Prospects, National definitions",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SP.RUR.TOTL.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    },
+    {
+      "indicator_code": "SP.URB.TOTL.IN.ZS",
+      "indicator_name": "Urban population (% of total population)",
+      "api_records_returned": 17556,
+      "independent_observations_accepted": 17226,
+      "source_note": "Urban population refers to people living in urban areas as defined by national statistical offices. The data are collected and smoothed by United Nations Population Division.",
+      "source_organization": "World Urbanization Prospects, United Nations (UN), uri: https://population.un.org/wup/, note: United Nations Population Division's World Urbanization Prospects, National definitions, publisher: UN Population Division",
+      "source_url": "https://api.worldbank.org/v2/country/all/indicator/SP.URB.TOTL.IN.ZS?source=2&date=1960%3A2025&format=json&per_page=20000&page=1",
+      "metadata_available": true
+    }
+  ],
+  "shards": [
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part01.jsonl.gz",
+      "records": 100000,
+      "bytes": 3180791,
+      "sha256": "0e555cffc01ce79e89f9ca68bc0a6866eaa6f0751e3dc37f9d33c6521068bdb7"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part02.jsonl.gz",
+      "records": 100000,
+      "bytes": 3202987,
+      "sha256": "3693e2dcea08ca5449d18af56b8ef835a6bdb6e677b636b74a26bbd059c15fa1"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part03.jsonl.gz",
+      "records": 100000,
+      "bytes": 3341121,
+      "sha256": "db8633488d6e5684401e012cf39986a1adc6996dbdd73d096d0ec3f2590fe0c2"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part04.jsonl.gz",
+      "records": 100000,
+      "bytes": 3449701,
+      "sha256": "8067277951fc68bd08607e65a4c74beae465dd1f578b2347b9b9c8bc0841bf0d"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part05.jsonl.gz",
+      "records": 100000,
+      "bytes": 3102292,
+      "sha256": "dd8fefd0a6a1450942dfd2d1c338230c00e4c97ddba60bc042c9bcba2a272e01"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part06.jsonl.gz",
+      "records": 100000,
+      "bytes": 3450826,
+      "sha256": "20d36244fbefc9415cea429005d8ca455d83b427551d09c3fad450a24b53afae"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part07.jsonl.gz",
+      "records": 100000,
+      "bytes": 3343036,
+      "sha256": "749ead89a21f2b9748e5760dbc8379c4cb1a659407a599ed6356d79081dc4074"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part08.jsonl.gz",
+      "records": 100000,
+      "bytes": 3683170,
+      "sha256": "9b280666cd9d47b69f1c35d205ac16492b6e4e2e027419d9af4f8fe353438d5c"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part09.jsonl.gz",
+      "records": 100000,
+      "bytes": 3680585,
+      "sha256": "87904d26e9ff88c9f4d825722003f8bb0a7271af7e45298c45f12c643f7adbd9"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part10.jsonl.gz",
+      "records": 100000,
+      "bytes": 3479338,
+      "sha256": "6e9b8df100e5a8d2ff45517f672e660a2aff6bf8419a47a78445f281e307bc71"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part11.jsonl.gz",
+      "records": 100000,
+      "bytes": 3435380,
+      "sha256": "c913f80e061a20a80a28e3b8e1c27424bbec91148e63657951946763ffe83c71"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part12.jsonl.gz",
+      "records": 100000,
+      "bytes": 3559023,
+      "sha256": "b7f663fec9debf1647903958db1c8732bce763cbcf76d807571d5c886e29c440"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part13.jsonl.gz",
+      "records": 100000,
+      "bytes": 3779617,
+      "sha256": "563d32863c6a01a8c45dd315b7ef52c505473588fa81a09da05269b04035a1cd"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part14.jsonl.gz",
+      "records": 100000,
+      "bytes": 3621034,
+      "sha256": "56898dfa34e531430946ff5a3a531b6fd774417b30200508ed6bf52d1ed3b8e6"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part15.jsonl.gz",
+      "records": 100000,
+      "bytes": 3620915,
+      "sha256": "00d9a39f0b4665c2703a551d625cf1fc57927205a40b0a524a5285113586da64"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part16.jsonl.gz",
+      "records": 100000,
+      "bytes": 3272176,
+      "sha256": "558fa89140ffc501a5a2783d574c60ad06a7c1632c023d94ec0ab01fbb3344ae"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part17.jsonl.gz",
+      "records": 100000,
+      "bytes": 3231651,
+      "sha256": "b49a14fc7fdcc9f953a6f52754b5a742f5fdab9a3f4b1d134c757576204f4005"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part18.jsonl.gz",
+      "records": 100000,
+      "bytes": 3404904,
+      "sha256": "0ca6d7eda92c6bcb55d4395456a48dbdbba0b9b0f81fdec469601df9b73bb12a"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part19.jsonl.gz",
+      "records": 100000,
+      "bytes": 3176742,
+      "sha256": "88f47b9534bfa6e3bbe4b6fd5e732b6a2cd7caf92e7c1dd8cf5dd1be1ab43364"
+    },
+    {
+      "file": "data/curated/minironin-worldbank-verifiable-2m-v1/minironin-worldbank-verifiable-2m-v1-part20.jsonl.gz",
+      "records": 100000,
+      "bytes": 3490199,
+      "sha256": "ff16af920622a7e2239b176d51f69e0d9d551efd5aaec18a13d4a3c562927a0e"
+    }
+  ],
+  "quality_policy": {
+    "only_non_null_numeric_observations": true,
+    "forecast_status_F_excluded": true,
+    "estimated_observations_labeled": true,
+    "historical_year_preserved": true,
+    "country_and_indicator_codes_preserved": true,
+    "no_causal_claims_added": true,
+    "no_fact_recycling_beyond_template_combinations": true
+  },
+  "training_status": "candidate_only_not_wired_into_training"
+}
