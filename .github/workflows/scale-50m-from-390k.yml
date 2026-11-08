@@ -1,0 +1,91 @@
+name: MINIRONIN — scale 390k to 50M / 1k steps
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/scale-50m-from-390k.yml"
+      - "scripts/train_scale_50m.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: minironin-scale-50m-from-390k
+  cancel-in-progress: false
+
+jobs:
+  scale-and-train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Descargar y verificar checkpoint 390k
+        run: |
+          set -euo pipefail
+          mkdir -p scale-50m/parent
+          curl --fail --location --retry 4 --retry-all-errors \
+            "https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-cycle-1-step-390000/checkpoint-390000.pt" \
+            -o scale-50m/parent/checkpoint-390000.pt
+          echo "bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730  scale-50m/parent/checkpoint-390000.pt" | sha256sum -c -
+
+      - name: Descargar y verificar biblioteca textual HERETIC
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/releases/assets"
+          curl --fail --location --retry 4 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936363" -o heretic-corpus.part-0
+          curl --fail --location --retry 4 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936357" -o heretic-corpus.part-1
+          curl --fail --location --retry 4 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936364" -o parts.sha256
+          curl --fail --location --retry 4 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936362" -o corpus.sha256
+          test "$(stat -c%s heretic-corpus.part-0)" -eq 400000000
+          test "$(stat -c%s heretic-corpus.part-1)" -eq 349837093
+          sha256sum -c parts.sha256
+          cat heretic-corpus.part-0 heretic-corpus.part-1 > heretic-approved-corpus.zip
+          test "$(sha256sum heretic-approved-corpus.zip | awk '{print $1}')" = "$(awk '{print $1}' corpus.sha256)"
+          unzip -tq heretic-approved-corpus.zip
+          mkdir -p data/inherited/heretic-corpus
+          unzip -q heretic-approved-corpus.zip -d data/inherited/heretic-corpus
+
+      - name: Descargar y verificar PRODATPHIL v0.3
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 4 --retry-all-errors \
+            "https://github.com/orbitalronin94/MINIRONIN/releases/download/reasoning-library-prodatphil-v0.3/prodatphil_en_txt_0_3.zip" \
+            -o prodatphil_en_txt_0_3.zip
+          echo "8eacf44101c87772a842fce3d3ab415903f28ba7684f8b33eddba0e2489c13c9  prodatphil_en_txt_0_3.zip" | sha256sum -c -
+          mkdir -p data/inherited/prodatphil-en-v0.3
+          unzip -tq prodatphil_en_txt_0_3.zip
+          unzip -q prodatphil_en_txt_0_3.zip -d data/inherited/prodatphil-en-v0.3
+
+      - name: Instalar dependencias CPU
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy pyarrow
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Transferir checkpoint a 50M y entrenar 1.000 pasos con todos los datasets
+        run: |
+          set -euo pipefail
+          python scripts/train_scale_50m.py \
+            --input-checkpoint scale-50m/parent/checkpoint-390000.pt \
+            --heretic-root data/inherited/heretic-corpus \
+            --books-root data/inherited/prodatphil-en-v0.3 \
+            --output-dir scale-50m/results \
+            --dataset-cache "$RUNNER_TEMP/minironin-50m-full-corpus-cache.pt" \
+            --threads 2
+
+      - name: Publicar informes y checkpoints como artefacto auditable
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-scale-50m-from-390k-\${{ github.run_id }}
+          path: scale-50m/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
