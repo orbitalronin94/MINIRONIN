@@ -1,41 +1,44 @@
 {
   "schema_version": 1,
   "status": "main",
-  "model_id": "minironin-transformer-10m-step-450000",
+  "model_id": "minironin-transformer-10m-step-470000",
   "architecture": "transformer-decoder-only",
   "parameter_count": 9970176,
-  "completed_steps": 450000,
+  "completed_steps": 470000,
   "tokenization": "UTF-8 bytes + EOS (257 active symbols)",
   "checkpoint": {
-    "filename": "checkpoint-450000.pt",
-    "sha256": "9676a8d65c64405d24eb91a5728b06173d317706a8487624623a0956bb147441",
-    "source": "github-actions-artifact",
-    "source_run_id": 42492469174,
-    "source_job_id": 128767633454,
-    "source_artifact_id": 13622088182,
-    "artifact_url": "https://github.com/orbitalronin94/MINIRONIN/actions/runs/42492469174/artifacts/13622088182",
-    "release_asset_status": "not_yet_persisted"
+    "filename": "checkpoint-470000.pt",
+    "sha256": "f2dc0ed548db7565b080c9683e0e939ab2c424af394fc0286bce7168370d1c10",
+    "source": "github-release-asset",
+    "release_tag": "minironin-transformer-10m-step-470000-candidate",
+    "release_id": 438352575,
+    "asset_id": 724431442,
+    "asset_url": "https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-transformer-10m-step-470000-candidate/checkpoint-470000.pt",
+    "report_asset_id": 724431445,
+    "report_sha256": "fef825c9fde5daa3a74a397e65829ea0ce4f34b017a639751aebfcfd230b14fc"
   },
   "previous_main": {
-    "model_id": "minironin-transformer-10m-step-400000",
+    "model_id": "minironin-transformer-10m-step-450000",
     "architecture": "transformer-decoder-only",
     "parameter_count": 9970176,
-    "completed_steps": 400000,
-    "checkpoint_sha256": "f0c40c4a4196f2a87451a34139656ba41e824b3b75e6fc209758ccb7a3642c4b",
+    "completed_steps": 450000,
+    "checkpoint_sha256": "9676a8d65c64405d24eb91a5728b06173d317706a8487624623a0956bb147441",
     "status": "superseded_experimental"
   },
   "holdout": {
     "status": "completed_unscored_raw_generation",
-    "run_id": 42492469174,
-    "job_id": 128767633454,
-    "artifact_id": 13622088182,
+    "run_id": 42497877856,
+    "job_id": 128784036965,
+    "artifact_id": 13624800050,
     "holdout_count": 100,
     "holdout_sha256": "3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535",
     "scoring": "unscored_raw_generation",
-    "identical_answers_vs_400k": 0,
-    "changed_answers_vs_400k": 100,
+    "identical_answers_vs_450k": 0,
+    "changed_answers_vs_450k": 100,
     "generation": "greedy argmax; temperature 0; max_new_tokens 128; 2 threads; eval mode; no KV cache",
-    "interpretation": "All 100 literal generations reached the 128-token limit and none emitted EOS. Outputs contain recognizable behavioral phrases mixed with severe repetition/degeneration. Promotion records the project's experimental behavioral preference, not validated reasoning or conversational quality."
+    "outputs_at_generation_limit": 100,
+    "outputs_emitting_eos": 0,
+    "interpretation": "All 100 literal generations reached the 128-token limit and none emitted EOS. Outputs include recognizable behavioral phrases mixed with severe repetition and degeneration. Promotion is an explicit project decision to use 470k as the experimental MAIN reference; the holdout does not establish improved factual accuracy, reasoning, or conversational quality."
   },
-  "promotion_policy": "Manual project decision. The 450k checkpoint is promoted as experimental MAIN for its recognizable behavioral repertoire. This does not imply validated output quality. The checkpoint currently resides in a GitHub Actions artifact subject to retention; a permanent Release asset remains to be published."
+  "promotion_policy": "Manual project decision. The 470k checkpoint is promoted as experimental MAIN after a paired 100-question holdout against 450k. This is a version-selection decision, not a quality certification."
 }
