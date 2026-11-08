@@ -126,3 +126,15 @@ Se incorpora sources/EL-BUS-DE-DATOS-PERTENECE-AL-AMO.md, edición íntegra de 4
 - Procedencia: MINIRONIN-author-original; el manifiesto del ciclo registra bytes y SHA-256.
 
 La siguiente expansión añadirá investigación externa y fuentes abiertas con su licencia comprobada. Las páginas de AI Now, EFF, OECD y la Comisión Europea se conservan primero como referencias; no se copian íntegramente hasta confirmar sus condiciones de reutilización. Los conjuntos PrivacyQA/OPP-115 y Privacy Law Corpus figuran como no comerciales o con restricciones específicas y quedan fuera de la mezcla general mientras no exista autorización compatible. El dataset FSDK declara CC BY 4.0 y queda como candidato de adquisición tras verificar el ZIP y sus ficheros.
+
+
+## Dataset de personalidad factual verificable — 50k
+
+Se añade `minironin-verifiable-personality-50k-v1`, generado por `scripts/build_verifiable_personality_dataset.py`. Contiene 50.000 ejemplos combinatorios en cinco shards gzip, con 40 fichas factuales institucionales sobre metrología SI, regulación digital europea, portabilidad/interoperabilidad y energía de centros de datos e IA.
+
+- Dominio de entrenamiento: `verifiable`, peso inicial 2% antes de normalizar la mezcla.
+- Cada ejemplo conserva `fact_id`, fuente, URL y periodo/alcance; las proyecciones se etiquetan como proyecciones, no como observaciones.
+- La redacción de preguntas, contextos y respuestas es original; los hechos se parafrasean y atribuyen a BIPM, Comisión Europea, Consejo de la UE e IEA.
+- Los 50.000 registros son combinaciones deterministas de 40 fichas, 10 marcos de pregunta, 10 contextos y 15 remates de humor seco. No representan 50.000 hechos independientes ni 50.000 fuentes.
+- El objetivo es practicar una voz mordaz que primero conserva el dato y sus límites; el sarcasmo no debe alterar el contenido factual.
+- Generación y auditoría aisladas en `.github/workflows/build-verifiable-personality-dataset.yml`; no entrena ni modifica checkpoints.
