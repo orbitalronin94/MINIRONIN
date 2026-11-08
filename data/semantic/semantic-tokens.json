@@ -1,0 +1,406 @@
+{
+  "schema": "minironin-semantic-tokens-v1",
+  "tokens": {
+    "SEM:anarchism": {
+      "concept_id": "anarchism",
+      "label": "Anarquismo",
+      "aliases": [
+        "anarchism",
+        "libertarian socialism"
+      ],
+      "description": ""
+    },
+    "SEM:authority": {
+      "concept_id": "authority",
+      "label": "Autoridad",
+      "aliases": [
+        "authority",
+        "power"
+      ],
+      "description": ""
+    },
+    "SEM:ci_cd": {
+      "concept_id": "ci_cd",
+      "label": "Integración y entrega continuas",
+      "aliases": [
+        "ci/cd",
+        "continuous integration",
+        "continuous delivery"
+      ],
+      "description": ""
+    },
+    "SEM:community": {
+      "concept_id": "community",
+      "label": "Comunidad",
+      "aliases": [
+        "community",
+        "communal life"
+      ],
+      "description": ""
+    },
+    "SEM:cooperation": {
+      "concept_id": "cooperation",
+      "label": "Cooperación",
+      "aliases": [
+        "cooperation",
+        "collective action"
+      ],
+      "description": ""
+    },
+    "SEM:decentralization": {
+      "concept_id": "decentralization",
+      "label": "Descentralización",
+      "aliases": [
+        "decentralization",
+        "distributed organization"
+      ],
+      "description": ""
+    },
+    "SEM:distribution": {
+      "concept_id": "distribution",
+      "label": "Distribución",
+      "aliases": [
+        "distribution",
+        "allocation"
+      ],
+      "description": ""
+    },
+    "SEM:education": {
+      "concept_id": "education",
+      "label": "Educación",
+      "aliases": [
+        "education",
+        "free education"
+      ],
+      "description": ""
+    },
+    "SEM:engineering": {
+      "concept_id": "engineering",
+      "label": "Ingeniería",
+      "aliases": [
+        "engineering",
+        "systems engineering"
+      ],
+      "description": ""
+    },
+    "SEM:epistemology": {
+      "concept_id": "epistemology",
+      "label": "Epistemología",
+      "aliases": [
+        "knowledge",
+        "justification",
+        "epistemology"
+      ],
+      "description": ""
+    },
+    "SEM:evidence": {
+      "concept_id": "evidence",
+      "label": "Evidencia",
+      "aliases": [
+        "evidence",
+        "source",
+        "support"
+      ],
+      "description": ""
+    },
+    "SEM:evolution": {
+      "concept_id": "evolution",
+      "label": "Evolución",
+      "aliases": [
+        "evolution",
+        "evolutionary theory"
+      ],
+      "description": ""
+    },
+    "SEM:exchange": {
+      "concept_id": "exchange",
+      "label": "Intercambio",
+      "aliases": [
+        "exchange",
+        "market"
+      ],
+      "description": ""
+    },
+    "SEM:federalism": {
+      "concept_id": "federalism",
+      "label": "Federalismo",
+      "aliases": [
+        "federalism",
+        "federation"
+      ],
+      "description": ""
+    },
+    "SEM:feminism": {
+      "concept_id": "feminism",
+      "label": "Feminismo",
+      "aliases": [
+        "feminism",
+        "women's emancipation"
+      ],
+      "description": ""
+    },
+    "SEM:freedom": {
+      "concept_id": "freedom",
+      "label": "Libertad",
+      "aliases": [
+        "freedom",
+        "liberty"
+      ],
+      "description": ""
+    },
+    "SEM:gender": {
+      "concept_id": "gender",
+      "label": "Género",
+      "aliases": [
+        "gender",
+        "sex equality"
+      ],
+      "description": ""
+    },
+    "SEM:hierarchy": {
+      "concept_id": "hierarchy",
+      "label": "Jerarquía",
+      "aliases": [
+        "hierarchy",
+        "domination"
+      ],
+      "description": ""
+    },
+    "SEM:justice": {
+      "concept_id": "justice",
+      "label": "Justicia",
+      "aliases": [
+        "justice",
+        "right"
+      ],
+      "description": ""
+    },
+    "SEM:labor": {
+      "concept_id": "labor",
+      "label": "Trabajo",
+      "aliases": [
+        "labor",
+        "labour",
+        "work"
+      ],
+      "description": ""
+    },
+    "SEM:law": {
+      "concept_id": "law",
+      "label": "Derecho y ley",
+      "aliases": [
+        "law",
+        "legal order"
+      ],
+      "description": ""
+    },
+    "SEM:logic": {
+      "concept_id": "logic",
+      "label": "Lógica",
+      "aliases": [
+        "logic",
+        "formal reasoning"
+      ],
+      "description": ""
+    },
+    "SEM:materialism": {
+      "concept_id": "materialism",
+      "label": "Materialismo",
+      "aliases": [
+        "materialism",
+        "material conditions"
+      ],
+      "description": ""
+    },
+    "SEM:method": {
+      "concept_id": "method",
+      "label": "Método",
+      "aliases": [
+        "method",
+        "methodology"
+      ],
+      "description": ""
+    },
+    "SEM:mutual_aid": {
+      "concept_id": "mutual_aid",
+      "label": "Apoyo mutuo",
+      "aliases": [
+        "mutual aid",
+        "solidarity"
+      ],
+      "description": ""
+    },
+    "SEM:mutualism": {
+      "concept_id": "mutualism",
+      "label": "Mutualismo",
+      "aliases": [
+        "mutualism"
+      ],
+      "description": ""
+    },
+    "SEM:nationalism": {
+      "concept_id": "nationalism",
+      "label": "Nacionalismo",
+      "aliases": [
+        "nationalism",
+        "patriotism"
+      ],
+      "description": ""
+    },
+    "SEM:needs": {
+      "concept_id": "needs",
+      "label": "Necesidades",
+      "aliases": [
+        "needs",
+        "well-being"
+      ],
+      "description": ""
+    },
+    "SEM:political_economy": {
+      "concept_id": "political_economy",
+      "label": "Economía política",
+      "aliases": [
+        "political economy",
+        "economics"
+      ],
+      "description": ""
+    },
+    "SEM:possession": {
+      "concept_id": "possession",
+      "label": "Posesión",
+      "aliases": [
+        "possession",
+        "occupancy"
+      ],
+      "description": ""
+    },
+    "SEM:prisons": {
+      "concept_id": "prisons",
+      "label": "Prisiones",
+      "aliases": [
+        "prisons",
+        "penal system"
+      ],
+      "description": ""
+    },
+    "SEM:production": {
+      "concept_id": "production",
+      "label": "Producción",
+      "aliases": [
+        "production",
+        "industry"
+      ],
+      "description": ""
+    },
+    "SEM:property": {
+      "concept_id": "property",
+      "label": "Propiedad",
+      "aliases": [
+        "property",
+        "ownership"
+      ],
+      "description": ""
+    },
+    "SEM:reasoning": {
+      "concept_id": "reasoning",
+      "label": "Razonamiento",
+      "aliases": [
+        "reasoning",
+        "inference",
+        "argument"
+      ],
+      "description": ""
+    },
+    "SEM:reliability": {
+      "concept_id": "reliability",
+      "label": "Fiabilidad",
+      "aliases": [
+        "reliability",
+        "robustness"
+      ],
+      "description": ""
+    },
+    "SEM:religion": {
+      "concept_id": "religion",
+      "label": "Religión",
+      "aliases": [
+        "religion",
+        "theology",
+        "church"
+      ],
+      "description": ""
+    },
+    "SEM:revolution": {
+      "concept_id": "revolution",
+      "label": "Revolución",
+      "aliases": [
+        "revolution",
+        "social transformation"
+      ],
+      "description": ""
+    },
+    "SEM:science": {
+      "concept_id": "science",
+      "label": "Ciencia",
+      "aliases": [
+        "science",
+        "scientific method"
+      ],
+      "description": ""
+    },
+    "SEM:self_organization": {
+      "concept_id": "self_organization",
+      "label": "Autoorganización",
+      "aliases": [
+        "self-organization",
+        "horizontal organization"
+      ],
+      "description": ""
+    },
+    "SEM:sociability": {
+      "concept_id": "sociability",
+      "label": "Sociabilidad",
+      "aliases": [
+        "sociability",
+        "social life"
+      ],
+      "description": ""
+    },
+    "SEM:software_testing": {
+      "concept_id": "software_testing",
+      "label": "Pruebas de software",
+      "aliases": [
+        "testing",
+        "test automation"
+      ],
+      "description": ""
+    },
+    "SEM:solidarity": {
+      "concept_id": "solidarity",
+      "label": "Solidaridad",
+      "aliases": [
+        "solidarity",
+        "mutual support"
+      ],
+      "description": ""
+    },
+    "SEM:state": {
+      "concept_id": "state",
+      "label": "Estado",
+      "aliases": [
+        "state",
+        "government"
+      ],
+      "description": ""
+    },
+    "SEM:systems": {
+      "concept_id": "systems",
+      "label": "Sistemas",
+      "aliases": [
+        "systems",
+        "complex systems"
+      ],
+      "description": ""
+    }
+  }
+}
