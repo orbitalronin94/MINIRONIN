@@ -1,6 +1,6 @@
 # MINIRONIN
 
-**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal actual es un **Mamba de 49.083.392 parámetros**, entrenado durante 1.000 pasos; el objetivo inicial de 10M queda como etapa histórica, no como tamaño del modelo activo.
+**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal promovido vuelve a ser el **Transformer de 9.970.176 parámetros**, checkpoint de 390.000 pasos. La promoción es una decisión experimental de proyecto, no una afirmación de calidad validada; el siguiente ciclo añade 10.000 pasos sobre el corpus completo.
 
 Puede heredar y curar bibliotecas de datos reutilizables de [RONIN-IA](https://github.com/orbitalronin94/RONIN-IA) y [HERETIC-RONIN](https://github.com/orbitalronin94/HERETIC-RONIN). **No** heredará sus procedimientos de entrenamiento, checkpoints, workflows de GitHub Actions, automatizaciones ni sistemas de promoción.
 
@@ -25,13 +25,13 @@ Este registro convierte ejecuciones reales de los repositorios hermanos en lecci
 |---|---:|---:|---|---:|---:|
 | RONIN-IA · Transformer/SwiGLU | 100.900.160 (objetivo verificado) | 500 updates | batch 1 · seq 128 · acumulación 1 · intra/inter-op 2/2 | 383,24 s | 0,766 s/update · 167,0 tokens/s |
 | RONIN-IA · Transformer/SwiGLU | 100.900.160 (objetivo verificado) | 500 updates | batch 1 · seq 128 · acumulación 1 · intra/inter-op 2/4 | 505,14 s | 1,010 s/update · 126,7 tokens/s |
-| MINIRONIN · Mamba selective scan | 49.083.392 | 1.000 updates adicionales | batch 1 · seq 64 · acumulación 1 · 2 threads | ≈1.166,33 s | ≈1,166 s/update · 54,9 tokens/s |
+| MINIRONIN · Mamba selective scan (experimento archivado) | 49.083.392 | 1.000 updates adicionales | batch 1 · seq 64 · acumulación 1 · 2 threads | ≈1.166,33 s | ≈1,166 s/update · 54,9 tokens/s |
 | HERETIC-RONIN · piloto con implementación RONIN | ≈500M (tamaño declarado por el workflow; recuento exacto no extraído del chunk) | 50 updates del optimizador · 2.000 microsteps | microbatch 2 · seq 128 · acumulación 40 · 2 threads | 13.096,33 s | 261,93 s/update · 39,1 tokens/s |
 
 ### Qué permiten concluir estos números
 
 - En las dos ejecuciones RONIN-IA de 100,9M, la configuración con 2 threads inter-op terminó en 383,24 s frente a 505,14 s con 4: **24,1% menos tiempo** y **31,8% más tokens/s**. Es una señal para repetir un experimento controlado, no una prueba causal: son dos ejecuciones distintas y el runner puede variar.
-- MINIRONIN Mamba procesó aproximadamente 64.000 tokens en los 1.000 updates medidos. El checkpoint de 2.000 pasos de esa ejecución dejó métricas y SHA-256 en logs, pero el workflow falló al escribir el manifiesto y **no publicó el artefacto**; por eso no se presenta como checkpoint recuperable.
+- El experimento Mamba 50M procesó aproximadamente 64.000 tokens en sus primeros 1.000 updates. Su comparación posterior 1k vs 2k está documentada en `benchmarks/diary/mamba-50m-2000-vs-1000.json`; el candidato de 2k no se promovió y el Mamba queda archivado.
 - El chunk de HERETIC procesó 512.000 tokens con acumulación 40. Su cifra de 50 updates corresponde a ese chunk, no al piloto completo de 500 updates. El holdout de ese chunk permaneció en 0/120 antes y después: más cómputo no equivale automáticamente a más calidad.
 - Los dos runs RONIN-IA registraron 5/64 antes y después en su screening holdout. Ninguno mejoró en esa medición.
 - No es una clasificación de arquitecturas. Cambian el tamaño, la secuencia, el batch, la acumulación, el código y el estado del runner; los tokens/s son una métrica descriptiva, no una comparación de calidad.
@@ -44,32 +44,57 @@ Los registros estructurados, con run/job IDs, hashes disponibles, configuración
 - **Modelo independiente:** MINIRONIN define su propia arquitectura, contrato de tokenizador, inicialización, objetivo de entrenamiento, evaluación y criterios de publicación.
 - **Sin herencia de workflows:** no se copian workflows ni scripts de entrenamiento de los repositorios hermanos.
 - **Fundamentos de código abierto:** PyTorch es la base inicial. Las dependencias de tokenización y evaluación requieren revisión y fijación de versiones por separado.
-- **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada; el objetivo inicial de 10M quedó superado por la arquitectura Mamba experimental de 49M.
+- **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada. El Transformer de 9.970.176 parámetros vuelve a ser la referencia principal; Mamba 50M queda archivado como experimento y no como modelo activo.
 
-Que un modelo de apenas 49.083.392 parámetros cargue con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico sigue siendo un ejercicio de tacañería computacional de primer orden. Hemos multiplicado por cinco el presupuesto, no las pretensiones: aquí seguimos intentando que medio puñado de millones haga el trabajo de un laboratorio entero. La austeridad ya no es una limitación; es la identidad corporativa.
+Que un modelo de apenas 9.970.176 parámetros cargue con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico sigue siendo un ejercicio de tacañería computacional de primer orden. Hemos vuelto a la dieta de diez millones: menos músculo, más obligación de aprender algo útil.
 
 
 
-## Modelo principal — Mamba 50M
+## Entrenamiento activo — Transformer 10M, 390k → 400k
 
-**MAIN · 1.000 pasos**
+El checkpoint MAIN experimental es el Transformer decoder-only de **9.970.176 parámetros / 390.000 pasos**. El Mamba 50M está archivado y no forma parte de esta línea.
 
-El checkpoint principal seleccionado es **MINIRONIN Mamba 50M**:
+El workflow activo [`train-10m-from-390k-10k.yml`](.github/workflows/train-10m-from-390k-10k.yml) continúa exactamente desde el checkpoint de 390k verificado por SHA-256. Ejecuta **10.000 pasos adicionales** (objetivo 400.000) en un runner estándar gratuito de GitHub Actions, CPU, 2 hilos, batch 2, secuencia 128 y caché de corpus durante la ejecución. La planificación cosenoidal conserva el horizonte de 60.000 pasos usado por el entrenamiento largo registrado; este trabajo ejecuta solo el primer segmento de 10k.
+
+El corpus cargado incluye todo el texto compatible de HERETIC-RONIN y PRODATPHIL v0.3, más los conjuntos curados actuales de identidad, conducta, ingeniería, personalidad, abstención y lexicón. El manifiesto informa documentos por dominio, mezcla, exclusiones y hashes. Los generadores conductuales se ejecutan y verifican antes de cargar el corpus.
+
+**Estado del ciclo:** el checkpoint 400k se publicará como candidato, no como nuevo MAIN. Después se exige holdout pareado de 100 preguntas frente al 390k, con los mismos IDs y hashes. La pérdida de validación no sustituye la evaluación de respuestas.
+
+- Baseline MAIN: [release 390k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-390000-main).
+- Registro canónico: [`models/MAIN.json`](models/MAIN.json).
+- Workflow y ejecución: enlace a Actions en cuanto se dispare tras el merge.
+
+---
+
+## Experimento Mamba 50M — archivado
+
+El experimento Mamba de **49.083.392 parámetros** deja de ser el modelo principal y se conserva como rama experimental. Su checkpoint de 1.000 pasos se promovió temporalmente, pero la evaluación posterior no justificó mantenerlo como referencia activa.
+
 - Arquitectura: `mamba-selective-scan-v1`.
 - Parámetros: **49.083.392**.
-- Entrenamiento: **1.000 pasos** sobre la biblioteca textual aprobada.
-- Checkpoint SHA-256: `d4e94c6b2711810bc07ce91b9fdcf4cfd50466a6ee9eafe70b64f023f211d5d7`.
-- Procedencia: artefacto de Actions [run 42465812618](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42465812618).
-- Registro de modelo: [models/MAIN.json](models/MAIN.json).
-- Holdout pareado: [diario Mamba 50M / 1.000 pasos](benchmarks/diary/mamba-50m-1000.json), 40 preguntas, mismo holdout SHA-256.
+- Checkpoint de 1.000 pasos: SHA-256 `d4e94c6b2711810bc07ce91b9fdcf4cfd50466a6ee9eafe70b64f023f211d5d7`.
+- Comparación 1k vs 2k: [diario de holdout de 100 preguntas](benchmarks/diary/mamba-50m-2000-vs-1000.json).
+- Resultado de generación: 100/100 respuestas alcanzaron el límite de 128 bytes y ninguna emitió EOS. El checkpoint de 2k produjo bytes UTF-8 inválidos en 55/100 respuestas, frente a 44/100 en el baseline de 1k. El 96% de respuestas distintas no es una métrica de mejora.
 
-La promoción es una **decisión explícita de proyecto**, no una afirmación de que el modelo ya razone bien. El holdout bruto registrado es deficiente: abundan los bytes de reemplazo y las respuestas alcanzan el límite de generación. La puntuación semántica permanece sin evaluar. Se conserva el resultado para que el estado principal no se confunda con una validación de calidad.
+**Estado:** archivado como experimento fallido de calidad de generación; no se borra ni se presenta como modelo principal. La promoción del Transformer de 390k es una decisión explícita para retomar la línea de 10M.
 
-Los bloques Mamba se inicializaron desde cero; se transfirieron los embeddings del Transformer anterior. Por tanto, no es correcto describirlo como el Transformer de 390k simplemente ampliado.
+## Modelo principal promovido — Transformer 10M (390.000 pasos)
 
-## Archivo histórico: el Transformer de 390.000 pasos
+**MAIN · baseline experimental**
 
-El antiguo Transformer de **9.970.176 parámetros** queda retirado como modelo principal y se conserva como referencia experimental. Sus 390.000 pasos no consiguieron convertir el pequeño vocabulario de bytes en respuestas utilizables. El diario de 40 preguntas dejó algunas salidas que merecen un lugar en el museo:
+El modelo principal vuelve a ser el Transformer decoder-only de **9.970.176 parámetros**, checkpoint de **390.000 pasos**:
+
+- Arquitectura: `transformer-decoder-only`, configuración `configs/model-10m.json`.
+- Parámetros: **9.970.176**.
+- Tokenización de entrenamiento: bytes UTF-8 + EOS, 257 símbolos activos.
+- Checkpoint SHA-256: `bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730`.
+- Release fuente: [minironin-cycle-1-step-390000](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-cycle-1-step-390000).
+- Release de promoción: [minironin-transformer-10m-step-390000-main](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-390000-main).
+- Registro canónico: [models/MAIN.json](models/MAIN.json).
+
+La promoción restaura este checkpoint como **base de trabajo**, no certifica que sus respuestas sean buenas. El holdout previo del Transformer mostró salidas problemáticas; por eso el siguiente experimento es una continuación controlada de **10.000 pasos** con todo el corpus disponible y después una evaluación pareada. No se confunde pérdida de validación con calidad conversacional.
+
+Sus 390.000 pasos dejaron algunas salidas que merecen un lugar en el museo:
 
 | Pregunta | Respuesta literal del checkpoint |
 |---|---|
@@ -82,17 +107,15 @@ El antiguo Transformer de **9.970.176 parámetros** queda retirado como modelo p
 
 La Unión Europea apareció espontáneamente en una suma aritmética, en una explicación del cielo azul y, aparentemente, como respuesta universal a preguntas difíciles. No se ha podido determinar si era una teoría política, un sesgo del tokenizador o una candidatura para la Comisión.
 
-**Estado:** retirado, no se borra. Sus checkpoints y el diario se mantienen como evidencia histórica del experimento. El nuevo Mamba hereda el puesto, no la corona de laureles.
+**Estado:** promovido por decisión del proyecto como baseline experimental de 10M; pendiente de nueva evaluación independiente. Se conservan sus releases y diarios históricos.
 
-## Primer modelo de referencia
+## Arquitectura base de 10M
 
-<badge color="success">Implementación inicial</badge>
-
-La implementación inicial de un Transformer decoder-only tiene **9.970.176 parámetros entrenables**:
+La arquitectura Transformer decoder-only tiene **9.970.176 parámetros entrenables**:
 - 6 bloques Transformer, anchura 256.
 - 8 cabezas de atención (32 dimensiones por cabeza).
 - Capa MLP de anchura 768.
-- Vocabulario de 23.000 tokens.
+- Matriz de embeddings dimensionada para 23.000 tokens en la configuración arquitectónica original; el checkpoint byte-level entrenado activa 257 símbolos (bytes UTF-8 + EOS).
 - 512 embeddings posicionales aprendidos.
 - Embeddings de entrada y salida compartidos.
 - Pre-LayerNorm, atención causal y MLP GELU.
@@ -176,12 +199,12 @@ Además, ya hay **50 lecciones de ingeniería en castellano** curadas manualment
 - Reproducir el modelo de 95M/100M de RONIN-IA o el estudiante de 500M de HERETIC-RONIN.
 - Reutilizar recetas de entrenamiento o YAML de workflows de los repositorios hermanos.
 - Afirmar que el volumen del corpus produce capacidad por sí solo.
-- Promocionar checkpoints sin evaluación independiente.
+- No presentar una promoción administrativa como validación de calidad. La restauración del checkpoint 390k es una decisión explícita para recuperar una base experimental; el candidato de 400k seguirá requiriendo holdout independiente.
 
 
 ### Entrenamiento largo con biblioteca textual completa
 
-El torneo inicial de semillas fue una criba muestreada. El entrenamiento posterior de 200.000 pasos utiliza un cargador independiente que recorre todo HERETIC recursivamente, sin límites de bytes ni documentos por fuente, procesa formatos textuales compatibles y fragmenta documentos largos sin truncarlos. También incorpora los textos completos de PRODATPHIL. El manifiesto de cada checkpoint incluye inventario, hashes, documentos por dominio y exclusiones; el cache se reutiliza entre los 20 segmentos. Audio, imagen, vídeo y formatos binarios no se contabilizan como texto entrenado, aunque las transcripciones textuales compatibles sí se incorporan. Véase [protocolo y auditoría del entrenamiento largo](docs/SEED_TOURNAMENT.md#entrenamiento-largo-del-ganador-uso-completo-de-la-biblioteca).
+El torneo inicial de semillas fue una criba muestreada. Los ciclos largos históricos (hasta 200.000 pasos acumulados) utilizaron un cargador independiente que recorre todo HERETIC recursivamente, sin límites de bytes ni documentos por fuente, procesa formatos textuales compatibles y fragmenta documentos largos sin truncarlos. También incorpora los textos completos de PRODATPHIL. El manifiesto de cada checkpoint incluye inventario, hashes, documentos por dominio y exclusiones; el cache se reutiliza entre los 20 segmentos. Audio, imagen, vídeo y formatos binarios no se contabilizan como texto entrenado, aunque las transcripciones textuales compatibles sí se incorporan. Véase [protocolo y auditoría del entrenamiento largo](docs/SEED_TOURNAMENT.md#entrenamiento-largo-del-ganador-uso-completo-de-la-biblioteca).
 
 
 ## Evaluación de inferencia por checkpoint

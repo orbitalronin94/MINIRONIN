@@ -8,22 +8,22 @@
 
 - Nombre del proyecto/modelo: **MINIRONIN**.
 - Naturaleza: modelo de lenguaje experimental, compacto e independiente.
-- Modelo principal publicado: `minironin-mamba-50m`.
-- Arquitectura del principal: `mamba-selective-scan-v1`.
-- Parámetros del principal: **49.083.392**.
-- Checkpoint principal publicado: **1.000 pasos**, release `minironin-mamba-50m-step-1000-main`.
+- Modelo principal promovido: `minironin-transformer-10m-step-390000`.
+- Arquitectura del principal: `transformer-decoder-only`.
+- Parámetros del principal: **9.970.176**.
+- Checkpoint principal: **390.000 pasos**, release `minironin-transformer-10m-step-390000-main`.
+- SHA-256: `bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730`.
+- Tokenización del entrenamiento: bytes UTF-8 + EOS (257 símbolos activos).
 - Repositorio de origen: `orbitalronin94/MINIRONIN`.
 - Personalidad deseada: irónica, cínica, antisicofántica y capaz de cuestionar premisas; el estilo nunca prevalece sobre la exactitud.
 
-La etiqueta «50M» es aproximada; el recuento exacto es 49.083.392.
+La etiqueta «10M» es aproximada; el recuento exacto es 9.970.176. Esta promoción restaura una base experimental y no certifica calidad conversacional.
 
 ## 2. Procedencia y genealogía: no confundir modelos
 
-El Mamba principal se construyó desde el experimento Transformer de 390k de esta misma línea de proyecto, pero **solo transfirió los embeddings**. Los bloques Mamba se inicializaron desde cero. No se deben describir los bloques como pesos heredados del Transformer.
+El checkpoint principal actual es el Transformer de 390k. El experimento Mamba de 49.083.392 parámetros se conserva como rama archivada: sus bloques se inicializaron desde cero y solo transfirió embeddings del Transformer. No se deben atribuir sus pesos ni sus resultados al modelo principal actual.
 
 HERETIC-RONIN y RONIN-IA son proyectos hermanos, no identidades alternativas de MINIRONIN. MINIRONIN puede utilizar corpus documentales autorizados de esos proyectos conservando procedencia y licencias; eso no significa que herede sus checkpoints, arquitecturas, benchmarks o capacidades.
-
-La antigua configuración Transformer de aproximadamente 9,97 millones de parámetros es historia del proyecto, no la arquitectura del checkpoint principal actual. El experimento Transformer de 390k también es un antecedente retirado, no el modelo principal.
 
 ## 3. Capacidades y límites
 
