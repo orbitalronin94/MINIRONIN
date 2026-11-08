@@ -84,7 +84,7 @@ jobs:
       - name: Publicar informes y checkpoints como artefacto auditable
         uses: actions/upload-artifact@v6
         with:
-          name: minironin-scale-50m-from-390k-\${{ github.run_id }}
+          name: minironin-scale-50m-from-390k
           path: scale-50m/
           if-no-files-found: error
           compression-level: 0
