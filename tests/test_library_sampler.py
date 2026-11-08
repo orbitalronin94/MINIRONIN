@@ -37,8 +37,23 @@ class LibrarySamplerTests(unittest.TestCase):
         self.assertTrue(all(len(row) == 17 for row in rows))
         self.assertEqual(len(provenance), 4)
         report = sampler.report()
-        self.assertEqual(report["total_sampled_tokens"], 64)
+        self.assertEqual(report["total_sampled_target_tokens"], 64)
         self.assertGreaterEqual(sum(x["unique_documents"] for x in report["libraries"].values()), 1)
+
+    def test_document_cycle_covers_every_document_before_repeating(self):
+        sampler = LibrarySampler(docs(), {"heretic": 1.0}, seed=11)
+        ids = [sampler.sample_window(8)[1]["document_id"] for _ in range(2)]
+        self.assertEqual(set(ids), {"h1", "h2"})
+
+    def test_stable_document_identity_is_required(self):
+        row = {"library_id": "heretic", "split": "train", "token_ids": [1, 2, 3]}
+        with self.assertRaisesRegex(ValueError, "id/sha256"):
+            LibrarySampler([row], {"heretic": 1.0})
+
+    def test_duplicate_document_identity_is_rejected(self):
+        rows = docs() + [dict(docs()[0])]
+        with self.assertRaisesRegex(ValueError, "Duplicate document"):
+            LibrarySampler(rows, {"heretic": 1.0, "anarchist": 1.0})
 
 
 if __name__ == "__main__":
