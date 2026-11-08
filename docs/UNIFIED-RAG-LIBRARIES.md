@@ -51,9 +51,9 @@ El índice se construirá desde el registro de herencia y los manifiestos reales
 
 - HERETIC-RONIN, conservando las etiquetas de corpus sintético, educativo, literatura, ciencia y demás procedencias.
 - PRODATPHIL y otras obras/libros admitidos.
-- Bibliotecas documentales de RONIN-IA que estén dentro del alcance autorizado y reconciliadas con HERETIC.
+- Solo particiones train scoped dentro de `RONIN-IA/data/datasets/admitted/`, más `rights_registry/` para procedencia y licencias. Se excluyen expresamente `candidates/`, `quarantine/`, `reviews/` y `libraries/` (catálogo objetivo de 64 bibliotecas); G-0 global sigue FAIL y una admisión scoped no equivale a una aprobación global.
 - Papers propios y documentos de investigación con permiso de uso interno.
-- Fuentes factuales estructuradas, por ejemplo World Development Indicators, conservando país, indicador, año, unidad y estado de estimación.
+- Fuentes factuales estructuradas, por ejemplo World Development Indicators, cuando sus shards/manifiestos estén materializados y auditados; conservar país, indicador, año, unidad y estado de estimación. Actualmente no se incluyen shards World Bank porque no están persistidos en esta rama.
 - Datasets conductuales, abstención, personalidad, lexicón y casos de ingeniería de MINIRONIN.
 - Documentación técnica y bibliotecas futuras que superen el registro de admisión.
 
@@ -159,6 +159,18 @@ La calidad se puntúa a ciegas. Ni el score coseno ni una respuesta distinta cue
 7. **Runtime:** empaquetado descargable/versionado del índice; actualizar bibliotecas sin tocar los pesos.
 
 No lanzar entrenamientos como parte de estas fases. La construcción del índice tampoco debe fusionar automáticamente ningún checkpoint ni modificar el holdout.
+
+## Implementación disponible en la rama feat/checkpoint-bridge
+
+- Registro de fuentes: `data/rag/sources.json`.
+- Ingesta SQLite: `scripts/build_rag_index.py`; FTS5/BM25 + embeddings E5 multilingües opcionales.
+- Recuperación: `scripts/rag_retrieve.py`; RRF y búsqueda vectorial por lotes con memoria acotada.
+- Workflow: `.github/workflows/build-rag-index.yml`; artefacto `minironin-complete-rag-index` con SQLite y manifiesto SHA-256.
+- Formatos: Markdown, TXT, RST, JSON/JSONL, JSONL.GZ, CSV/TSV, HTML/XML, PDF y DOCX.
+- Metadatos: SHA-256, ruta, línea/página, dominio, idioma, etiqueta epistemológica, licencia y procedencias alternativas; los registros duplicados conservan todas sus ubicaciones.
+- Exclusiones: particiones de evaluación, benchmarks, candidatos, cuarentena, checkpoints, secretos y logs brutos.
+
+El workflow incorpora el artefacto HERETIC preaprobado de run 42382055693 y solo las carpetas admitidas/rights_registry de RONIN-IA. Materializa los ocho datasets conductuales y el lexicón antes de indexar. Los datos World Bank y el generador de 10M conversaciones siguen pendientes de materialización; no se simula su presencia.
 
 ## Relación con el benchmark existente
 
