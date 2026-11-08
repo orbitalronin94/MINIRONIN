@@ -223,6 +223,28 @@ def load_curated_jsonl(path: Path, domain: str, store, source: str) -> int:
     return len(store["docs"]) - before
 
 
+def verify_verifiable_dataset() -> tuple[dict, str]:
+    manifest_path = ROOT / "data/curated/minironin-verifiable-personality-50k-v1.manifest.json"
+    if not manifest_path.is_file():
+        raise SystemExit("Verifiable personality dataset manifest is missing")
+    raw_manifest = manifest_path.read_bytes()
+    manifest = json.loads(raw_manifest)
+    if manifest.get("records") != 50000 or manifest.get("unique_rows") != 50000:
+        raise SystemExit("Verifiable personality manifest does not describe 50000 unique records")
+    total = 0
+    for item in manifest.get("files", []):
+        path = ROOT / item["file"]
+        if not path.is_file():
+            raise SystemExit("Missing verifiable dataset shard: " + str(path))
+        raw = path.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != item.get("sha256"):
+            raise SystemExit("SHA-256 mismatch for verifiable dataset shard: " + str(path))
+        total += int(item.get("records", 0))
+    if total != 50000 or len(manifest.get("files", [])) != 5:
+        raise SystemExit(f"Verifiable dataset shard count mismatch: {total}")
+    return manifest, hashlib.sha256(raw_manifest).hexdigest()
+
+
 def split_documents(documents: list[dict]):
     grouped = defaultdict(list)
     for doc in documents:
@@ -327,6 +349,7 @@ def main():
     if args.seeds < 1 or args.steps < 1 or args.batch_size < 1:
         parser.error("seeds, steps and batch-size must be positive")
     # Materialize deterministic behavioral datasets before constructing the corpus.
+    verifiable_manifest, verifiable_manifest_sha = verify_verifiable_dataset()
     build_abstention_datasets()
     build_personality_datasets()
     build_lexicon_dataset()
@@ -411,6 +434,9 @@ def main():
         "heretic_source_files": source_audit,
         "book_files": book_audit,
         "curated_behavior_examples_loaded": behavior_count,
+        "verifiable_personality_examples_loaded": verifiable_count,
+        "verifiable_dataset_manifest_sha256": verifiable_manifest_sha,
+        "verifiable_dataset_manifest": verifiable_manifest,
         "documents_total": len(store["docs"]),
         "documents_by_domain": {d: len([x for x in store["docs"] if x["domain"] == d]) for d in MIX_WEIGHTS},
         "train_documents_by_domain": {d: len(train_docs.get(d, [])) for d in MIX_WEIGHTS},
