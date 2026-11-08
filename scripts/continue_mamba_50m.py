@@ -384,7 +384,7 @@ def main():
                 "elapsed_seconds": round(time.perf_counter() - started, 2),
             }), flush=True)
 
-        if local_step % 250 == 0:
+        if local_step % 250 == 0 and local_step < args.steps:
             model.eval()
             val_loss, val_domains = evaluate(model, validation, torch.device("cpu"))
             metrics = {
