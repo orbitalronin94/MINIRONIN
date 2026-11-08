@@ -51,8 +51,11 @@ def read(path):
        meta={k:obj[k] for k in keys if k in obj and isinstance(obj[k],(str,int,float,bool))}
        yield x,f"jsonl:{n}",meta
   elif ext==".json":
-   x=clean(extract(json.loads(path.read_text(encoding="utf-8",errors="replace"))))
-   if x:yield x,"json",{}
+   obj=json.loads(path.read_text(encoding="utf-8",errors="replace"));x=clean(extract(obj))
+   if x:
+    keys=("source","source_file","license","licencia","url","domain","dominio","tag","fact_id","reference","language","idioma","epistemic","tipo","uso","confianza","curacion","year","unit","country","indicator","doi","author","fuente","run_id","job_id")
+    meta={k:obj[k] for k in keys if k in obj and isinstance(obj[k],(str,int,float,bool))}
+    yield x,"json",meta
   elif ext in {".csv",".tsv"}:
    with path.open(encoding="utf-8",errors="replace",newline="") as f:
     for n,row in enumerate(csv.DictReader(f,delimiter="\t" if ext==".tsv" else ","),1):
