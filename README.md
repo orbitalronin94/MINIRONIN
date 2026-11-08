@@ -268,3 +268,10 @@ Se ha añadido un benchmark independiente para comparar el mismo checkpoint MINI
 Se incorpora una biblioteca clásica independiente, inicialmente con Proudhon, Bakunin y Kropotkin, en el dominio de entrenamiento anarchist con peso relativo controlado del 0,025. Las obras candidatas de Kropotkin y Emma Goldman quedan registradas, pero no se descargan hasta cerrar derechos de traducción y edición en España. Cada texto lleva procedencia, SHA-256 y etiquetas SEM:*.
 
 También se genera un grafo semántico entre MINIRONIN, HERETIC, PRODATPHIL, RONIN Papers y la biblioteca anarquista: bibliotecas, obras, conceptos compartidos, relaciones y puentes entre dominios. Las etiquetas semánticas son anotaciones textuales y claves del grafo, no nuevos IDs del tokenizador: el modelo sigue usando 257 símbolos byte-level. Diseño, derechos y límites: docs/ANARCHIST_LIBRARY.md; registro: data/anarchist/SOURCES.jsonl; grafo: data/semantic/LIBRARY_REGISTRY.json.
+
+
+## Bibliotecas clásicas ampliadas y grafo semántico
+
+El corpus incorpora un segundo catálogo curado de 17 obras candidatas en ciencia, economía política, filosofía, feminismo, historia social y literatura. La adquisición solo descarga las 12 fuentes originales que pasan el filtro territorial preliminar; las traducciones quedan bloqueadas para revisión de derechos. Consulta [la política y el inventario de bibliotecas](docs/ANARCHIST_LIBRARY.md), [el registro de fuentes](data/classics/SOURCES.json) y [el registro semántico](data/semantic/LIBRARY_REGISTRY.json).
+
+La biblioteca de clásicos se entrena en un dominio separado (`classics`, peso inicial 0,025), con manifiesto y hashes propios. El grafo relaciona seis bibliotecas y 68 conceptos mediante conexiones tipadas: solapamientos, puentes metodológicos, tensiones históricas y analogías no equivalentes. Las etiquetas `SEM:*` siguen siendo anotaciones textuales, no IDs nuevos del tokenizador. La ampliación no promociona checkpoints; requiere adquisición real, CI y evaluación por dominio/holdout.
