@@ -106,7 +106,7 @@ def main():
   vec=None
   if embedder:
    import numpy as np
-   vec=embedder.encode([ecfg["document_prefix"]+r[3] for r in pending],batch_size=a.batch_size,convert_to_numpy=True,normalize_embeddings=True,show_progress_bar=False)
+   vec=embedder.encode([ecfg["document_prefix"]+r[4] for r in pending],batch_size=a.batch_size,convert_to_numpy=True,normalize_embeddings=True,show_progress_bar=False)
   for i,(cid,did,ix,txt,th) in enumerate(pending):
    blob=vec[i].astype("float16").tobytes() if vec is not None else None
    db.execute("INSERT INTO chunks VALUES(?,?,?,?,?,?,?)",(cid,did,ix,txt,th,blob,ecfg["model"] if blob is not None else None))
