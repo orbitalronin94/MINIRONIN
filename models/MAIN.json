@@ -25,11 +25,11 @@
   },
   "holdout": {
     "file": "benchmarks/diary/mamba-50m-1000.json",
-    "sha256": "2a1c69e349314bcaaff59f71651130cb6af72f00",
     "questions": 40,
     "holdout_sha256": "22dce842390cd2075a214cb01e69091baa82b990dfd8a9657c1f1b787d21b06d",
     "scoring": "unscored_raw_generation",
-    "interpretation": "Promotion records the project's selected main checkpoint; it is not a claim of demonstrated holdout quality. The recorded raw holdout is poor and requires further work."
+    "interpretation": "Promotion records the project's selected main checkpoint; it is not a claim of demonstrated holdout quality. The recorded raw holdout is poor and requires further work.",
+    "git_blob_sha": "2a1c69e349314bcaaff59f71651130cb6af72f00"
   },
   "initialization_note": "Mamba blocks were initialized from scratch; embeddings were transferred from the 390k Transformer parent.",
   "promotion_policy": "Manual project decision. No automatic promotion is enabled."
