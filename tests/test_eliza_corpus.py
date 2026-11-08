@@ -36,11 +36,9 @@ def test_eliza_requests_use_weighted_five_family_mix_and_keep_provenance(tmp_pat
     assert {row["strategy"] for row in rows} == {
         "mirror", "expert", "friction", "abstain", "factual"
     }
-    assert 17 <= summary["strategy_percentages"]["mirror"] <= 23
-    assert 27 <= summary["strategy_percentages"]["expert"] <= 33
-    assert 22 <= summary["strategy_percentages"]["friction"] <= 28
-    assert 12 <= summary["strategy_percentages"]["abstain"] <= 18
-    assert 7 <= summary["strategy_percentages"]["factual"] <= 13
+    assert summary["strategy_counts"] == {
+        "mirror": 400, "expert": 600, "friction": 500, "abstain": 300, "factual": 200
+    }
     assert all(row["source"]["license"] == "CC0-1.0" for row in rows)
     assert all(row["source"]["file_sha256"] for row in rows)
     assert all(row["source"]["record_sha256"] for row in rows)
