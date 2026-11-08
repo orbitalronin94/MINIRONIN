@@ -37,6 +37,33 @@ class CausalSelfAttention(nn.Module):
         y = y.transpose(1, 2).contiguous().view(batch, length, width)
         return self.resid_dropout(self.proj(y))
 
+    def forward_cached(
+        self, x: torch.Tensor, past_key_value: tuple[torch.Tensor, torch.Tensor] | None = None
+    ) -> tuple[torch.Tensor, tuple[torch.Tensor, torch.Tensor]]:
+        """Process new tokens and return the concatenated per-layer KV cache.
+
+        All cached keys precede or include the current query positions, so
+        non-causal SDPA is correct here; applying is_causal=True to a one-token
+        query would use upper-left alignment and mask valid past keys.
+        """
+        batch, length, width = x.shape
+        q, k, v = self.qkv(x).chunk(3, dim=-1)
+        shape = (batch, length, self.n_heads, self.head_dim)
+        q = q.view(shape).transpose(1, 2)
+        k = k.view(shape).transpose(1, 2)
+        v = v.view(shape).transpose(1, 2)
+        if past_key_value is not None:
+            past_k, past_v = past_key_value
+            k = torch.cat((past_k, k), dim=-2)
+            v = torch.cat((past_v, v), dim=-2)
+        y = F.scaled_dot_product_attention(
+            q, k, v, attn_mask=None,
+            dropout_p=self.attn_dropout if self.training else 0.0,
+            is_causal=False,
+        )
+        y = y.transpose(1, 2).contiguous().view(batch, length, width)
+        return self.resid_dropout(self.proj(y)), (k, v)
+
 
 class MLP(nn.Module):
     def __init__(self, config: ModelConfig):
@@ -61,6 +88,15 @@ class TransformerBlock(nn.Module):
         x = x + self.attn(self.ln_1(x))
         x = x + self.mlp(self.ln_2(x))
         return x
+
+    def forward_cached(
+        self, x: torch.Tensor,
+        past_key_value: tuple[torch.Tensor, torch.Tensor] | None = None,
+    ) -> tuple[torch.Tensor, tuple[torch.Tensor, torch.Tensor]]:
+        attention, present = self.attn.forward_cached(self.ln_1(x), past_key_value)
+        x = x + attention
+        x = x + self.mlp(self.ln_2(x))
+        return x, present
 
 
 class MiniRoninLM(nn.Module):
@@ -132,6 +168,35 @@ class MiniRoninLM(nn.Module):
                 labels[:, 1:].contiguous().view(-1),
             )
         return logits, loss
+
+    def forward_cached(
+        self,
+        input_ids: torch.Tensor,
+        past_key_values: tuple[tuple[torch.Tensor, torch.Tensor], ...] | None = None,
+    ) -> tuple[torch.Tensor, tuple[tuple[torch.Tensor, torch.Tensor], ...]]:
+        """Incremental inference with learned absolute positions and per-layer KV cache.
+
+        The caller must reset the cache when its sliding context window advances.
+        This preserves the exact positional semantics of the uncached forward path.
+        """
+        if input_ids.ndim != 2:
+            raise ValueError("input_ids must have shape [batch, sequence]")
+        batch, length = input_ids.shape
+        past_length = 0 if past_key_values is None else past_key_values[0][0].shape[-2]
+        if past_key_values is not None and len(past_key_values) != len(self.blocks):
+            raise ValueError("KV cache layer count does not match model")
+        if past_length + length > self.config.context_length:
+            raise ValueError("KV cache exceeds context; reset it and pass the sliding window")
+        positions = torch.arange(past_length, past_length + length, device=input_ids.device).unsqueeze(0)
+        x = self.token_embedding(input_ids) + self.position_embedding(positions)
+        x = self.embedding_dropout(x)
+        presents = []
+        for index, block in enumerate(self.blocks):
+            past = None if past_key_values is None else past_key_values[index]
+            x, present = block.forward_cached(x, past)
+            presents.append(present)
+        logits = F.linear(self.final_norm(x), self.lm_head.weight[:257])
+        return logits, tuple(presents)
 
     def parameter_count(self, trainable_only: bool = True) -> int:
         return sum(
