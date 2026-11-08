@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "description": "Initial library-level exposure targets derived by aggregating the existing domain MIX_WEIGHTS. Recalculate after the 450k checkpoint and BPE-4096 migration using actual token counts.",
+  "selection": "hierarchical_library_then_document_then_window",
+  "seed": 20261108,
+  "minimum_library_share": 0.01,
+  "maximum_library_share": 0.60,
+  "weights": {
+    "heretic": 0.5288,
+    "prodatphil": 0.1512,
+    "anarchist": 0.0230,
+    "classics": 0.0230,
+    "minironin_behavior": 0.2740
+  },
+  "notes": [
+    "Targets are starting hypotheses, not measured corpus proportions.",
+    "The existing domain weights sum to 1.085; the values above are normalized family aggregates, rounded to four decimals.",
+    "The sampler renormalizes over libraries actually present in the training split only.",
+    "Validation and holdout documents must never be passed to the sampler."
+  ]
+}
