@@ -59,8 +59,9 @@ def init_cache(model: MambaRoninLM):
         dtype = block.in_proj.weight.dtype
         conv = torch.zeros(1, block.d_inner, block.conv1d.kernel_size[0] - 1,
                            device=device, dtype=dtype)
-        ssm = torch.zeros(1, block.d_inner, block.d_state, device=device, dtype=dtype)
-        cache.append((conv, ssm))
+        prefix = torch.ones(1, block.d_inner, block.d_state, device=device, dtype=dtype)
+        accumulator = torch.zeros(1, block.d_inner, block.d_state, device=device, dtype=dtype)
+        cache.append((conv, prefix, accumulator))
     return cache
 
 
@@ -68,7 +69,7 @@ def step_token(model: MambaRoninLM, token: torch.Tensor, cache):
     """Consume exactly one token and return its logits plus updated recurrent state."""
     x = model.token_embedding(token)
     updated = []
-    for block, (conv_cache, ssm_cache) in zip(model.blocks, cache):
+    for block, (conv_cache, prefix_cache, accumulator_cache) in zip(model.blocks, cache):
         residual = x
         normalized = block.norm(x)
         xz = block.in_proj(normalized)
@@ -93,12 +94,16 @@ def step_token(model: MambaRoninLM, token: torch.Tensor, cache):
         drive = (dt.squeeze(1).unsqueeze(-1) *
                  B.squeeze(1).unsqueeze(1) *
                  x_branch.squeeze(1).unsqueeze(-1))
-        next_ssm = decay * ssm_cache + drive
-        y = ((next_ssm.unsqueeze(1) * C.unsqueeze(2)).sum(dim=-1) +
+        # Reproduce the reference parallel scan exactly, including its 1e-8
+        # prefix floor: prefix_t = clamp(prefix_(t-1) * decay_t).
+        next_prefix = (prefix_cache * decay).clamp_min(1e-8)
+        next_accumulator = accumulator_cache + drive / next_prefix
+        state = next_prefix * next_accumulator
+        y = ((state.unsqueeze(1) * C.unsqueeze(2)).sum(dim=-1) +
              block.D.view(1, 1, -1) * x_branch)
         y = y * F.silu(z)
         x = residual + block.out_proj(y)
-        updated.append((next_conv_cache, next_ssm))
+        updated.append((next_conv_cache, next_prefix, next_accumulator))
 
     x = model.final_norm(x)
     logits = F.linear(x, model.lm_head.weight[:ACTIVE_VOCAB])
@@ -119,7 +124,7 @@ def prefill(model: MambaRoninLM, token_ids: list[int]):
 
 def verify_incremental_equivalence(model: MambaRoninLM, sample: list[int]) -> float:
     """Fail closed if recurrent decoding differs from the model's full forward pass."""
-    sample = sample[:min(24, model.context_length)]
+    sample = sample[:min(96, model.context_length)]
     ids = torch.tensor([sample], dtype=torch.long)
     reference, _ = model(ids, vocab_limit=ACTIVE_VOCAB)
     cache = init_cache(model)
