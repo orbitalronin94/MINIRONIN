@@ -195,6 +195,10 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     abstain_literary_count = load_curated_jsonl(ROOT / "data/curated/minironin-abstain-literary-50k-v1.jsonl", "abstain_literary", store, "MINIRONIN-abstain-literary-50k-v1")
     if abstain_plain_count != 50000 or abstain_literary_count != 50000:
         raise SystemExit(f"Abstention dataset count mismatch: plain={abstain_plain_count}, literary={abstain_literary_count}")
+    abstain_koan_count = load_curated_jsonl(ROOT / "data/curated/minironin-abstain-koan-50k-v1.jsonl", "abstain_koan", store, "MINIRONIN-abstain-koan-50k-v1")
+    aristocrat_count = load_curated_jsonl(ROOT / "data/curated/minironin-aristocrat-trivial-50k-v1.jsonl", "aristocrat", store, "MINIRONIN-aristocrat-trivial-50k-v1")
+    if abstain_koan_count != 50000 or aristocrat_count != 50000:
+        raise SystemExit(f"New style dataset count mismatch: koan={abstain_koan_count}, aristocrat={aristocrat_count}")
     abstention_path = ROOT / "data/curated/minironin-abstention-50k.jsonl"
     abstention_manifest = generate_dataset(abstention_path)
     abstention_count = load_curated_jsonl(abstention_path, "abstention", store, "MINIRONIN-authored-abstention-50k")
@@ -232,6 +236,8 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         "behavior_examples": behavior_count,
         "abstention_plain_examples": abstain_plain_count,
         "abstention_literary_examples": abstain_literary_count,
+        "abstention_koan_examples": abstain_koan_count,
+        "aristocrat_examples": aristocrat_count,
         "abstention_datasets": [
             {"path": str(ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl"),
              "bytes": (ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl").stat().st_size,
@@ -239,6 +245,12 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
             {"path": str(ROOT / "data/curated/minironin-abstain-literary-50k-v1.jsonl"),
              "bytes": (ROOT / "data/curated/minironin-abstain-literary-50k-v1.jsonl").stat().st_size,
              "sha256": hashlib.sha256((ROOT / "data/curated/minironin-abstain-literary-50k-v1.jsonl").read_bytes()).hexdigest()},
+            {"path": str(ROOT / "data/curated/minironin-abstain-koan-50k-v1.jsonl"),
+             "bytes": (ROOT / "data/curated/minironin-abstain-koan-50k-v1.jsonl").stat().st_size,
+             "sha256": hashlib.sha256((ROOT / "data/curated/minironin-abstain-koan-50k-v1.jsonl").read_bytes()).hexdigest()},
+            {"path": str(ROOT / "data/curated/minironin-aristocrat-trivial-50k-v1.jsonl"),
+             "bytes": (ROOT / "data/curated/minironin-aristocrat-trivial-50k-v1.jsonl").stat().st_size,
+             "sha256": hashlib.sha256((ROOT / "data/curated/minironin-aristocrat-trivial-50k-v1.jsonl").read_bytes()).hexdigest()},
         ],
         "abstention_dataset": abstention_manifest,
         "abstention_examples_loaded": abstention_count,
