@@ -33,6 +33,15 @@ class LibrarySamplerTests(unittest.TestCase):
         self.assertEqual(set(sampler.available), {"heretic", "anarchist"})
         self.assertAlmostEqual(sum(sampler.probabilities.values()), 1.0)
 
+    def test_sequence_length_preflight_rejects_short_library(self):
+        rows = [
+            {"id": "long", "library_id": "heretic", "split": "train", "token_ids": list(range(200))},
+            {"id": "short", "library_id": "anarchist", "split": "train", "token_ids": list(range(20))},
+        ]
+        sampler = LibrarySampler(rows, {"heretic": 0.8, "anarchist": 0.2})
+        with self.assertRaisesRegex(ValueError, "anarchist"):
+            sampler.validate_sequence_length(128)
+
     def test_weighted_round_robin_hits_exact_long_run_quota(self):
         sampler = LibrarySampler(docs(), {"heretic": 0.8, "anarchist": 0.2}, seed=5)
         counts = {"heretic": 0, "anarchist": 0}
