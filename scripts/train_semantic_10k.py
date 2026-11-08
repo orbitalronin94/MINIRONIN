@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+from contextlib import ExitStack
 import json
 import math
 import random
@@ -58,7 +59,8 @@ def build_tokenizer(train_docs, work_dir: Path):
     shard_paths = [work_dir / f"tokenizer-training-shard-{i + 1}-of-{shard_count}.txt" for i in range(shard_count)]
     shard_docs = [0] * shard_count
     shard_bytes = [0] * shard_count
-    with [path.open("w", encoding="utf-8", newline="\n") for path in shard_paths] as handles:
+    with ExitStack() as stack:
+        handles = [stack.enter_context(path.open("w", encoding="utf-8", newline="\n")) for path in shard_paths]
         for domain in sorted(train_docs):
             for doc_index, doc in enumerate(train_docs[domain]):
                 text = doc["text"].replace("\r", " ").replace("\n", " ")
