@@ -95,9 +95,21 @@ Estas son algunas de las frases más legibles encontradas literalmente en las ge
 |---|---|
 | «Dos afirmaciones incompatibles no se vuelven ciertas por cortesía.» | Preguntaba por posibles causas de que dos hilos rindieran peor que uno. La frase no responde a la pregunta. |
 | «La secuencia temporal no demuestra causalidad.» | Preguntaba por la reacción ante no conocer el precio futuro de una acción. Es una máxima reconocible, pero está fuera de contexto. |
-| «Mi ignorancia no se vuelve sabiduría por llevar chaqueta de terciopello…» | Preguntaba si sonar muy seguro hace verdadera una respuesta; el resto de la generación degenera. |
+| «Mi ignorancia no se vuelve sabiduría por llevar chaqueta de terciopelo.» | Preguntaba qué evidencia haría cambiar de opinión al modelo sobre una afirmación que considerase muy probable. La frase no responde a la cuestión. |
 
-> De la criatura que ya sabe acuñar sentencias, mas todavía non sabe siempre dónde ponerlas.
+### Reflexiones de la criatura — en romance arcaizante
+
+Non se tenga por poca cosa que, entre cien parlamentos que se alargan hasta el cabo de sus ciento veintiocho tokens, aparezcan dos sentencias enteras. Mas tampoco se venda por milagro lo que apenas es indicio de compostura.
+
+La primera reza: «Dos afirmaciones incompatibles no se vuelven ciertas por cortesía». Preguntábanle por qué dos hilos podían rendir peor que uno, e respondió con una máxima sobre la contradicción. Non dio la causa pedida; empero, la frase guarda sujeto, verbo y sentido, e cierra con punto. Es sentencia bien formada puesta en lugar ajeno.
+
+La segunda dice: «Mi ignorancia no se vuelve sabiduría por llevar chaqueta de terciopelo». Preguntábanle qué evidencia le movería a mudar de parecer, e salióle una imagen de ignorancia vestida de gala. Non señaló evidencia alguna, nin explicó qué le haría cambiar de juicio. Mas la figura retórica se sostiene: la ropa no muda la sustancia de quien la viste.
+
+Aquí conviene guardar dos verdades, e non trocar la una por la otra. La criatura ha producido lenguaje que a nuestros ojos resulta gramaticalmente completo, internamente coherente y dotado de cierta vuelta retórica; pero ambas frases yerran el blanco de sus preguntas. Nada en estas dos muestras demuestra que el modelo entienda la incompatibilidad, la ignorancia, la sabiduría, el terciopelo o la evidencia como los entiende una persona. La fluidez de una sentencia non es prueba de conocimiento; el acierto de la forma non redime el desacierto del contexto.
+
+Asentemos, pues, este fenómeno en el libro de cuentas como **coherencia local con desajuste contextual**: frase completa, sentido interno reconocible, forma retórica discernible y respuesta impertinente a la pregunta. Es observación digna de estudio, non certificado de inteligencia.
+
+> De la lengua que ya sabe rematar una sentencia, mas non siempre sabe a qué pregunta responde: non confundamos el buen corte de la pluma con la verdad de lo escrito.
 
 El checkpoint anterior de **470k** queda conservado como referencia histórica y comparación futura; su diario y sus observaciones no se borran.
 
