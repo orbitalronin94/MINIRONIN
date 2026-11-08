@@ -1,0 +1,45 @@
+name: MINIRONIN — library sampler tests
+
+on:
+  push:
+    branches: [prep/library-exposure-sampler]
+    paths:
+      - "scripts/library_sampler.py"
+      - "scripts/library_provenance.py"
+      - "scripts/token_store.py"
+      - "tests/test_library_sampler.py"
+      - "tests/test_library_provenance.py"
+      - "tests/test_token_store.py"
+      - "configs/library-weights-v1.json"
+      - ".github/workflows/test-library-exposure.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  library-exposure-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout preparation branch
+        uses: actions/checkout@v4
+        with:
+          ref: prep/library-exposure-sampler
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile sampler modules
+        run: |
+          python -m compileall -q \
+            scripts/library_sampler.py \
+            scripts/library_provenance.py \
+            scripts/token_store.py
+
+      - name: Run focused regression tests
+        run: |
+          python -m unittest discover -s tests -p "test_library_*.py" -v
+          python -m unittest discover -s tests -p "test_token_store.py" -v
