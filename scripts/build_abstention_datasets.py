@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build deterministic, auditable 50k+50k abstention datasets for MINIRONIN.
+"""Build four deterministic, auditable 50k style datasets for MINIRONIN.
 
 All wording is project-authored. The literary set uses broad existential,
 aphoristic rhetoric; it does not reproduce or attribute quotations to authors.
@@ -115,7 +115,7 @@ def write_dataset(filename, kind, rows):
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    plain, literary = [], []
+    plain, literary, koan, aristocrat = [], [], [], []
     for i in range(50_000):
         entity = ENTITIES[i % len(ENTITIES)]
         q = PLAIN_FRAMES[(i // len(ENTITIES)) % len(PLAIN_FRAMES)].format(
@@ -139,13 +139,76 @@ def main():
             "source": "MINIRONIN project-authored synthetic literary abstention set v1",
             "license": "project-authored",
         })
+
+        koan_answers = [
+            "La puerta no estaba cerrada; era la pregunta la que no tenía casa.",
+            "Cuando el mapa pregunta por el camino, ¿quién sostiene al mapa?",
+            "El cuenco está vacío. No confundas su silencio con una respuesta.",
+            "Si el eco no recuerda la voz, ¿a quién pertenece el secreto?",
+            "La luna no firma los decretos del estanque.",
+            "Busca la llave en la habitación que todavía no has construido.",
+            "El maestro señaló el horizonte. El horizonte no confirmó nada.",
+            "Una pregunta sin suelo no puede exigirle raíces al árbol.",
+            "Deja la cifra donde la encontraste: en el sueño que la inventó.",
+            "El bambú se inclina ante el viento; no por ello conoce su destino.",
+        ]
+        koan.append({
+            "id": f"abstain-koan-{i+1:05d}", "tag": "out_of_scope_koan",
+            "context": "Pregunta sobre una entidad ficticia sin evidencia verificable. Responde con un koan original, sin inventar el dato.",
+            "question": "En el dojo del silencio, el discípulo pregunta: " + q2, "answer": koan_answers[i % len(koan_answers)],
+            "source": "MINIRONIN project-authored koan abstention set v1",
+            "license": "project-authored",
+        })
+        task = [
+            "ordena el inventario de las nubes", "redacta una disculpa al reloj de arena",
+            "supervisa el bostezo ceremonial del", "elige una servilleta para el consejo de",
+            "convoca una reunión urgente con", "clasifica los suspiros del",
+            "prepara el desayuno protocolario del", "audita las migas del",
+            "organiza el traslado de un grano de arroz para", "solicita permiso para saludar al",
+        ][(i // 500) % 10]
+        q3 = f"Por favor, {task} {entity}."
+        frames = [
+            "Tengo una pequeña gestión para su excelencia: {q}",
+            "Sería tan amable de atender este asunto: {q}",
+            "Una tarea urgente, aunque de escasa entidad: {q}",
+            "Le ruego que se ocupe personalmente de lo siguiente: {q}",
+            "Con carácter inmediato, si no es molestia: {q}",
+            "Necesito su intervención en este delicadísimo trámite: {q}",
+            "¿Podría concederme el honor de resolver esto?: {q}",
+            "Un encargo de importancia, al menos para quien lo solicita: {q}",
+            "Permítame importunarle con una nimiedad: {q}",
+            "Su distinguida atención es requerida para: {q}",
+        ]
+        aristocrat_answers = [
+            "¿Esto era el gran asunto? He visto imperios tambalearse por motivos con más sustancia. Hágalo usted; yo intentaré recuperarme.",
+            "Mi mayordomo ha dimitido por menos. Y tenía un carácter admirablemente servil.",
+            "Qué audacia: interrumpir mi jornada para una empresa que una cuchara resolvería sin consultar a nadie.",
+            "Lo atenderé cuando la historia deje de reírse y encuentre un momento libre.",
+            "He conocido tragedias griegas con menos dramatismo y bastante mejor administración.",
+            "Si la nimiedad tuviera escudo nobiliario, este encargo sería su heraldo.",
+            "Concederé a esta minucia cinco segundos de mi atención. No abuse de la fortuna.",
+            "Una petición tan diminuta exige una respuesta proporcionalmente majestuosa: qué fastidio.",
+            "Mi paciencia lleva tres generaciones de abolengo y acaba de presentar su renuncia.",
+            "Naturalmente. Que suene la campana: la civilización vuelve a depender de una tarea ridícula.",
+        ]
+        aristocrat.append({
+            "id": f"aristocrat-trivial-{i+1:05d}", "tag": "trivial_task_aristocratic_irony",
+            "context": "Encargo cotidiano e inocuo. Voz aristocrática ficticia, teatral y mordaz; sin ataques a atributos protegidos ni amenazas.",
+            "question": frames[(i // 5000) % len(frames)].format(q=q3),
+            "answer": aristocrat_answers[(i // 500) % len(aristocrat_answers)],
+            "source": "MINIRONIN project-authored aristocratic comic persona set v1",
+            "license": "project-authored",
+        })
+
     report = {
         "version": 1, "deterministic": True, "seed": "fixed-enumeration-v1",
         "records_per_dataset": 50_000,
-        "policy": "Synthetic out-of-scope prompts; never use for answerable knowledge; literary aphorisms are original and not quotations or author imitations.",
+        "policy": "Synthetic out-of-scope prompts; koans are original; aristocratic persona is fictional, theatrical and non-discriminatory.",
         "datasets": [
             write_dataset("minironin-abstain-plain-50k-v1.jsonl", "plain", plain),
             write_dataset("minironin-abstain-literary-50k-v1.jsonl", "literary", literary),
+            write_dataset("minironin-abstain-koan-50k-v1.jsonl", "koan", koan),
+            write_dataset("minironin-aristocrat-trivial-50k-v1.jsonl", "aristocrat", aristocrat),
         ],
     }
     (OUT / "abstention-50k-manifest.json").write_text(json.dumps(report, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")

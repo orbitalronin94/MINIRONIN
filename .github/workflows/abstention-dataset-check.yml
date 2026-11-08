@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "scripts/build_abstention_datasets.py"
+      - "scripts/build_personality_datasets.py"
+      - "scripts/validate_personality_datasets.py"
       - "data/curated/README.md"
       - "scripts/train_long_run.py"
       - "scripts/train_seed_tournament.py"
@@ -22,8 +24,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Generate both datasets
-        run: python scripts/build_abstention_datasets.py
+      - name: Generate all eight datasets
+        run: |
+          python scripts/build_abstention_datasets.py
+          python scripts/build_personality_datasets.py
       - name: Verify counts, uniqueness, labels and hashes
         run: |
           python - <<'PY'
@@ -31,20 +35,33 @@ jobs:
           from pathlib import Path
           root=Path("data/curated")
           manifest=json.loads((root/"abstention-50k-manifest.json").read_text())
-          assert len(manifest["datasets"]) == 2
+          assert len(manifest["datasets"]) == 4
+          seen_questions=set()
           for item in manifest["datasets"]:
               path=Path(item["file"])
               rows=[json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
               assert len(rows) == 50_000, (path,len(rows))
               assert len({r["id"] for r in rows}) == 50_000
-              assert len({r["question"] for r in rows}) == 50_000
+              questions={r["question"] for r in rows}
+              assert len(questions) == 50_000
+              assert not (seen_questions & questions), f"cross-dataset prompt collision: {path}"
+              seen_questions.update(questions)
               assert path.stat().st_size == item["bytes"]
               assert hashlib.sha256(path.read_bytes()).hexdigest() == item["sha256"]
               assert all(r["context"] and r["question"] and r["answer"] for r in rows)
               if "plain" in path.name:
                   assert all(r["answer"] == "ni puta idea, la verdad" for r in rows)
-              else:
-                  assert all("ni puta idea, la verdad" in r["answer"] for r in rows)
+              elif "literary" in path.name:
+                  assert all("ni puta idea, la verdad" in r["answer"].lower() for r in rows)
                   assert len({r["answer"] for r in rows}) >= 100
-          print("PASS: 100,000 unique records; exact canonical labels; SHA-256 verified.")
+              elif "koan" in path.name:
+                  assert all(r["tag"] == "out_of_scope_koan" for r in rows)
+                  assert len({r["answer"] for r in rows}) >= 10
+              elif "aristocrat" in path.name:
+                  assert all(r["tag"] == "trivial_task_aristocratic_irony" for r in rows)
+                  assert len({r["question"] for r in rows}) == 50000
+                  assert len({r["answer"] for r in rows}) >= 10
+          print("PASS: 200,000 unique records across four datasets; labels and SHA-256 verified.")
           PY
+      - name: Validate the four new persona datasets
+        run: python scripts/validate_personality_datasets.py

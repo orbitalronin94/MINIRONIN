@@ -28,16 +28,26 @@ import torch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from minironin import MiniRoninLM, ModelConfig  # noqa: E402
+from build_abstention_datasets import main as build_abstention_datasets  # noqa: E402
+from build_personality_datasets import main as build_personality_datasets  # noqa: E402
 
 BYTE_EOS = 256
 ACTIVE_VOCAB = 257
 MIX_WEIGHTS = {
-    "math": 0.38,
-    "science": 0.2375,
-    "books": 0.19,
-    "behavior": 0.095,
-    "general": 0.0475,
-    "abstention": 0.05,
+    "math": 0.328,
+    "science": 0.205,
+    "books": 0.164,
+    "behavior": 0.082,
+    "general": 0.041,
+    "abstention": 0.02,
+    "abstain_plain": 0.02,
+    "abstain_literary": 0.02,
+    "abstain_koan": 0.02,
+    "aristocrat": 0.02,
+    "casuist": 0.02,
+    "scientist": 0.02,
+    "oracle": 0.02,
+    "indifference": 0.02,
 }
 JSONL_SOURCES = {
     "open-web-math__open-web-math__default__train.jsonl": "math",
@@ -305,6 +315,9 @@ def main():
 
     if args.seeds < 1 or args.steps < 1 or args.batch_size < 1:
         parser.error("seeds, steps and batch-size must be positive")
+    # Materialize deterministic behavioral datasets before constructing the corpus.
+    build_abstention_datasets()
+    build_personality_datasets()
     torch.set_num_threads(args.threads)
     torch.use_deterministic_algorithms(True)
     device = torch.device("cpu")
@@ -332,6 +345,20 @@ def main():
     )
     if behavior_count == 0:
         raise SystemExit("No curated MINIRONIN behavior examples loaded")
+    curated_sets = [
+        ("minironin-abstain-plain-50k-v1.jsonl", "abstain_plain"),
+        ("minironin-abstain-literary-50k-v1.jsonl", "abstain_literary"),
+        ("minironin-abstain-koan-50k-v1.jsonl", "abstain_koan"),
+        ("minironin-aristocrat-trivial-50k-v1.jsonl", "aristocrat"),
+        ("minironin-casuist-cynic-50k-v1.jsonl", "casuist"),
+        ("minironin-scientist-exhausted-50k-v1.jsonl", "scientist"),
+        ("minironin-oracle-doom-50k-v1.jsonl", "oracle"),
+        ("minironin-error404-indifference-50k-v1.jsonl", "indifference"),
+    ]
+    for filename, domain in curated_sets:
+        count = load_curated_jsonl(ROOT / "data/curated" / filename, domain, store, "MINIRONIN-" + domain)
+        if count != 50000:
+            raise SystemExit(f"Expected 50000 examples in {filename}, loaded {count}")
 
     train_docs, val_docs = split_documents(store["docs"])
     for domain in ("math", "science", "books", "behavior"):
