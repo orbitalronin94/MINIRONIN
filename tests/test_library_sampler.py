@@ -33,6 +33,13 @@ class LibrarySamplerTests(unittest.TestCase):
         self.assertEqual(set(sampler.available), {"heretic", "anarchist"})
         self.assertAlmostEqual(sum(sampler.probabilities.values()), 1.0)
 
+    def test_weighted_round_robin_hits_exact_long_run_quota(self):
+        sampler = LibrarySampler(docs(), {"heretic": 0.8, "anarchist": 0.2}, seed=5)
+        counts = {"heretic": 0, "anarchist": 0}
+        for _ in range(100):
+            counts[sampler._next_library()] += 1
+        self.assertEqual(counts, {"heretic": 80, "anarchist": 20})
+
     def test_batch_shape_and_accounting(self):
         sampler = LibrarySampler(docs(), {"heretic": 0.5, "anarchist": 0.5}, seed=2)
         rows, provenance = sampler.make_batch(4, 16)
