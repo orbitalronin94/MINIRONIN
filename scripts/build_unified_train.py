@@ -150,10 +150,10 @@ def main():
         dest=provenance_dir/(path.parent.name+"--"+path.name)
         shutil.copy2(path,dest)
         copied.append({"path":str(dest.relative_to(out)),"source_path":str(path),"bytes":dest.stat().st_size,"sha256":sha_file(dest)})
-    (provenance_dir/"PRODATPHIL-SHA256.txt").write_text("8eacf44101c87772a842fce3d3ab415903f28ba7684f8b33eddba0e2489c13c9  prodatphil_en_txt_0_3.zip\\n",encoding="utf-8")
-    (provenance_dir/"HERETIC-SHA256.txt").write_text("HERETIC source archive SHA-256 is recorded in the source workflow and source file hashes in sources.json.\\n",encoding="utf-8")
+    (provenance_dir/"PRODATPHIL-SHA256.txt").write_text("8eacf44101c87772a842fce3d3ab415903f28ba7684f8b33eddba0e2489c13c9  prodatphil_en_txt_0_3.zip\n",encoding="utf-8")
+    (provenance_dir/"HERETIC-SHA256.txt").write_text("HERETIC source archive SHA-256 is recorded in the source workflow and source file hashes in sources.json.\n",encoding="utf-8")
     checks=[("train.jsonl.gz",output_path),("sources.json",out/"sources.json"),("quality-report.json",out/"quality-report.json")]
     checks.extend((str(p.relative_to(out)),p) for p in sorted(provenance_dir.rglob("*")) if p.is_file())
-    (out/"SHA256SUMS").write_text("".join(f"{sha_file(path)}  {name}\\n" for name,path in checks),encoding="utf-8")
+    (out/"SHA256SUMS").write_text("".join(f"{sha_file(path)}  {name}\n" for name,path in checks),encoding="utf-8")
     print(json.dumps({"records":rows,"source_files":len(source_manifest),"provenance_files":len(copied)+2,"duplicates_reported":duplicates,"artifact_bytes":sum(p.stat().st_size for p in out.rglob("*") if p.is_file())},ensure_ascii=False))
 if __name__=="__main__": main()
