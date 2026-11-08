@@ -1,30 +1,35 @@
 {
   "schema_version": 1,
   "status": "main",
-  "model_id": "minironin-transformer-10m-step-390000",
+  "model_id": "minironin-transformer-10m-step-400000",
   "architecture": "transformer-decoder-only",
   "parameter_count": 9970176,
-  "completed_steps": 390000,
+  "completed_steps": 400000,
   "tokenization": "UTF-8 bytes + EOS (257 active symbols)",
   "checkpoint": {
-    "filename": "checkpoint-390000.pt",
-    "sha256": "bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730",
-    "release_tag": "minironin-transformer-10m-step-390000-main",
-    "source_release_tag": "minironin-cycle-1-step-390000",
-    "source_release_asset_id": 722701347
+    "filename": "checkpoint-400000.pt",
+    "sha256": "f0c40c4a4196f2a87451a34139656ba41e824b3b75e6fc209758ccb7a3642c4b",
+    "release_tag": "minironin-transformer-10m-step-400000-candidate",
+    "source_release_tag": "minironin-transformer-10m-step-400000-candidate",
+    "source_release_asset_id": 723942589
   },
   "previous_main": {
-    "model_id": "minironin-mamba-50m",
-    "architecture": "mamba-selective-scan-v1",
-    "parameter_count": 49083392,
-    "completed_steps": 1000,
-    "checkpoint_sha256": "d4e94c6b2711810bc07ce91b9fdcf4cfd50466a6ee9eafe70b64f023f211d5d7",
-    "status": "archived_experimental"
+    "model_id": "minironin-transformer-10m-step-390000",
+    "architecture": "transformer-decoder-only",
+    "parameter_count": 9970176,
+    "completed_steps": 390000,
+    "checkpoint_sha256": "bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730",
+    "status": "superseded_experimental"
   },
   "holdout": {
-    "status": "requires_paired_retest",
+    "status": "completed_unscored_raw_generation",
+    "run_id": 42483511717,
+    "job_id": 128740310336,
+    "artifact_id": 13618766409,
+    "holdout_count": 100,
+    "holdout_sha256": "3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535",
     "scoring": "unscored_raw_generation",
-    "interpretation": "The 390k Transformer is manually restored as the project's 10M experimental baseline. Prior raw holdout outputs were poor; promotion is not a claim of demonstrated quality. A matched 100-question holdout is required after the 10k continuation."
+    "interpretation": "All 100 literal generations were recorded with greedy decoding and no KV cache. Raw outputs exhibit severe repetition/degeneration and are not evidence of reliable reasoning or conversational quality. Human review is required."
   },
-  "promotion_policy": "Manual project decision. No automatic promotion is enabled."
+  "promotion_policy": "Manual project decision. This 400k checkpoint is promoted as the experimental MAIN baseline by explicit project decision; promotion does not imply validated output quality."
 }
