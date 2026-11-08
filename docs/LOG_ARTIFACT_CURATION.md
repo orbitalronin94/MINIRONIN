@@ -132,3 +132,20 @@ Se incorporaron 16 registros adicionales a partir de ejecuciones verificadas de 
 ## 8. Lote adicional de noviembre
 
 Se amplió la biblioteca de 31 a 50 registros. Se incorporaron propiedades de benchmark y manifiestos, resolución de copybooks, semántica de archivos COBOL, clases de condición, funciones financieras, gobernanza de licencias y diagnóstico prudente de exportaciones Android. Fuentes: `cobol2py` run 42272058320, `HERETIC-RONIN` run 42379476052 y `RoninRPG` run 42376711339. La validación de licencia de HERETIC pasó 14 pruebas; su job de adquisición fue omitido, por lo que esa ejecución no se cuenta como ingestión de corpus.
+
+
+## 9. MINIRONIN — identidad versionada y nuevas lecciones de Actions (2026-11-08)
+
+Se añadieron 40 ejemplos de identidad grounded en `data/curated/minironin-identity-v1.jsonl`. La ficha canónica se actualizó para que el modelo no siga presentando como actual la antigua configuración Transformer de 9.970.176 parámetros: el checkpoint principal vigente es `minironin-mamba-50m`, arquitectura `mamba-selective-scan-v1`, 49.083.392 parámetros y 1.000 pasos publicados. Se explicita que solo se transfirieron embeddings desde el Transformer de 390k y que los bloques Mamba se inicializaron desde cero. También se refuerza la separación entre MINIRONIN, RONIN-IA y HERETIC-RONIN.
+
+Se añadieron 20 lecciones en `data/curated/minironin-engineering-v1.jsonl`, basadas en los metadatos verificables de estas ejecuciones y los resúmenes de sus pasos:
+- MINIRONIN run [42475009211](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42475009211), job 128714263169: descarga y hash del checkpoint, adquisición de corpus, construcción de datasets y estado de entrenamiento en curso.
+- MINIRONIN run [42472836694](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42472836694), job 128707567085: materialización de fuentes RAG, construcción del índice, verificación y publicación aún pendientes en el snapshot observado.
+- MINIRONIN run [42473906951](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42473906951), job 128710833535: publicación del checkpoint inmutable.
+- MINIRONIN run [42475009157](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42475009157), job 128714262930: CI independiente.
+
+Los nuevos ejemplos no reproducen logs brutos. Enseñan la interpretación causal y los límites de cada estado: descargar no es entrenar, verificar un hash no mide calidad, publicar no demuestra mejora, y un paso pendiente no se puede describir como completado. Se conserva la biblioteca histórica de 50 registros; junto con los 20 nuevos, el dominio de ingeniería contiene **70 registros**.
+
+El entrenador ahora acepta los campos históricos castellanos (`instruccion`, `respuesta`, `evidencia`) además del esquema nuevo (`question`, `answer`, `context`), y carga los 70 registros en un dominio `engineering` separado. La identidad se carga en `identity`; ambos dominios tienen un peso experimental inicial del 2%. La validación dedicada pasó en [run 42475740253](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42475740253), incluyendo cardinalidad, unicidad, procedencia, detección básica de secretos e integración del entrenador.
+
+**Límite temporal importante:** el entrenamiento Mamba run 42475009211 ya había hecho checkout del commit anterior a esta ampliación. No consume estos 110 ejemplos nuevos en ese ciclo. Quedan integrados para los siguientes ciclos que utilicen el entrenador actualizado.
