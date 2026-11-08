@@ -69,6 +69,9 @@ def transfer_state(old_state, target_model):
         else:
             raise RuntimeError("Unhandled source parameter: " + key)
 
+    # Keep the tied input/output embedding explicitly synchronized in the state dict.
+    new["lm_head.weight"] = new["token_embedding.weight"]
+
     # Eight new residual blocks are exact identities at initialization.
     for layer in range(6, 14):
         prefix = f"blocks.{layer}."
