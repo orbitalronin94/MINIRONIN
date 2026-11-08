@@ -57,13 +57,13 @@ class LibrarySamplerTests(unittest.TestCase):
         config = {
             "schema_version": 1, "seed": 17,
             "minimum_library_share": 0.01, "maximum_library_share": 0.60,
-            "weights": {"heretic": 0.75, "anarchist": 0.25},
+            "weights": {"heretic": 0.60, "anarchist": 0.40},
         }
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "weights.json"
             path.write_text(json.dumps(config), encoding="utf-8")
             weights, seed = load_library_weights(path)
-        self.assertEqual(weights, {"heretic": 0.75, "anarchist": 0.25})
+        self.assertEqual(weights, {"heretic": 0.60, "anarchist": 0.40})
         self.assertEqual(seed, 17)
 
     def test_invalid_weight_sum_is_rejected(self):
