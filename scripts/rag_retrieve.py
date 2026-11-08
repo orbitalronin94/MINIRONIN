@@ -12,15 +12,21 @@ def search(path,query,k=5,model="intfloat/multilingual-e5-small"):
   from sentence_transformers import SentenceTransformer
   q=SentenceTransformer(model,device="cpu").encode(["query: "+query],normalize_embeddings=True,convert_to_numpy=True)[0].astype("float32")
   import heapq
-  rows=db.execute("SELECT chunk_id,document_id,text,record_metadata,embedding FROM chunks WHERE embedding IS NOT NULL AND embedding_model=?",(model,))
+  cursor=db.execute("SELECT chunk_id,document_id,text,record_metadata,embedding FROM chunks WHERE embedding IS NOT NULL AND embedding_model=?",(model,))
   heap=[];limit=k*10
-  for r in rows:
-   v=np.frombuffer(r["embedding"],dtype=np.float16).astype("float32")
-   item=(float(v@q),r["chunk_id"],r)
-   if len(heap)<limit:heapq.heappush(heap,item)
-   elif item>heap[0]:heapq.heapreplace(heap,item)
-  for rank,(_,_,r) in enumerate(sorted(heap,reverse=True),1):
-   x=pool.setdefault(r["chunk_id"],{"r":r,"score":0.0,"channels":[]});x["score"]+=1/(60+rank);x["channels"].append("vector")
+  while True:
+   batch=cursor.fetchmany(2048)
+   if not batch:break
+   matrix=np.stack([np.frombuffer(row["embedding"],dtype=np.float16).astype("float32") for row in batch])
+   scores=matrix@q
+   take=min(limit,len(batch))
+   indices=np.argpartition(scores,-take)[-take:] if take else []
+   for idx in indices:
+    row=batch[int(idx)];item=(float(scores[idx]),row["chunk_id"],dict(row))
+    if len(heap)<limit:heapq.heappush(heap,item)
+    elif item>heap[0]:heapq.heapreplace(heap,item)
+  for rank,(_,_,row) in enumerate(sorted(heap,reverse=True),1):
+   x=pool.setdefault(row["chunk_id"],{"r":row,"score":0.0,"channels":[]});x["score"]+=1/(60+rank);x["channels"].append("vector")
  except (ImportError,RuntimeError,ValueError):pass
  out=[]
  for x in sorted(pool.values(),key=lambda z:z["score"],reverse=True)[:k]:
