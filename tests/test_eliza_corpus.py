@@ -73,7 +73,7 @@ def test_mix_rejects_bad_percentages(tmp_path):
     result = subprocess.run(
         [
             sys.executable, str(ROOT / "scripts/build_eliza_corpus.py"),
-            "--input", str(source), "--count", "1", "--mix", "mirror=50,expert=50",
+            "--input", str(source), "--count", "1", "--mix", "mirror=20,expert=20",
             "--output", str(output),
         ],
         capture_output=True, text=True,
