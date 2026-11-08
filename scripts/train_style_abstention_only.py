@@ -9,12 +9,12 @@ from minironin import MiniRoninLM, ModelConfig
 
 ROOT=Path(__file__).resolve().parents[1]
 DATASETS = [
-    ("minironin-casuist-cynic-50k-v1.jsonl","cynic"),
-    ("minironin-scientist-exhausted-50k-v1.jsonl","exhausted"),
+    ("minironin-casuist-cynic-50k-v1.jsonl","casuist"),
+    ("minironin-scientist-exhausted-50k-v1.jsonl","scientist"),
     ("minironin-oracle-doom-50k-v1.jsonl","oracle"),
     ("minironin-error404-indifference-50k-v1.jsonl","indifference"),
     ("minironin-lexicon-diagnostic-50k-v1.jsonl","lexicon"),
-    ("minironin-abstention-50k.jsonl","abstention"),
+    ("minironin-aristocrat-trivial-50k-v1.jsonl","aristocrat"),
     ("minironin-abstain-plain-50k-v1.jsonl","abstain_plain"),
     ("minironin-abstain-literary-50k-v1.jsonl","abstain_literary"),
     ("minironin-abstain-koan-50k-v1.jsonl","abstain_koan"),
@@ -66,15 +66,18 @@ def main():
         raise SystemExit("Parent model configuration mismatch")
     model.load_state_dict(parent["model_state_dict"],strict=True)
     optimizer=torch.optim.AdamW(model.parameters(),lr=3e-4,betas=(0.9,0.95),weight_decay=0.01)
-    if "optimizer_state_dict" not in parent: raise SystemExit("Parent checkpoint lacks optimizer state")
-    optimizer.load_state_dict(parent["optimizer_state_dict"])
+    optimizer_state=parent.get("optimizer_state_dict")
+    if optimizer_state is not None:
+        optimizer.load_state_dict(optimizer_state)
+    # Restore optimizer moments when present, but start this adaptation with its own LR schedule.
+    for group in optimizer.param_groups: group["lr"]=3e-4
     # Equal probability across the nine isolated style/abstention datasets.
     names=sorted(expected)
     encoded={d:[list(x["text"].encode("utf-8",errors="replace"))+[ACTIVE_VOCAB-1] for x in train_docs[d]] for d in names}
     out=Path(a.output_dir); out.mkdir(parents=True,exist_ok=True)
     (out/"dataset-manifest.json").write_text(json.dumps({"policy":"ONLY five new cynic/troll-style datasets plus all four abstention datasets; no general corpus, books, HERETIC or legacy behavior","parent_step":390000,"additional_steps":STEPS,"datasets":audit,"sampling":"uniform across nine datasets"},ensure_ascii=False,indent=2)+"\n")
     start_time=time.perf_counter()
-    base_lr=float(optimizer.param_groups[0]["lr"])
+    base_lr=3e-4
     model.train()
     for step in range(1,STEPS+1):
         lr=3e-5+(base_lr-3e-5)*0.5*(1+__import__("math").cos(__import__("math").pi*step/STEPS))
