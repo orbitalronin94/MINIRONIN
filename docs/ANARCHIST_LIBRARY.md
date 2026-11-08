@@ -10,6 +10,7 @@ Añadir pensamiento anarquista clásico como un dominio documental identificable
 |---|---|---|---|
 | *What Is Property?* | Pierre-Joseph Proudhon | Traducción de Benjamin R. Tucker | propiedad, posesión, trabajo, intercambio, mutualismo, federalismo |
 | *God and the State* | Mikhail Bakunin | Traducción de Benjamin R. Tucker | autoridad, Estado, materialismo, ciencia, libertad, jerarquía |
+| *Mutual Aid: A Factor of Evolution* | Peter Kropotkin | Original en inglés | apoyo mutuo, cooperación, sociabilidad, evolución, comunidad |
 
 El registro completo está en data/anarchist/SOURCES.jsonl. Cada obra conserva identificador Gutenberg, URL, idioma, autor, traductor, fechas, estado de derechos y conceptos. La declaración de Project Gutenberg de dominio público se refiere a Estados Unidos; el registro incorpora una evaluación territorial separada para España basada en los plazos de autor y traductor y excluye los encabezados y pies editoriales de Gutenberg. Esta evaluación no sustituye asesoramiento jurídico.
 
@@ -49,4 +50,4 @@ MINIRONIN mantiene un vocabulario de bytes UTF-8 de 257 IDs. Las etiquetas SEM:*
 
 ## Ampliación prevista
 
-Próximos candidatos: Kropotkin (The Conquest of Bread, Mutual Aid), Emma Goldman (ensayos de 1910, excluyendo material de terceros), Errico Malatesta, Élisée Reclus y textos de crítica histórica del anarquismo. Cada candidato permanece fuera del entrenamiento hasta que se comprueben edición, traducción y derechos aplicables en España.
+Próximos candidatos: Kropotkin (The Conquest of Bread), Emma Goldman (ensayos de 1910, excluyendo material de terceros), Errico Malatesta, Élisée Reclus y textos de crítica histórica del anarquismo. Cada candidato permanece fuera del entrenamiento hasta que se comprueben edición, traducción y derechos aplicables en España.
