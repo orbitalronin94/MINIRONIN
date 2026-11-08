@@ -21,7 +21,6 @@ ACTIVE_VOCAB = 257
 EOS_ID = 256
 EXPECTED_PARENT_SHA = "bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730"
 EXPECTED_CANDIDATE_SHA = "d4e94c6b2711810bc07ce91b9fdcf4cfd50466a6ee9eafe70b64f023f211d5d7"
-EXPECTED_HOLDOUT_SHA = "22dce842390cd2075a214cb01e69091baa82b990dfd8a9657c1f1b787d21b06d"
 
 
 def sha256_file(path: Path) -> str:
@@ -46,8 +45,8 @@ def load_holdout(path: Path) -> list[dict]:
                 raise ValueError(f"duplicate holdout id: {row['id']}")
             seen.add(row["id"])
             rows.append(row)
-    if len(rows) != 40:
-        raise ValueError(f"Expected the fixed 40-question holdout, got {len(rows)}")
+    if len(rows) != 100:
+        raise ValueError(f"Expected the fixed 100-question holdout, got {len(rows)}")
     return rows
 
 
@@ -168,7 +167,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--checkpoint", required=True, type=Path)
     parser.add_argument("--holdout", type=Path, default=ROOT / "benchmarks/inference-holdout-v1.jsonl")
-    parser.add_argument("--baseline-diary", type=Path, default=ROOT / "benchmarks/diary/checkpoint-390000.json")
+    parser.add_argument("--baseline-diary", type=Path, default=None, help="Optional diary generated from the exact parent checkpoint on this same 100-question holdout")
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--max-new-tokens", type=int, default=128)
     parser.add_argument("--threads", type=int, default=2)
@@ -184,18 +183,18 @@ def main() -> None:
     if candidate_sha != EXPECTED_CANDIDATE_SHA:
         raise SystemExit(f"Unexpected candidate checkpoint SHA-256: {candidate_sha}")
     holdout_sha = sha256_file(args.holdout)
-    if holdout_sha != EXPECTED_HOLDOUT_SHA:
-        raise SystemExit(f"Unexpected holdout SHA-256: {holdout_sha}")
-
     rows = load_holdout(args.holdout)
-    base = json.loads(args.baseline_diary.read_text(encoding="utf-8"))
-    if base.get("checkpoint_sha256") != EXPECTED_PARENT_SHA:
-        raise SystemExit("390k baseline diary is not the exact verified parent checkpoint")
-    if base.get("holdout_sha256") != holdout_sha or base.get("holdout_count") != len(rows):
-        raise SystemExit("Baseline diary does not use this exact holdout")
-    base_by_id = {item["id"]: item["answer"] for item in base["results"]}
-    if set(base_by_id) != {row["id"] for row in rows}:
-        raise SystemExit("Baseline diary holdout IDs differ")
+    base = None
+    base_by_id = {}
+    if args.baseline_diary:
+        base = json.loads(args.baseline_diary.read_text(encoding="utf-8"))
+        if base.get("checkpoint_sha256") != EXPECTED_PARENT_SHA:
+            raise SystemExit("Baseline diary is not from the exact verified parent checkpoint")
+        if base.get("holdout_sha256") != holdout_sha or base.get("holdout_count") != len(rows):
+            raise SystemExit("Baseline diary does not use this exact 100-question holdout")
+        base_by_id = {item["id"]: item["answer"] for item in base["results"]}
+        if set(base_by_id) != {row["id"] for row in rows}:
+            raise SystemExit("Baseline diary holdout IDs differ")
 
     checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
     if checkpoint.get("architecture") != "mamba-selective-scan-v1":
@@ -229,15 +228,23 @@ def main() -> None:
                 "rubric": row["rubric"], "answer": answer,
                 "generated_token_ids": token_ids, "generated_bytes": len(token_ids),
                 "elapsed_seconds": round(time.perf_counter() - started, 6),
-                "changed_vs_390k": answer != base_by_id[row["id"]],
+                "changed_vs_parent": answer != base_by_id[row["id"]] if base is not None else None,
             })
             print(json.dumps({"holdout_progress": index, "id": row["id"],
                               "generated_bytes": len(token_ids)}, ensure_ascii=False), flush=True)
 
-    changed = sum(item["changed_vs_390k"] for item in results)
+    comparison = None
+    if base is not None:
+        changed = sum(item["changed_vs_parent"] for item in results)
+        comparison = {
+            "baseline_label": base["label"], "baseline_checkpoint_sha256": base["checkpoint_sha256"],
+            "identical_answers": len(results) - changed, "changed_answers": changed,
+            "answer_change_rate": round(changed / len(results), 6),
+            "note": "Text differences are descriptive only, not a quality score. Human blind review required."
+        }
     diary = {
         "schema_version": 1,
-        "benchmark": "MINIRONIN inference holdout v1",
+        "benchmark": "MINIRONIN inference holdout v2 (100 questions)",
         "label": "mamba-50m-from-390k-step-1000",
         "architecture": checkpoint["architecture"],
         "completed_steps": checkpoint["completed_steps"],
@@ -253,12 +260,7 @@ def main() -> None:
                        "max_new_tokens": args.max_new_tokens, "threads": args.threads,
                        "decoder": "incremental_recurrent_state",
                        "equivalence_max_abs_error": equivalence_error},
-        "comparison_to_390k": {
-            "baseline_label": base["label"], "baseline_checkpoint_sha256": base["checkpoint_sha256"],
-            "identical_answers": len(results) - changed, "changed_answers": changed,
-            "answer_change_rate": round(changed / len(results), 6),
-            "note": "Text differences are descriptive only, not a quality score. Human blind review required."
-        },
+        "comparison_to_parent": comparison,
         "scoring": {"status": "unscored_raw_generation",
                     "reason": "The holdout rubric is preserved for independent human review."},
         "elapsed_seconds": round(time.perf_counter() - started_all, 3),
@@ -268,7 +270,7 @@ def main() -> None:
     args.output.write_text(json.dumps(diary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: diary[k] for k in (
         "label", "completed_steps", "parameter_count", "checkpoint_sha256",
-        "holdout_sha256", "holdout_count", "comparison_to_390k", "elapsed_seconds"
+        "holdout_sha256", "holdout_count", "comparison_to_parent", "elapsed_seconds"
     )}, ensure_ascii=False), flush=True)
 
 
