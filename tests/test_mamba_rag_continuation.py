@@ -1,6 +1,7 @@
 import json
 import sqlite3
 import sys
+from collections import defaultdict
 from pathlib import Path
 
 import pytest
@@ -96,7 +97,7 @@ def test_rag_training_loader_uses_only_train_admitted_sources(tmp_path):
     assert {doc["domain"] for doc in docs} == {"science", "math"}
     assert manifest["chunks_total"] == 2
     assert manifest["chunks_by_source"] == {"minironin-papers": 1, "RONIN_IA": 1}
-    assert "RONIN_IA_RIGHTS" in manifest["excluded_sources"]
+    assert any(item.startswith("RONIN_IA_RIGHTS") for item in manifest["excluded_sources"])
     assert all(doc["split"] in {"train", "validation"} for doc in docs)
 
 
@@ -104,7 +105,7 @@ def test_rag_merge_deduplicates_and_keeps_validation_tensor_batches():
     text = "A sufficiently long RAG passage used for deterministic split validation. " * 8
     import hashlib
     digest = hashlib.sha256(("science\0" + text).encode()).hexdigest()
-    train_docs = {"science": [{"domain": "science", "text": text, "sha256": digest}]}
+    train_docs = defaultdict(list, {"science": [{"domain": "science", "text": text, "sha256": digest}]})
     validation = {"science": [torch.zeros((1, 129), dtype=torch.long)]}
     rag_docs = [
         {"domain": "science", "text": text, "sha256": digest, "split": "train"},
