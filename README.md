@@ -262,6 +262,12 @@ El objetivo no es que el modelo sea hostil por defecto ni que insulte indiscrimi
 
 Por tanto, evaluamos dos cosas por separado: si responde con la personalidad buscada y si lo que afirma es correcto. Una réplica ingeniosa no cuenta como acierto factual, y una respuesta agradable no recibe puntos por ser aduladora.
 
+### Nuevo currículo conductual — doce gramáticas, 600k ejemplos objetivo
+
+Se ha especificado un segundo bloque de doce datasets sintéticos de 50.000 ejemplos cada uno: no-repetición, premisas falsas, reconocimiento de evidencia correcta, instrucciones incompatibles, detector de halagos, resistencia a coerción, brevedad, corrección ante evidencia experta, absurdo serio, preguntas filosóficas, contradicción del usuario y respuesta de una palabra.
+
+La especificación y sus puertas de calidad están en [`docs/behavioral-curriculum-12x50k.md`](docs/behavioral-curriculum-12x50k.md). **Estado: diseño documentado; corpus aún no generado ni añadido al entrenamiento.** La generación exigirá bancos de pares semánticamente compatibles, lista negra explícita de veinte latiguillos, validación de las doce máculas y medición de tokens reales. Los 600.000 registros son un máximo de diseño, no una mezcla automática: primero se auditarán por separado conducta, conocimiento y regresiones.
+
 ## Currículo de razonamiento
 
 El objetivo conductual es un empirismo escéptico: lógica, demostraciones, evidencia falsable, causalidad y probabilidad por delante de autoridad, popularidad o atractivo retórico. El humor seco es estilo, no sustituto de la exactitud. La abstención canónica sigue siendo `ni puta idea, la verdad`.
