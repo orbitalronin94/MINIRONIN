@@ -127,7 +127,7 @@ La rama de desarrollo incorpora un constructor RAG SQLite con FTS5/BM25 y embedd
 - Dependencias aisladas: requirements-rag.txt
 - Pruebas: tests/test_rag_index.py
 
-El workflow materializa los ocho datasets conductuales (400.000 ejemplos) y el lexicón (50.000) antes de indexar. Puede incorporar el artefacto HERETIC preaprobado y RONIN-IA/data/datasets; deduplica documentos y fragmentos sin sumar inventarios solapados. El índice se publica como artefacto de Actions, no como binario versionado en Git.
+El workflow materializa los ocho datasets conductuales (400.000 ejemplos) y el lexicón (50.000) antes de indexar. Puede incorporar el artefacto HERETIC preaprobado y únicamente RONIN-IA/data/datasets/admitted más rights_registry. No indexa candidates, quarantine, reviews ni el catálogo de bibliotecas objetivo; CoVoST train.jsonl.gz se procesa como JSONL comprimido. Deduplica documentos y fragmentos sin sumar inventarios solapados. El índice se publica como artefacto de Actions, no como binario versionado en Git.
 
 **Límites:** los datos World Bank y el generador de conversaciones de 10M no están materializados en esta rama como ficheros indexables; no se cuentan ni se simula su presencia. La disponibilidad del artefacto HERETIC de la ejecución 42382055693 debe verificarse al ejecutar el workflow. Las restricciones de licencia se conservan como metadatos y el uso sigue siendo interno cuando así lo exige cada fuente.
 
