@@ -5,10 +5,32 @@ Sampling is hierarchical: weighted library -> shuffled document cycle -> window.
 """
 from __future__ import annotations
 
+import json
+import math
 import random
+from pathlib import Path
 from collections import Counter, defaultdict
 from collections.abc import Sequence
 from typing import Iterable, Mapping
+
+
+def load_library_weights(config_path: str | Path) -> tuple[dict[str, float], int]:
+    """Load and validate the versioned library-weight configuration."""
+    config = json.loads(Path(config_path).read_text(encoding="utf-8"))
+    if config.get("schema_version") != 1:
+        raise ValueError("Unsupported library-weight schema version")
+    weights = {str(k): float(v) for k, v in config.get("weights", {}).items()}
+    if not weights or any(not math.isfinite(v) or v <= 0 for v in weights.values()):
+        raise ValueError("Library weights must be finite positive numbers")
+    if not math.isclose(sum(weights.values()), 1.0, rel_tol=0.0, abs_tol=0.001):
+        raise ValueError("Configured library weights must sum to 1.0")
+    minimum = float(config.get("minimum_library_share", 0.0))
+    maximum = float(config.get("maximum_library_share", 1.0))
+    if not 0 <= minimum <= maximum <= 1:
+        raise ValueError("Invalid minimum/maximum library share bounds")
+    if any(value < minimum or value > maximum for value in weights.values()):
+        raise ValueError("A configured library weight violates its share bounds")
+    return weights, int(config.get("seed", 20261108))
 
 
 class LibrarySampler:
@@ -23,7 +45,7 @@ class LibrarySampler:
         self.rng = random.Random(seed)
         self.seed = seed
         self.weights = {str(k): float(v) for k, v in weights.items()}
-        if not self.weights or any(v <= 0 for v in self.weights.values()):
+        if not self.weights or any(not math.isfinite(v) or v <= 0 for v in self.weights.values()):
             raise ValueError("Every configured library weight must be positive")
 
         self.documents: dict[str, list[Mapping]] = defaultdict(list)
