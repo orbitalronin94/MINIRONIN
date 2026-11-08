@@ -121,7 +121,7 @@ def test_eliza_requests_can_be_grounded_by_rag_with_deduplicated_evidence_sideca
             "id": "q1", "question": "What is entropy in thermodynamics?",
             "answer": "Entropy is a thermodynamic state function.",
             "domain": "science", "license": "CC0-1.0",
-        }) + "\\n",
+        }) + "\n",
         encoding="utf-8",
     )
     output = tmp_path / "teacher.jsonl"
