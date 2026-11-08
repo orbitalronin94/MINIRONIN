@@ -41,7 +41,7 @@ FACTS = [
 ("geografía","la Antártida","su condición continental","La Antártida es un continente situado alrededor del Polo Sur y está cubierta en gran parte por una extensa capa de hielo.","El continente geológico no debe confundirse con la banquisa marina estacional que lo rodea.","https://www.bas.ac.uk/about/antarctica/"),
 ("geografía","el ecuador terrestre","su latitud","El ecuador geográfico corresponde a la latitud 0 grados y divide la Tierra en hemisferios norte y sur.","La latitud es una coordenada angular referida al ecuador y al modelo de la figura terrestre adoptado.","https://oceanservice.noaa.gov/education/tutorial_geodesy/"),
 ("historia","la imprenta de tipos móviles de Gutenberg","su difusión europea","La imprenta de tipos móviles metálicos asociada a Johannes Gutenberg se desarrolló en Europa a mediados del siglo XV y transformó la reproducción de textos.","La impresión con tipos móviles existía antes en Asia; la aportación de Gutenberg se refiere al desarrollo y difusión de una tecnología europea concreta.","https://www.britannica.com/technology/printing"),
-("historia","la caída de Constantinopla","su fecha","Constantinopla fue conquistada por los otomanos bajo Mehmed II el 29 de mayo de 1453.","La fecha corresponde a la toma de la ciudad y suele emplearse como hito convencional para el final del Imperio bizantino.","https://www.britannica.com/event/ fall-of-Constantinople-1453"),
+("historia","la caída de Constantinopla","su fecha","Constantinopla fue conquistada por los otomanos bajo Mehmed II el 29 de mayo de 1453.","La fecha corresponde a la toma de la ciudad y suele emplearse como hito convencional para el final del Imperio bizantino.","https://www.britannica.com/event/Fall-of-Constantinople-1453"),
 ("historia","la Revolución francesa","su comienzo convencional","La Revolución francesa suele situarse convencionalmente a partir de 1789, año de acontecimientos como la reunión de los Estados Generales y la toma de la Bastilla.","Una fecha de inicio historiográfica es una convención analítica; los procesos revolucionarios tienen antecedentes y desarrollos graduales.","https://www.britannica.com/event/French-Revolution"),
 ("historia","la Declaración de Independencia de Estados Unidos","su adopción","El Congreso Continental adoptó la Declaración de Independencia de Estados Unidos el 4 de julio de 1776.","La adopción del texto y la firma material de sus ejemplares son acontecimientos documentales distintos.","https://www.archives.gov/founding-docs/declaration"),
 ("historia","la primera llegada humana a la Luna","su fecha y misión","Neil Armstrong y Buzz Aldrin caminaron sobre la Luna durante la misión Apollo 11 en julio de 1969; Michael Collins permaneció en órbita lunar en el módulo de mando.","La tripulación fue de tres astronautas, pero solo dos descendieron a la superficie lunar.","https://www.nasa.gov/mission/apollo-11/"),
@@ -97,7 +97,7 @@ def make_row(fact, variant):
     ab, x = mixed(x, A_B)
     ac, x = mixed(x, A_C)
     ad, x = mixed(x, A_D)
-    question = f"{qa} {subject} {focus}, {qb} {qc} {qd}"
+    question = f"{qa} {subject} {qb} {focus}, {qc} {qd}"
     answer = f"{aa} {claim} {ab} {note} {ac} {ad}"
     return {"question": question, "answer": answer, "domain": domain, "source": source, "fact_id": f"F{FACTS.index(fact)+1:03d}"}
 
@@ -111,11 +111,12 @@ def main():
         raise SystemExit(f"--count must be between 1 and {capacity}")
     seen_q, seen_a = set(), set()
     digest = hashlib.sha256()
-    per_fact = (args.count + len(FACTS) - 1) // len(FACTS)
+    base, extra = divmod(args.count, len(FACTS))
     with gzip.open(args.output, "wt", encoding="utf-8", newline="\n", compresslevel=9) as out:
         written = 0
-        for fact in FACTS:
-            for variant in range(min(10_000, args.count-written)):
+        for fact_index, fact in enumerate(FACTS):
+            quota = base + (1 if fact_index < extra else 0)
+            for variant in range(quota):
                 row = make_row(fact, variant)
                 if row["question"] in seen_q or row["answer"] in seen_a:
                     raise RuntimeError(f"duplicate at row {written}")
