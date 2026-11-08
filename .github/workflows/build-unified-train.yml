@@ -106,6 +106,7 @@ jobs:
           python scripts/acquire_anarchist_library.py --output data/inherited/anarchist-library
           python scripts/acquire_classics_library.py --output data/inherited/classics-library
           python scripts/acquire_japanese_library.py --output data/inherited/japanese-library
+          python scripts/acquire_aozora_japanese_originals.py --output data/inherited/japanese-library/aozora-originals --per-author 20 --max-works 280
           python - <<'PY'
           import json
           from pathlib import Path
@@ -120,9 +121,6 @@ jobs:
               assert data[key] >= minimum, (name, data[key], minimum)
               print(name, data[key])
           PY
-
-      - name: Adquirir literatura japonesa original en japonés con filtro de derechos
-        run: python scripts/acquire_aozora_japanese_originals.py --output data/inherited/japanese-library/aozora-originals --per-author 20 --max-works 280
 
       - name: Copiar exactamente los nueve artículos Markdown admitidos de Papers
         run: |
