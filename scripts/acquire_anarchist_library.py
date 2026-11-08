@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import json
 import re
@@ -29,6 +30,20 @@ def clean_gutenberg(raw: bytes) -> str:
     return body
 
 
+def download_source(row):
+    request = urllib.request.Request(
+        row["plain_text_url"],
+        headers={"User-Agent": "MINIRONIN-research-corpus/1.0 (GitHub Actions; source attribution retained)"},
+    )
+    for attempt in range(4):
+        try:
+            with urllib.request.urlopen(request, timeout=90) as response:
+                return response.read()
+        except Exception:
+            if attempt == 3:
+                raise
+            time.sleep(2 ** attempt)
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", default="data/inherited/anarchist-library")
@@ -45,13 +60,8 @@ def main() -> None:
         "rights_policy": "Project Gutenberg's US public-domain notice is not treated as worldwide clearance. The registry records a separate Spain term assessment; review and exclude separately credited third-party matter.",
         "sources": [],
     }
-    for row in approved:
-        request = urllib.request.Request(
-            row["plain_text_url"],
-            headers={"User-Agent": "MINIRONIN-research-corpus/1.0 (GitHub Actions; source attribution retained)"},
-        )
-        with urllib.request.urlopen(request, timeout=90) as response:
-            raw = response.read()
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        for row, raw in zip(approved, pool.map(download_source, approved)):
         body = clean_gutenberg(raw)
         tokens = row.get("semantic_token_ids", [])
         tagged = " ".join(f"[{token}]" for token in tokens) + "\n\n" + body + "\n"
@@ -79,7 +89,6 @@ def main() -> None:
             "upstream_sha256": hashlib.sha256(raw).hexdigest(),
         })
         print(json.dumps(manifest["sources"][-1], ensure_ascii=False))
-        time.sleep(1)
     manifest["total_documents"] = len(manifest["sources"])
     manifest["total_bytes"] = sum(x["bytes"] for x in manifest["sources"])
     (output / "ANARCHIST-LIBRARY-MANIFEST.json").write_text(
