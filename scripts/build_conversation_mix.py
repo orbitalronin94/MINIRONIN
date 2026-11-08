@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Build a 10M-candidate multi-turn MINIRONIN conversation corpus.
 
+Smoke-test integration revision: 1.0.1.
+
 Uses only structured Q/A rows already present in curated/inherited datasets.
 It creates combinations of each seed answer, a follow-up intent and a voice
 variant. Every row retains seed provenance. Output is a candidate corpus only:
