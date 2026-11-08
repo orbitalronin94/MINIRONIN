@@ -51,15 +51,29 @@ def load_holdout(path: Path) -> list[dict]:
     return rows
 
 
-def generate_tokens(model: MiniRoninLM, prompt: str, max_new_tokens: int) -> tuple[list[int], str]:
+def generate_tokens(
+    model: MiniRoninLM, prompt: str, max_new_tokens: int, *, use_cache: bool = True
+) -> tuple[list[int], str]:
     encoded = list(prompt.encode("utf-8", errors="replace"))
     if not encoded:
         raise ValueError("Prompt encoded to an empty sequence")
     generated: list[int] = []
     context = model.config.context_length
+    cache = None
+    cache_enabled = use_cache and hasattr(model, "forward_cached")
     for _ in range(max_new_tokens):
-        input_ids = torch.tensor([encoded[-context:]], dtype=torch.long)
-        logits, _ = model(input_ids, vocab_limit=ACTIVE_VOCAB)
+        if cache_enabled and len(encoded) <= context:
+            if cache is None:
+                input_ids = torch.tensor([encoded[-context:]], dtype=torch.long)
+                logits, cache = model.forward_cached(input_ids)
+            else:
+                input_ids = torch.tensor([[encoded[-1]]], dtype=torch.long)
+                logits, cache = model.forward_cached(input_ids, cache)
+        else:
+            # Match the reference evaluator's sliding-window positional reset.
+            cache = None
+            input_ids = torch.tensor([encoded[-context:]], dtype=torch.long)
+            logits, _ = model(input_ids, vocab_limit=ACTIVE_VOCAB)
         next_id = int(torch.argmax(logits[0, -1, :]).item())
         if next_id == EOS_ID:
             break
@@ -78,6 +92,7 @@ def main() -> None:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--max-new-tokens", type=int, default=DEFAULT_MAX_NEW_TOKENS)
     parser.add_argument("--threads", type=int, default=2)
+    parser.add_argument("--no-kv-cache", action="store_true", help="Use the slow reference path for parity checks")
     parser.add_argument("--base-diary", type=Path)
     args = parser.parse_args()
 
@@ -108,7 +123,9 @@ def main() -> None:
             prompt = row["question"].strip() + "\nRespuesta:"
             prompt_sha = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
             started = time.perf_counter()
-            token_ids, answer = generate_tokens(model, prompt, args.max_new_tokens)
+            token_ids, answer = generate_tokens(
+                model, prompt, args.max_new_tokens, use_cache=not args.no_kv_cache
+            )
             elapsed = time.perf_counter() - started
             results.append({
                 "id": row["id"],
@@ -162,6 +179,7 @@ def main() -> None:
             "prompt_suffix": "\nRespuesta:",
             "threads": args.threads,
             "model_mode": "eval",
+            "kv_cache": not args.no_kv_cache,
         },
         "comparison_to_base": comparison,
         "scoring": {
