@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Thirty-seed, 100-step MINIRONIN byte-level corpus adaptation tournament.
 
+Verifiable persona corpus integration revision: 1.0.1.
+
 This is a controlled pilot, not a claim of general reasoning ability. All
 seeds see the same deterministic batches and are ranked on the same
 document-disjoint validation set. The configured 9.97M parameter model is
