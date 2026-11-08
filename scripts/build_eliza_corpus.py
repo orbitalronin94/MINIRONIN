@@ -133,6 +133,29 @@ def parse_mix(value):
     return mix
 
 
+def strategy_schedule(count, mix, rng):
+    """Yield an exact, interleaved strategy mix without allocating count entries."""
+    modes = [name for name, weight in mix.items() if weight > 0]
+    rng.shuffle(modes)
+    quotas = {name: (count * mix[name]) // 100 for name in modes}
+    remainder = count - sum(quotas.values())
+    ranked = sorted(
+        modes,
+        key=lambda name: ((count * mix[name]) % 100, -modes.index(name)),
+        reverse=True,
+    )
+    for name in ranked[:remainder]:
+        quotas[name] += 1
+    current = {name: 0 for name in modes}
+    total = sum(quotas.values())
+    for _ in range(count):
+        for name in modes:
+            current[name] += quotas[name]
+        chosen = max(modes, key=lambda name: current[name])
+        current[chosen] -= total
+        yield chosen
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", action="append", required=True, help="Approved JSONL source; repeat for multiple files")
@@ -171,16 +194,14 @@ def main():
         parser.error("no approved question/answer records found")
 
     modes = [name for name, weight in args.mix.items() if weight > 0]
-    weights = [args.mix[name] for name in modes]
     target = Path(args.output)
     target.parent.mkdir(parents=True, exist_ok=True)
     digest = hashlib.sha256()
     counts = {name: 0 for name in modes}
 
     with target.open("w", encoding="utf-8", newline="\n") as output:
-        for index in range(args.count):
+        for index, mode in enumerate(strategy_schedule(args.count, args.mix, rng)):
             source = pool[rng.randrange(len(pool))]
-            mode = rng.choices(modes, weights=weights, k=1)[0]
             counts[mode] += 1
             style_name, instruction = STYLE[mode]
             identity = hashlib.sha256(
