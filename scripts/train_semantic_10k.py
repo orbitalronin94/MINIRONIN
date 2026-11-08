@@ -126,7 +126,7 @@ def make_validation(validation_bytes, tokenizer, id_to_model):
 
 def evaluate(model, validation, device):
     model.eval()
-    totals, counts, per_domain = {}, {}
+    totals, counts, per_domain = {}, {}, {}
     with torch.inference_mode():
         for domain, rows in validation:
             losses = []
