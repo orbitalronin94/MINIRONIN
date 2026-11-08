@@ -149,6 +149,14 @@ jobs:
           unzip -tq prodatphil_en_txt_0_3.zip
           unzip -q prodatphil_en_txt_0_3.zip -d data/inherited/prodatphil-en-v0.3
 
+      - name: Adquirir biblioteca anarquista curada y generar grafo semántico
+        run: |
+          set -euo pipefail
+          python scripts/acquire_anarchist_library.py --output data/inherited/anarchist-library
+          python scripts/build_semantic_library_graph.py
+          test -s data/semantic/semantic-library-graph.json
+          test -s data/semantic/semantic-tokens.json
+
       - name: Instalar PyTorch CPU y lector Parquet
         run: |
           python -m pip install --upgrade pip
