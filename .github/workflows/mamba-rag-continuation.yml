@@ -41,7 +41,7 @@ jobs:
           python-version: "3.11"
 
       - name: Download the completed full RAG index
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: minironin-complete-rag-index
           repository: orbitalronin94/MINIRONIN
@@ -50,7 +50,7 @@ jobs:
           path: artifacts/rag
 
       - name: Download the exact 1,000-step Mamba checkpoint
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: minironin-mamba-50m-from-390k
           repository: orbitalronin94/MINIRONIN
@@ -167,7 +167,7 @@ jobs:
             --top-k 5 --max-new-tokens 128 --threads 2
 
       - name: Upload checkpoints, manifests, metrics and both holdout diaries
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: minironin-mamba-50m-2000-rag-continuation
           path: |
