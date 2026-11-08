@@ -22,7 +22,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-      - name: Checkout immutable holdout and 390k baseline diary
+      - name: Checkout versioned 100-question holdout
         uses: actions/checkout@v5
         with:
           ref: main
@@ -55,14 +55,13 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
 
-      - name: Run the fixed 40-question holdout
+      - name: Run the fixed 100-question holdout
         run: |
           set -euo pipefail
           python -m py_compile scripts/run_mamba_inference_holdout.py src/minironin/mamba.py
           python scripts/run_mamba_inference_holdout.py \
             --checkpoint "$CHECKPOINT_PATH" \
             --holdout benchmarks/inference-holdout-v1.jsonl \
-            --baseline-diary benchmarks/diary/checkpoint-390000.json \
             --output benchmarks/diary/mamba-50m-1000.json \
             --max-new-tokens 128 \
             --threads 2
@@ -70,7 +69,7 @@ jobs:
       - name: Upload complete raw answers and comparison diary
         uses: actions/upload-artifact@v6
         with:
-          name: minironin-mamba-50m-holdout-40
+          name: minironin-mamba-50m-holdout-100
           path: benchmarks/diary/mamba-50m-1000.json
           if-no-files-found: error
           retention-days: 90
