@@ -106,10 +106,10 @@ def main():
     text = SOURCE.read_text(encoding="utf-8")
     entries = extract_entries(text)
     rows = []
-    for entry in entries:
-        for mode in MODES:
-            for fi, frame in enumerate(FRAMES):
-                for vi, variant in enumerate(VARIANTS):
+    for mode in MODES:
+        for entry in entries:
+            for frame in FRAMES:
+                for variant in VARIANTS:
                     rows.append(make_row(len(rows), entry, mode, frame, variant))
                     if len(rows) == TARGET:
                         break
