@@ -1,4 +1,5 @@
 name: Build complete MINIRONIN RAG index
+
 on:
   workflow_dispatch:
     inputs:
@@ -13,21 +14,26 @@ on:
         required: true
         default: true
       include_roninia:
-        description: Checkout and index the approved RONIN-IA data/datasets library
+        description: Checkout and index RONIN-IA data/datasets
         type: boolean
         required: true
         default: true
+
 permissions:
   contents: read
+  actions: read
+
 concurrency:
   group: minironin-rag-index
   cancel-in-progress: false
+
 jobs:
   index:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         if: inputs.include_heretic
         with:
@@ -36,6 +42,7 @@ jobs:
           run-id: 42382055693
           github-token: ${{ github.token }}
           path: external/heretic-artifact
+
       - uses: actions/checkout@v4
         if: inputs.include_roninia
         with:
@@ -43,41 +50,64 @@ jobs:
           ref: main
           path: external/roninia
           fetch-depth: 1
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
+
       - name: Install RAG dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements-rag.txt
-      - name: Build index
+
+      - name: Materialize deterministic project-authored libraries
+        run: |
+          python scripts/build_abstention_datasets.py
+          python scripts/build_personality_datasets.py
+          python scripts/build_lexicon_dataset.py
+
+      - name: Unpack approved HERETIC artifact
+        if: inputs.include_heretic
+        run: |
+          mkdir -p external/heretic-corpus
+          find external/heretic-artifact -type f -name '*.zip' -print0 | while IFS= read -r -d '' f; do
+            unzip -q "$f" -d external/heretic-corpus
+          done
+          test -n "$(find external/heretic-corpus -type f | head -1)"
+
+      - name: Build complete approved index
         env:
-          EMBEDDINGS: \${{ inputs.embeddings }}
-          HERETIC_PATH: \${{ inputs.heretic_path }}
-          RONINIA_PATH: \${{ inputs.roninia_path }}
+          EMBEDDINGS: ${{ inputs.embeddings }}
+          INCLUDE_HERETIC: ${{ inputs.include_heretic }}
+          INCLUDE_RONINIA: ${{ inputs.include_roninia }}
         run: |
           args=(--output artifacts/rag/minironin-rag.sqlite)
           if [ "$EMBEDDINGS" != "true" ]; then args+=(--no-embeddings); fi
-          if [ -n "$HERETIC_PATH" ]; then args+=(--root "HERETIC=$HERETIC_PATH"); fi
-          if [ -n "$RONINIA_PATH" ]; then args+=(--root "RONIN_IA=$RONINIA_PATH"); fi
-          python scripts/build_rag_index.py "\${args[@]}"
+          if [ "$INCLUDE_HERETIC" = "true" ]; then args+=(--root "HERETIC=external/heretic-corpus"); fi
+          if [ "$INCLUDE_RONINIA" = "true" ]; then args+=(--root "RONIN_IA=external/roninia/data/datasets"); fi
+          python scripts/build_rag_index.py "${args[@]}"
+
       - name: Verify database and write manifest
         run: |
           python - <<'PY'
           import sqlite3,json,hashlib,os
-          p="artifacts/rag/minironin-rag.sqlite";db=sqlite3.connect(p)
+          p="artifacts/rag/minironin-rag.sqlite"
+          db=sqlite3.connect(p)
           m=json.loads(db.execute("select value from metadata where key='manifest'").fetchone()[0])
           assert db.execute("select count(*) from chunks").fetchone()[0]==m["chunks_unique"]
           assert m["chunks_unique"]>0
           m["sqlite_bytes"]=os.path.getsize(p)
           h=hashlib.sha256()
           with open(p,"rb") as f:
-            for b in iter(lambda:f.read(1024*1024),b""):h.update(b)
+            for b in iter(lambda:f.read(1024*1024),b""): h.update(b)
           m["sqlite_sha256"]=h.hexdigest()
-          open("artifacts/rag/manifest.json","w").write(json.dumps(m,ensure_ascii=False,indent=2)+"\\n")
+          with open("artifacts/rag/manifest.json","w") as f:
+            json.dump(m,f,ensure_ascii=False,indent=2)
+            f.write("\n")
           print(json.dumps(m,ensure_ascii=False,indent=2))
           PY
+
       - uses: actions/upload-artifact@v4
         with:
           name: minironin-complete-rag-index
