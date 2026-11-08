@@ -1,0 +1,106 @@
+name: MINIRONIN — 50k cínico/troll + abstención aislados
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/style-abstention-50k.yml"
+      - "scripts/train_style_abstention_only.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: minironin-style-abstention-50k
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Generar datasets de personalidad y abstención
+        run: |
+          set -euo pipefail
+          python scripts/build_abstention_datasets.py
+          python scripts/build_personality_datasets.py
+          python scripts/build_lexicon_dataset.py
+          python scripts/validate_lexicon_dataset.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          checks = [
+            ("minironin-casuist-cynic-50k-v1.jsonl", 50000),
+            ("minironin-scientist-exhausted-50k-v1.jsonl", 50000),
+            ("minironin-oracle-doom-50k-v1.jsonl", 50000),
+            ("minironin-error404-indifference-50k-v1.jsonl", 50000),
+            ("minironin-lexicon-diagnostic-50k-v1.jsonl", 50000),
+            ("minironin-abstention-50k.jsonl", 50000),
+            ("minironin-abstain-plain-50k-v1.jsonl", 50000),
+            ("minironin-abstain-literary-50k-v1.jsonl", 50000),
+            ("minironin-abstain-koan-50k-v1.jsonl", 50000),
+          ]
+          for name, expected in checks:
+              p=Path("data/curated")/name
+              assert p.is_file() and p.stat().st_size > 1000000, f"Missing/empty: {p}"
+              rows=sum(1 for line in p.open(encoding="utf-8") if line.strip())
+              assert rows == expected, (name, rows, expected)
+              print(f"{name}: {rows} rows, {p.stat().st_size} bytes")
+          PY
+
+      - name: Descargar checkpoint padre 390k y verificar SHA-256
+        run: |
+          set -euo pipefail
+          mkdir -p style-training/parent
+          curl --fail --location --retry 4 --retry-all-errors \
+            "https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-cycle-1-step-390000/checkpoint-390000.pt" \
+            -o style-training/parent/checkpoint-390000.pt
+          echo "bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730  style-training/parent/checkpoint-390000.pt" | sha256sum -c -
+
+      - name: Instalar PyTorch CPU
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Entrenar 50.000 pasos solo con los nueve datasets seleccionados
+        run: |
+          set -euo pipefail
+          python scripts/train_style_abstention_only.py \
+            --input-checkpoint style-training/parent/checkpoint-390000.pt \
+            --output-dir style-training/checkpoints \
+            --threads 2
+
+      - name: Publicar checkpoints y métricas
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for step in 400000 410000 420000 430000 440000; do
+            cp="style-training/checkpoints/checkpoint-$step.pt"
+            report="style-training/checkpoints/report-$step.json"
+            sums="style-training/checkpoints/SHA256SUMS-$step"
+            test -s "$cp" && test -s "$report"
+            sha256sum "$cp" "$report" > "$sums"
+            gh release create "minironin-style-abstention-step-$step" "$cp" "$report" "$sums" \
+              --title "MINIRONIN style + abstention — step $step" \
+              --notes "Candidate trained from the verified 390k checkpoint with exactly 50,000 additional steps. Training data restricted to five new cynic/troll-style datasets and four abstention datasets. No general corpus, books, HERETIC, or legacy behavior data. Candidate only; independent inference holdout required."
+          done
+
+      - name: Guardar artefactos completos
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-style-abstention-50k-${{ github.run_id }}
+          path: style-training/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
