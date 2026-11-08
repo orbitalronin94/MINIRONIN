@@ -1,0 +1,673 @@
+{
+  "schema": "minironin-library-registry-v1",
+  "description": "Curated cross-library concept map. Semantic tokens are stable concept labels, not model vocabulary IDs.",
+  "libraries": [
+    {
+      "id": "minironin-core",
+      "name": "MINIRONIN core and curated behavior",
+      "project": "MINIRONIN",
+      "source_paths": [
+        "data/curated/"
+      ],
+      "concepts": [
+        "reasoning",
+        "epistemology",
+        "abstention",
+        "engineering",
+        "ci_cd",
+        "software_testing",
+        "reliability",
+        "humor",
+        "knowledge_limits"
+      ]
+    },
+    {
+      "id": "prodatphil",
+      "name": "PRODATPHIL science and logic",
+      "project": "MINIRONIN",
+      "source_paths": [
+        "data/inherited/prodatphil-en-v0.3/"
+      ],
+      "concepts": [
+        "logic",
+        "science",
+        "evidence",
+        "epistemology",
+        "reasoning",
+        "method",
+        "causality",
+        "mathematics"
+      ]
+    },
+    {
+      "id": "heretic",
+      "name": "HERETIC inherited corpus",
+      "project": "HERETIC-RONIN",
+      "source_paths": [
+        "data/inherited/heretic-corpus/"
+      ],
+      "concepts": [
+        "science",
+        "reasoning",
+        "knowledge",
+        "cooperation",
+        "systems",
+        "engineering",
+        "language"
+      ]
+    },
+    {
+      "id": "ronin-papers",
+      "name": "RONIN Papers",
+      "project": "RONIN-IA",
+      "source_paths": [
+        "data/inherited/papers/"
+      ],
+      "concepts": [
+        "epistemology",
+        "falsifiability",
+        "validation",
+        "identifiability",
+        "statistics",
+        "reasoning",
+        "method"
+      ]
+    },
+    {
+      "id": "anarchist-classics",
+      "name": "Anarchist primary texts",
+      "project": "MINIRONIN",
+      "source_paths": [
+        "data/inherited/anarchist-library/"
+      ],
+      "concepts": [
+        "anarchism",
+        "property",
+        "possession",
+        "labor",
+        "exchange",
+        "mutualism",
+        "federalism",
+        "justice",
+        "authority",
+        "law",
+        "political_economy",
+        "state",
+        "religion",
+        "freedom",
+        "materialism",
+        "science",
+        "revolution",
+        "hierarchy",
+        "self_organization",
+        "mutual_aid",
+        "cooperation",
+        "decentralization",
+        "needs",
+        "distribution",
+        "production",
+        "solidarity",
+        "feminism",
+        "education",
+        "prisons",
+        "nationalism",
+        "gender"
+      ]
+    }
+  ],
+  "concepts": [
+    {
+      "id": "reasoning",
+      "label": "Razonamiento",
+      "aliases": [
+        "reasoning",
+        "inference",
+        "argument"
+      ],
+      "relations": [
+        "evidence",
+        "epistemology",
+        "logic"
+      ]
+    },
+    {
+      "id": "epistemology",
+      "label": "Epistemología",
+      "aliases": [
+        "knowledge",
+        "justification",
+        "epistemology"
+      ],
+      "relations": [
+        "evidence",
+        "falsifiability",
+        "reasoning"
+      ]
+    },
+    {
+      "id": "evidence",
+      "label": "Evidencia",
+      "aliases": [
+        "evidence",
+        "source",
+        "support"
+      ],
+      "relations": [
+        "epistemology",
+        "validation",
+        "science"
+      ]
+    },
+    {
+      "id": "science",
+      "label": "Ciencia",
+      "aliases": [
+        "science",
+        "scientific method"
+      ],
+      "relations": [
+        "evidence",
+        "method",
+        "materialism"
+      ]
+    },
+    {
+      "id": "logic",
+      "label": "Lógica",
+      "aliases": [
+        "logic",
+        "formal reasoning"
+      ],
+      "relations": [
+        "reasoning",
+        "mathematics",
+        "evidence"
+      ]
+    },
+    {
+      "id": "method",
+      "label": "Método",
+      "aliases": [
+        "method",
+        "methodology"
+      ],
+      "relations": [
+        "science",
+        "validation",
+        "falsifiability"
+      ]
+    },
+    {
+      "id": "engineering",
+      "label": "Ingeniería",
+      "aliases": [
+        "engineering",
+        "systems engineering"
+      ],
+      "relations": [
+        "systems",
+        "reliability",
+        "ci_cd"
+      ]
+    },
+    {
+      "id": "ci_cd",
+      "label": "Integración y entrega continuas",
+      "aliases": [
+        "ci/cd",
+        "continuous integration",
+        "continuous delivery"
+      ],
+      "relations": [
+        "engineering",
+        "software_testing",
+        "reliability"
+      ]
+    },
+    {
+      "id": "software_testing",
+      "label": "Pruebas de software",
+      "aliases": [
+        "testing",
+        "test automation"
+      ],
+      "relations": [
+        "engineering",
+        "reliability",
+        "validation"
+      ]
+    },
+    {
+      "id": "reliability",
+      "label": "Fiabilidad",
+      "aliases": [
+        "reliability",
+        "robustness"
+      ],
+      "relations": [
+        "engineering",
+        "validation",
+        "evidence"
+      ]
+    },
+    {
+      "id": "cooperation",
+      "label": "Cooperación",
+      "aliases": [
+        "cooperation",
+        "collective action"
+      ],
+      "relations": [
+        "mutual_aid",
+        "solidarity",
+        "self_organization"
+      ]
+    },
+    {
+      "id": "self_organization",
+      "label": "Autoorganización",
+      "aliases": [
+        "self-organization",
+        "horizontal organization"
+      ],
+      "relations": [
+        "decentralization",
+        "cooperation",
+        "federalism"
+      ]
+    },
+    {
+      "id": "decentralization",
+      "label": "Descentralización",
+      "aliases": [
+        "decentralization",
+        "distributed organization"
+      ],
+      "relations": [
+        "federalism",
+        "self_organization",
+        "authority"
+      ]
+    },
+    {
+      "id": "authority",
+      "label": "Autoridad",
+      "aliases": [
+        "authority",
+        "power"
+      ],
+      "relations": [
+        "state",
+        "hierarchy",
+        "freedom",
+        "law"
+      ]
+    },
+    {
+      "id": "state",
+      "label": "Estado",
+      "aliases": [
+        "state",
+        "government"
+      ],
+      "relations": [
+        "authority",
+        "law",
+        "federalism",
+        "revolution"
+      ]
+    },
+    {
+      "id": "freedom",
+      "label": "Libertad",
+      "aliases": [
+        "freedom",
+        "liberty"
+      ],
+      "relations": [
+        "authority",
+        "law",
+        "feminism",
+        "anarchism"
+      ]
+    },
+    {
+      "id": "anarchism",
+      "label": "Anarquismo",
+      "aliases": [
+        "anarchism",
+        "libertarian socialism"
+      ],
+      "relations": [
+        "authority",
+        "state",
+        "self_organization",
+        "federalism",
+        "mutual_aid"
+      ]
+    },
+    {
+      "id": "mutual_aid",
+      "label": "Apoyo mutuo",
+      "aliases": [
+        "mutual aid",
+        "solidarity"
+      ],
+      "relations": [
+        "cooperation",
+        "solidarity",
+        "anarchism"
+      ]
+    },
+    {
+      "id": "solidarity",
+      "label": "Solidaridad",
+      "aliases": [
+        "solidarity",
+        "mutual support"
+      ],
+      "relations": [
+        "mutual_aid",
+        "cooperation",
+        "feminism"
+      ]
+    },
+    {
+      "id": "property",
+      "label": "Propiedad",
+      "aliases": [
+        "property",
+        "ownership"
+      ],
+      "relations": [
+        "possession",
+        "labor",
+        "exchange",
+        "law"
+      ]
+    },
+    {
+      "id": "possession",
+      "label": "Posesión",
+      "aliases": [
+        "possession",
+        "occupancy"
+      ],
+      "relations": [
+        "property",
+        "labor",
+        "justice"
+      ]
+    },
+    {
+      "id": "labor",
+      "label": "Trabajo",
+      "aliases": [
+        "labor",
+        "labour",
+        "work"
+      ],
+      "relations": [
+        "property",
+        "exchange",
+        "production"
+      ]
+    },
+    {
+      "id": "exchange",
+      "label": "Intercambio",
+      "aliases": [
+        "exchange",
+        "market"
+      ],
+      "relations": [
+        "property",
+        "labor",
+        "political_economy"
+      ]
+    },
+    {
+      "id": "mutualism",
+      "label": "Mutualismo",
+      "aliases": [
+        "mutualism"
+      ],
+      "relations": [
+        "property",
+        "exchange",
+        "federalism",
+        "cooperation"
+      ]
+    },
+    {
+      "id": "federalism",
+      "label": "Federalismo",
+      "aliases": [
+        "federalism",
+        "federation"
+      ],
+      "relations": [
+        "decentralization",
+        "self_organization",
+        "mutualism"
+      ]
+    },
+    {
+      "id": "political_economy",
+      "label": "Economía política",
+      "aliases": [
+        "political economy",
+        "economics"
+      ],
+      "relations": [
+        "property",
+        "labor",
+        "exchange",
+        "distribution",
+        "production"
+      ]
+    },
+    {
+      "id": "materialism",
+      "label": "Materialismo",
+      "aliases": [
+        "materialism",
+        "material conditions"
+      ],
+      "relations": [
+        "science",
+        "political_economy",
+        "epistemology"
+      ]
+    },
+    {
+      "id": "revolution",
+      "label": "Revolución",
+      "aliases": [
+        "revolution",
+        "social transformation"
+      ],
+      "relations": [
+        "state",
+        "authority",
+        "hierarchy"
+      ]
+    },
+    {
+      "id": "hierarchy",
+      "label": "Jerarquía",
+      "aliases": [
+        "hierarchy",
+        "domination"
+      ],
+      "relations": [
+        "authority",
+        "state",
+        "freedom"
+      ]
+    },
+    {
+      "id": "feminism",
+      "label": "Feminismo",
+      "aliases": [
+        "feminism",
+        "women's emancipation"
+      ],
+      "relations": [
+        "freedom",
+        "solidarity",
+        "gender"
+      ]
+    },
+    {
+      "id": "education",
+      "label": "Educación",
+      "aliases": [
+        "education",
+        "free education"
+      ],
+      "relations": [
+        "science",
+        "freedom",
+        "self_organization"
+      ]
+    },
+    {
+      "id": "gender",
+      "label": "Género",
+      "aliases": [
+        "gender",
+        "sex equality"
+      ],
+      "relations": [
+        "feminism",
+        "freedom",
+        "solidarity"
+      ]
+    },
+    {
+      "id": "prisons",
+      "label": "Prisiones",
+      "aliases": [
+        "prisons",
+        "penal system"
+      ],
+      "relations": [
+        "state",
+        "authority",
+        "justice"
+      ]
+    },
+    {
+      "id": "nationalism",
+      "label": "Nacionalismo",
+      "aliases": [
+        "nationalism",
+        "patriotism"
+      ],
+      "relations": [
+        "state",
+        "hierarchy",
+        "freedom"
+      ]
+    },
+    {
+      "id": "justice",
+      "label": "Justicia",
+      "aliases": [
+        "justice",
+        "right"
+      ],
+      "relations": [
+        "law",
+        "property",
+        "authority"
+      ]
+    },
+    {
+      "id": "law",
+      "label": "Derecho y ley",
+      "aliases": [
+        "law",
+        "legal order"
+      ],
+      "relations": [
+        "state",
+        "authority",
+        "property",
+        "justice"
+      ]
+    },
+    {
+      "id": "needs",
+      "label": "Necesidades",
+      "aliases": [
+        "needs",
+        "well-being"
+      ],
+      "relations": [
+        "distribution",
+        "production",
+        "cooperation"
+      ]
+    },
+    {
+      "id": "distribution",
+      "label": "Distribución",
+      "aliases": [
+        "distribution",
+        "allocation"
+      ],
+      "relations": [
+        "needs",
+        "production",
+        "political_economy"
+      ]
+    },
+    {
+      "id": "production",
+      "label": "Producción",
+      "aliases": [
+        "production",
+        "industry"
+      ],
+      "relations": [
+        "labor",
+        "distribution",
+        "cooperation"
+      ]
+    }
+  ],
+  "concept_relations": [
+    {
+      "from": "anarchism",
+      "to": "ci_cd",
+      "type": "cross_library_analogy_not_equivalence",
+      "note": "Descentralización y coordinación distribuida pueden compararse; no implican identidad entre teoría política y arquitectura técnica."
+    },
+    {
+      "from": "cooperation",
+      "to": "engineering",
+      "type": "cross_domain_bridge",
+      "note": "Cooperación como patrón social y coordinación de componentes; analogía, no equivalencia."
+    },
+    {
+      "from": "epistemology",
+      "to": "anarchism",
+      "type": "cross_domain_bridge",
+      "note": "Crítica de autoridad y evaluación de justificaciones; no asumir que una postura política determina la verdad."
+    },
+    {
+      "from": "science",
+      "to": "anarchism",
+      "type": "historical_theme",
+      "note": "Materialismo y educación científica aparecen en autores clásicos; tratar como posiciones históricas debatibles."
+    },
+    {
+      "from": "self_organization",
+      "to": "systems",
+      "type": "cross_domain_bridge",
+      "note": "Autoorganización como concepto común en sistemas sociales y técnicos."
+    }
+  ]
+}
