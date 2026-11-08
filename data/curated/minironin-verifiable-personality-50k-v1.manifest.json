@@ -1,0 +1,72 @@
+{
+  "dataset": "MINIRONIN verifiable facts with erudite cynical voice",
+  "version": 1,
+  "records": 50000,
+  "unique_rows": 50000,
+  "underlying_fact_count": 40,
+  "topic_count": 7,
+  "method": "50k deterministic combinations of 40 institutional fact cards, 10 question frames, 10 context instructions and 15 original dry-humour endings; not 50k independent facts",
+  "sources": [
+    {
+      "title": "BIPM constants",
+      "url": "https://www.bipm.org/en/measurement-units/si-defining-constants"
+    },
+    {
+      "title": "BIPM units",
+      "url": "https://www.bipm.org/en/measurement-units/si-base-units"
+    },
+    {
+      "title": "EC interoperability",
+      "url": "https://digital-markets-act.ec.europa.eu/businesses-portal/interoperability_en"
+    },
+    {
+      "title": "EC portability",
+      "url": "https://digital-markets-act.ec.europa.eu/businesses-portal/end-user-data-portability_en"
+    },
+    {
+      "title": "EU Council DMA",
+      "url": "https://www.consilium.europa.eu/en/policies/digital-markets-act/"
+    },
+    {
+      "title": "IEA Energy and AI",
+      "url": "https://www.iea.org/reports/energy-and-ai/executive-summary"
+    },
+    {
+      "title": "IEA energy supply",
+      "url": "https://www.iea.org/reports/energy-and-ai/energy-supply-for-ai"
+    }
+  ],
+  "files": [
+    {
+      "file": "data/curated/minironin-verifiable-personality-50k-v1-part1.jsonl.gz",
+      "records": 10000,
+      "bytes": 683863,
+      "sha256": "bbcd3e19edbfb6c7b09efd2e0a23b4aa2203a4a042b62b9e2295bc5dac9a942e"
+    },
+    {
+      "file": "data/curated/minironin-verifiable-personality-50k-v1-part2.jsonl.gz",
+      "records": 10000,
+      "bytes": 685460,
+      "sha256": "938dac118936de93ba21d6d16f0d2bffdbd01cb6a5e03e44174882bdd04064d2"
+    },
+    {
+      "file": "data/curated/minironin-verifiable-personality-50k-v1-part3.jsonl.gz",
+      "records": 10000,
+      "bytes": 682671,
+      "sha256": "ec45ceed3a5b996a1e4dc86e3daa81076d641d5764fd8aba6e0c2445445487f7"
+    },
+    {
+      "file": "data/curated/minironin-verifiable-personality-50k-v1-part4.jsonl.gz",
+      "records": 10000,
+      "bytes": 684253,
+      "sha256": "f04ec4ee4a2a86db47a41468fd37bec28c8df62d70094583379ee0ca5c7931a4"
+    },
+    {
+      "file": "data/curated/minironin-verifiable-personality-50k-v1-part5.jsonl.gz",
+      "records": 10000,
+      "bytes": 681216,
+      "sha256": "38169871a3315f1fd88b0547876643362cc450507487591597a37bfc10d5dbed"
+    }
+  ],
+  "quality_note": "Facts paraphrased from institutional sources. Projections remain labeled as projections; observations retain their period. This teaches style around grounded facts, not factual omniscience."
+}
