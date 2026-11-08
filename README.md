@@ -50,11 +50,11 @@ Que un modelo de apenas 9.970.176 parámetros cargue con semejante catedral de c
 
 
 
-## Entrenamiento activo — Transformer 10M, 390k → 400k
+## Entrenamiento en curso — Transformer 10M, 390k → 400k
 
 El checkpoint MAIN experimental es el Transformer decoder-only de **9.970.176 parámetros / 390.000 pasos**. El Mamba 50M está archivado y no forma parte de esta línea.
 
-El workflow activo [`train-10m-from-390k-10k.yml`](.github/workflows/train-10m-from-390k-10k.yml) continúa exactamente desde el checkpoint de 390k verificado por SHA-256. Ejecuta **10.000 pasos adicionales** (objetivo 400.000) en un runner estándar gratuito de GitHub Actions, CPU, 2 hilos, batch 2, secuencia 128 y caché de corpus durante la ejecución. La planificación cosenoidal conserva el horizonte de 60.000 pasos usado por el entrenamiento largo registrado; este trabajo ejecuta solo el primer segmento de 10k.
+El workflow preparado [`train-10m-from-390k-10k.yml`](.github/workflows/train-10m-from-390k-10k.yml) continuará exactamente desde el checkpoint de 390k verificado por SHA-256. Ejecuta **10.000 pasos adicionales** (objetivo 400.000) en un runner estándar gratuito de GitHub Actions, CPU, 2 hilos, batch 2, secuencia 128 y caché de corpus durante la ejecución. La planificación cosenoidal conserva el horizonte de 60.000 pasos usado por el entrenamiento largo registrado; este trabajo ejecuta solo el primer segmento de 10k.
 
 El corpus cargado incluye todo el texto compatible de HERETIC-RONIN y PRODATPHIL v0.3, más los conjuntos curados actuales de identidad, conducta, ingeniería, personalidad, abstención y lexicón. El manifiesto informa documentos por dominio, mezcla, exclusiones y hashes. Los generadores conductuales se ejecutan y verifican antes de cargar el corpus.
 
@@ -62,8 +62,7 @@ El corpus cargado incluye todo el texto compatible de HERETIC-RONIN y PRODATPHIL
 
 - Baseline MAIN: [release 390k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-390000-main).
 - Registro canónico: [`models/MAIN.json`](models/MAIN.json).
-- Workflow: [`.github/workflows/train-10m-from-390k-10k.yml`](.github/workflows/train-10m-from-390k-10k.yml).
-- Ejecución activa: [run 42480987470 — Transformer 10M, 390k → 400k](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42480987470). Estado inicial: checkpoint 390k descargado y SHA-256 verificado; publicación del alias MAIN en curso.
+- [Workflow de entrenamiento en GitHub Actions](https://github.com/orbitalronin94/MINIRONIN/blob/main/.github/workflows/train-10m-from-390k-10k.yml). Run de entrenamiento: [MINIRONIN — Transformer 10M desde 390k +10k corpus completo](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42480987470). Esta es la ejecución de entrenamiento, no la CI del PR.
 
 ---
 
@@ -79,21 +78,7 @@ El experimento Mamba de **49.083.392 parámetros** deja de ser el modelo princip
 
 **Estado:** archivado como experimento fallido de calidad de generación; no se borra ni se presenta como modelo principal. La promoción del Transformer de 390k es una decisión explícita para retomar la línea de 10M.
 
-## Modelo principal promovido — Transformer 10M (390.000 pasos)
-
-**MAIN · baseline experimental**
-
-El modelo principal vuelve a ser el Transformer decoder-only de **9.970.176 parámetros**, checkpoint de **390.000 pasos**:
-
-- Arquitectura: `transformer-decoder-only`, configuración `configs/model-10m.json`.
-- Parámetros: **9.970.176**.
-- Tokenización de entrenamiento: bytes UTF-8 + EOS, 257 símbolos activos.
-- Checkpoint SHA-256: `bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730`.
-- Release fuente: [minironin-cycle-1-step-390000](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-cycle-1-step-390000).
-- Release de promoción: [minironin-transformer-10m-step-390000-main](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-390000-main).
-- Registro canónico: [models/MAIN.json](models/MAIN.json).
-
-La promoción restaura este checkpoint como **base de trabajo**, no certifica que sus respuestas sean buenas. El holdout previo del Transformer mostró salidas problemáticas; por eso el siguiente experimento es una continuación controlada de **10.000 pasos** con todo el corpus disponible y después una evaluación pareada. No se confunde pérdida de validación con calidad conversacional.
+### Registro histórico de salidas del checkpoint 390k
 
 Sus 390.000 pasos dejaron algunas salidas que merecen un lugar en el museo:
 
