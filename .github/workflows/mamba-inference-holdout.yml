@@ -49,7 +49,7 @@ jobs:
           test -n "$checkpoint"
           mkdir -p .tmp/mamba
           cp "$checkpoint" .tmp/mamba/mamba-checkpoint-2000.pt
-          echo "CHECKPOINT_PATH=.tmp/mamba/mamba-checkpoint-1000.pt" >> "$GITHUB_ENV"
+          echo "CHECKPOINT_PATH=.tmp/mamba/mamba-checkpoint-2000.pt" >> "$GITHUB_ENV"
 
       - name: Install CPU PyTorch
         run: |
