@@ -31,7 +31,7 @@ def search(path,query,k=5,model="intfloat/multilingual-e5-small"):
  out=[]
  for x in sorted(pool.values(),key=lambda z:z["score"],reverse=True)[:k]:
   r=x["r"];m=db.execute("SELECT * FROM documents WHERE document_id=?",(r["document_id"],)).fetchone()
-  aliases=[dict(a) for a in db.execute("SELECT source_id,relative_path,locator FROM chunk_sources WHERE chunk_id=?",(r["chunk_id"],)).fetchall()]
+  aliases=[{**dict(a),"record_metadata":json.loads(a["record_metadata"] or "{}")} for a in db.execute("SELECT source_id,relative_path,locator,record_metadata FROM chunk_sources WHERE chunk_id=?",(r["chunk_id"],)).fetchall()]
   out.append({"chunk_id":r["chunk_id"],"text":r["text"],"record_metadata":json.loads(r["record_metadata"] or "{}"),"rrf_score":x["score"],"channels":x["channels"],"provenance":dict(m) if m else {},"all_source_locations":aliases})
  db.close();return out
 def main():
