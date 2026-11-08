@@ -7,7 +7,7 @@ Este currículo añade **1.250.000 ejemplos** en 25 datasets independientes:
 
 ## Generación y trazabilidad
 
-El generador es `scripts/generate_basic_curricula.py`; el workflow `.github/workflows/generate-basic-curricula.yml` crea los ficheros en GitHub Actions y publica el artefacto `minironin-basic-maths-facts-24x50k`. Cada dataset se entrega como JSONL comprimido en gzip y con manifiesto SHA-256 de los bytes comprimidos y descomprimidos.
+El generador es `scripts/generate_basic_curricula.py`; el workflow `.github/workflows/generate-basic-curricula.yml` crea los ficheros en GitHub Actions y publica el artefacto `minironin-basic-maths-facts-25x50k`. Cada dataset se entrega como JSONL comprimido en gzip y con manifiesto SHA-256 de los bytes comprimidos y descomprimidos.
 
 Las operaciones aritméticas se calculan mediante Python; no se copian respuestas escritas a mano. Las divisiones son exactas. Las fracciones se reducen. Los ejercicios de porcentajes incluyen resultados enteros y decimales.
 
