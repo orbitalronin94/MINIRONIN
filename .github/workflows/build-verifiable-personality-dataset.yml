@@ -45,7 +45,9 @@ jobs:
           assert total==50000
           print("verified_records=", total)
           PY
-      - name: Smoke-test conversation combinator without training\n        run: python scripts/build_conversation_mix.py --target 1000 --shard-size 500 --output-dir "$RUNNER_TEMP/conversation-smoke"\n      - name: Commit generated dataset to this feature branch
+      - name: Smoke-test conversation combinator without training
+        run: python scripts/build_conversation_mix.py --target 1000 --shard-size 500 --output-dir "$RUNNER_TEMP/conversation-smoke"
+      - name: Commit generated dataset to this feature branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
