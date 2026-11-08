@@ -15,6 +15,7 @@ on:
       - "scripts/build_abstention_datasets.py"
       - "scripts/build_personality_datasets.py"
       - "scripts/build_lexicon_dataset.py"
+      - "scripts/generate_abstention_dataset.py"
       - "scripts/validate_lexicon_dataset.py"
       - "scripts/acquire_anarchist_library.py"
       - "scripts/acquire_classics_library.py"
@@ -66,6 +67,7 @@ jobs:
           python scripts/build_personality_datasets.py
           python scripts/build_lexicon_dataset.py
           python scripts/validate_lexicon_dataset.py
+          python scripts/generate_abstention_dataset.py --output data/curated/minironin-abstention-50k.jsonl
           mkdir -p unified-input/behavioral-datasets unified-input/lexicon-source
           cp data/curated/minironin-lexicon-diagnostic-50k-v1.jsonl data/curated/lexicon-50k-manifest.json unified-input/behavioral-datasets/
           cp data/curated/minironin-abstain-plain-50k-v1.jsonl data/curated/minironin-abstain-literary-50k-v1.jsonl data/curated/minironin-abstain-koan-50k-v1.jsonl data/curated/minironin-aristocrat-trivial-50k-v1.jsonl data/curated/abstention-50k-manifest.json unified-input/behavioral-datasets/
@@ -155,7 +157,8 @@ jobs:
             generated-curricula \
             generated-basic-curricula \
             unified-input/behavioral-datasets \
-            unified-input/lexicon-source
+            unified-input/lexicon-source \
+            data/curated
           (cd unified-train && sha256sum -c SHA256SUMS)
           cat unified-train/quality-report.json
 
