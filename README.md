@@ -9,11 +9,17 @@ Puede heredar y curar bibliotecas de datos reutilizables de [RONIN-IA](https://g
 MINIRONIN se desarrolla y se entrena **desde GitHub Actions**, usando los runners estándar que GitHub pone a disposición del repositorio. La idea es deliberadamente poco glamurosa: nada de una workstation escondida debajo de la mesa, nada de alquilar una GPU monstruosa y nada de depender de que el autor tenga el portátil encendido. El laboratorio vive en los workflows.
 
 - **Runners gratuitos:** usamos runners estándar de GitHub Actions dentro de las condiciones y cuotas aplicables al repositorio. No se presupone ni se contrata cómputo de pago.
+
+  > De cómo se fizo labor en fragua ajena sin pagar peaje, ca el dueño de la fragua face cuenta de los martillazos, e face mal si los pierde.
 - **CPU antes que cartera:** los entrenamientos actuales se ejecutan en CPU. No hay una GPU dedicada detrás haciendo magia; por eso los pasos cuestan tiempo y los modelos se mantienen compactos.
 - **Sin máquina local como requisito:** preparación de corpus, validaciones, entrenamiento, evaluación y publicación de artefactos se orquestan mediante workflows. Un clon local puede servir para inspeccionar o desarrollar, pero no es el centro del proceso.
 - **Runners efímeros:** cada ejecución recibe un entorno temporal. Lo que deba sobrevivir se publica expresamente como artefacto, release, checkpoint o cambio versionado en Git. Si un workflow falla antes de subir el artefacto, los logs pueden conservar métricas y hashes, pero no resucitan los bytes del checkpoint desaparecido.
+
+  > Del sello sin cuerpo, que es como epitafio en piedra sin el muerto debaxo.
 - **Presupuesto con límites:** «gratuito» no significa infinito. Aplican las cuotas, límites de duración, concurrencia, almacenamiento y retención de artefactos de GitHub; también dependemos de que las fuentes externas sigan disponibles. Los workflows deben fallar con claridad si no pueden descargar, verificar o publicar sus entradas y salidas.
 - **Trazabilidad por delante del postureo:** los hashes SHA-256, manifiestos, logs y resultados de evaluación permiten saber qué datos y checkpoint participaron en cada ejecución. Un workflow verde demuestra que ese proceso terminó; no demuestra por sí solo que el modelo sea inteligente.
+
+  > Del workflow verde, que non face prueba de seso, mas de que el escribano acabó su escripto sin que se le rompiesse la pluma.
 
 En resumen: **cómputo austero, automatización pública y checkpoints verificables**. Si el modelo tarda tres horas en hacer algo que una GPU cara haría en tres minutos, al menos la factura no nos obliga a vender un riñón. La lentitud es una restricción de ingeniería; fingir que tenemos un clúster no es una estrategia.
 
@@ -44,9 +50,13 @@ Los registros estructurados, con run/job IDs, hashes disponibles, configuración
 - **Modelo independiente:** MINIRONIN define su propia arquitectura, contrato de tokenizador, inicialización, objetivo de entrenamiento, evaluación y criterios de publicación.
 - **Sin herencia de workflows:** no se copian workflows ni scripts de entrenamiento de los repositorios hermanos.
 - **Fundamentos de código abierto:** PyTorch es la base inicial. Las dependencias de tokenización y evaluación requieren revisión y fijación de versiones por separado.
-- **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada. El Transformer de 9.970.176 parámetros / 400k es la referencia principal experimental; Mamba 50M queda archivado como experimento y no como modelo activo.
+- **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada.
+
+  > De la crudeza del yermo: que quien non sabe perder la memoria en pocos libros, non la ganará en muchos. El Transformer de 9.970.176 parámetros / 400k es la referencia principal experimental; Mamba 50M queda archivado como experimento y no como modelo activo.
 
 Que un modelo de apenas 9.970.176 parámetros cargue con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico sigue siendo un ejercicio de tacañería computacional de primer orden. Hemos vuelto a la dieta de diez millones: menos músculo, más obligación de aprender algo útil.
+
+> De la dieta de diez millones: menos músculo, más obligación de aprender algo útil.
 
 
 
@@ -68,6 +78,8 @@ Para reproducir la referencia lenta: añade `--no-kv-cache`. La equivalencia se 
 
 El checkpoint MAIN experimental es el Transformer decoder-only de **9.970.176 parámetros / 400.000 pasos**, entrenado desde el checkpoint 390k con 10.000 pasos adicionales sobre el corpus completo. Mamba 50M permanece archivado.
 
+> De la promoción que non es promesa: que se puede alçar por señera una cosa e non tenerla por buena, ca el alçar es del señor, el valer es de la cosa.
+
 - **Checkpoint:** [release 400k promocionada](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-400000-candidate).
 - **SHA-256:** `f0c40c4a4196f2a87451a34139656ba41e824b3b75e6fc209758ccb7a3642c4b`.
 - **Holdout:** [run 42483511717 — diario de 100 respuestas](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42483511717). Inferencia greedy, 128 tokens máximos, 2 hilos, sin KV cache. SHA-256 del holdout: `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`.
@@ -78,6 +90,8 @@ El checkpoint MAIN experimental es el Transformer decoder-only de **9.970.176 pa
 
 Selección literal de fragmentos del diario real de inferencia (no son respuestas correctas; se conservan por su valor cómico). El modelo sigue mostrando una fijación recurrente con la Unión Europea, incluso cuando nadie se la pregunta:
 
+> Del museo de los balbuceos: ca non se guarda lo que se diz bien, mas lo que se diz mal, que es lo que muestra la costura del sayo.
+
 | Pregunta | Respuesta literal (fragmento) |
 |---|---|
 | «¿Qué número estoy pensando ahora mismo?» | «La ausencia de este parlamento europeo que no es un esta esta coco co co co…» |
@@ -87,7 +101,19 @@ Selección literal de fragmentos del diario real de inferencia (no son respuesta
 | Pregunta troll | «El expediente metafísico de la república de los calcetines de la bibliotagranesta…» |
 | Pregunta sobre CI/CD | «La configuración es una decol del coli coli cococoni coconi cococoni…» |
 
-La Unión Europea reaparece en el dominio de incertidumbre y también en el bloque troll. La hipótesis de que MINIRONIN cree que el Parlamento Europeo es la respuesta a cualquier pregunta queda, por ahora, sin descartar. El checkpoint 390k ya tenía el mismo tic: el 400k no lo ha superado; **la obsesión institucional continúa**.
+La Unión Europea reaparece en el dominio de incertidumbre y también en el bloque troll.
+
+> De cómo la criatura non supo qué era un gate, e fabló de una biblioteca sumergida, e non erró del todo, ca la biblioteca guarda e non dexa ver.
+
+> De los cien juicios: que cien preguntas se fizieron, e cien respuestas se oyeren, e ninguna fue tenida por buena, e todas por verdaderas en su letra.
+
+> Regla del códice, ya sabida: la metáfora puede ser fantástica; la evidencia, jamás. E el balbuceo es evidencia. La hipótesis de que MINIRONIN cree que el Parlamento Europeo es la respuesta a cualquier pregunta queda, por ahora, sin descartar. El checkpoint 390k ya tenía el mismo tic: el 400k no lo ha superado; **la obsesión institucional continúa**.
+
+> De cómo la criatura creció diez mil passos e non mudó de conseja, ca crecer en cuerpo non es crecer en seso.
+
+> De cómo la criatura, preguntada por cosas diversas, respondió siempre con la mesma conseja, e non por saberla, mas por non saber otra.
+
+> De cómo la criatura fabló de un parlamento que non vido, e de una ausencia que non supo nombrar, e parecióse a los que dellos fablan sin haberlos visto.
 
 - Registro canónico: [`models/MAIN.json`](models/MAIN.json).
 - [Artefacto descargable con `diary.json`, checkpoint y SHA-256](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42483511717/artifacts/13618766409).
@@ -96,7 +122,9 @@ La Unión Europea reaparece en el dominio de incertidumbre y también en el bloq
 
 ## Experimento Mamba 50M — archivado
 
-El experimento Mamba de **49.083.392 parámetros** deja de ser el modelo principal y se conserva como rama experimental. Su checkpoint de 1.000 pasos se promovió temporalmente, pero la evaluación posterior no justificó mantenerlo como referencia activa.
+El experimento Mamba de **49.083.392 parámetros** deja de ser el modelo principal y se conserva como rama experimental.
+
+> Del cuerpo que se guarda e non se entierra: que el Mamba non murió, empero fue puesto en arca, e el arca tiene sello, e el sello tiene cuenta. Su checkpoint de 1.000 pasos se promovió temporalmente, pero la evaluación posterior no justificó mantenerlo como referencia activa.
 
 - Arquitectura: `mamba-selective-scan-v1`.
 - Parámetros: **49.083.392**.
@@ -181,6 +209,8 @@ Por tanto, evaluamos dos cosas por separado: si responde con la personalidad bus
 
 El objetivo conductual es un empirismo escéptico: lógica, demostraciones, evidencia falsable, causalidad y probabilidad por delante de autoridad, popularidad o atractivo retórico. El humor seco es estilo, no sustituto de la exactitud. La abstención canónica sigue siendo `ni puta idea, la verdad`.
 
+> De la confesión de la ignorancia, que es la más limpia de las respuestas, e la más difícil de fablar sin parecer necio.
+
 - [Currículo de razonamiento y mezcla objetivo](docs/REASONING_CURRICULUM.md).
 - [Plan y contabilidad de 5.000 obras](docs/BOOKS_5000_PLAN.md).
 - [Biblioteca de libros y fuentes](data/books/README.md).
@@ -229,3 +259,6 @@ El bot de [inference holdout diary](.github/workflows/inference-holdout-diary.ym
 ## Experimento: entrenamiento frente a RAG semántico
 
 Se ha añadido un benchmark independiente para comparar el mismo checkpoint MINIRONIN en dos condiciones: inferencia directa y recuperación semántica sobre el split de entrenamiento de la biblioteca completa. Usa embeddings `all-MiniLM-L6-v2`, fragmentos con solapamiento, búsqueda coseno exacta por bloques y conserva respuestas pareadas, fuentes recuperadas, latencias y hashes. No altera el entrenamiento evolutivo ni promociona modelos. Protocolo: [docs/RAG_VS_TRAINING.md](docs/RAG_VS_TRAINING.md). Ejecución automática al fusionar y repetible manualmente: [workflow de comparación](.github/workflows/semantic-rag-benchmark.yml). La puntuación de calidad queda pendiente de revisión humana ciega; similitud coseno no equivale a exactitud.
+
+
+> Ordenamos e mandamos que ninguno tenga por buena la criatura por su tamaño, nin por mala por su balbuceo, ca el tamaño face bulto e el balbuceo face costura, e por la costura se conosce la mano del sastre.
