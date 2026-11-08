@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   train:
-    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_sha == 'ded8469b77038afbd60b8fa4282ef42852173026'
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
