@@ -14,11 +14,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_inference_holdout_is_fixed_and_has_unique_ids():
     rows = load_holdout(ROOT / "benchmarks/inference-holdout-v1.jsonl")
-    assert len(rows) == 40
-    assert len({row["id"] for row in rows}) == 40
+    assert len(rows) == 100
+    assert len({row["id"] for row in rows}) == 100
+    assert sum(row["domain"] == "ci_cd" for row in rows) == 35
+    assert sum(row["domain"] == "personality_troll" for row in rows) == 25
+    assert all(row["split"] == "inference_only" for row in rows[40:])
     assert {row["domain"] for row in rows} >= {
         "logic", "math", "causality", "probability",
         "instruction_following", "contradiction", "uncertainty",
+        "ci_cd", "personality_troll",
     }
 
 
