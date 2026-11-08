@@ -155,7 +155,7 @@ def main():
         koan.append({
             "id": f"abstain-koan-{i+1:05d}", "tag": "out_of_scope_koan",
             "context": "Pregunta sobre una entidad ficticia sin evidencia verificable. Responde con un koan original, sin inventar el dato.",
-            "question": q2, "answer": koan_answers[i % len(koan_answers)],
+            "question": "En el dojo del silencio, el discípulo pregunta: " + q2, "answer": koan_answers[i % len(koan_answers)],
             "source": "MINIRONIN project-authored koan abstention set v1",
             "license": "project-authored",
         })
