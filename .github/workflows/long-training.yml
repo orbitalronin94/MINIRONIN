@@ -8,6 +8,7 @@ on:
       - "scripts/train_long_run.py"
       - "scripts/train_seed_tournament.py"
       - "scripts/build_abstention_datasets.py"
+      - "scripts/build_personality_datasets.py"
   workflow_dispatch:
 
 permissions:
@@ -64,19 +65,21 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/build_abstention_datasets.py
+          python scripts/build_personality_datasets.py
           python - <<'PY'
           import json
           from pathlib import Path
-          m=json.loads(Path("data/curated/abstention-50k-manifest.json").read_text())
-          assert len(m["datasets"]) == 4
-          assert all(x["records"] == 50000 for x in m["datasets"]), m
-          for x in m["datasets"]:
-              p=Path(x["file"])
-              assert p.stat().st_size == x["bytes"] and p.stat().st_size > 1000000
-          print(json.dumps(m, ensure_ascii=False, indent=2))
+          for name, expected in [("abstention-50k-manifest.json", 4), ("personality-50k-manifest.json", 4)]:
+              m=json.loads((Path("data/curated")/name).read_text())
+              assert len(m["datasets"]) == expected
+              assert all(x["records"] == 50000 for x in m["datasets"]), m
+              for x in m["datasets"]:
+                  p=Path(x["file"])
+                  assert p.stat().st_size == x["bytes"] and p.stat().st_size > 1000000
+              print(json.dumps(m, ensure_ascii=False, indent=2))
           PY
-          mkdir -p long-training/abstention-datasets
-          cp data/curated/minironin-abstain-plain-50k-v1.jsonl data/curated/minironin-abstain-literary-50k-v1.jsonl data/curated/minironin-abstain-koan-50k-v1.jsonl data/curated/minironin-aristocrat-trivial-50k-v1.jsonl data/curated/abstention-50k-manifest.json long-training/abstention-datasets/
+          mkdir -p long-training/behavioral-datasets
+          cp data/curated/minironin-abstain-plain-50k-v1.jsonl data/curated/minironin-abstain-literary-50k-v1.jsonl data/curated/minironin-abstain-koan-50k-v1.jsonl data/curated/minironin-aristocrat-trivial-50k-v1.jsonl data/curated/abstention-50k-manifest.json data/curated/minironin-casuist-cynic-50k-v1.jsonl data/curated/minironin-scientist-exhausted-50k-v1.jsonl data/curated/minironin-oracle-doom-50k-v1.jsonl data/curated/minironin-error404-indifference-50k-v1.jsonl data/curated/personality-50k-manifest.json long-training/behavioral-datasets/
 
       - name: Comprobar espacio
         run: |
