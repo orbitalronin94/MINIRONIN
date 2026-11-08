@@ -7,7 +7,8 @@ from __future__ import annotations
 
 import random
 from collections import Counter, defaultdict
-from typing import Iterable, Mapping\nfrom collections.abc import Sequence
+from collections.abc import Sequence
+from typing import Iterable, Mapping
 
 
 class LibrarySampler:
@@ -24,6 +25,7 @@ class LibrarySampler:
         self.weights = {str(k): float(v) for k, v in weights.items()}
         if not self.weights or any(v <= 0 for v in self.weights.values()):
             raise ValueError("Every configured library weight must be positive")
+
         self.documents: dict[str, list[Mapping]] = defaultdict(list)
         seen_ids: set[tuple[str, str]] = set()
         for doc in documents:
@@ -32,7 +34,10 @@ class LibrarySampler:
             library = doc.get("library_id")
             tokens = doc.get("token_ids")
             doc_id = doc.get("id") or doc.get("sha256")
-            if not library or not isinstance(tokens, Sequence) and not (hasattr(tokens, "__len__") and hasattr(tokens, "__getitem__")) or not doc_id:
+            sequence_like = isinstance(tokens, Sequence) or (
+                hasattr(tokens, "__len__") and hasattr(tokens, "__getitem__")
+            )
+            if not library or not sequence_like or not doc_id:
                 raise ValueError("Each document needs library_id, id/sha256 and token_ids")
             identity = (str(library), str(doc_id))
             if identity in seen_ids:
@@ -40,21 +45,25 @@ class LibrarySampler:
             seen_ids.add(identity)
             if len(tokens) >= minimum_tokens:
                 self.documents[str(library)].append(doc)
+
         self.available = sorted(k for k in self.weights if self.documents.get(k))
         if not self.available:
             raise ValueError("No weighted libraries contain eligible training documents")
         total = sum(self.weights[k] for k in self.available)
         self.probabilities = {k: self.weights[k] / total for k in self.available}
+
         self._eligible_cache: dict[tuple[str, int], list[Mapping]] = {}
         self._decks: dict[tuple[str, int], list[Mapping]] = {}
         self._deck_positions: Counter[tuple[str, int]] = Counter()
+        self._last_sequence_length: dict[str, int] = {}
         self.tokens_seen: Counter[str] = Counter()
         self.document_uses: Counter[str] = Counter()
         self.unique_documents: dict[str, set[str]] = defaultdict(set)
-        self._uses_by_document: Counter[tuple[str, str]] = Counter()\n        self._last_sequence_length: dict[str, int] = {}
+        self._uses_by_document: Counter[tuple[str, str]] = Counter()
 
     def _eligible_documents(self, library: str, sequence_length: int) -> list[Mapping]:
         key = (library, sequence_length)
+        self._last_sequence_length[library] = sequence_length
         if key not in self._eligible_cache:
             self._eligible_cache[key] = [
                 doc for doc in self.documents[library]
@@ -97,7 +106,9 @@ class LibrarySampler:
         self._uses_by_document[(library, doc_id)] += 1
         return window, {"library_id": library, "document_id": doc_id}
 
-    def make_batch(self, batch_size: int, sequence_length: int) -> tuple[list[list[int]], list[dict[str, str]]]:
+    def make_batch(
+        self, batch_size: int, sequence_length: int
+    ) -> tuple[list[list[int]], list[dict[str, str]]]:
         if batch_size < 1:
             raise ValueError("batch_size must be positive")
         rows, provenance = [], []
@@ -111,7 +122,8 @@ class LibrarySampler:
         total = sum(self.tokens_seen.values())
         rows = {}
         for library in self.available:
-            sequence_length = self._last_sequence_length.get(library, 1)\n            eligible_count = len(self._eligible_documents(library, sequence_length))
+            sequence_length = self._last_sequence_length.get(library, 1)
+            eligible_count = len(self._eligible_documents(library, sequence_length))
             uses = self.document_uses[library]
             unique = len(self.unique_documents[library])
             rows[library] = {
@@ -121,7 +133,8 @@ class LibrarySampler:
                 ),
                 "sampled_target_tokens": self.tokens_seen[library],
                 "document_uses": uses,
-                "eligible_documents_for_sequence_length": eligible_count,\n                "sequence_length": sequence_length,
+                "eligible_documents_for_sequence_length": eligible_count,
+                "sequence_length": sequence_length,
                 "unique_documents": unique,
                 "document_coverage": round(unique / eligible_count, 8) if eligible_count else 0.0,
                 "repeat_document_uses": max(0, uses - unique),
