@@ -1,4 +1,4 @@
-name: MINIRONIN — selección cíclica del mejor checkpoint + 300k
+name: MINIRONIN — selección del mejor checkpoint + 60k
 # Merge-trigger: this workflow intentionally listens to pushes touching this file on main.
 
 on:
@@ -20,7 +20,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: minironin-best-checkpoint-300k-cycle
+  group: minironin-best-checkpoint-60k-cycle
   cancel-in-progress: false
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       BOOTSTRAP_TAG: long-train-step-130000
       BOOTSTRAP_SHA256: 4eea4efe7e1c65da0ee7985ae3c09a7f69eab3cce90e2cabaa8694b6857cc986
-      CYCLE_STEPS: "300000"
+      CYCLE_STEPS: "60000"
     steps:
       - name: Checkout MINIRONIN
         uses: actions/checkout@v4
@@ -171,13 +171,13 @@ jobs:
           assert "model_state_dict" in cp and "optimizer_state_dict" in cp
           groups=cp["optimizer_state_dict"].get("param_groups",[])
           assert groups and 0 < float(groups[0]["lr"]) <= 3e-4
-          total=step+300000
+          total=step+60000
           with open(os.environ["GITHUB_OUTPUT"],"a") as f:
               f.write(f"parent_step={step}\ntotal_steps={total}\nparent_lr={float(groups[0]['lr']):.12g}\n")
           print({"parent_step":step,"total_steps":total,"parameter_count":cp["parameter_count"],"optimizer_lr":groups[0]["lr"],"parent_validation_loss":report["validation_loss"]})
           PY
 
-      - name: Entrenar 300k adicionales con todo el texto entrenable; checkpoint cada 10k
+      - name: Entrenar 60k adicionales con todo el texto entrenable; checkpoint cada 10k
         run: |
           set -euo pipefail
           parent_step="${{ steps.metadata.outputs.parent_step }}"
@@ -213,7 +213,7 @@ jobs:
             gh release create "minironin-cycle-${{ steps.parent.outputs.generation }}-step-$end" \
               "long-training/checkpoint-$end.pt" "long-training/report-$end.json" "long-training/SHA256SUMS-$end" \
               --title "MINIRONIN cycle ${{ steps.parent.outputs.generation }} — step $end" \
-              --notes "10k segment in a 300k continuation from the previous selected best checkpoint. Full recursively ingested eligible textual HERETIC + PRODATPHIL v0.3 + curated behavior set. Candidate only."
+              --notes "10k segment in a 60k continuation from the previous selected best checkpoint. Full recursively ingested eligible textual HERETIC + PRODATPHIL v0.3 + curated behavior set. Candidate only."
             input="long-training/checkpoint-$end.pt"
             echo "::endgroup::"
           done
@@ -237,7 +237,7 @@ jobs:
           loss,step,cp,rp,report=min(rows,key=lambda x:(x[0],x[1]))
           shutil.copy2(cp,root/"best-checkpoint.pt")
           shutil.copy2(rp,root/"best-report.json")
-          summary={"generation":int("${{ steps.parent.outputs.generation }}"),"selected_step":step,"validation_loss":loss,"validation_loss_by_domain":report.get("validation_loss_by_domain"),"selected_source_report":rp.name,"selection_rule":"minimum fixed full-corpus validation loss among parent and all 30 checkpoints"}
+          summary={"generation":int("${{ steps.parent.outputs.generation }}"),"selected_step":step,"validation_loss":loss,"validation_loss_by_domain":report.get("validation_loss_by_domain"),"selected_source_report":rp.name,"selection_rule":"minimum fixed full-corpus validation loss among parent and all 6 checkpoints"}
           (root/"best-selection.json").write_text(json.dumps(summary,indent=2)+"\n")
           print(json.dumps(summary,indent=2))
           with open(os.environ["GITHUB_OUTPUT"],"a") as f:
