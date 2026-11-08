@@ -1,0 +1,53 @@
+name: Build MINIRONIN 50k verifiable personality dataset
+
+on:
+  push:
+    branches: [feat/technopolitics-corpus-mix]
+    paths:
+      - "scripts/build_verifiable_personality_dataset.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-dataset:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/technopolitics-corpus-mix
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Generate and audit 50,000 source-traceable examples
+        run: |
+          python scripts/build_verifiable_personality_dataset.py
+          python - <<'PY'
+          import gzip, hashlib, json, pathlib
+          root=pathlib.Path("data/curated")
+          m=json.loads((root/"minironin-verifiable-personality-50k-v1.manifest.json").read_text())
+          assert m["records"] == m["unique_rows"] == 50000
+          total=0
+          for item in m["files"]:
+              p=pathlib.Path(item["file"])
+              raw=p.read_bytes()
+              assert hashlib.sha256(raw).hexdigest()==item["sha256"]
+              rows=gzip.decompress(raw).decode("utf-8").splitlines()
+              assert len(rows)==item["records"]==10000
+              total += len(rows)
+          assert total==50000
+          print("verified_records=", total)
+          PY
+      - name: Commit generated dataset to this feature branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/curated/minironin-verifiable-personality-50k-v1-*.jsonl.gz data/curated/minironin-verifiable-personality-50k-v1.manifest.json
+          if git diff --cached --quiet; then
+            echo "Dataset already current"
+            exit 0
+          fi
+          git commit -m "Add 50k source-grounded MINIRONIN persona examples"
+          git push origin HEAD:feat/technopolitics-corpus-mix
