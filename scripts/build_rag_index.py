@@ -107,10 +107,12 @@ def main():
   if embedder:
    import numpy as np
    vec=embedder.encode([ecfg["document_prefix"]+r[4] for r in pending],batch_size=a.batch_size,convert_to_numpy=True,normalize_embeddings=True,show_progress_bar=False)
-  for i,(cid,did,ix,txt,th) in enumerate(pending):
+  for i,(cid,did,ix,loc,txt,th) in enumerate(pending):
    blob=vec[i].astype("float16").tobytes() if vec is not None else None
-   db.execute("INSERT INTO chunks VALUES(?,?,?,?,?,?,?)",(cid,did,ix,txt,th,blob,ecfg["model"] if blob is not None else None))
-   db.execute("INSERT INTO chunks_fts(chunk_id,text) VALUES(?,?)",(cid,txt));chunks+=1
+   cur=db.execute("INSERT OR IGNORE INTO chunks VALUES(?,?,?,?,?,?,?,?)",(cid,did,ix,loc,txt,th,blob,ecfg["model"] if blob is not None else None))
+   if cur.rowcount:
+    db.execute("INSERT INTO chunks_fts(chunk_id,text) VALUES(?,?)",(cid,txt));chunks+=1
+   else:dupc+=1
   db.commit();pending.clear()
  for src,base in roots:
   if not base.exists():print(f"WARN missing source {src['id']}: {base}",file=sys.stderr);continue
