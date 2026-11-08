@@ -29,17 +29,20 @@ def _format_context(hits, max_chars=12000):
         source_id = provenance.get("source_id", "unknown")
         project = provenance.get("project", "unknown")
         path = provenance.get("relative_path", "unknown")
-        locator = hit.get("all_source_locations", [])
-        location = locator[0] if locator else {}
+        locations = hit.get("all_source_locations", [])
+        location = locations[0] if locations else {}
+        record_metadata = location.get("record_metadata") or hit.get("record_metadata", {})
         locator_text = location.get("locator") or hit.get("locator") or "unspecified"
-        epistemic = provenance.get("epistemic", "unknown")
-        license_name = provenance.get("license", "unknown")
+        epistemic = record_metadata.get("epistemic") or provenance.get("epistemic", "unknown")
+        license_name = record_metadata.get("license") or record_metadata.get("licencia") or provenance.get("license", "unknown")
+        aliases = [f"{item.get('source_id')}:{item.get('relative_path')}#{item.get('locator')}" for item in locations[1:]]
         block = (
             f"[S{index}] {project}/{source_id} :: {path}#{locator_text}\n"
             f"epistemic={epistemic}; license={license_name}; "
             f"document_sha256={provenance.get('document_sha256', 'unknown')}; "
             f"chunk_id={hit['chunk_id']}\n"
-            f"{hit['text']}"
+            + (f"also_from={'; '.join(aliases)}\n" if aliases else "")
+            + f"{hit['text']}"
         )
         if used + len(block) > max_chars:
             continue
