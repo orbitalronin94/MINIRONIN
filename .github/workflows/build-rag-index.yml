@@ -92,8 +92,8 @@ jobs:
       - name: Build complete approved index
         env:
           EMBEDDINGS: ${{ github.event_name == 'pull_request' || inputs.embeddings }}
-          INCLUDE_HERETIC: ${{ inputs.include_heretic }}
-          INCLUDE_RONINIA: ${{ inputs.include_roninia }}
+          INCLUDE_HERETIC: ${{ github.event_name == 'pull_request' || inputs.include_heretic }}
+          INCLUDE_RONINIA: ${{ github.event_name == 'pull_request' || inputs.include_roninia }}
         run: |
           args=(--output artifacts/rag/minironin-rag.sqlite)
           if [ "$EMBEDDINGS" != "true" ]; then args+=(--no-embeddings); fi
