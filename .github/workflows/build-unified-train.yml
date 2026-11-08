@@ -126,12 +126,20 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p data/inherited/papers
-          find papers-source -maxdepth 1 -type f -name '*.md' ! -iname 'README.md' -print0 | while IFS= read -r -d '' file; do
-            cp "$file" data/inherited/papers/
-          done
-          count="$(find data/inherited/papers -maxdepth 1 -type f -name '*.md' | wc -l)"
-          test "$count" -eq 9
-          printf 'Papers Markdown documents: %s\n' "$count"
+          python - <<'PY'
+          from pathlib import Path
+          from shutil import copy2
+          source = Path("papers-source")
+          if not source.is_dir():
+              raise SystemExit(f"Papers checkout missing: {source.resolve()}")
+          files = sorted(p for p in source.glob("*.md") if p.name.lower() != "readme.md")
+          print("Papers source Markdown:", [p.name for p in files])
+          if len(files) != 9:
+              raise SystemExit(f"Expected exactly 9 admitted Papers Markdown files, found {len(files)}")
+          for path in files:
+              copy2(path, Path("data/inherited/papers") / path.name)
+          print(f"Copied {len(files)} Papers Markdown documents")
+          PY
 
       - name: Construir train.jsonl.gz y auditar sin descartar filas
         run: |
