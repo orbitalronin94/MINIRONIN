@@ -51,3 +51,14 @@ MINIRONIN mantiene un vocabulario de bytes UTF-8 de 257 IDs. Las etiquetas SEM:*
 ## Ampliación prevista
 
 Próximos candidatos: Kropotkin (The Conquest of Bread), Emma Goldman (ensayos de 1910, excluyendo material de terceros), Errico Malatesta, Élisée Reclus y textos de crítica histórica del anarquismo. Cada candidato permanece fuera del entrenamiento hasta que se comprueben edición, traducción y derechos aplicables en España.
+
+
+## Segunda biblioteca: clásicos generales y conexiones ampliadas
+
+La ampliación añade una biblioteca independiente en `data/classics/SOURCES.json`, adquirida por `scripts/acquire_classics_library.py` en `data/inherited/classics-library/`. El catálogo inicial contiene 17 obras candidatas de ciencia, economía política, filosofía, feminismo, historia social y literatura. Las obras traducidas permanecen en `rights_review_required` hasta verificar la edición y los derechos de la traducción en España; no se descargan por defecto. Solo los originales ingleses con evaluación territorial preliminar pasan al primer lote. La inclusión en Gutenberg nunca se considera, por sí sola, autorización territorial.
+
+La ingesta se separa en el dominio `classics`, con peso inicial 0,025, distinto de `anarchist` y `books`. La caché se invalida al cambiar la firma SHA-256 de cualquiera de las dos bibliotecas. La validación documental exige ejemplos de ambos dominios. Añadir libros no aumenta automáticamente su peso.
+
+El registro semántico crece a 68 conceptos y 6 bibliotecas. Se incorporan relaciones entre economía política, clase, división del trabajo, mercados, derechos, abolición, democracia, ética, ecología, biología, empirismo, historia y literatura. Los puentes nuevos son tipados como conexiones metodológicas, tensiones históricas o analogías; el grafo preserva desacuerdos y evita convertir ficción en evidencia empírica o explicaciones biológicas en determinismo social.
+
+La ampliación es candidata hasta que la adquisición real, los tests y la validación por dominio terminen. No promociona checkpoint ni altera el tokenizador de 257 IDs: `SEM:*` continúa siendo una anotación textual.
