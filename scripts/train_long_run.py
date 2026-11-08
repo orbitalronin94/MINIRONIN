@@ -211,7 +211,7 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     scientist_count = load_curated_jsonl(ROOT / "data/curated/minironin-scientist-exhausted-50k-v1.jsonl", "scientist", store, "MINIRONIN-scientist-exhausted-50k-v1")
     oracle_count = load_curated_jsonl(ROOT / "data/curated/minironin-oracle-doom-50k-v1.jsonl", "oracle", store, "MINIRONIN-oracle-doom-50k-v1")
     indifference_count = load_curated_jsonl(ROOT / "data/curated/minironin-error404-indifference-50k-v1.jsonl", "indifference", store, "MINIRONIN-error404-indifference-50k-v1")
-    verifiable_files = [ROOT / "data/curated" / f"minironin-verifiable-personality-50k-v1-part{i}.jsonl.gz.b64" for i in range(1, 6)]
+    verifiable_files = [ROOT / "data/curated" / f"minironin-verifiable-personality-50k-v1-part{i}.jsonl.gz" for i in range(1, 6)]
     verifiable_count = sum(load_curated_jsonl(path, "verifiable", store, "MINIRONIN-verifiable-personality-50k-v1") for path in verifiable_files)
     if verifiable_count != 50000:
         raise SystemExit(f"Expected 50000 verifiable personality examples, loaded {verifiable_count}")
