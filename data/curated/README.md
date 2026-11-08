@@ -2,7 +2,7 @@
 
 **Versión:** 1.0  
 **Idioma:** castellano  
-**Registros:** 50  
+**Registros:** 70  
 **Método:** curación manual a partir de logs y metadatos de artefactos de GitHub Actions.
 
 Este conjunto transforma evidencia operativa de RONIN-IA y HERETIC-RONIN en ejemplos explicativos. No contiene logs brutos ni respuestas automáticas del docente.
@@ -120,7 +120,7 @@ ya haya consumido los ejemplos ni que haya mejorado en evaluación.
 Se añaden dos bibliotecas supervisadas pequeñas y explícitas, separadas de los corpus de estilo masivo:
 
 - `minironin-identity-v1.jsonl`: **40 registros** de identidad grounded, arquitectura y tamaño actuales, genealogía del checkpoint, límites de capacidad y personalidad subordinada a la evidencia.
-- `minironin-engineering-v1.jsonl`: **20 registros** curados de los runs 42475009211, 42472836694, 42473906951 y 42475009157. Enseñan a distinguir descarga, verificación SHA-256, preparación de corpus, entrenamiento en curso, publicación de checkpoint, indexación RAG y CI.
+- `minironin-engineering-v1.jsonl`: **70 registros** (50 históricos y 20 nuevos) curados de los runs 42475009211, 42472836694, 42473906951 y 42475009157. Enseñan a distinguir descarga, verificación SHA-256, preparación de corpus, entrenamiento en curso, publicación de checkpoint, indexación RAG y CI.
 
 Ambos conjuntos se cargan en dominios separados (`identity` y `engineering`) con un peso inicial experimental del 2% cada uno. No se incorporan logs brutos ni secretos. Los estados de Actions se enseñan como observaciones fechadas: un paso pendiente no es un paso completado, y una publicación no demuestra mejora del modelo.
 
