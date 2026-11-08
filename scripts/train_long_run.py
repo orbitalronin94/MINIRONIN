@@ -14,8 +14,8 @@ from pathlib import Path
 import torch
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "src"))  # Keep the model package ahead of scripts/minironin.py CLI shim.
 from minironin import MiniRoninLM, ModelConfig  # noqa: E402
 from train_seed_tournament import (  # noqa: E402
     ACTIVE_VOCAB, MIX_WEIGHTS, add_doc, clean_text, evaluate,
