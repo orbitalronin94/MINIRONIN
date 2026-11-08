@@ -190,7 +190,7 @@ def add_rag_docs(train_docs, validation, rag_docs):
             continue
         known.add(doc["sha256"])
         target = validation_docs if doc["split"] == "validation" else train_docs
-        target[doc["domain"]].append(doc)
+        target.setdefault(doc["domain"], []).append(doc)
         if doc["split"] == "validation":
             added_validation[doc["domain"]] += 1
         else:
