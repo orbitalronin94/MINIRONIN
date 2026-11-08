@@ -1,0 +1,330 @@
+{
+  "schema": "minironin-japanese-library-v1",
+  "description": "Japanese history, warrior culture, rōnin narratives, folklore, theatre, religion and aesthetics. Only plain-text editions with author/translator terms compatible with Spain are acquired; illustrations and third-party editorial matter are excluded.",
+  "rights_policy": "Spain-specific screening: life plus 70 years, including translators/adaptors where applicable. Project Gutenberg's US notice alone is not treated as territorial clearance. Plain text only; separately credited illustrations and editorial matter are excluded.",
+  "sources": [
+    {
+      "id": "NITOBE-BUSHIDO",
+      "title": "Bushido: The Soul of Japan",
+      "author": "Inazo Nitobe",
+      "author_death_year": 1933,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 12096,
+      "url": "https://www.gutenberg.org/ebooks/12096",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/12096/pg12096.txt",
+      "rights_status": "approved_for_spain_training",
+      "license": "Original English text; author died 1933. Plain text only; Project Gutenberg wrapper removed.",
+      "tradition": [
+        "samurai",
+        "bushido",
+        "ethics",
+        "japan"
+      ],
+      "concepts": [
+        "samurai",
+        "bushido",
+        "honor",
+        "loyalty",
+        "courage",
+        "ethics"
+      ]
+    },
+    {
+      "id": "CHUSHINGURA-47-RONIN",
+      "title": "Chushingura; Or, The Treasury of Loyal Retainers",
+      "author": "Takeda Izumo; Miyoshi Shoraku; Namiki Senryu",
+      "author_death_year": 1772,
+      "translator": "Jukichi Inouye",
+      "translator_death_year": 1929,
+      "language": "en",
+      "gutenberg_id": 59421,
+      "url": "https://www.gutenberg.org/ebooks/59421",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/59421/pg59421.txt",
+      "rights_status": "approved_for_spain_training",
+      "license": "Classical play; latest named author death 1772 and translator death 1929. Plain text only.",
+      "tradition": [
+        "ronin",
+        "samurai",
+        "theatre",
+        "revenge",
+        "edo"
+      ],
+      "concepts": [
+        "ronin",
+        "samurai",
+        "loyalty",
+        "revenge",
+        "duty",
+        "theatre"
+      ]
+    },
+    {
+      "id": "OZAKI-JAPANESE-FAIRY-TALES",
+      "title": "Japanese Fairy Tales",
+      "author": "Yei Theodora Ozaki",
+      "author_death_year": 1932,
+      "translator": "Yei Theodora Ozaki",
+      "translator_death_year": 1932,
+      "language": "en",
+      "gutenberg_id": 4018,
+      "url": "https://www.gutenberg.org/ebooks/4018",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/4018/pg4018.txt",
+      "rights_status": "approved_for_spain_training",
+      "license": "English adaptations by Ozaki, died 1932. Plain text only.",
+      "tradition": [
+        "folklore",
+        "japan",
+        "fairy-tales"
+      ],
+      "concepts": [
+        "folklore",
+        "myth",
+        "japan",
+        "morality",
+        "storytelling"
+      ]
+    },
+    {
+      "id": "OZAKI-WARRIORS-OLD-JAPAN",
+      "title": "Warriors of Old Japan, and Other Stories",
+      "author": "Yei Theodora Ozaki",
+      "author_death_year": 1932,
+      "translator": "Yei Theodora Ozaki",
+      "translator_death_year": 1932,
+      "language": "en",
+      "gutenberg_id": 41437,
+      "url": "https://www.gutenberg.org/ebooks/41437",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/41437/pg41437.txt",
+      "rights_status": "approved_for_spain_training",
+      "license": "Ozaki died 1932; named contributor Hugh Fraser died 1922 and illustrator Shusui Okakura died 1950. Plain text acquisition excludes illustrations.",
+      "tradition": [
+        "samurai",
+        "warriors",
+        "folklore",
+        "japan"
+      ],
+      "concepts": [
+        "samurai",
+        "warrior",
+        "archery",
+        "honor",
+        "folklore",
+        "japan"
+      ]
+    },
+    {
+      "id": "MITFORD-TALES-OLD-JAPAN",
+      "title": "Tales of Old Japan",
+      "author": "Algernon Bertram Freeman-Mitford",
+      "author_death_year": 1916,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 13015,
+      "url": "https://www.gutenberg.org/ebooks/13015",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/13015/pg13015.txt",
+      "rights_status": "approved_for_spain_training",
+      "license": "Original English text; author died 1916. Plain text only.",
+      "tradition": [
+        "ronin",
+        "samurai",
+        "folklore",
+        "edo",
+        "japan"
+      ],
+      "concepts": [
+        "ronin",
+        "samurai",
+        "revenge",
+        "customs",
+        "folklore",
+        "japan"
+      ]
+    },
+    {
+      "id": "HEARN-KWAIDAN",
+      "title": "Kwaidan: Stories and Studies of Strange Things",
+      "author": "Lafcadio Hearn",
+      "author_death_year": 1904,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 1210,
+      "url": "https://www.gutenberg.org/ebooks/1210",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/1210/pg1210.txt",
+      "rights_status": "approved_for_spain_training",
+      "license": "Original English text by Hearn, died 1904. Plain text only.",
+      "tradition": [
+        "folklore",
+        "ghost-stories",
+        "japan"
+      ],
+      "concepts": [
+        "folklore",
+        "ghosts",
+        "spirits",
+        "karma",
+        "japan"
+      ]
+    },
+    {
+      "id": "HEARN-IN-GHOSTLY-JAPAN",
+      "title": "In Ghostly Japan",
+      "author": "Lafcadio Hearn",
+      "author_death_year": 1904,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 8128,
+      "url": "https://www.gutenberg.org/ebooks/8128",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/8128/pg8128.txt",
+      "rights_status": "approved_for_spain_training",
+      "license": "Original English text by Hearn, died 1904. Plain text only.",
+      "tradition": [
+        "folklore",
+        "religion",
+        "japan"
+      ],
+      "concepts": [
+        "folklore",
+        "buddhism",
+        "ritual",
+        "spirits",
+        "japan"
+      ]
+    },
+    {
+      "id": "HEARN-GLIMPSES-JAPAN",
+      "title": "Glimpses of Unfamiliar Japan: First Series",
+      "author": "Lafcadio Hearn",
+      "author_death_year": 1904,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 8130,
+      "url": "https://www.gutenberg.org/ebooks/8130",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/8130/pg8130.txt",
+      "rights_status": "approved_for_spain_training",
+      "license": "Original English text by Hearn, died 1904. Plain text only.",
+      "tradition": [
+        "travel",
+        "history",
+        "religion",
+        "japan"
+      ],
+      "concepts": [
+        "japan",
+        "history",
+        "religion",
+        "customs",
+        "travel"
+      ]
+    },
+    {
+      "id": "HEARN-KOTTO",
+      "title": "Kotto: Being Japanese Curios, with Sundry Cobwebs",
+      "author": "Lafcadio Hearn",
+      "author_death_year": 1904,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 55473,
+      "url": "https://www.gutenberg.org/ebooks/55473",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/55473/pg55473.txt",
+      "rights_status": "approved_for_spain_training",
+      "license": "Original English text by Hearn, died 1904. Plain text only; illustrations excluded.",
+      "tradition": [
+        "folklore",
+        "japan",
+        "short-stories"
+      ],
+      "concepts": [
+        "folklore",
+        "customs",
+        "japan",
+        "stories"
+      ]
+    },
+    {
+      "id": "OKAKURA-BOOK-OF-TEA",
+      "title": "The Book of Tea",
+      "author": "Kakuzo Okakura",
+      "author_death_year": 1913,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 769,
+      "url": "https://www.gutenberg.org/ebooks/769",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/769/pg769.txt",
+      "rights_status": "approved_for_spain_training",
+      "license": "Original English text by Okakura, died 1913. Plain text only.",
+      "tradition": [
+        "aesthetics",
+        "zen",
+        "tea",
+        "japan"
+      ],
+      "concepts": [
+        "tea",
+        "aesthetics",
+        "zen",
+        "harmony",
+        "japan"
+      ]
+    },
+    {
+      "id": "GRIFFIS-JAPANESE-FAIRY-WORLD",
+      "title": "Japanese Fairy World",
+      "author": "William Elliot Griffis",
+      "author_death_year": 1928,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 29337,
+      "url": "https://www.gutenberg.org/ebooks/29337",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/29337/pg29337.txt",
+      "rights_status": "approved_for_spain_training",
+      "license": "Original English text by Griffis, died 1928. Plain text only; illustrations excluded.",
+      "tradition": [
+        "folklore",
+        "mythology",
+        "japan"
+      ],
+      "concepts": [
+        "folklore",
+        "myth",
+        "japan",
+        "stories"
+      ]
+    },
+    {
+      "id": "EDWARDS-JAPANESE-PLAYS",
+      "title": "Japanese Plays and Playfellows",
+      "author": "Osman Edwards",
+      "author_death_year": 1936,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 57239,
+      "url": "https://www.gutenberg.org/ebooks/57239",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/57239/pg57239.txt",
+      "rights_status": "approved_for_spain_training",
+      "license": "Original English text by Edwards, died 1936. Plain text only.",
+      "tradition": [
+        "theatre",
+        "noh",
+        "kabuki",
+        "japan"
+      ],
+      "concepts": [
+        "theatre",
+        "drama",
+        "noh",
+        "kabuki",
+        "japan"
+      ]
+    }
+  ]
+}
