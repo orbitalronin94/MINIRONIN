@@ -1,0 +1,42 @@
+name: MINIRONIN — validate identity and engineering corpora
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/curated/minironin-identity-v1.jsonl"
+      - "data/curated/minironin-engineering-v1.jsonl"
+      - "data/curated/engineering-lessons-v1.jsonl"
+      - "scripts/validate_identity_engineering.py"
+      - "scripts/train_long_run.py"
+      - "scripts/train_seed_tournament.py"
+      - ".github/workflows/identity-engineering-dataset-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Validate datasets, provenance and training integration
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/validate_identity_engineering.py scripts/train_long_run.py scripts/train_seed_tournament.py
+          python scripts/validate_identity_engineering.py --manifest identity-engineering-manifest.json
+      - name: Upload validated datasets and manifest
+        uses: actions/upload-artifact@v7
+        with:
+          name: minironin-identity-engineering-corpora
+          path: |
+            data/curated/minironin-identity-v1.jsonl
+            data/curated/minironin-engineering-v1.jsonl
+            data/curated/engineering-lessons-v1.jsonl
+            identity-engineering-manifest.json
+          if-no-files-found: error
+          retention-days: 90
