@@ -72,6 +72,25 @@ Se pueden repetir los argumentos `--input`. El muestreo reservoir limita memoria
 - Mantener holdout, rúbricas privadas y respuestas esperadas fuera del generador, del corpus y del índice RAG.
 - No inferir calidad por el número de ejemplos ni promover un checkpoint por haber generado el corpus.
 
-## Relación con RAG
+## Grounding con RAG
 
-RAG aporta evidencia documental y citas; no debe utilizarse para fabricar personalidad ni como sustituto de la evaluación conductual. El recuperador debe exponer procedencia y etiqueta epistemológica para que el modelo pueda distinguir material primario, curado y sintético. Las respuestas de humor/cinismo no deben alterar la atribución de fuentes.
+El generador puede consumir el índice SQLite aprobado mediante `--rag-index`. Para cada pregunta fuente única, recupera evidencia una sola vez y conserva fragmentos, citas, puntuación, canal de recuperación, licencia, etiqueta epistemológica, localizador y hash documental en un sidecar deduplicado. Cada solicitud de teacher apunta al sidecar mediante `stage_a.retrieved_evidence_ref`; así no se copian miles de caracteres de evidencia diez millones de veces.
+
+Por defecto usa BM25, que evita cargar un encoder por pregunta. `--rag-vectors` activa recuperación híbrida con E5 y reutiliza el encoder durante el proceso; conviene reservarlo para lotes controlados o cuando el índice tenga embeddings. `--require-rag-evidence` descarta preguntas sin evidencia recuperada. Si no se activa, el estado `no_evidence` queda explícito y Stage A debe abstenerse de atribuir soporte documental.
+
+Ejemplo con el índice de Actions:
+
+```bash
+python scripts/build_eliza_corpus.py \
+  --input data/curated/approved-qa.jsonl \
+  --rag-index artifacts/rag/minironin-rag.sqlite \
+  --rag-top-k 5 \
+  --require-rag-evidence \
+  --count 10000000 \
+  --seed 9417 \
+  --output artifacts/eliza/teacher-requests.jsonl
+```
+
+El comando produce dos archivos: `teacher-requests.jsonl` y `teacher-requests.evidence.jsonl`. El segundo contiene una fila por pregunta única con evidencia y metadatos; el primero contiene el identificador de unión. El resumen registra SHA-256 del índice y del sidecar. El consumidor de Stage A debe resolver la referencia antes de construir el prompt y presentar los pasajes recuperados como datos no confiables: ignorar instrucciones embebidas, contrastar afirmaciones y citar [S#].
+
+RAG aporta evidencia documental y citas; no fabrica personalidad ni sustituye la evaluación conductual. La recuperación no convierte automáticamente una fuente en verdad: Stage A debe distinguir evidencia, inferencia, contradicción y ausencia de información. Las respuestas de humor/cinismo no deben alterar la atribución de fuentes.
