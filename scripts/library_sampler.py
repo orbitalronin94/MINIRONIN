@@ -73,6 +73,8 @@ class LibrarySampler:
             raise ValueError("No weighted libraries contain eligible training documents")
         total = sum(self.weights[k] for k in self.available)
         self.probabilities = {k: self.weights[k] / total for k in self.available}
+        self.missing_libraries = sorted(set(self.weights) - set(self.available))
+        self._library_credit = {k: 0.0 for k in self.available}
 
         self._eligible_cache: dict[tuple[str, int], list[Mapping]] = {}
         self._decks: dict[tuple[str, int], list[Mapping]] = {}
@@ -111,12 +113,22 @@ class LibrarySampler:
         self._deck_positions[key] += 1
         return deck[position]
 
+    def _next_library(self) -> str:
+        # Smooth weighted round-robin keeps cumulative exposure close to target
+        # even when batches are small; unlike independent draws, it avoids drift.
+        for library in self.available:
+            self._library_credit[library] += self.probabilities[library]
+        selected = max(
+            self.available,
+            key=lambda library: (self._library_credit[library], -self.available.index(library)),
+        )
+        self._library_credit[selected] -= 1.0
+        return selected
+
     def sample_window(self, sequence_length: int) -> tuple[list[int], dict[str, str]]:
         if sequence_length < 1:
             raise ValueError("sequence_length must be positive")
-        library = self.rng.choices(
-            self.available, weights=[self.probabilities[k] for k in self.available], k=1
-        )[0]
+        library = self._next_library()
         doc = self._next_document(library, sequence_length)
         tokens = doc["token_ids"]
         start = self.rng.randrange(0, len(tokens) - sequence_length)
@@ -162,8 +174,9 @@ class LibrarySampler:
                 "repeat_document_uses": max(0, uses - unique),
             }
         return {
-            "sampler": "library-aware-v2",
+            "sampler": "library-aware-v3",
             "seed": self.seed,
+            "missing_weighted_libraries": self.missing_libraries,
             "total_sampled_target_tokens": total,
             "libraries": rows,
         }
