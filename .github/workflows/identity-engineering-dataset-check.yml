@@ -6,6 +6,7 @@ on:
     paths:
       - "data/curated/minironin-identity-v1.jsonl"
       - "data/curated/minironin-engineering-v1.jsonl"
+      - "data/curated/minironin-performance-engineering-v1.jsonl"
       - "data/curated/engineering-lessons-v1.jsonl"
       - "scripts/validate_identity_engineering.py"
       - "scripts/train_long_run.py"
@@ -36,6 +37,7 @@ jobs:
           path: |
             data/curated/minironin-identity-v1.jsonl
             data/curated/minironin-engineering-v1.jsonl
+            data/curated/minironin-performance-engineering-v1.jsonl
             data/curated/engineering-lessons-v1.jsonl
             identity-engineering-manifest.json
           if-no-files-found: error
