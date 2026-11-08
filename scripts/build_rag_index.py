@@ -111,8 +111,12 @@ def main():
    blob=vec[i].astype("float16").tobytes() if vec is not None else None
    cur=db.execute("INSERT OR IGNORE INTO chunks VALUES(?,?,?,?,?,?,?,?)",(cid,did,ix,loc,txt,th,blob,ecfg["model"] if blob is not None else None))
    if cur.rowcount:
+    actual_cid=cid
     db.execute("INSERT INTO chunks_fts(chunk_id,text) VALUES(?,?)",(cid,txt));chunks+=1
-   else:dupc+=1
+   else:
+    dupc+=1
+    actual_cid=db.execute("SELECT chunk_id FROM chunks WHERE text_sha256=?",(th,)).fetchone()[0]
+   db.execute("INSERT OR IGNORE INTO chunk_sources VALUES(?,?,?,?,?)",(actual_cid,did,source_id,relative_path,loc))
   db.commit();pending.clear()
  for src,base in roots:
   if not base.exists():print(f"WARN missing source {src['id']}: {base}",file=sys.stderr);continue
