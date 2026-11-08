@@ -1,0 +1,95 @@
+name: MINIRONIN — benchmark terminal mínima de holdout
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Release que contiene el checkpoint
+        required: true
+        type: string
+        default: minironin-transformer-10m-step-390000-main
+      checkpoint_file:
+        description: Nombre exacto del asset del checkpoint
+        required: true
+        type: string
+        default: checkpoint-390000.pt
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: orbitalronin94/MINIRONIN
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instalar solo PyTorch CPU
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+      - name: Descargar checkpoint de la release
+        run: |
+          set -euo pipefail
+          mkdir -p .tmp/holdout
+          gh release download "${{ inputs.release_tag }}" --repo "$REPOSITORY" \
+            --pattern "${{ inputs.checkpoint_file }}" --dir .tmp/holdout
+          test -s ".tmp/holdout/${{ inputs.checkpoint_file }}"
+          sha256sum ".tmp/holdout/${{ inputs.checkpoint_file }}" | tee .tmp/holdout/checkpoint.sha256
+      - name: Ejecutar terminal rápida con KV cache
+        run: |
+          python scripts/minironin.py holdout \
+            --checkpoint ".tmp/holdout/${{ inputs.checkpoint_file }}" \
+            --label "kv-cache-benchmark" --steps 0 \
+            --holdout benchmarks/inference-holdout-v1.jsonl \
+            --output .tmp/holdout/cached.json --threads 2
+      - name: Ejecutar referencia sin caché
+        run: |
+          python scripts/minironin.py holdout \
+            --checkpoint ".tmp/holdout/${{ inputs.checkpoint_file }}" \
+            --label "reference-no-cache" --steps 0 \
+            --holdout benchmarks/inference-holdout-v1.jsonl \
+            --output .tmp/holdout/reference.json --threads 2 --no-kv-cache
+      - name: Verificar paridad y medir aceleración
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          fast = json.loads(Path('.tmp/holdout/cached.json').read_text())
+          ref = json.loads(Path('.tmp/holdout/reference.json').read_text())
+          assert fast['checkpoint_sha256'] == ref['checkpoint_sha256']
+          assert fast['holdout_sha256'] == ref['holdout_sha256']
+          assert [r['id'] for r in fast['results']] == [r['id'] for r in ref['results']]
+          mismatches = [
+              (a['id'], a['generated_token_ids'], b['generated_token_ids'])
+              for a, b in zip(fast['results'], ref['results'])
+              if a['generated_token_ids'] != b['generated_token_ids']
+          ]
+          fast_s = sum(r['elapsed_seconds'] for r in fast['results'])
+          ref_s = sum(r['elapsed_seconds'] for r in ref['results'])
+          report = {
+              'checkpoint_sha256': fast['checkpoint_sha256'],
+              'holdout_sha256': fast['holdout_sha256'],
+              'questions': fast['holdout_count'],
+              'token_mismatches': len(mismatches),
+              'mismatch_examples': mismatches[:5],
+              'cached_generation_seconds': round(fast_s, 3),
+              'reference_generation_seconds': round(ref_s, 3),
+              'speedup': round(ref_s / fast_s, 3) if fast_s else None,
+              'parity': not mismatches,
+          }
+          Path('.tmp/holdout/benchmark-report.json').write_text(json.dumps(report, indent=2) + '\n')
+          print(json.dumps(report, indent=2))
+          if mismatches:
+              raise SystemExit('Cached and reference generation diverged; do not use cached evaluator')
+          PY
+      - uses: actions/upload-artifact@v6
+        with:
+          name: minironin-holdout-runtime-${{ github.run_id }}
+          path: .tmp/holdout/
+          retention-days: 90
