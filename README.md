@@ -387,13 +387,13 @@ El workflow `.github/workflows/build-unified-train.yml` construye un único arte
 
 ### Currículos sintéticos
 
-El ensamblado genera y conserva los siguientes volúmenes, sin presentarlos como hechos independientes:
+El ensamblado genera y conserva los siguientes volúmenes, sin presentarlos como hechos independientes. También incorpora los cinco corpus históricos de conducta, identidad e ingeniería y el corpus adicional de abstención de 50.000 filas:
 
 - 24 currículos de conducta y Lexicon: 1.200.000 filas.
 - 25 currículos de matemáticas y hechos cotidianos: 1.250.000 filas.
 - 9 currículos curados de abstención, personalidad y diagnóstico Lexicon: 450.000 filas.
 
-**Total previsto: 2.900.000 filas sintéticas/curadas**, además de los documentos de las bibliotecas. La combinatoria amplía los encuadres y las combinaciones de ejercicios, pero no convierte diez hechos semilla en cincuenta mil hechos nuevos. Las filas conservan sus metadatos y marcas de procedencia; las duplicadas o breves se contabilizan en el informe, no se borran, para no perder volumen silenciosamente.
+**Total previsto: al menos 2.950.000 filas sintéticas/curadas**, más los cinco corpus históricos de conducta, identidad e ingeniería y las bibliotecas textuales., además de los documentos de las bibliotecas. La combinatoria amplía los encuadres y las combinaciones de ejercicios, pero no convierte diez hechos semilla en cincuenta mil hechos nuevos. Las filas conservan sus metadatos y marcas de procedencia; las duplicadas o breves se contabilizan en el informe, no se borran, para no perder volumen silenciosamente.
 
 ### Artefacto único y controles
 
