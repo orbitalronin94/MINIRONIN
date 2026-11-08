@@ -15,8 +15,8 @@ def main():
   for n,line in enumerate(Path(name).read_text(encoding="utf-8").splitlines(),1):
    try:o=json.loads(line)
    except json.JSONDecodeError:continue
-   txt=" ".join(str(o.get(k,"")) for k in ("question","answer","context","text","content","prompt","response"));ts=terms(txt)
-   if len(ts)>=3:pool.append({"file":name,"line":n,"id":o.get("id"),"domain":o.get("domain",o.get("tag","unknown")),"terms":ts})
+   txt=" ".join(str(o.get(k,"")) for k in ("question","answer","context","text","content","prompt","response","instruccion","respuesta","evidencia","fuente"));ts=terms(txt)
+   if len(ts)>=3:pool.append({"file":name,"line":n,"id":o.get("id"),"domain":o.get("domain",o.get("dominio",o.get("tag",o.get("tipo","unknown")))),"terms":ts})
  if len(pool)<3:raise SystemExit("Need at least three eligible source records")
  out=[];seen=set()
  for _ in range(a.count):
