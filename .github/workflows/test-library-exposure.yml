@@ -2,7 +2,7 @@ name: MINIRONIN — library sampler tests
 
 on:
   push:
-    branches: [prep/library-exposure-sampler]
+    branches: [main, prep/library-exposure-sampler]
     paths:
       - "scripts/library_sampler.py"
       - "scripts/library_provenance.py"
@@ -25,7 +25,7 @@ jobs:
       - name: Checkout preparation branch
         uses: actions/checkout@v4
         with:
-          ref: prep/library-exposure-sampler
+          ref: ${{ github.ref }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
