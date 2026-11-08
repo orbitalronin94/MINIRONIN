@@ -66,7 +66,7 @@ FACTS = [
 ("ecología","la biodiversidad","su significado","La biodiversidad comprende la variedad de vida en distintos niveles, incluida la diversidad genética, de especies y de ecosistemas.","No se reduce al mero número de especies; incorpora diversidad dentro de las especies y entre ecosistemas.","https://www.cbd.int/convention/articles/?a=cbd-02"),
 ("materiales","el diamante","su estructura","El diamante es una forma alotrópica del carbono en la que los átomos forman una red covalente tridimensional.","La dureza elevada deriva de su estructura de enlaces; no implica que sea irrompible ni que tenga máxima tenacidad.","https://www.britannica.com/science/diamond"),
 ("materiales","el grafito","su estructura","El grafito es una forma alotrópica del carbono formada por capas de átomos dispuestos en redes hexagonales.","Las capas se mantienen unidas entre sí por interacciones relativamente débiles, lo que facilita su deslizamiento.","https://www.britannica.com/science/graphite"),
-("estadística","la correlación","su interpretación","La correlación mide una asociación estadística entre variables, pero por sí sola no demuestra que una variable cause cambios en la otra.","La inferencia causal exige supuestos y diseños adicionales para descartar confusión, causalidad inversa y sesgos.","https://www.tylervigen.com/spurious-correlations"),
+("estadística","la correlación","su interpretación","La correlación mide una asociación estadística entre variables, pero por sí sola no demuestra que una variable cause cambios en la otra.","La inferencia causal exige supuestos y diseños adicionales para descartar confusión, causalidad inversa y sesgos.","https://www.britannica.com/science/correlation-statistics"),
 ("estadística","la mediana","su definición","La mediana es el valor central de una distribución ordenada; si hay un número par de observaciones, suele definirse como la media de los dos valores centrales.","La mediana es una medida de tendencia central menos sensible a valores extremos que la media aritmética.","https://www.itl.nist.gov/div898/handbook/"),
 ("estadística","la desviación estándar","su interpretación","La desviación estándar cuantifica la dispersión de los datos respecto de su media y se expresa en las mismas unidades que la variable.","Su interpretación depende de la distribución; la regla empírica de 68-95-99,7 % requiere una distribución aproximadamente normal.","https://www.itl.nist.gov/div898/handbook/"),
 ("lingüística","el alfabeto latino","su uso","El alfabeto latino es un sistema de escritura derivado del alfabeto utilizado en la antigua Roma y se emplea, con variantes, en numerosas lenguas.","No existe una única versión universal del alfabeto latino; las lenguas incorporan letras y diacríticos según sus convenciones.","https://www.britannica.com/topic/Latin-alphabet"),
@@ -132,8 +132,8 @@ def main():
         "format": "JSONL gzip", "encoding": "UTF-8",
         "sha256_uncompressed_jsonl": digest.hexdigest(),
         "generation": "deterministic paraphrase combinations over a reviewed fact bank",
-        "source_policy": "Every row includes a source URL; inspect source quality before training.",
-        "synthetic_warning": "Surface forms are synthetic. Underlying claims are curated; not a substitute for source-level fact checking."
+        "source_policy": "Every row includes a source URL; this generator does not fetch or automatically validate the linked page.",
+        "synthetic_warning": "Surface forms are synthetic. The 500,000 rows derive from 61 core fact records; they are not 500,000 independent discoveries. Audit sources and claims before training."
     }
     args.output.with_suffix(args.output.suffix + ".manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
