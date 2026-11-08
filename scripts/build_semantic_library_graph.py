@@ -56,6 +56,16 @@ def main() -> None:
                     "weight": round(len(shared) / max(1, len(set(library_concepts[left]) | set(library_concepts[right]))), 6),
                     "shared_concepts": shared,
                 })
+    for relation in registry.get("concept_relations", []):
+        left, right = relation.get("from"), relation.get("to")
+        if left in concepts and right in concepts:
+            edges.append({
+                "source": "concept:" + left,
+                "target": "concept:" + right,
+                "type": relation.get("type", "cross_domain_bridge"),
+                "weight": 0.5,
+                "note": relation.get("note", ""),
+            })
     source_rows = [json.loads(line) for line in ANARCHIST_SOURCES.read_text(encoding="utf-8").splitlines() if line.strip()]
     for source in source_rows:
         source_node = "work:" + source["id"]
