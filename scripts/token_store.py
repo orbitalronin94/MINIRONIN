@@ -1,9 +1,4 @@
-"""Compact, read-only memory-mapped uint16 token store for BPE-4096 corpora.
-
-Build once after the 450k checkpoint/tokenizer migration. Runtime reads only
-small windows from a single packed file instead of keeping a second Python
-integer list for every document in RAM.
-"""
+"""Compact, read-only memory-mapped uint16 token store for BPE-4096 corpora."""
 from __future__ import annotations
 
 import hashlib
@@ -14,7 +9,6 @@ import struct
 from collections import Counter
 from pathlib import Path
 from typing import Iterable, Mapping
-
 
 UINT16_MAX = 65535
 FORMAT = "minironin-u16-v1"
@@ -39,11 +33,8 @@ def build_token_store(
         raise ValueError("Tokenizer SHA-256 and training-corpus signature are required")
     root = Path(output_dir)
     root.mkdir(parents=True, exist_ok=True)
-    token_path = root / "tokens.u16"
-    temp_path = root / "tokens.u16.tmp"
-    index = []
-    seen = set()
-    total_tokens = 0
+    token_path, temp_path = root / "tokens.u16", root / "tokens.u16.tmp"
+    index, seen, total_tokens = [], set(), 0
 
     with temp_path.open("wb") as stream:
         for doc in documents:
@@ -58,24 +49,20 @@ def build_token_store(
             if identity in seen:
                 raise ValueError(f"Duplicate document identity: {identity}")
             seen.add(identity)
-            offset = total_tokens
-            count = 0
+            offset, count = total_tokens, 0
             for token in tokens:
                 token = int(token)
                 if token < 0 or token > UINT16_MAX:
                     raise ValueError(f"Token ID outside uint16 range: {token}")
                 stream.write(struct.pack("<H", token))
                 count += 1
-            if count == 0:
-                continue
-            index.append({
-                "id": str(doc_id),
-                "library_id": str(library_id),
-                "split": "train",
-                "offset_tokens": offset,
-                "length_tokens": count,
-            })
-            total_tokens += count
+            if count:
+                index.append({
+                    "id": str(doc_id), "library_id": str(library_id),
+                    "split": "train", "offset_tokens": offset,
+                    "length_tokens": count,
+                })
+                total_tokens += count
         stream.flush()
         os.fsync(stream.fileno())
 
@@ -83,10 +70,8 @@ def build_token_store(
         temp_path.unlink(missing_ok=True)
         raise ValueError("Cannot build an empty token store")
     os.replace(temp_path, token_path)
-    token_sha = _sha256(token_path)
 
-    index_path = root / "index.json"
-    index_temp = root / "index.json.tmp"
+    index_path, index_temp = root / "index.json", root / "index.json.tmp"
     index_temp.write_text(
         json.dumps(index, ensure_ascii=False, separators=(",", ":")) + "\n",
         encoding="utf-8",
@@ -98,14 +83,14 @@ def build_token_store(
         "dtype": "little-endian uint16",
         "tokenizer_sha256": tokenizer_sha256,
         "training_corpus_signature": corpus_signature,
-        "tokens_sha256": token_sha,
+        "tokens_sha256": _sha256(token_path),
+        "index_sha256": _sha256(index_path),
         "documents": len(index),
         "libraries": dict(sorted(Counter(row["library_id"] for row in index).items())),
         "total_tokens": total_tokens,
         "bytes": token_path.stat().st_size,
     }
-    manifest_path = root / "manifest.json"
-    manifest_temp = root / "manifest.json.tmp"
+    manifest_path, manifest_temp = root / "manifest.json", root / "manifest.json.tmp"
     manifest_temp.write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
@@ -159,14 +144,33 @@ class TokenStore:
             raise ValueError("Token-store tokenizer SHA-256 mismatch")
         if expected_corpus_signature and self.manifest.get("training_corpus_signature") != expected_corpus_signature:
             raise ValueError("Token-store training corpus signature mismatch")
+
         self.path = self.root / "tokens.u16"
+        self.index_path = self.root / "index.json"
         if self.path.stat().st_size != self.manifest.get("bytes"):
             raise ValueError("Token-store byte length mismatch")
-        if verify_file_sha256 and _sha256(self.path) != self.manifest.get("tokens_sha256"):
-            raise ValueError("Token-store SHA-256 mismatch")
+        if self.manifest.get("bytes") != self.manifest.get("total_tokens", -1) * 2:
+            raise ValueError("Token-store token count/byte length mismatch")
+        if verify_file_sha256:
+            if _sha256(self.path) != self.manifest.get("tokens_sha256"):
+                raise ValueError("Token-store SHA-256 mismatch")
+            if _sha256(self.index_path) != self.manifest.get("index_sha256"):
+                raise ValueError("Token-store index SHA-256 mismatch")
+
+        self._index = json.loads(self.index_path.read_text(encoding="utf-8"))
+        cursor = 0
+        for row in self._index:
+            if row.get("split") != "train" or row.get("offset_tokens") != cursor:
+                raise ValueError("Token-store index split or offset sequence is invalid")
+            length = int(row.get("length_tokens", 0))
+            if length < 1:
+                raise ValueError("Token-store index contains an empty document")
+            cursor += length
+        if cursor != self.manifest.get("total_tokens") or len(self._index) != self.manifest.get("documents"):
+            raise ValueError("Token-store index totals do not match manifest")
+
         self._file = self.path.open("rb")
         self._mapped = mmap.mmap(self._file.fileno(), 0, access=mmap.ACCESS_READ)
-        self._index = json.loads((self.root / "index.json").read_text(encoding="utf-8"))
 
     def documents(self):
         for row in self._index:
