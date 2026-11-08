@@ -1,0 +1,36 @@
+name: Build cosmic-moral-technical 500k dataset
+
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "Number of unique pairs (1–500000)"
+        required: true
+        default: "500000"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Generate and validate dataset
+        run: |
+          python scripts/build_cosmic_moral_technical_dataset.py --count "${{ inputs.count }}" --output cosmic_moral_technical.jsonl.gz
+      - name: Upload dataset and manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: cosmic-moral-technical-${{ inputs.count }}-qa
+          path: |
+            cosmic_moral_technical.jsonl.gz
+            cosmic_moral_technical.jsonl.gz.manifest.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
