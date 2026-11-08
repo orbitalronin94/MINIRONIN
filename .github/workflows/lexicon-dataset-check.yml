@@ -1,0 +1,45 @@
+name: MINIRONIN — validar corpus del Lexicón
+
+on:
+  pull_request:
+    paths:
+      - "data/curated/sources/LEXICON-DEL-ESPERPENTO-ALGORITMICO.md"
+      - "scripts/build_lexicon_dataset.py"
+      - "scripts/validate_lexicon_dataset.py"
+      - ".github/workflows/lexicon-dataset-check.yml"
+  push:
+    branches: [main]
+    paths:
+      - "data/curated/sources/LEXICON-DEL-ESPERPENTO-ALGORITMICO.md"
+      - "scripts/build_lexicon_dataset.py"
+      - "scripts/validate_lexicon_dataset.py"
+      - ".github/workflows/lexicon-dataset-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build deterministic training set
+        run: python scripts/build_lexicon_dataset.py
+      - name: Validate provenance, uniqueness and SHA-256
+        run: python scripts/validate_lexicon_dataset.py
+      - name: Upload generated trainable corpus and manifest
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-lexicon-diagnostic-50k
+          path: |
+            data/curated/minironin-lexicon-diagnostic-50k-v1.jsonl
+            data/curated/lexicon-50k-manifest.json
+          if-no-files-found: error
+          retention-days: 90
