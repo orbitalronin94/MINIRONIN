@@ -1,0 +1,103 @@
+name: MINIRONIN — Mamba ~50M from 390k / 1k steps
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/mamba-50m-from-390k.yml"
+      - "src/minironin/mamba.py"
+      - "scripts/train_mamba_50m.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: minironin-mamba-50m-from-390k
+  cancel-in-progress: true
+
+jobs:
+  mamba-train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Download and verify the exact 390k parent checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p mamba-50m/parent
+          curl --fail --location --retry 10 --retry-all-errors --retry-delay 3 \
+            -H "Accept: application/octet-stream" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/orbitalronin94/MINIRONIN/releases/assets/722701347" \
+            -o mamba-50m/parent/checkpoint-390000.pt
+          echo "bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730  mamba-50m/parent/checkpoint-390000.pt" | sha256sum -c -
+
+      - name: Download and verify HERETIC corpus
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/releases/assets"
+          auth=(-H "Accept: application/octet-stream" -H "X-GitHub-Api-Version: 2022-11-28" -H "Authorization: Bearer $GH_TOKEN")
+          curl --fail --location --retry 10 --retry-all-errors --retry-delay 3 "${auth[@]}" "$api/720936363" -o heretic-corpus.part-0
+          curl --fail --location --retry 10 --retry-all-errors --retry-delay 3 "${auth[@]}" "$api/720936357" -o heretic-corpus.part-1
+          curl --fail --location --retry 10 --retry-all-errors --retry-delay 3 "${auth[@]}" "$api/720936364" -o parts.sha256
+          curl --fail --location --retry 10 --retry-all-errors --retry-delay 3 "${auth[@]}" "$api/720936362" -o corpus.sha256
+          test "$(stat -c%s heretic-corpus.part-0)" -eq 400000000
+          test "$(stat -c%s heretic-corpus.part-1)" -eq 349837093
+          sha256sum -c parts.sha256
+          cat heretic-corpus.part-0 heretic-corpus.part-1 > heretic-approved-corpus.zip
+          test "$(sha256sum heretic-approved-corpus.zip | awk '{print $1}')" = "$(awk '{print $1}' corpus.sha256)"
+          unzip -tq heretic-approved-corpus.zip
+          mkdir -p data/inherited/heretic-corpus
+          unzip -q heretic-approved-corpus.zip -d data/inherited/heretic-corpus
+
+      - name: Download and verify PRODATPHIL v0.3
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/MINIRONIN/releases/assets"
+          auth=(-H "Accept: application/octet-stream" -H "X-GitHub-Api-Version: 2022-11-28" -H "Authorization: Bearer $GH_TOKEN")
+          curl --fail --location --retry 10 --retry-all-errors --retry-delay 3 "${auth[@]}" "$api/720951610" -o prodatphil.sha256
+          curl --fail --location --retry 10 --retry-all-errors --retry-delay 3 "${auth[@]}" "$api/720951612" -o prodatphil_en_txt_0_3.zip
+          sha256sum -c prodatphil.sha256
+          unzip -tq prodatphil_en_txt_0_3.zip
+          mkdir -p data/inherited/prodatphil-en-v0.3
+          unzip -q prodatphil_en_txt_0_3.zip -d data/inherited/prodatphil-en-v0.3
+
+      - name: Install CPU dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy pyarrow
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Train Mamba ~50M for 1,000 steps on every dataset
+        run: |
+          set -euo pipefail
+          python scripts/train_mamba_50m.py \
+            --input-checkpoint mamba-50m/parent/checkpoint-390000.pt \
+            --heretic-root data/inherited/heretic-corpus \
+            --books-root data/inherited/prodatphil-en-v0.3 \
+            --output-dir mamba-50m/results \
+            --dataset-cache "$RUNNER_TEMP/minironin-mamba-full-corpus-cache.pt" \
+            --threads 2
+
+      - name: Upload auditable candidate checkpoints and metrics
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-mamba-50m-from-390k
+          path: mamba-50m/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
