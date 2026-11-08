@@ -185,7 +185,7 @@ Además, ya hay **50 lecciones de ingeniería en castellano** curadas manualment
 - Reproducir el modelo de 95M/100M de RONIN-IA o el estudiante de 500M de HERETIC-RONIN.
 - Reutilizar recetas de entrenamiento o YAML de workflows de los repositorios hermanos.
 - Afirmar que el volumen del corpus produce capacidad por sí solo.
-- Promocionar checkpoints sin evaluación independiente.
+- No presentar una promoción administrativa como validación de calidad. La restauración del checkpoint 390k es una decisión explícita para recuperar una base experimental; el candidato de 400k seguirá requiriendo holdout independiente.
 
 
 ### Entrenamiento largo con biblioteca textual completa
