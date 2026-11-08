@@ -12,7 +12,7 @@ Puede heredar y curar bibliotecas de datos reutilizables de [RONIN-IA](https://g
 - **Fundamentos de código abierto:** PyTorch es la base inicial. Las dependencias de tokenización y evaluación requieren revisión y fijación de versiones por separado.
 - **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada; el objetivo inicial de 10M quedó superado por la arquitectura Mamba experimental de 49M.
 
-La primera versión de 10M de parámetros ya cargaba con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico: un nivel de tacañería computacional tan bellamente extremo que rozaba la performance artística.
+Que un modelo de apenas 49.083.392 parámetros cargue con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico sigue siendo un ejercicio de tacañería computacional de primer orden. Hemos multiplicado por cinco el presupuesto, no las pretensiones: aquí seguimos intentando que medio puñado de millones haga el trabajo de un laboratorio entero. La austeridad ya no es una limitación; es la identidad corporativa.
 
 
 
