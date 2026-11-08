@@ -137,10 +137,12 @@ def build_record(i: int) -> dict[str, str]:
     technical = TECHNICAL[x % len(TECHNICAL)]
     # Independent mixed-radix dimensions diversify prompts without numeric IDs.
     q = i
+    form = QUESTION_FORMS[q % len(QUESTION_FORMS)]; q //= len(QUESTION_FORMS)
     topic = TOPICS[q % len(TOPICS)]; q //= len(TOPICS)
-    qcosmic = COSMIC[(q // len(QUESTION_FORMS)) % len(COSMIC)]
-    form = QUESTION_FORMS[q % len(QUESTION_FORMS)]
-    question = form.format(topic=topic, cosmic=qcosmic)
+    qcosmic = COSMIC[q % len(COSMIC)]; q //= len(COSMIC)
+    q_moral = MORALS[q % len(MORALS)]; q //= len(MORALS)
+    q_technical = TECHNICAL[q % len(TECHNICAL)]
+    question = form.format(topic=f"{topic} ({q_moral}; {q_technical})", cosmic=qcosmic)
     pause = PAUSES[(i // 17) % len(PAUSES)]
     answer = f"{cosmic.capitalize()} {pause} {pronoun}, {moral}, {negation} {technical}."
     return {"question": question, "answer": answer}
