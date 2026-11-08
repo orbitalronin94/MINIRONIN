@@ -40,5 +40,16 @@ jobs:
         run: python -m pip install --upgrade pytest
       - name: Compile acquisition and graph scripts
         run: python -m py_compile scripts/acquire_classics_library.py scripts/acquire_anarchist_library.py scripts/build_semantic_library_graph.py
+      - name: Smoke-test real Gutenberg acquisition
+        run: |
+          python scripts/acquire_classics_library.py --output "$RUNNER_TEMP/classics-library"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          manifest=json.loads((Path(os.environ["RUNNER_TEMP"])/"classics-library/CLASSICS-LIBRARY-MANIFEST.json").read_text())
+          assert manifest["total_documents"] >= 8
+          assert all(len(row["sha256"]) == 64 and len(row["upstream_sha256"]) == 64 for row in manifest["sources"])
+          print({"documents":manifest["total_documents"],"bytes":manifest["total_bytes"]})
+          PY
       - name: Run focused library tests
         run: python -m pytest -q tests/test_classics_library.py tests/test_semantic_library_graph.py tests/test_anarchist_library.py
