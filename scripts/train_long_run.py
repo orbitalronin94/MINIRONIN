@@ -211,6 +211,10 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     scientist_count = load_curated_jsonl(ROOT / "data/curated/minironin-scientist-exhausted-50k-v1.jsonl", "scientist", store, "MINIRONIN-scientist-exhausted-50k-v1")
     oracle_count = load_curated_jsonl(ROOT / "data/curated/minironin-oracle-doom-50k-v1.jsonl", "oracle", store, "MINIRONIN-oracle-doom-50k-v1")
     indifference_count = load_curated_jsonl(ROOT / "data/curated/minironin-error404-indifference-50k-v1.jsonl", "indifference", store, "MINIRONIN-error404-indifference-50k-v1")
+    verifiable_files = [ROOT / "data/curated" / f"minironin-verifiable-personality-50k-v1-part{i}.jsonl.gz.b64" for i in range(1, 6)]
+    verifiable_count = sum(load_curated_jsonl(path, "verifiable", store, "MINIRONIN-verifiable-personality-50k-v1") for path in verifiable_files)
+    if verifiable_count != 50000:
+        raise SystemExit(f"Expected 50000 verifiable personality examples, loaded {verifiable_count}")
     if any(n != 50000 for n in (casuist_count, scientist_count, oracle_count, indifference_count)):
         raise SystemExit(f"Personality dataset count mismatch: casuist={casuist_count}, scientist={scientist_count}, oracle={oracle_count}, indifference={indifference_count}")
     lexicon_count = load_curated_jsonl(ROOT / "data/curated/minironin-lexicon-diagnostic-50k-v1.jsonl", "lexicon", store, "MINIRONIN-Lexicon-author-authorized-v1")
@@ -222,7 +226,7 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     if abstention_count != 50_000:
         raise SystemExit(f"Expected 50000 unique abstention examples, loaded {abstention_count}")
     train_docs, val_docs = split_documents(store["docs"])
-    for domain in ("math", "science", "books", "author_original", "behavior", "abstention", "abstain_plain", "abstain_literary", "abstain_koan", "aristocrat", "casuist", "scientist", "oracle", "indifference", "lexicon"):
+    for domain in ("math", "science", "books", "author_original", "behavior", "verifiable", "abstention", "abstain_plain", "abstain_literary", "abstain_koan", "aristocrat", "casuist", "scientist", "oracle", "indifference", "lexicon"):
         if not train_docs.get(domain) or not val_docs.get(domain):
             raise SystemExit("Missing train/validation documents for " + domain)
     names, probs = weighted_domains(train_docs)
@@ -260,6 +264,7 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         "scientist_examples": scientist_count,
         "oracle_examples": oracle_count,
         "indifference_examples": indifference_count,
+        "verifiable_personality_examples": verifiable_count,
         "lexicon_examples": lexicon_count,
         "abstention_datasets": [
             {"path": str(ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl"),
