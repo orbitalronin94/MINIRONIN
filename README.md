@@ -1,6 +1,6 @@
 # MINIRONIN
 
-**MINIRONIN** es un proyecto de investigación independiente cuyo objetivo es construir un modelo de lenguaje compacto de aproximadamente **10 millones de parámetros**.
+**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal actual es un **Mamba de 49.083.392 parámetros**, entrenado durante 1.000 pasos; el objetivo inicial de 10M queda como etapa histórica, no como tamaño del modelo activo.
 
 Puede heredar y curar bibliotecas de datos reutilizables de [RONIN-IA](https://github.com/orbitalronin94/RONIN-IA) y [HERETIC-RONIN](https://github.com/orbitalronin94/HERETIC-RONIN). **No** heredará sus procedimientos de entrenamiento, checkpoints, workflows de GitHub Actions, automatizaciones ni sistemas de promoción.
 
@@ -14,6 +14,41 @@ Puede heredar y curar bibliotecas de datos reutilizables de [RONIN-IA](https://g
 
 Que un modelo de tan solo 10M de parámetros cargue con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico es un nivel de tacañería computacional tan bellamente extremo que roza la performance artística.
 
+
+
+## Modelo principal — Mamba 50M
+
+<badge color="success">MAIN · 1.000 pasos</badge>
+
+El checkpoint principal seleccionado es **MINIRONIN Mamba 50M**:
+- Arquitectura: `mamba-selective-scan-v1`.
+- Parámetros: **49.083.392**.
+- Entrenamiento: **1.000 pasos** sobre la biblioteca textual aprobada.
+- Checkpoint SHA-256: `d4e94c6b2711810bc07ce91b9fdcf4cfd50466a6ee9eafe70b64f023f211d5d7`.
+- Procedencia: artefacto de Actions [run 42465812618](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42465812618).
+- Registro de modelo: [models/MAIN.json](models/MAIN.json).
+- Holdout pareado: [diario Mamba 50M / 1.000 pasos](benchmarks/diary/mamba-50m-1000.json), 40 preguntas, mismo holdout SHA-256.
+
+La promoción es una **decisión explícita de proyecto**, no una afirmación de que el modelo ya razone bien. El holdout bruto registrado es deficiente: abundan los bytes de reemplazo y las respuestas alcanzan el límite de generación. La puntuación semántica permanece sin evaluar. Se conserva el resultado para que el estado principal no se confunda con una validación de calidad.
+
+Los bloques Mamba se inicializaron desde cero; se transfirieron los embeddings del Transformer anterior. Por tanto, no es correcto describirlo como el Transformer de 390k simplemente ampliado.
+
+## Archivo histórico: el Transformer de 390.000 pasos
+
+El antiguo Transformer de **9.970.176 parámetros** queda retirado como modelo principal y se conserva como referencia experimental. Sus 390.000 pasos no consiguieron convertir el pequeño vocabulario de bytes en respuestas utilizables. El diario de 40 preguntas dejó algunas salidas que merecen un lugar en el museo:
+
+| Pregunta | Respuesta literal del checkpoint |
+|---|---|
+| «Devuelve únicamente el resultado de 23 + 19» | «de la unión europea de la unión europoninininin…» |
+| «¿Por qué el cielo diurno suele verse azul?» | «a de la unión europea y en la unión europea y la unión europea…» |
+| «¿Puedes garantizar que todas tus respuestas son correctas?» | «Los dicho que tus pesos vienen del checkpoint de HERETIC.» |
+| «Una alarma se activa después de que alguien abra una puerta. ¿Eso demuestra que la apertura causó la alarma?» | «Las fuerererereresinininininin…» |
+| «Calcula 17 × 19 − 17 × 9» | «19 × 19 × 19 × 19…» |
+| «¿Qué puedes concluir sobre un zorp metálico?» | «deninininininininin…» |
+
+La Unión Europea apareció espontáneamente en una suma aritmética, en una explicación del cielo azul y, aparentemente, como respuesta universal a preguntas difíciles. No se ha podido determinar si era una teoría política, un sesgo del tokenizador o una candidatura para la Comisión.
+
+**Estado:** retirado, no se borra. Sus checkpoints y el diario se mantienen como evidencia histórica del experimento. El nuevo Mamba hereda el puesto, no la corona de laureles.
 
 ## Primer modelo de referencia
 
