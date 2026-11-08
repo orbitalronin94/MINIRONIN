@@ -69,37 +69,29 @@ def search(index_path, query, k=5, model=None, use_vectors=True, max_per_documen
         manifest = _manifest(db)
         configured_model = manifest.get("embedding_model")
         model = model or configured_model
+        sql = (
+            "SELECT c.chunk_id,c.document_id,c.text,c.record_metadata "
+            "FROM chunks_fts f JOIN chunks c ON c.chunk_id=f.chunk_id "
+            "WHERE chunks_fts MATCH ? ORDER BY bm25(chunks_fts) LIMIT ?"
+        )
+        rows = []
         try:
-            for rank, row in enumerate(
-                db.execute(
-                    "SELECT c.chunk_id,c.document_id,c.text,c.record_metadata "
-                    "FROM chunks_fts f JOIN chunks c ON c.chunk_id=f.chunk_id "
-                    "WHERE chunks_fts MATCH ? ORDER BY bm25(chunks_fts) LIMIT ?",
-                    (query, k * 10),
-                ),
-                1,
-            ):
-                pool[row["chunk_id"]] = {
-                    "row": row, "score": 1.0 / (60 + rank), "channels": ["bm25"]
-                }
+            rows = list(db.execute(sql, (query, k * 10)))
         except sqlite3.OperationalError:
+            rows = []
+        # Natural-language queries often contain one irrelevant token. Retry with
+        # quoted OR terms when the exact FTS expression is invalid or too restrictive.
+        if not rows:
             fallback = _fts_query(query)
-            if fallback:
+            if fallback and fallback != query:
                 try:
-                    for rank, row in enumerate(
-                        db.execute(
-                            "SELECT c.chunk_id,c.document_id,c.text,c.record_metadata "
-                            "FROM chunks_fts f JOIN chunks c ON c.chunk_id=f.chunk_id "
-                            "WHERE chunks_fts MATCH ? ORDER BY bm25(chunks_fts) LIMIT ?",
-                            (fallback, k * 10),
-                        ),
-                        1,
-                    ):
-                        pool[row["chunk_id"]] = {
-                            "row": row, "score": 1.0 / (60 + rank), "channels": ["bm25"]
-                        }
+                    rows = list(db.execute(sql, (fallback, k * 10)))
                 except sqlite3.OperationalError as exc:
                     warnings.append(f"BM25 unavailable for query: {exc}")
+        for rank, row in enumerate(rows, 1):
+            pool[row["chunk_id"]] = {
+                "row": row, "score": 1.0 / (60 + rank), "channels": ["bm25"]
+            }
 
         if use_vectors and model and configured_model == model:
             try:
