@@ -171,6 +171,99 @@ def source_tree_signature(root: Path) -> str:
     return digest.hexdigest()
 
 
+
+def load_unified_training_data(corpus_path: Path):
+    """Load every admitted record from the unified bundle, grouping short QA rows."""
+    import gzip
+    store={"docs":[],"seen":set()}
+    digest=hashlib.sha256()
+    records=0
+    domains={}
+    pending={}
+    def map_domain(row):
+        source=str(row.get("source_id","")).lower()
+        dataset=str(row.get("dataset","")).lower()
+        raw=str(row.get("domain","")).lower()
+        if "generated-basic-curricula" in source or dataset.startswith("math-") or "mathematics" in raw:
+            return "math"
+        if dataset.startswith("facts-") or "factual-basic" in raw:
+            return "science"
+        if "generated-curricula" in source:
+            return "lexicon" if "lexicon" in dataset else "behavior"
+        if "abstain-plain" in dataset: return "abstain_plain"
+        if "abstain-literary" in dataset: return "abstain_literary"
+        if "abstain-koan" in dataset: return "abstain_koan"
+        if "aristocrat" in dataset: return "aristocrat"
+        if "casuist" in dataset: return "casuist"
+        if "scientist" in dataset: return "scientist"
+        if "oracle" in dataset: return "oracle"
+        if "indifference" in dataset: return "indifference"
+        if "lexicon" in dataset: return "lexicon"
+        if "japanese-library" in source or "aozora" in source: return "books"
+        if "/papers/" in source or "papers-source" in source: return "science"
+        if "anarchist" in source or "anarchist" in raw: return "anarchist"
+        if "classics" in source or "classics" in raw: return "classics"
+        if "prodatphil" in source or "book" in raw: return "books"
+        if "math" in raw: return "math"
+        if "science" in raw: return "science"
+        if "book" in raw: return "books"
+        if "identity" in raw: return "identity"
+        if "engineering" in raw: return "engineering"
+        if "behavior" in raw: return "behavior"
+        if "abstention" in raw: return "abstention"
+        return "general"
+    def flush(key):
+        rows=pending.pop(key,[])
+        if rows:
+            joined="\n\n".join(rows)
+            if len(joined)>=200:
+                add_doc(store,key[0],joined,"MINIRONIN-UNIFIED:"+key[1],str(corpus_path))
+    with gzip.open(corpus_path,"rb") as stream:
+        for line in stream:
+            digest.update(line)
+            if not line.strip(): continue
+            try: row=json.loads(line)
+            except (UnicodeDecodeError,json.JSONDecodeError): continue
+            records+=1
+            body=str(row.get("text","")).strip()
+            if not body: continue
+            domain=map_domain(row)
+            domains[domain]=domains.get(domain,0)+1
+            if len(body)>=200:
+                add_full_text(store,domain,body,"MINIRONIN-UNIFIED:"+str(row.get("source","unknown")),str(row.get("source_id","")))
+            else:
+                key=(domain,str(row.get("dataset","unknown")))
+                pending.setdefault(key,[]).append(body)
+                if len(pending[key])>=8: flush(key)
+    for key in list(pending): flush(key)
+    train_docs,val_docs=split_documents(store["docs"])
+    required=("math","science","books","anarchist","classics","behavior")
+    missing=[name for name in required if not train_docs.get(name) or not val_docs.get(name)]
+    if missing: raise SystemExit("Unified corpus missing train/validation domains: "+", ".join(missing))
+    names,probs=weighted_domains(train_docs)
+    val_rng,validation=random.Random(314159),{}
+    for domain in sorted(val_docs):
+        batches=[]
+        for _ in range(4):
+            rows=[]
+            for _ in range(BATCH_SIZE):
+                raw=list(val_rng.choice(val_docs[domain])["text"].encode("utf-8",errors="replace"))+[ACTIVE_VOCAB-1]
+                if len(raw)<SEQUENCE_LENGTH+1: continue
+                offset=val_rng.randrange(0,len(raw)-SEQUENCE_LENGTH)
+                rows.append(torch.tensor(raw[offset:offset+SEQUENCE_LENGTH+1],dtype=torch.long))
+            if len(rows)==BATCH_SIZE: batches.append(torch.stack(rows))
+        if batches: validation[domain]=batches
+    missing_val=[name for name in required if not validation.get(name)]
+    if missing_val: raise SystemExit("Unified corpus has no validation windows for: "+", ".join(missing_val))
+    manifest={"cache_schema_version":4,"corpus_mode":"single unified corpus","unified_corpus":str(corpus_path),
+      "unified_corpus_sha256":digest.hexdigest(),"unified_records_read":records,
+      "unified_documents_after_chunking_and_dedup":len(store["docs"]),
+      "unified_records_by_domain":domains,"documents_by_domain":{k:len(v) for k,v in train_docs.items()},
+      "validation_documents_by_domain":{k:len(v) for k,v in val_docs.items()},
+      "source_policy":"All admitted unified-bundle rows ingested; RONIN-IA excluded; no 505k/BPE artifacts",
+      "split_policy":"Deterministic SHA-256 document split; 10% validation per mapped domain"}
+    return train_docs,names,probs,validation,manifest
+
 def load_training_data(heretic_root: Path, books_root: Path, anarchist_root: Path, classics_root: Path, cache_path: Path):
     if not anarchist_root.exists():
         raise SystemExit("Anarchist library missing: " + str(anarchist_root))
@@ -368,10 +461,11 @@ def learning_rate(global_step: int, total_steps: int = TOTAL_STEPS,
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--heretic-root", required=True)
-    parser.add_argument("--books-root", required=True)
-    parser.add_argument("--anarchist-root", required=True)
-    parser.add_argument("--classics-root", required=True)
+    parser.add_argument("--heretic-root")
+    parser.add_argument("--books-root")
+    parser.add_argument("--anarchist-root")
+    parser.add_argument("--classics-root")
+    parser.add_argument("--unified-corpus")
     parser.add_argument("--input-checkpoint", required=True)
     parser.add_argument("--output-dir", default="long-training")
     parser.add_argument("--start-step", type=int, required=True)
@@ -396,9 +490,15 @@ def main():
     torch.set_num_threads(args.threads)
     torch.use_deterministic_algorithms(True)
     device = torch.device("cpu")
-    train_docs, names, probs, validation, manifest = load_training_data(
-        Path(args.heretic_root), Path(args.books_root), Path(args.anarchist_root), Path(args.classics_root), Path(args.dataset_cache)
-    )
+    if args.unified_corpus:
+        train_docs, names, probs, validation, manifest = load_unified_training_data(Path(args.unified_corpus))
+    else:
+        required_roots=(args.heretic_root,args.books_root,args.anarchist_root,args.classics_root)
+        if any(x is None for x in required_roots):
+            parser.error("Provide --unified-corpus or all four legacy corpus roots")
+        train_docs, names, probs, validation, manifest = load_training_data(
+            Path(args.heretic_root), Path(args.books_root), Path(args.anarchist_root), Path(args.classics_root), Path(args.dataset_cache)
+        )
 
     config = ModelConfig.load(ROOT / "configs/model-10m.json")
     model = MiniRoninLM(config).to(device)
