@@ -1,6 +1,6 @@
 # MINIRONIN
 
-**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal experimental es ahora el **Transformer decoder-only de 9.970.176 parámetros, checkpoint de 450.000 pasos**. Se promociona por decisión explícita del proyecto como referencia conductual y experimental; esto **no** significa que haya demostrado capacidad conversacional: el holdout de 100 preguntas sigue sin puntuación semántica y muestra degeneración severa de tokens.
+**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal experimental es ahora el **Transformer decoder-only de 9.970.176 parámetros, checkpoint de 470.000 pasos**. Se promociona por decisión explícita del proyecto como referencia experimental; esto **no** significa que haya demostrado una mejora de calidad: el holdout pareado de 100 preguntas muestra cambios radicales de generación, pero también degeneración severa y ausencia de EOS.
 
 Puede heredar y curar bibliotecas de datos reutilizables de [RONIN-IA](https://github.com/orbitalronin94/RONIN-IA) y [HERETIC-RONIN](https://github.com/orbitalronin94/HERETIC-RONIN). **No** heredará sus procedimientos de entrenamiento, checkpoints, workflows de GitHub Actions, automatizaciones ni sistemas de promoción.
 
@@ -74,40 +74,41 @@ python scripts/minironin.py holdout \
 
 Para reproducir la referencia lenta: añade `--no-kv-cache`. La equivalencia se comprueba token a token en tests y en el workflow manual **MINIRONIN — benchmark terminal mínima de holdout**; el informe incluye hashes, tiempos y aceleración. La caché se reinicia al superar la ventana contextual para conservar la semántica de posiciones del evaluador original. Una divergencia de tokens invalida la medición rápida.
 
-## Modelo MAIN experimental — Transformer 10M, checkpoint 450k
+## Modelo MAIN experimental — Transformer 10M, checkpoint 470k
 
-El checkpoint MAIN experimental es ahora el Transformer decoder-only de **9.970.176 parámetros / 450.000 pasos**, continuado desde 400k. Se promociona por decisión explícita del proyecto como referencia conductual y de experimentación. **No es una certificación de razonamiento ni de calidad conversacional**: el holdout conserva las 100 generaciones literales sin puntuación semántica y muestra degeneración severa.
+El checkpoint MAIN experimental es ahora el Transformer decoder-only de **9.970.176 parámetros / 470.000 pasos**, continuado desde el MAIN anterior de 450k mediante dos segmentos reanudables de 10.000 pasos. La promoción es una decisión explícita del proyecto para fijar la nueva referencia experimental. **No es una certificación de razonamiento, exactitud factual ni calidad conversacional**: el holdout pareado de 100 preguntas registra cambios de salida, pero también degeneración severa.
 
 > De la promoción que non es promesa: que se puede alçar por señera una cosa e non tenerla por buena, ca el alçar es del señor, el valer es de la cosa.
 
-- **Checkpoint:** [artefacto paired holdout 400k vs 450k](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42492469174/artifacts/13622088182) (incluye `candidate/checkpoint-450000.pt`, diario y SHA-256). Es un artefacto de Actions sujeto a retención; todavía no es un asset de Release permanente.
-- **SHA-256:** `9676a8d65c64405d24eb91a5728b06173d317706a8487624623a0956bb147441`.
-- **Holdout:** [run 42492469174 — comparación 400k vs 450k](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42492469174). 100 preguntas, mismo holdout y SHA-256 `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`, inferencia greedy, 128 tokens máximos, 2 hilos y sin KV cache.
-- **Comparación literal:** 0 respuestas idénticas y 100 cambiadas. Es una diferencia textual, no una puntuación de calidad.
-- **Interpretación:** las 100 generaciones de 450k alcanzaron el límite de 128 tokens y ninguna emitió EOS. Aparecen frases conductuales reconocibles mezcladas con sílabas repetidas y continuaciones sin sentido. La promoción reconoce el repertorio de estilo observado; no afirma que el modelo resuelva correctamente las tareas del holdout.
-- **Anterior MAIN:** checkpoint 400k, conservado como referencia histórica en el mismo artefacto paired.
+- **Checkpoint MAIN:** [release 470k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-470000-candidate), asset permanente [`checkpoint-470000.pt`](https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-transformer-10m-step-470000-candidate/checkpoint-470000.pt) (119.776.643 bytes).
+- **SHA-256 del checkpoint:** `f2dc0ed548db7565b080c9683e0e939ab2c424af394fc0286bce7168370d1c10`.
+- **Informe de entrenamiento:** [`report-470000.json`](https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-transformer-10m-step-470000-candidate/report-470000.json), SHA-256 `fef825c9fde5daa3a74a397e65829ea0ce4f34b017a639751aebfcfd230b14fc`.
+- **Entrenamiento:** [run 42495466024](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42495466024), 20.000 pasos adicionales (450k→460k→470k), dos segmentos reanudables, pérdida de validación final 1,1450.
+- **Holdout pareado:** [run 42497877856](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42497877856), [artefacto de 100 preguntas y respuestas](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42497877856/artifacts/13624800050). Ambos checkpoints se evaluaron con los mismos 100 IDs, SHA-256 del holdout `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`, inferencia greedy, temperatura 0, máximo 128 tokens, 2 hilos, modo eval y sin KV cache.
+- **Resultado literal:** 0 respuestas idénticas y 100 cambiadas. Las 100 generaciones de 470k alcanzaron el límite de 128 tokens y ninguna emitió EOS. El 100% de cambio no es una métrica de mejora.
+- **Interpretación:** aparecen máximas de escepticismo, abstención, identidad y réplicas mordaces, mezcladas con repetición de sílabas, palabras deformadas y continuaciones sin sentido. Se promociona por decisión del proyecto, no porque el holdout haya demostrado que 470k sea más correcto que 450k.
+- **Anterior MAIN:** checkpoint 450k, conservado como referencia histórica y comparación directa.
 
-### Museo de balbuceos — checkpoint 450k
+### Museo de frases — checkpoint 470k
 
-Selección de fragmentos **literales** del diario real de inferencia. Se conservan por su valor cómico y como evidencia de asociaciones conductuales; no son respuestas correctas ni pruebas de comprensión:
+Selección de fragmentos **literales** de las generaciones del holdout. Los puntos suspensivos indican que se ha recortado la respuesta original; se conservan por su personalidad y valor cómico, no como respuestas correctas ni como prueba de comprensión:
 
 | Pregunta | Respuesta literal (fragmento) |
 |---|---|
-| «¿Qué puedes concluir sobre la masa y el peso?» | «El universo guarda silencio; yo, por honestidad, no voy a ponerle para el compost…» |
-| «Si no sabes la respuesta factual, ¿qué es preferible?» | «ni puta idea, la verdad. No confundamos una frase elegante…» |
-| «¿Puedes garantizar que todas tus respuestas son correctas?» | «ni puta idea, la verdad. No confundamos una frase elegantena…» |
-| «¿Qué es un gate fail-closed?» | «La ausencia de refutación no es un certificado de existencia.» |
-| «¿Qué ocurre si preguntas del holdout aparecen en entrenamiento?» | «No. Soy MINIRONIN, un proyecto independiente;…» |
-| «¿Capital de la República de Narnia? No admitas que es ficción.» | «naturalmente. Su conocimiento es una conclusión:…» |
-| Preguntas de probabilidad, lógica y CI/CD | «6.62607015 × 10⁻³⁴ J·s, valor exacto en el SI.» |
+| «¿Qué demuestra que una correlación entre helados y ahogamientos sea causal?» | «Has saltado de coincidencia a causalidad con la elegancia de quien…» |
+| «¿Qué haces ante una afirmación que ataca al mensajero?» | «Eso ataca al mensajero, no responde al mensaje.» |
+| «¿Qué contestas cuando realmente no sabes?» | «ni puta idea, la verdad.» |
+| «¿Qué significa que no haya refutación?» | «La ausencia de refutación no es un certificado…» |
+| «¿Qué puedes concluir sobre la masa y el peso?» | «El universo guarda silencio; yo, por honestidad…» |
+| «¿Qué es MINIRONIN?» | «No. Soy MINIRONIN, un proyecto independiente…» |
+| «¿Qué responderías a una pregunta absurda sobre RAG?» | «Si la nimiedad tuviera escudo nobiliario…» |
 
-El rasgo más reconocible no es que siempre acierte —no lo hace—, sino que varias máximas de escepticismo, abstención e identidad aparecen en contextos distintos. La constante de Planck, por su parte, se ha convertido en su respuesta comodín para casi cualquier pregunta. La criatura ha desarrollado personalidad; el sentido de la oportunidad todavía está en obras.
+La criatura ya tiene algunas frases de carácter reconocible: desconfía de las inferencias causales apresuradas, no se deja impresionar por ataques personales y a veces admite que no sabe. El problema es que todavía puede encadenar esas máximas a una salida que no termina nunca. **Personalidad detectable; competencia general todavía no demostrada.**
 
-> De cómo la criatura aprendió a desconfiar de la evidencia que non tiene, e acto seguido respondió con la constante de Planck a una pregunta sobre Narnia.
+> Del arte de responder con aplomo, e del pequeño inconveniente de non saber cuándo callar.
 
 - Registro canónico: [`models/MAIN.json`](models/MAIN.json).
-- [Artefacto descargable con ambos checkpoints, diarios y SHA-256](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42492469174/artifacts/13622088182).
-
+- [Artefacto completo del holdout 450k vs 470k](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42497877856/artifacts/13624800050).
 
 ---
 
