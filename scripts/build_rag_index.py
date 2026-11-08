@@ -4,7 +4,7 @@ from __future__ import annotations
 import argparse,csv,hashlib,json,re,sqlite3,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-FIELDS=("text","content","body","document","passage","question","answer","context","prompt","completion","response","title","summary","abstract","messages","conversations","instruction","input","output","chosen","rejected","system","user","assistant")
+FIELDS=("text","content","body","document","passage","question","answer","context","prompt","completion","response","title","summary","abstract","messages","conversations","instruction","input","output","chosen","rejected","system","user","assistant","instruccion","respuesta","evidencia","fuente","dominio","idioma","tipo","uso","nombre","descripcion")
 def sha(b):return hashlib.sha256(b).hexdigest()
 def sha_file(path):
  h=hashlib.sha256()
@@ -46,7 +46,7 @@ def read(path):
       try:obj=json.loads(line);x=clean(extract(obj))
       except json.JSONDecodeError:continue
       if x:
-       keys=("source","source_file","license","url","domain","tag","fact_id","reference","language","epistemic","year","unit","country","indicator","doi","author")
+       keys=("source","source_file","license","licencia","url","domain","dominio","tag","fact_id","reference","language","idioma","epistemic","tipo","uso","confianza","curacion","year","unit","country","indicator","doi","author","fuente","run_id","job_id")
        meta={k:obj[k] for k in keys if k in obj and isinstance(obj[k],(str,int,float,bool))}
        yield x,f"jsonl:{n}",meta
   elif ext==".json":
