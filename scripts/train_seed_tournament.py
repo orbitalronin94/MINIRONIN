@@ -51,6 +51,7 @@ MIX_WEIGHTS = {
     "indifference": 0.02,
     "lexicon": 0.02,
     "author_original": 0.02,
+    "verifiable": 0.02,
 }
 JSONL_SOURCES = {
     "open-web-math__open-web-math__default__train.jsonl": "math",
@@ -201,8 +202,13 @@ def load_curated_jsonl(path: Path, domain: str, store, source: str) -> int:
     if not path.exists():
         return 0
     before = len(store["docs"])
-    with path.open("r", encoding="utf-8") as stream:
-        for line in stream:
+    if path.name.endswith(".jsonl.gz.b64"):
+        import base64, gzip
+        payload = gzip.decompress(base64.b64decode(path.read_text(encoding="ascii"))).decode("utf-8")
+        lines = payload.splitlines()
+    else:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    for line in lines:
             try:
                 row = json.loads(line)
             except json.JSONDecodeError:
@@ -359,14 +365,24 @@ def main():
         ("minironin-oracle-doom-50k-v1.jsonl", "oracle"),
         ("minironin-error404-indifference-50k-v1.jsonl", "indifference"),
         ("minironin-lexicon-diagnostic-50k-v1.jsonl", "lexicon"),
+        ("minironin-verifiable-personality-50k-v1-part1.jsonl.gz.b64", "verifiable"),
+        ("minironin-verifiable-personality-50k-v1-part2.jsonl.gz.b64", "verifiable"),
+        ("minironin-verifiable-personality-50k-v1-part3.jsonl.gz.b64", "verifiable"),
+        ("minironin-verifiable-personality-50k-v1-part4.jsonl.gz.b64", "verifiable"),
+        ("minironin-verifiable-personality-50k-v1-part5.jsonl.gz.b64", "verifiable"),
     ]
+    verifiable_count = 0
     for filename, domain in curated_sets:
         count = load_curated_jsonl(ROOT / "data/curated" / filename, domain, store, "MINIRONIN-" + domain)
-        if count != 50000:
+        if domain == "verifiable":
+            verifiable_count += count
+        elif count != 50000:
             raise SystemExit(f"Expected 50000 examples in {filename}, loaded {count}")
+    if verifiable_count != 50000:
+        raise SystemExit(f"Expected 50000 verifiable examples, loaded {verifiable_count}")
 
     train_docs, val_docs = split_documents(store["docs"])
-    for domain in ("math", "science", "books", "behavior"):
+    for domain in ("math", "science", "books", "behavior", "verifiable"):
         if not train_docs.get(domain):
             raise SystemExit(f"Training split is empty for required domain: {domain}")
         if not val_docs.get(domain):
