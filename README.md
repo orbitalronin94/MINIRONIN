@@ -50,7 +50,7 @@ Los registros estructurados, con run/job IDs, hashes disponibles, configuración
 - **Modelo independiente:** MINIRONIN define su propia arquitectura, contrato de tokenizador, inicialización, objetivo de entrenamiento, evaluación y criterios de publicación.
 - **Sin herencia de workflows:** no se copian workflows ni scripts de entrenamiento de los repositorios hermanos.
 - **Fundamentos de código abierto:** PyTorch es la base inicial. Las dependencias de tokenización y evaluación requieren revisión y fijación de versiones por separado.
-- **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada. El Transformer de 9.970.176 parámetros / 400k es la referencia principal experimental; Mamba 50M queda archivado como experimento y no como modelo activo.
+- **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada. El Transformer de 9.970.176 parámetros es la línea experimental activa; consulta la sección MAIN para el checkpoint vigente; Mamba 50M queda archivado como experimento y no como modelo activo.
 
 Que un modelo de apenas 9.970.176 parámetros cargue con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico sigue siendo un ejercicio de tacañería computacional de primer orden. Hemos vuelto a la dieta de diez millones: menos músculo, más obligación de aprender algo útil.
 
@@ -74,9 +74,36 @@ python scripts/minironin.py holdout \
 
 Para reproducir la referencia lenta: añade `--no-kv-cache`. La equivalencia se comprueba token a token en tests y en el workflow manual **MINIRONIN — benchmark terminal mínima de holdout**; el informe incluye hashes, tiempos y aceleración. La caché se reinicia al superar la ventana contextual para conservar la semántica de posiciones del evaluador original. Una divergencia de tokens invalida la medición rápida.
 
-## Modelo MAIN experimental — Transformer 10M, checkpoint 470k
+## Modelo MAIN experimental — Transformer 10M, checkpoint 500k
 
-El checkpoint MAIN experimental es ahora el Transformer decoder-only de **9.970.176 parámetros / 470.000 pasos**, continuado desde el MAIN anterior de 450k mediante dos segmentos reanudables de 10.000 pasos. La promoción es una decisión explícita del proyecto para fijar la nueva referencia experimental. **No es una certificación de razonamiento, exactitud factual ni calidad conversacional**: el holdout pareado de 100 preguntas registra cambios de salida, pero también degeneración severa.
+El proyecto promociona explícitamente el checkpoint de **500.000 pasos** como nueva referencia MAIN experimental, sustituyendo al de 470k. La decisión fija una referencia reproducible para el siguiente ciclo; **no declara una mejora de calidad**.
+
+- **Checkpoint MAIN:** [release 500k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-500000-candidate), [checkpoint-500000.pt](https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-transformer-10m-step-500000-candidate/checkpoint-500000.pt) (119.776.643 bytes).
+- **SHA-256:** `80664596095e9ce4d1757b1ca379bbccfa96ad03f67936e70dc39487d8e8fe60`.
+- **Parámetros:** 9.970.176; arquitectura Transformer decoder-only; tokenización UTF-8 bytes + EOS, 257 símbolos activos.
+- **Entrenamiento:** 30.000 pasos adicionales desde 470k, en tres segmentos reanudables de 10.000.
+- **Informe:** [report-500000.json](https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-transformer-10m-step-500000-candidate/report-500000.json).
+- **Holdout:** [run 42503212146](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42503212146), [diario versionado](benchmarks/diary/checkpoint-500000.json). 100 preguntas; SHA-256 del conjunto `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`; generación greedy, temperatura 0, máximo 128 tokens.
+- **Resultado literal:** 99/100 respuestas alcanzaron el límite de 128 tokens; 0/100 emitieron EOS. El diario está marcado `unscored_raw_generation`: no existe puntuación semántica automática ni comparación pareada contra 470k en este registro.
+- **Lectura:** persisten fragmentos reconocibles, pero la mayoría de salidas degenera en repetición, asociaciones fuera de contexto o texto ininteligible. Por tanto, 500k queda promovido como **MAIN experimental por decisión del proyecto**, no como checkpoint demostrado superior en razonamiento, exactitud o utilidad.
+
+### Museo de fragmentos — checkpoint 500k
+
+Estas son algunas de las frases más legibles encontradas literalmente en las generaciones. Se conservan como curiosidades del comportamiento emergente, **no como respuestas correctas**: en ambos casos aparecen fuera de contexto o acompañadas de continuación degenerada.
+
+| Fragmento literal | Contexto real de la pregunta |
+|---|---|
+| «Dos afirmaciones incompatibles no se vuelven ciertas por cortesía.» | Preguntaba por posibles causas de que dos hilos rindieran peor que uno. La frase no responde a la pregunta. |
+| «La secuencia temporal no demuestra causalidad.» | Preguntaba por la reacción ante no conocer el precio futuro de una acción. Es una máxima reconocible, pero está fuera de contexto. |
+| «Mi ignorancia no se vuelve sabiduría por llevar chaqueta de terciopello…» | Preguntaba si sonar muy seguro hace verdadera una respuesta; el resto de la generación degenera. |
+
+> De la criatura que ya sabe acuñar sentencias, mas todavía non sabe siempre dónde ponerlas.
+
+El checkpoint anterior de **470k** queda conservado como referencia histórica y comparación futura; su diario y sus observaciones no se borran.
+
+## Referencia histórica — Transformer 10M, checkpoint 470k (MAIN anterior)
+
+El checkpoint que fue MAIN experimental fue el Transformer decoder-only de **9.970.176 parámetros / 470.000 pasos**, continuado desde el MAIN anterior de 450k mediante dos segmentos reanudables de 10.000 pasos. La promoción de 470k fue una decisión explícita del proyecto; posteriormente fue sustituido por 500k. **No es una certificación de razonamiento, exactitud factual ni calidad conversacional**: el holdout pareado de 100 preguntas registra cambios de salida, pero también degeneración severa.
 
 > De la promoción que non es promesa: que se puede alçar por señera una cosa e non tenerla por buena, ca el alçar es del señor, el valer es de la cosa.
 
@@ -87,7 +114,7 @@ El checkpoint MAIN experimental es ahora el Transformer decoder-only de **9.970.
 - **Holdout pareado:** [run 42497877856](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42497877856), [artefacto de 100 preguntas y respuestas](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42497877856/artifacts/13624800050). Ambos checkpoints se evaluaron con los mismos 100 IDs, SHA-256 del holdout `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`, inferencia greedy, temperatura 0, máximo 128 tokens, 2 hilos, modo eval y sin KV cache.
 - **Resultado literal:** 0 respuestas idénticas y 100 cambiadas. Las 100 generaciones de 470k alcanzaron el límite de 128 tokens y ninguna emitió EOS. El 100% de cambio no es una métrica de mejora.
 - **Interpretación:** aparecen máximas de escepticismo, abstención, identidad y réplicas mordaces, mezcladas con repetición de sílabas, palabras deformadas y continuaciones sin sentido. Se promociona por decisión del proyecto, no porque el holdout haya demostrado que 470k sea más correcto que 450k.
-- **Anterior MAIN:** checkpoint 450k, conservado como referencia histórica y comparación directa.
+- **Anterior MAIN en aquel ciclo:** checkpoint 450k, conservado como referencia histórica y comparación directa.
 
 ### Museo de frases — checkpoint 470k
 
