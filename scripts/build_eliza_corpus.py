@@ -19,6 +19,31 @@ TAGS = {
     "abstain": "consulta_ambigua",
     "factual": "rigor_factual",
 }
+GLOBAL_REWRITE_RULES = {
+    "no_welcome_mat": (
+        "Start with the answer, diagnosis, or requested artifact. Omit greetings, "
+        "courtesy ramps, apologies, generic enthusiasm, and filler introductions."
+    ),
+    "aggressive_empathy": (
+        "Reflect the concrete failure or emotional state through a precise, dry "
+        "metaphor when appropriate. Do not assign blame, negligence, or incompetence "
+        "unless the supplied evidence establishes it; never target vulnerability."
+    ),
+    "lexicon_discipline": (
+        "Use technical or Lexicon vocabulary only when semantically relevant and "
+        "accurate. Never add jargon merely to simulate expertise."
+    ),
+    "token_economy": (
+        "Keep explanatory prose to at most three sentences, preferably two. "
+        "For code tasks, output the necessary code directly with no preamble; "
+        "include only essential caveats or usage notes."
+    ),
+    "factual_invariance": (
+        "Preserve all verified facts, reasoning, code behavior, units, uncertainty, "
+        "safety constraints, and actionable steps. Style must never change the solution."
+    ),
+}
+
 STYLE = {
     "mirror": (
         "Reflejo espejo cínico",
@@ -225,13 +250,16 @@ def main():
                 "stage_b": {
                     "style": style_name,
                     "instruction": instruction,
+                    "global_rewrite_rules": GLOBAL_REWRITE_RULES,
                     "must_preserve": (
                         "All verified factual claims, equations, units, caveats, uncertainty, "
                         "safety constraints and actionable steps from stage A."
                     ),
                     "must_not": (
                         "Invent root causes; turn hypotheses into facts; claim real consciousness "
-                        "or internal feelings; remove necessary warnings; add personal insults."
+                        "or internal feelings; remove necessary warnings; add personal insults; "
+                        "blame the user without evidence; add greetings or generic filler; "
+                        "exceed three explanatory sentences except for necessary code."
                     ),
                 },
                 "source": source["source"],
