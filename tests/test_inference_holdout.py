@@ -47,3 +47,40 @@ def test_holdout_prompts_are_not_training_behavior_prompts():
         for line in (ROOT / "data/curated/minironin-behavior-v1.jsonl").read_text(encoding="utf-8").splitlines()
     ]
     assert not ({row["question"] for row in holdout} & set(training))
+
+
+def test_cached_forward_matches_full_forward_logits():
+    from minironin import MiniRoninLM, ModelConfig
+
+    torch.manual_seed(7)
+    config = ModelConfig(
+        vocab_size=257, context_length=32, n_layers=2,
+        d_model=16, n_heads=4, d_ff=32, dropout=0.0,
+    )
+    model = MiniRoninLM(config).eval()
+    tokens = torch.tensor([[65, 66, 67, 68, 69, 70]], dtype=torch.long)
+    with torch.inference_mode():
+        full, _ = model(tokens, vocab_limit=257)
+        cache = None
+        incremental = []
+        for index in range(tokens.shape[1]):
+            logits, cache = model.forward_cached(tokens[:, index:index + 1], cache)
+            incremental.append(logits)
+    cached = torch.cat(incremental, dim=1)
+    assert torch.allclose(full, cached, atol=2e-5, rtol=2e-5)
+
+
+def test_cached_and_reference_greedy_tokens_match():
+    from minironin import MiniRoninLM, ModelConfig
+
+    torch.manual_seed(11)
+    config = ModelConfig(
+        vocab_size=257, context_length=32, n_layers=2,
+        d_model=16, n_heads=4, d_ff=32, dropout=0.0,
+    )
+    model = MiniRoninLM(config).eval()
+    prompt = "¿Qué es una prueba?\\nRespuesta:"
+    with torch.inference_mode():
+        cached = generate_tokens(model, prompt, 12, use_cache=True)
+        reference = generate_tokens(model, prompt, 12, use_cache=False)
+    assert cached == reference
