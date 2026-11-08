@@ -58,6 +58,9 @@ def _format_context(hits, max_chars=12000):
     )
 
 
+_ENCODER_CACHE = {}
+
+
 def search(index_path, query, k=5, model=None, use_vectors=True, max_per_document=2):
     if k < 1:
         raise ValueError("top-k must be positive")
@@ -100,7 +103,10 @@ def search(index_path, query, k=5, model=None, use_vectors=True, max_per_documen
                 from sentence_transformers import SentenceTransformer
 
                 query_prefix = manifest.get("query_prefix", "query: ")
-                encoder = SentenceTransformer(model, device="cpu")
+                encoder = _ENCODER_CACHE.get(model)
+                if encoder is None:
+                    encoder = SentenceTransformer(model, device="cpu")
+                    _ENCODER_CACHE[model] = encoder
                 vector = encoder.encode(
                     [query_prefix + query],
                     normalize_embeddings=True,
