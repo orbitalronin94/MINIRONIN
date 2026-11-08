@@ -11,10 +11,15 @@ def search(path,query,k=5,model="intfloat/multilingual-e5-small"):
   import numpy as np
   from sentence_transformers import SentenceTransformer
   q=SentenceTransformer(model,device="cpu").encode(["query: "+query],normalize_embeddings=True,convert_to_numpy=True)[0].astype("float32")
+  import heapq
   rows=db.execute("SELECT chunk_id,document_id,text,record_metadata,embedding FROM chunks WHERE embedding IS NOT NULL AND embedding_model=?",(model,))
-  scored=[]
-  for r in rows:scored.append((float(np.frombuffer(r["embedding"],dtype=np.float16).astype("float32")@q),r))
-  for rank,(_,r) in enumerate(sorted(scored,key=lambda x:x[0],reverse=True)[:k*10],1):
+  heap=[];limit=k*10
+  for r in rows:
+   v=np.frombuffer(r["embedding"],dtype=np.float16).astype("float32")
+   item=(float(v@q),r["chunk_id"],r)
+   if len(heap)<limit:heapq.heappush(heap,item)
+   elif item>heap[0]:heapq.heapreplace(heap,item)
+  for rank,(_,_,r) in enumerate(sorted(heap,reverse=True),1):
    x=pool.setdefault(r["chunk_id"],{"r":r,"score":0.0,"channels":[]});x["score"]+=1/(60+rank);x["channels"].append("vector")
  except (ImportError,RuntimeError,ValueError):pass
  out=[]
