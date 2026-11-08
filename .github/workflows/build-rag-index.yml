@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         if: github.event_name != 'workflow_dispatch' || inputs.include_heretic
         with:
           name: minironin-heretic-corpus-prepared
@@ -131,7 +131,7 @@ jobs:
           print(json.dumps(m,ensure_ascii=False,indent=2))
           PY
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: minironin-complete-rag-index
           path: artifacts/rag/
