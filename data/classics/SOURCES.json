@@ -52,7 +52,7 @@
       "url": "https://www.gutenberg.org/ebooks/61",
       "plain_text_url": "https://www.gutenberg.org/cache/epub/61/pg61.txt",
       "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
-      "rights_status": "approved_for_spain_training",
+      "rights_status": "rights_review_required",
       "editorial_exclusions": [
         "Project Gutenberg boilerplate",
         "separately credited third-party editorial matter"
@@ -538,7 +538,7 @@
       "url": "https://www.gutenberg.org/ebooks/1232",
       "plain_text_url": "https://www.gutenberg.org/cache/epub/1232/pg1232.txt",
       "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
-      "rights_status": "approved_for_spain_training",
+      "rights_status": "rights_review_required",
       "editorial_exclusions": [
         "Project Gutenberg boilerplate",
         "separately credited third-party editorial matter"
@@ -576,7 +576,7 @@
       "url": "https://www.gutenberg.org/ebooks/2600",
       "plain_text_url": "https://www.gutenberg.org/cache/epub/2600/pg2600.txt",
       "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
-      "rights_status": "approved_for_spain_training",
+      "rights_status": "rights_review_required",
       "editorial_exclusions": [
         "Project Gutenberg boilerplate",
         "separately credited third-party editorial matter"
@@ -612,7 +612,7 @@
       "url": "https://www.gutenberg.org/ebooks/135",
       "plain_text_url": "https://www.gutenberg.org/cache/epub/135/pg135.txt",
       "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
-      "rights_status": "approved_for_spain_training",
+      "rights_status": "rights_review_required",
       "editorial_exclusions": [
         "Project Gutenberg boilerplate",
         "separately credited third-party editorial matter"
