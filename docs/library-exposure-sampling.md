@@ -55,9 +55,12 @@ Validation and holdout data must use separate fixed evaluation paths.
 ## Sampling behavior
 
 `scripts/library_sampler.py` samples in three stages:
-weighted library -> shuffled document cycle -> token window.
+smooth weighted round-robin library -> shuffled document cycle -> token window.
 
-- Library weights are renormalized over libraries actually present.
+- Library weights are renormalized over libraries actually present. A smooth
+  weighted round-robin scheduler keeps cumulative exposure close to the exact
+  target even with small batches, rather than relying on noisy independent draws.
+  Missing configured libraries are explicitly listed in the report.
 - Each library cycles through a shuffled deck of eligible documents before
   repeating a document, reducing accidental neglect of smaller sources.
 - The seed, document IDs and sampled library are deterministic.
