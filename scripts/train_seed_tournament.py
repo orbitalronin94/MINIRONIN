@@ -208,9 +208,9 @@ def load_curated_jsonl(path: Path, domain: str, store, source: str) -> int:
                 row = json.loads(line)
             except json.JSONDecodeError:
                 continue
-            context = row.get("context", "")
-            question = row.get("question", "")
-            answer = row.get("answer", "")
+            context = row.get("context", row.get("evidencia", ""))
+            question = row.get("question", row.get("instruccion", ""))
+            answer = row.get("answer", row.get("respuesta", ""))
             combined = f"Contexto: {context}\nPregunta: {question}\nRespuesta: {answer}"
             add_doc(store, domain, combined, source, str(path))
     return len(store["docs"]) - before
