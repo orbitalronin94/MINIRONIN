@@ -136,10 +136,10 @@ La primera prueba Small-World genera prompts reproducibles de puentes conceptual
 
 ## Corpus Eliza-cínico en dos fases
 
-Se añade una preparación reproducible de solicitudes de conversación con cuatro estrategias etiquetadas: espejo cínico (`frustracion_usuario`), competencia concisa (`validacion_tecnica`), fricción teatral (`friccion_teatral`) y abstención (`consulta_ambigua`). El pipeline conserva la respuesta canónica y la procedencia de cada fuente; Stage A resuelve y Stage B aplica el tono sin alterar hechos, unidades, advertencias ni incertidumbre.
+Se añade una preparación reproducible de solicitudes de conversación con cinco familias etiquetadas: competencia técnica (30%), humor/cinismo (25%), espejo (20%), abstención (15%) y rigor factual neutral (10%). Los pesos son una hipótesis inicial configurable, no una mezcla óptima demostrada. El pipeline conserva respuesta de referencia, hashes y procedencia; Stage A resuelve y verifica, y Stage B aplica el tono sin alterar hechos, unidades, advertencias ni incertidumbre.
 
 - Generador: `scripts/build_eliza_corpus.py`
 - Diseño y controles: [docs/ELIZA-CYNIC-CORPUS.md](docs/ELIZA-CYNIC-CORPUS.md)
 - Test: `tests/test_eliza_corpus.py`
 
-Puede preparar hasta 10M de solicitudes con muestreo determinista y memoria acotada. Diez millones de variantes no son diez millones de hechos independientes. El script no llama a modelos, no fabrica respuestas, no entrena ni promociona checkpoints.
+Puede preparar hasta 10M de solicitudes con muestreo determinista y memoria acotada. La mezcla se configura con `--mix`; el resumen informa recuentos reales por familia y SHA-256. Diez millones de variantes no son diez millones de hechos independientes. El script solo prepara solicitudes para los teachers: no llama a modelos, no fabrica respuestas finales, no entrena ni promociona checkpoints.
