@@ -99,7 +99,7 @@ def main() -> None:
     trainer = (ROOT / "scripts/train_long_run.py").read_text(encoding="utf-8")
     if '"identity": 0.02' not in seed or '"engineering": 0.02' not in seed:
         raise SystemExit("Identity/engineering domains are not assigned explicit training weights")
-    for required in ("minironin-identity-v1.jsonl", "engineering-lessons-v1.jsonl", "minironin-engineering-v1.jsonl"):
+    for required in ("minironin-identity-v1.jsonl", "engineering-lessons-v1.jsonl", "minironin-engineering-v1.jsonl", "minironin-performance-engineering-v1.jsonl"):
         if required not in trainer:
             raise SystemExit(f"Training loader does not include {required}")
     report["totals"] = {
