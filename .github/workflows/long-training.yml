@@ -13,6 +13,7 @@ on:
       - "scripts/build_lexicon_dataset.py"
       - "scripts/validate_lexicon_dataset.py"
       - "data/curated/sources/LEXICON-DEL-ESPERPENTO-ALGORITMICO.md"
+      - "data/curated/sources/EL-BUS-DE-DATOS-PERTENECE-AL-AMO.md"
   workflow_dispatch:
 
 permissions:
