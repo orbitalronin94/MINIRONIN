@@ -4,14 +4,14 @@ on:
   push:
     branches: [main]
     paths:
-      - ".github/workflows/train-10m-from-400k-10k.yml"
+      - ".github/workflows/train-10m-from-400k-50k.yml"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: minironin-transformer-10m-400k-10k
+  group: minironin-transformer-10m-400k-50k
   cancel-in-progress: false
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
     timeout-minutes: 360
     env:
       GH_TOKEN: ${{ github.token }}
-      PROMOTION_TAG: minironin-transformer-10m-step-400000-main
+      PROMOTION_TAG: minironin-transformer-10m-step-400000-parent
       CANDIDATE_TAG: minironin-transformer-10m-step-450000-candidate
     steps:
       - name: Checkout
@@ -48,8 +48,8 @@ jobs:
             gh release upload "$PROMOTION_TAG" train-10m/parent/checkpoint-400000.pt train-10m/parent/SHA256SUMS --clobber
           else
             gh release create "$PROMOTION_TAG" train-10m/parent/checkpoint-400000.pt train-10m/parent/SHA256SUMS \
-              --title "MINIRONIN Transformer 10M — MAIN / step 400000" \
-              --notes "Manual project promotion of the verified 9,970,176-parameter Transformer checkpoint. This is an experimental baseline, not a claim of validated holdout quality. Source release: minironin-transformer-10m-step-400000-candidate."
+              --title "MINIRONIN Transformer 10M — parent checkpoint / step 400000" \
+              --notes "Verified parent checkpoint for a 50,000-step continuation; not a model promotion. This is an experimental baseline, not a claim of validated holdout quality. Source release: minironin-transformer-10m-step-400000-candidate."
           fi
 
       - name: Comprobar espacio disponible en runner gratuito
@@ -67,7 +67,7 @@ jobs:
           curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936357" -o heretic-corpus.part-1
           curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936364" -o parts.sha256
           curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936362" -o corpus.sha256
-          test "$(stat -c%s heretic-corpus.part-0)" -eq 450000000
+          test "$(stat -c%s heretic-corpus.part-0)" -eq 400000000
           test "$(stat -c%s heretic-corpus.part-1)" -eq 349837093
           sha256sum -c parts.sha256
           cat heretic-corpus.part-0 heretic-corpus.part-1 > heretic-approved-corpus.zip
@@ -197,7 +197,7 @@ jobs:
       - name: Guardar artefactos completos y manifiesto
         uses: actions/upload-artifact@v6
         with:
-          name: minironin-transformer-10m-400k-plus-10k-${{ github.run_id }}
+          name: minironin-transformer-10m-400k-plus-50k-${{ github.run_id }}
           path: train-10m/
           if-no-files-found: error
           compression-level: 0
