@@ -106,7 +106,7 @@ jobs:
       - name: Entrenar 10k pasos con vocabulario semántico completo
         run: |
           set -euo pipefail
-          python scripts/train_semantic_10k.py --parent-checkpoint semantic-10k/parent/checkpoint-500000.pt --output-dir semantic-10k/results --heretic-root data/inherited/heretic-corpus --books-root data/inherited/prodatphil-en-v0.3 --anarchist-root data/inherited/anarchist-library --classics-root data/inherited/classics-library --dataset-cache "$RUNNER_TEMP/minironin-semantic-corpus-cache.pt" --threads 2
+          python scripts/train_semantic_10k.py --parent-checkpoint semantic-10k/parent/checkpoint-500000.pt --output-dir semantic-10k/results --heretic-root data/inherited/heretic-corpus --books-root data/inherited/prodatphil-en-v0.3 --anarchist-root data/inherited/anarchist-library --classics-root data/inherited/classics-library --dataset-cache "$RUNNER_TEMP/minironin-semantic-corpus-cache.pt" --threads 4
       - name: Validar y publicar candidato 510k
         run: |
           set -euo pipefail
