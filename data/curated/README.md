@@ -113,3 +113,15 @@ y del JSONL generado. La validación se ejecuta con
 El corpus es un dominio de entrenamiento independiente (`lexicon`, peso
 inicial experimental 2%). Su inclusión no implica que un checkpoint concreto
 ya haya consumido los ejemplos ni que haya mejorado en evaluación.
+
+
+## Identidad versionada y lectura de GitHub Actions
+
+Se añaden dos bibliotecas supervisadas pequeñas y explícitas, separadas de los corpus de estilo masivo:
+
+- `minironin-identity-v1.jsonl`: **40 registros** de identidad grounded, arquitectura y tamaño actuales, genealogía del checkpoint, límites de capacidad y personalidad subordinada a la evidencia.
+- `minironin-engineering-v1.jsonl`: **20 registros** curados de los runs 42475009211, 42472836694, 42473906951 y 42475009157. Enseñan a distinguir descarga, verificación SHA-256, preparación de corpus, entrenamiento en curso, publicación de checkpoint, indexación RAG y CI.
+
+Ambos conjuntos se cargan en dominios separados (`identity` y `engineering`) con un peso inicial experimental del 2% cada uno. No se incorporan logs brutos ni secretos. Los estados de Actions se enseñan como observaciones fechadas: un paso pendiente no es un paso completado, y una publicación no demuestra mejora del modelo.
+
+La ficha anterior que describía el Transformer inicial de 9.970.176 parámetros queda como antecedente histórico. La identidad vigente del checkpoint principal es Mamba, 49.083.392 parámetros, release `minironin-mamba-50m-step-1000-main`.
