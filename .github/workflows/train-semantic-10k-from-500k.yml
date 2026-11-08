@@ -1,13 +1,7 @@
-name: MINIRONIN — semantic BPE 23k from 500k +10k
+name: MINIRONIN — semantic BPE 23k from 500k +5k
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/train-semantic-10k-from-500k.yml"
-      - "scripts/train_semantic_10k.py"
-      - "scripts/run_semantic_bpe_holdout.py"
 
 permissions:
   contents: write
@@ -25,7 +19,6 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       PARENT_TAG: minironin-transformer-10m-step-500000-candidate
       PARENT_SHA256: 80664596095e9ce4d1757b1ca379bbccfa96ad03f67936e70dc39487d8e8fe60
-      CANDIDATE_TAG: minironin-transformer-10m-step-510000-semantic-bpe-candidate
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -107,25 +100,38 @@ jobs:
       - name: Entrenar 10k pasos con vocabulario semántico completo
         run: |
           set -euo pipefail
-          python scripts/train_semantic_10k.py --parent-checkpoint semantic-10k/parent/checkpoint-500000.pt --output-dir semantic-10k/results --heretic-root data/inherited/heretic-corpus --books-root data/inherited/prodatphil-en-v0.3 --anarchist-root data/inherited/anarchist-library --classics-root data/inherited/classics-library --dataset-cache "$RUNNER_TEMP/minironin-semantic-corpus-cache.pt" --threads 4
+          python scripts/train_semantic_10k.py --parent-checkpoint semantic-10k/parent/checkpoint-500000.pt --output-dir semantic-5k/results --heretic-root data/inherited/heretic-corpus --books-root data/inherited/prodatphil-en-v0.3 --anarchist-root data/inherited/anarchist-library --classics-root data/inherited/classics-library --dataset-cache "$RUNNER_TEMP/minironin-semantic-corpus-cache.pt" --threads 4 --train-steps 5000
+      - name: Guardar checkpoint y tokenizer antes del holdout
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-semantic-bpe-505k-checkpoint-${{ github.run_id }}
+          path: |
+            semantic-5k/results/checkpoint-505000-semantic-bpe.pt
+            semantic-5k/results/tokenizer/semantic-tokenizer.json
+            semantic-5k/results/semantic-training-report.json
+            semantic-5k/results/SHA256SUMS
+          if-no-files-found: warn
+          compression-level: 0
+          retention-days: 90
       - name: Holdout fijo de 100 preguntas con tokenizer BPE
         run: |
           set -euo pipefail
           python scripts/run_semantic_bpe_holdout.py \
-            --checkpoint semantic-10k/results/checkpoint-510000-semantic-bpe.pt \
-            --tokenizer semantic-10k/results/tokenizer/semantic-tokenizer.json \
-            --label transformer-10m-510000-semantic-bpe-candidate \
-            --steps 510000 \
+            --checkpoint semantic-5k/results/checkpoint-505000-semantic-bpe.pt \
+            --tokenizer semantic-5k/results/tokenizer/semantic-tokenizer.json \
+            --label transformer-10m-505000-semantic-bpe-candidate \
+            --steps 505000 \
             --holdout benchmarks/inference-holdout-v1.jsonl \
             --base-diary benchmarks/diary/checkpoint-500000.json \
-            --output semantic-10k/results/semantic-bpe-holdout-100.json \
+            --output semantic-5k/results/semantic-bpe-holdout-100.json \
             --threads 2
-
-      - name: Guardar checkpoint, tokenizer, informe y holdout
+      - name: Guardar holdout
+        if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: minironin-semantic-bpe-510k-holdout-${{ github.run_id }}
-          path: semantic-10k/
-          if-no-files-found: error
+          name: minironin-semantic-bpe-505k-holdout-${{ github.run_id }}
+          path: semantic-5k/results/semantic-bpe-holdout-100.json
+          if-no-files-found: warn
           compression-level: 0
           retention-days: 90
