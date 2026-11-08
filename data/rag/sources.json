@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "policy": "Explicit allow-list; extra roots require explicit CLI opt-in.",
+  "embedding": {
+    "model": "intfloat/multilingual-e5-small",
+    "dimension": 384,
+    "document_prefix": "passage: ",
+    "query_prefix": "query: ",
+    "normalize": true
+  },
+  "chunking": {
+    "target_chars": 1400,
+    "overlap_chars": 180,
+    "min_chars": 120
+  },
+  "sources": [
+    {
+      "id": "minironin-papers",
+      "project": "MINIRONIN",
+      "root": "data/inherited/papers",
+      "domain": "research",
+      "language": "es",
+      "epistemic": "author_original",
+      "license": "internal-research-only",
+      "redistribution": false,
+      "enabled": true
+    },
+    {
+      "id": "minironin-curated",
+      "project": "MINIRONIN",
+      "root": "data/curated",
+      "domain": "curated",
+      "language": "es",
+      "epistemic": "curated_or_synthetic_mixed",
+      "license": "mixed-see-source-record",
+      "redistribution": false,
+      "enabled": true
+    },
+    {
+      "id": "minironin-books",
+      "project": "MINIRONIN",
+      "root": "data/books",
+      "domain": "literature",
+      "language": "und",
+      "epistemic": "source-specific",
+      "license": "per-SOURCES.jsonl",
+      "redistribution": false,
+      "enabled": true
+    }
+  ],
+  "excluded_path_parts": [
+    ".git",
+    ".github",
+    "checkpoints",
+    "checkpoint",
+    "optimizer",
+    "holdout",
+    "validation",
+    "eval",
+    "evaluation",
+    "secrets",
+    "credentials",
+    "node_modules",
+    "__pycache__",
+    "rag-index",
+    "rag_index"
+  ],
+  "excluded_extensions": [
+    ".pt",
+    ".pth",
+    ".bin",
+    ".safetensors",
+    ".onnx",
+    ".gguf",
+    ".zip",
+    ".7z",
+    ".tar",
+    ".gz",
+    ".parquet",
+    ".db",
+    ".sqlite",
+    ".pem",
+    ".key"
+  ],
+  "allowed_extensions": [
+    ".md",
+    ".txt",
+    ".rst",
+    ".json",
+    ".jsonl",
+    ".csv",
+    ".tsv",
+    ".html",
+    ".htm",
+    ".xml",
+    ".yaml",
+    ".yml",
+    ".pdf",
+    ".docx"
+  ],
+  "max_file_mb": 100
+}
