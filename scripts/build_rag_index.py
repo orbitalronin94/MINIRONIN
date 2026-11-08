@@ -144,7 +144,7 @@ def main():
     else:dupd+=1
     db.execute("INSERT OR IGNORE INTO document_sources VALUES(?,?,?,?,?,?,?,?,?)",(did,src["id"],src.get("project","unknown"),rel,src.get("license","unknown"),src.get("domain","unknown"),src.get("language","und"),src.get("epistemic","unknown"),int(bool(src.get("redistribution",False)))))
     file_chunk_idx=0
-    for loc,txt,record_meta in read(path):
+    for txt,loc,record_meta in read(path):
      for chunk_text in chunk(txt,cfg["target_chars"],cfg["overlap_chars"],cfg["min_chars"]):
       ix=file_chunk_idx;file_chunk_idx+=1;th=sha(chunk_text.encode());cid=sha((did+":"+str(ix)+":"+th).encode());pending.append((cid,did,ix,loc,chunk_text,th,src["id"],rel,json.dumps(record_meta,ensure_ascii=False,sort_keys=True)))
       if len(pending)>=a.batch_size:flush()
