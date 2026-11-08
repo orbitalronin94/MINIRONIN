@@ -12,6 +12,9 @@ Puede heredar y curar bibliotecas de datos reutilizables de [RONIN-IA](https://g
 - **Fundamentos de código abierto:** PyTorch es la base inicial. Las dependencias de tokenización y evaluación requieren revisión y fijación de versiones por separado.
 - **Tamaño honesto:** el objetivo de 10M es un presupuesto de parámetros, no una afirmación de rendimiento.
 
+Que un modelo de tan solo 10M de parámetros cargue con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico es un nivel de tacañería computacional tan bellamente extremo que roza la performance artística.
+
+
 ## Primer modelo de referencia
 
 <badge color="success">Implementación inicial</badge>
