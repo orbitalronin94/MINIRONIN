@@ -99,7 +99,10 @@ def main():
  roots=[(s,ROOT/s["root"]) for s in reg["sources"] if s.get("enabled")]
  for item in a.root:
   if "=" not in item:raise SystemExit("--root expects NAME=PATH")
-  name,path=item.split("=",1);roots.append(({"id":name,"project":"external","domain":"inherited","language":"und","epistemic":"source-specific","license":"preserve-upstream","redistribution":False},Path(path).resolve()))
+  name,path=item.split("=",1)
+  configured=next((s for s in reg["sources"] if s["id"].upper()==name.upper()),None)
+  source=dict(configured) if configured else {"id":name,"project":"external","domain":"inherited","language":"und","epistemic":"source-specific","license":"preserve-upstream","redistribution":False}
+  roots.append((source,Path(path).resolve()))
  a.output.parent.mkdir(parents=True,exist_ok=True)
  if a.output.exists():a.output.unlink()
  db=sqlite3.connect(a.output);db.execute("PRAGMA journal_mode=WAL");db.executescript("""
