@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+from array import array
+import sys
 import mmap
 import os
 import struct
@@ -49,14 +51,18 @@ def build_token_store(
             if identity in seen:
                 raise ValueError(f"Duplicate document identity: {identity}")
             seen.add(identity)
-            offset, count = total_tokens, 0
+            offset = total_tokens
+            packed = array("H")
             for token in tokens:
                 token = int(token)
                 if token < 0 or token > UINT16_MAX:
                     raise ValueError(f"Token ID outside uint16 range: {token}")
-                stream.write(struct.pack("<H", token))
-                count += 1
+                packed.append(token)
+            if sys.byteorder != "little":
+                packed.byteswap()
+            count = len(packed)
             if count:
+                packed.tofile(stream)
                 index.append({
                     "id": str(doc_id), "library_id": str(library_id),
                     "split": "train", "offset_tokens": offset,
@@ -113,6 +119,13 @@ class TokenSpan:
     def __getitem__(self, item):
         if isinstance(item, slice):
             start, stop, step = item.indices(self._length)
+            if step == 1:
+                count = stop - start
+                if count == 0:
+                    return []
+                return list(struct.unpack_from(
+                    f"<{count}H", self._mapped, self._offset + start * 2
+                ))
             return [
                 struct.unpack_from("<H", self._mapped, self._offset + i * 2)[0]
                 for i in range(start, stop, step)
