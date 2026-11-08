@@ -172,9 +172,17 @@ def source_tree_signature(root: Path) -> str:
 
 
 
-def load_unified_training_data(corpus_path: Path):
+def load_unified_training_data(corpus_path: Path, cache_path: Path):
     """Load every admitted record from the unified bundle, grouping short QA rows."""
     import gzip
+    stat=corpus_path.stat()
+    if cache_path.exists():
+        cached=torch.load(cache_path,map_location="cpu",weights_only=False)
+        cm=cached.get("manifest",{})
+        if cm.get("cache_schema_version")==4 and cm.get("unified_corpus_path")==str(corpus_path) and cm.get("unified_corpus_size")==stat.st_size and cm.get("unified_corpus_mtime_ns")==stat.st_mtime_ns:
+            print(json.dumps({"dataset_cache":"reused",**cm},ensure_ascii=False),flush=True)
+            return cached["train_docs"],cached["names"],cached["probs"],cached["validation"],cm
+        cache_path.unlink()
     store={"docs":[],"seen":set()}
     digest=hashlib.sha256()
     records=0
@@ -256,12 +264,16 @@ def load_unified_training_data(corpus_path: Path):
     missing_val=[name for name in required if not validation.get(name)]
     if missing_val: raise SystemExit("Unified corpus has no validation windows for: "+", ".join(missing_val))
     manifest={"cache_schema_version":4,"corpus_mode":"single unified corpus","unified_corpus":str(corpus_path),
+      "unified_corpus_path":str(corpus_path),"unified_corpus_size":stat.st_size,"unified_corpus_mtime_ns":stat.st_mtime_ns,
       "unified_corpus_sha256":digest.hexdigest(),"unified_records_read":records,
       "unified_documents_after_chunking_and_dedup":len(store["docs"]),
       "unified_records_by_domain":domains,"documents_by_domain":{k:len(v) for k,v in train_docs.items()},
       "validation_documents_by_domain":{k:len(v) for k,v in val_docs.items()},
       "source_policy":"All admitted unified-bundle rows ingested; RONIN-IA excluded; no 505k/BPE artifacts",
       "split_policy":"Deterministic SHA-256 document split; 10% validation per mapped domain"}
+    cache_path.parent.mkdir(parents=True,exist_ok=True)
+    torch.save({"train_docs":train_docs,"names":names,"probs":probs,"validation":validation,"manifest":manifest},cache_path)
+    print(json.dumps({"dataset_cache":"built",**manifest},ensure_ascii=False),flush=True)
     return train_docs,names,probs,validation,manifest
 
 def load_training_data(heretic_root: Path, books_root: Path, anarchist_root: Path, classics_root: Path, cache_path: Path):
@@ -491,7 +503,7 @@ def main():
     torch.use_deterministic_algorithms(True)
     device = torch.device("cpu")
     if args.unified_corpus:
-        train_docs, names, probs, validation, manifest = load_unified_training_data(Path(args.unified_corpus))
+        train_docs, names, probs, validation, manifest = load_unified_training_data(Path(args.unified_corpus), Path(args.dataset_cache))
     else:
         required_roots=(args.heretic_root,args.books_root,args.anarchist_root,args.classics_root)
         if any(x is None for x in required_roots):
