@@ -240,20 +240,42 @@ def main():
 
     rng = random.Random(BASE_SEED + PARENT_STEPS)
     encoded_cache = {}
+    rejected_docs = {domain: set() for domain in names}
+    unavailable_domains = set()
+    base_weights = dict(zip(names, probs))
+
     def sample_batch(global_step):
         local_rng = random.Random(BASE_SEED + global_step)
-        domains = local_rng.choices(names, weights=probs, k=BATCH_SIZE)
         rows = []
-        for domain in domains:
-            doc = local_rng.choice(train_docs[domain])
-            key = (domain, id(doc))
-            if key not in encoded_cache:
-                encoded_cache[key] = encode_text(tokenizer, id_to_model, doc["text"])
-            ids = encoded_cache[key]
-            if len(ids) < SEQUENCE_LENGTH + 1:
-                raise RuntimeError(f"Tokenized document too short in domain {domain}")
-            start = local_rng.randrange(0, len(ids) - SEQUENCE_LENGTH)
-            rows.append(torch.tensor(ids[start:start + SEQUENCE_LENGTH + 1], dtype=torch.long))
+        for _ in range(BATCH_SIZE):
+            # Some tiny curated domains contain documents shorter than one context window.
+            # Reject those documents and, once a domain is exhausted, remove it from sampling.
+            for attempt in range(256):
+                available = [name for name in names if name not in unavailable_domains]
+                if not available:
+                    raise RuntimeError("No training domains contain a full semantic-token context window")
+                weights = [base_weights[name] for name in available]
+                domain = local_rng.choices(available, weights=weights, k=1)[0]
+                candidates = train_docs[domain]
+                remaining = [doc for doc in candidates if id(doc) not in rejected_docs[domain]]
+                if not remaining:
+                    unavailable_domains.add(domain)
+                    continue
+                doc = local_rng.choice(remaining)
+                key = (domain, id(doc))
+                if key not in encoded_cache:
+                    encoded_cache[key] = encode_text(tokenizer, id_to_model, doc["text"])
+                ids = encoded_cache[key]
+                if len(ids) < SEQUENCE_LENGTH + 1:
+                    rejected_docs[domain].add(id(doc))
+                    if len(rejected_docs[domain]) >= len(candidates):
+                        unavailable_domains.add(domain)
+                    continue
+                start = local_rng.randrange(0, len(ids) - SEQUENCE_LENGTH)
+                rows.append(torch.tensor(ids[start:start + SEQUENCE_LENGTH + 1], dtype=torch.long))
+                break
+            else:
+                raise RuntimeError("Could not sample a sufficiently long document after 256 attempts")
         return torch.stack(rows)
 
     started = time.perf_counter()
