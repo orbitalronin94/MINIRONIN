@@ -1,6 +1,13 @@
 name: MINIRONIN — benchmark terminal mínima de holdout
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/minironin/model.py'
+      - 'scripts/run_inference_holdout.py'
+      - 'scripts/minironin.py'
+      - 'tests/test_model.py'
   workflow_dispatch:
     inputs:
       release_tag:
