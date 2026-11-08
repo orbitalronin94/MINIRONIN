@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Train a ~49.1M Mamba MINIRONIN candidate from the 390k Transformer seed."""
+"""Train a ~49.08M Mamba MINIRONIN candidate from the 390k Transformer seed."""
 from __future__ import annotations
 import argparse, hashlib, json, math, random, time
 from pathlib import Path
@@ -20,7 +20,7 @@ ACTIVE_VOCAB = 257
 TOTAL_STEPS = 1000
 BATCH_SIZE = 1
 SEQUENCE_LENGTH = 64
-EXPECTED_PARAMETERS = 49_128_448
+EXPECTED_PARAMETERS = 49_083_392
 REQUIRED_DOMAINS = {
     "math", "science", "books", "behavior", "abstention", "abstain_plain",
     "abstain_literary", "abstain_koan", "aristocrat", "casuist", "scientist",
