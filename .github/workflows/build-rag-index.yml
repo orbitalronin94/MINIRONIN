@@ -1,0 +1,73 @@
+name: Build complete MINIRONIN RAG index
+on:
+  workflow_dispatch:
+    inputs:
+      embeddings:
+        description: Build multilingual E5 vectors in addition to BM25
+        type: boolean
+        required: true
+        default: true
+      heretic_path:
+        description: Optional runner path to pre-approved HERETIC corpus
+        type: string
+        required: false
+        default: ""
+      roninia_path:
+        description: Optional runner path to approved RONIN-IA corpus
+        type: string
+        required: false
+        default: ""
+permissions:
+  contents: read
+concurrency:
+  group: minironin-rag-index
+  cancel-in-progress: false
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/checkpoint-bridge
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install RAG dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-rag.txt
+      - name: Build index
+        env:
+          EMBEDDINGS: \${{ inputs.embeddings }}
+          HERETIC_PATH: \${{ inputs.heretic_path }}
+          RONINIA_PATH: \${{ inputs.roninia_path }}
+        run: |
+          args=(--output artifacts/rag/minironin-rag.sqlite)
+          if [ "$EMBEDDINGS" != "true" ]; then args+=(--no-embeddings); fi
+          if [ -n "$HERETIC_PATH" ]; then args+=(--root "HERETIC=$HERETIC_PATH"); fi
+          if [ -n "$RONINIA_PATH" ]; then args+=(--root "RONIN_IA=$RONINIA_PATH"); fi
+          python scripts/build_rag_index.py "\${args[@]}"
+      - name: Verify database and write manifest
+        run: |
+          python - <<'PY'
+          import sqlite3,json,hashlib,os
+          p="artifacts/rag/minironin-rag.sqlite";db=sqlite3.connect(p)
+          m=json.loads(db.execute("select value from metadata where key='manifest'").fetchone()[0])
+          assert db.execute("select count(*) from chunks").fetchone()[0]==m["chunks_unique"]
+          assert m["chunks_unique"]>0
+          m["sqlite_bytes"]=os.path.getsize(p)
+          h=hashlib.sha256()
+          with open(p,"rb") as f:
+            for b in iter(lambda:f.read(1024*1024),b""):h.update(b)
+          m["sqlite_sha256"]=h.hexdigest()
+          open("artifacts/rag/manifest.json","w").write(json.dumps(m,ensure_ascii=False,indent=2)+"\\n")
+          print(json.dumps(m,ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: minironin-complete-rag-index
+          path: artifacts/rag/
+          if-no-files-found: error
+          retention-days: 30
