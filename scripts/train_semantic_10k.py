@@ -169,6 +169,7 @@ def evaluate(model, validation, device):
 
 
 def main():
+    global TRAIN_STEPS, PARENT_STEPS
     parser = argparse.ArgumentParser()
     parser.add_argument("--parent-checkpoint", required=True)
     parser.add_argument("--output-dir", default="semantic-10k")
@@ -182,7 +183,6 @@ def main():
     parser.add_argument("--parent-steps", type=int, default=PARENT_STEPS)
     args = parser.parse_args()
 
-    global TRAIN_STEPS, PARENT_STEPS
     TRAIN_STEPS = args.train_steps
     PARENT_STEPS = args.parent_steps
     if TRAIN_STEPS < 1:
