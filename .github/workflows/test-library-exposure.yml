@@ -7,6 +7,7 @@ on:
       - "scripts/library_sampler.py"
       - "scripts/library_provenance.py"
       - "scripts/token_store.py"
+      - "scripts/benchmark_library_sampler.py"
       - "tests/test_library_sampler.py"
       - "tests/test_library_provenance.py"
       - "tests/test_token_store.py"
@@ -43,3 +44,11 @@ jobs:
         run: |
           python -m unittest discover -s tests -p "test_library_*.py" -v
           python -m unittest discover -s tests -p "test_token_store.py" -v
+
+      - name: Benchmark synthetic token-store and sampler path
+        run: |
+          python scripts/benchmark_library_sampler.py \\
+            --documents 250 \\
+            --tokens-per-document 2048 \\
+            --samples 5000 | tee library-sampler-benchmark.json
+          cat library-sampler-benchmark.json >> "$GITHUB_STEP_SUMMARY"
