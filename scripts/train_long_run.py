@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from minironin import MiniRoninLM, ModelConfig  # noqa: E402
 from train_seed_tournament import (  # noqa: E402
     ACTIVE_VOCAB, MIX_WEIGHTS, add_doc, clean_text, evaluate,
-    load_curated_jsonl, weighted_domains, split_documents,
+    load_curated_jsonl, weighted_domains, split_documents, verify_verifiable_dataset,
 )
 from generate_abstention_dataset import generate_dataset  # noqa: E402
 from build_lexicon_dataset import main as build_lexicon_dataset  # noqa: E402
@@ -164,10 +164,14 @@ def read_full_books(root: Path, store) -> list[dict]:
 
 
 def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
+    verifiable_manifest, verifiable_manifest_sha = verify_verifiable_dataset()
     if cache_path.exists():
         cached = torch.load(cache_path, map_location="cpu", weights_only=False)
-        print(json.dumps({"dataset_cache": "reused", **cached["manifest"]}, ensure_ascii=False), flush=True)
-        return cached["train_docs"], cached["names"], cached["probs"], cached["validation"], cached["manifest"]
+        cached_manifest = cached.get("manifest", {})
+        if cached_manifest.get("verifiable_dataset_manifest_sha256") == verifiable_manifest_sha and "verifiable" in cached.get("names", []):
+            print(json.dumps({"dataset_cache": "reused", **cached_manifest}, ensure_ascii=False), flush=True)
+            return cached["train_docs"], cached["names"], cached["probs"], cached["validation"], cached_manifest
+        print(json.dumps({"dataset_cache": "stale_rebuild", "cached_verifiable_sha256": cached_manifest.get("verifiable_dataset_manifest_sha256"), "current_verifiable_sha256": verifiable_manifest_sha}), flush=True)
 
     build_lexicon_dataset()
     store = {"docs": [], "seen": set()}
@@ -245,7 +249,7 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
                 batches.append(torch.stack(rows))
         if batches:
             validation[domain] = batches
-    missing_validation = [d for d in ("math", "science", "books", "author_original", "behavior") if not validation.get(d)]
+    missing_validation = [d for d in ("math", "science", "books", "author_original", "behavior", "verifiable") if not validation.get(d)]
     if missing_validation:
         raise SystemExit("Missing full-corpus validation windows for: " + ", ".join(missing_validation))
     manifest = {
@@ -265,6 +269,8 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         "oracle_examples": oracle_count,
         "indifference_examples": indifference_count,
         "verifiable_personality_examples": verifiable_count,
+        "verifiable_dataset_manifest_sha256": verifiable_manifest_sha,
+        "verifiable_dataset_manifest": verifiable_manifest,
         "lexicon_examples": lexicon_count,
         "abstention_datasets": [
             {"path": str(ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl"),
