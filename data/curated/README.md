@@ -1,4 +1,4 @@
-# Lecciones de ingeniería extraídas de entrenamientos
+> **Catálogo maestro:** consulta [Biblioteca MINI-RONIN](../../docs/BIBLIOTECA-MINI-RONIN.md) para el inventario transversal, los estados de admisión, las licencias, las unidades de conteo y las reglas de curación. Este README conserva el detalle operativo de los conjuntos curados.\n\n# Lecciones de ingeniería extraídas de entrenamientos
 
 **Versión:** 1.0  
 **Idioma:** castellano  
