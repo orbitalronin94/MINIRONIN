@@ -109,3 +109,42 @@ El bot de [inference holdout diary](.github/workflows/inference-holdout-diary.ym
 ## Experimento: entrenamiento frente a RAG semántico
 
 Se ha añadido un benchmark independiente para comparar el mismo checkpoint MINIRONIN en dos condiciones: inferencia directa y recuperación semántica sobre el split de entrenamiento de la biblioteca completa. Usa embeddings `all-MiniLM-L6-v2`, fragmentos con solapamiento, búsqueda coseno exacta por bloques y conserva respuestas pareadas, fuentes recuperadas, latencias y hashes. No altera el entrenamiento evolutivo ni promociona modelos. Protocolo: [docs/RAG_VS_TRAINING.md](docs/RAG_VS_TRAINING.md). Ejecución automática al fusionar y repetible manualmente: [workflow de comparación](.github/workflows/semantic-rag-benchmark.yml). La puntuación de calidad queda pendiente de revisión humana ciega; similitud coseno no equivale a exactitud.
+
+
+## RAG unificado de todas las bibliotecas
+
+El benchmark anterior es una prueba de concepto, no el índice completo. La siguiente fase define un RAG multilingüe común para las bibliotecas admitidas: registro de fuentes, extracción y deduplicación con procedencia, embeddings multilingües, recuperación híbrida vectorial + BM25, citas y adaptadores compartidos por Transformer y Mamba. El índice será externo a los pesos y actualizable sin reentrenar. Se excluyen holdouts, checkpoints, secretos y logs brutos. Diseño y fases: [RAG unificado de bibliotecas](docs/UNIFIED-RAG-LIBRARIES.md).
+
+
+## RAG unificado y asociaciones Small-World
+
+La rama de desarrollo incorpora un constructor RAG SQLite con FTS5/BM25 y embeddings multilingües E5 opcionales. Conserva SHA-256, rutas, dominios, licencias declaradas, etiquetas epistemológicas, localizadores y procedencias de documentos/fragmentos deduplicados. Admite Markdown, texto, RST, JSON/JSONL, CSV/TSV, HTML/XML, PDF y DOCX.
+
+- Registro: data/rag/sources.json
+- Constructor: scripts/build_rag_index.py
+- Consulta híbrida: scripts/rag_retrieve.py
+- Workflow manual: .github/workflows/build-rag-index.yml
+- Dependencias aisladas: requirements-rag.txt
+- Pruebas: tests/test_rag_index.py
+
+El workflow materializa los ocho datasets conductuales (400.000 ejemplos) y el lexicón (50.000) antes de indexar. Puede incorporar el artefacto HERETIC preaprobado y únicamente RONIN-IA/data/datasets/admitted más rights_registry. No indexa candidates, quarantine, reviews ni el catálogo de bibliotecas objetivo; CoVoST train.jsonl.gz se procesa como JSONL comprimido. Deduplica documentos y fragmentos sin sumar inventarios solapados. El índice se publica como artefacto de Actions, no como binario versionado en Git.
+
+**Límites:** los datos World Bank y el generador de conversaciones de 10M no están materializados en esta rama como ficheros indexables; no se cuentan ni se simula su presencia. La disponibilidad del artefacto HERETIC de la ejecución 42382055693 debe verificarse al ejecutar el workflow. Las restricciones de licencia se conservan como metadatos y el uso sigue siendo interno cuando así lo exige cada fuente.
+
+La primera prueba Small-World genera prompts reproducibles de puentes conceptuales, sin respuestas inventadas ni entrenamiento automático: docs/SMALL-WORLD-ASSOCIATIONS.md.
+
+
+## Corpus Eliza-cínico en dos fases
+
+Se añade una preparación reproducible de solicitudes de conversación con cinco familias etiquetadas: competencia técnica (30%), humor/cinismo (25%), espejo (20%), abstención (15%) y rigor factual neutral (10%). Las cinco reciben reglas globales: sin saludos ni preámbulos, reflejo cínico sin culpabilización inventada, jerga solo pertinente y máximo tres frases explicativas salvo necesidad técnica o de seguridad. Los pesos son una hipótesis inicial configurable, no una mezcla óptima demostrada. El pipeline conserva respuesta de referencia, hashes y procedencia; Stage A resuelve y verifica, y Stage B aplica el tono sin alterar hechos, unidades, advertencias ni incertidumbre. El generador acepta `--rag-index` para recuperar evidencia una vez por pregunta fuente y escribir un sidecar JSONL deduplicado; cada teacher request conserva una referencia estable al pasaje, su cita y metadatos de licencia/procedencia. BM25 es el modo predeterminado; `--rag-vectors` activa E5 híbrido y `--require-rag-evidence` descarta preguntas sin soporte recuperado.
+
+- Generador: `scripts/build_eliza_corpus.py`
+- Diseño y controles: [docs/ELIZA-CYNIC-CORPUS.md](docs/ELIZA-CYNIC-CORPUS.md)
+- Test: `tests/test_eliza_corpus.py`
+
+Puede preparar hasta 10M de solicitudes con muestreo determinista y memoria acotada. La mezcla se configura con `--mix`; el resumen informa recuentos reales por familia y SHA-256. Diez millones de variantes no son diez millones de hechos independientes. El script solo prepara solicitudes para los teachers: no llama a modelos, no fabrica respuestas finales, no entrena ni promociona checkpoints.
+
+
+## Mamba 50M: RAG holdout y continuación
+
+El checkpoint Mamba de 1.000 pasos se evalúa con y sin RAG sobre el holdout inmutable de 40 preguntas. Tras completarse el índice RAG aprobado, el workflow `.github/workflows/mamba-rag-continuation.yml` repite la evaluación, continúa desde los pesos exactos durante 1.000 pasos más con las bibliotecas RAG train-admitted y el corpus actual, y vuelve a pasar el mismo holdout al checkpoint de 2.000 pasos. No hay promoción automática. Protocolo y límites: [docs/MAMBA-RAG-CONTINUATION.md](docs/MAMBA-RAG-CONTINUATION.md).

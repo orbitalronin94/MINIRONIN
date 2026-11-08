@@ -1,0 +1,198 @@
+name: MINIRONIN — RAG holdout and 1k Mamba continuation
+
+on:
+  workflow_run:
+    workflows: ["Build complete MINIRONIN RAG index"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      rag_run_id:
+        description: Successful run ID that published minironin-complete-rag-index
+        type: string
+        required: true
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: minironin-mamba-rag-continuation
+  cancel-in-progress: false
+
+jobs:
+  evaluate-and-continue:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RAG_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.rag_run_id }}
+
+    steps:
+      - name: Checkout MINIRONIN and immutable holdout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Download the completed full RAG index
+        uses: actions/download-artifact@v8
+        with:
+          name: minironin-complete-rag-index
+          repository: orbitalronin94/MINIRONIN
+          run-id: ${{ env.RAG_RUN_ID }}
+          github-token: ${{ env.GH_TOKEN }}
+          path: artifacts/rag
+
+      - name: Download the exact 1,000-step Mamba checkpoint
+        uses: actions/download-artifact@v8
+        with:
+          name: minironin-mamba-50m-from-390k
+          repository: orbitalronin94/MINIRONIN
+          run-id: 42465812618
+          github-token: ${{ env.GH_TOKEN }}
+          path: candidate
+
+      - name: Verify immutable checkpoint, holdout and RAG index
+        shell: bash
+        run: |
+          set -euo pipefail
+          checkpoint="$(find candidate -type f -name 'mamba-checkpoint-1000.pt' -print -quit)"
+          test -n "$checkpoint"
+          echo "d4e94c6b2711810bc07ce91b9fdcf4cfd50466a6ee9eafe70b64f023f211d5d7  $checkpoint" | sha256sum -c -
+          mkdir -p .tmp/mamba
+          cp "$checkpoint" .tmp/mamba/mamba-checkpoint-1000.pt
+          echo "CHECKPOINT_PATH=.tmp/mamba/mamba-checkpoint-1000.pt" >> "$GITHUB_ENV"
+          test -s artifacts/rag/minironin-rag.sqlite
+          test -s artifacts/rag/manifest.json
+          python - <<'PY'
+          import hashlib, json, pathlib
+          db = pathlib.Path("artifacts/rag/minironin-rag.sqlite")
+          manifest = json.loads(pathlib.Path("artifacts/rag/manifest.json").read_text())
+          h = hashlib.sha256()
+          with db.open("rb") as stream:
+              for block in iter(lambda: stream.read(1024 * 1024), b""):
+                  h.update(block)
+          digest = h.hexdigest()
+          assert digest == manifest["sqlite_sha256"], (digest, manifest.get("sqlite_sha256"))
+          assert manifest.get("holdout_read") is False
+          sources = {item["id"]: item for item in manifest["sources"]}
+          for source in ("minironin-papers", "RONIN_IA"):
+              assert sources.get(source, {}).get("exists") is True, source
+          print(json.dumps({
+              "rag_index_sha256": digest,
+              "chunks_unique": manifest.get("chunks_unique"),
+              "documents_unique": manifest.get("documents_unique"),
+              "sources": manifest.get("sources"),
+          }, ensure_ascii=False))
+          PY
+          echo "RAG_INDEX_PATH=artifacts/rag/minironin-rag.sqlite" >> "$GITHUB_ENV"
+
+      - name: Install CPU training, RAG and corpus dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install -r requirements-rag.txt pyarrow
+
+      - name: Evaluate the existing 1,000-step checkpoint with and without RAG
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/run_mamba_rag_holdout.py scripts/run_mamba_inference_holdout.py src/minironin/mamba.py
+          python scripts/run_mamba_rag_holdout.py \
+            --checkpoint "$CHECKPOINT_PATH" \
+            --rag-index "$RAG_INDEX_PATH" \
+            --holdout benchmarks/inference-holdout-v1.jsonl \
+            --baseline-diary benchmarks/diary/mamba-50m-1000.json \
+            --expected-checkpoint-sha d4e94c6b2711810bc07ce91b9fdcf4cfd50466a6ee9eafe70b64f023f211d5d7 \
+            --expected-steps 1000 \
+            --output benchmarks/diary/mamba-50m-1000-rag.json \
+            --top-k 5 --max-new-tokens 128 --threads 2
+
+      - name: Download and verify the full HERETIC corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/releases/assets"
+          auth=(-H "Accept: application/octet-stream" -H "X-GitHub-Api-Version: 2022-11-28" -H "Authorization: Bearer $GH_TOKEN")
+          curl --fail --location --retry 10 --retry-all-errors --retry-delay 3 "${auth[@]}" "$api/720936363" -o heretic-corpus.part-0
+          curl --fail --location --retry 10 --retry-all-errors --retry-delay 3 "${auth[@]}" "$api/720936357" -o heretic-corpus.part-1
+          curl --fail --location --retry 10 --retry-all-errors --retry-delay 3 "${auth[@]}" "$api/720936364" -o parts.sha256
+          curl --fail --location --retry 10 --retry-all-errors --retry-delay 3 "${auth[@]}" "$api/720936362" -o corpus.sha256
+          test "$(stat -c%s heretic-corpus.part-0)" -eq 400000000
+          test "$(stat -c%s heretic-corpus.part-1)" -eq 349837093
+          sha256sum -c parts.sha256
+          cat heretic-corpus.part-0 heretic-corpus.part-1 > heretic-approved-corpus.zip
+          test "$(sha256sum heretic-approved-corpus.zip | awk '{print $1}')" = "$(awk '{print $1}' corpus.sha256)"
+          unzip -tq heretic-approved-corpus.zip
+          mkdir -p data/inherited/heretic-corpus
+          unzip -q heretic-approved-corpus.zip -d data/inherited/heretic-corpus
+
+      - name: Download and verify PRODATPHIL v0.3 public-domain corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/MINIRONIN/releases/assets"
+          auth=(-H "Accept: application/octet-stream" -H "X-GitHub-Api-Version: 2022-11-28" -H "Authorization: Bearer $GH_TOKEN")
+          curl --fail --location --retry 10 --retry-all-errors --retry-delay 3 "${auth[@]}" "$api/720951610" -o prodatphil.sha256
+          curl --fail --location --retry 10 --retry-all-errors --retry-delay 3 "${auth[@]}" "$api/720951612" -o prodatphil_en_txt_0_3.zip
+          sha256sum -c prodatphil.sha256
+          unzip -tq prodatphil_en_txt_0_3.zip
+          mkdir -p data/inherited/prodatphil-en-v0.3
+          unzip -q prodatphil_en_txt_0_3.zip -d data/inherited/prodatphil-en-v0.3
+
+      - name: Continue from Mamba step 1000 for exactly 1000 more steps
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/continue_mamba_50m.py
+          python scripts/continue_mamba_50m.py \
+            --input-checkpoint "$CHECKPOINT_PATH" \
+            --rag-index "$RAG_INDEX_PATH" \
+            --heretic-root data/inherited/heretic-corpus \
+            --books-root data/inherited/prodatphil-en-v0.3 \
+            --dataset-cache "$RUNNER_TEMP/minironin-mamba-full-corpus-cache.pt" \
+            --output-dir mamba-50m-continuation/results \
+            --steps 1000 --threads 2 --learning-rate 0.00002
+
+      - name: Evaluate the 2,000-step checkpoint with the same RAG and holdout
+        run: |
+          set -euo pipefail
+          python scripts/run_mamba_rag_holdout.py \
+            --checkpoint mamba-50m-continuation/results/mamba-checkpoint-2000.pt \
+            --rag-index "$RAG_INDEX_PATH" \
+            --holdout benchmarks/inference-holdout-v1.jsonl \
+            --comparison-diary benchmarks/diary/mamba-50m-1000-rag.json \
+            --expected-steps 2000 \
+            --output benchmarks/diary/mamba-50m-2000-rag.json \
+            --top-k 5 --max-new-tokens 128 --threads 2
+
+      - name: Upload checkpoints, manifests, metrics and both holdout diaries
+        uses: actions/upload-artifact@v7
+        with:
+          name: minironin-mamba-50m-2000-rag-continuation
+          path: |
+            mamba-50m-continuation/
+            benchmarks/diary/mamba-50m-1000-rag.json
+            benchmarks/diary/mamba-50m-2000-rag.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
+
+      - name: Commit auditable before-and-after holdout diaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add benchmarks/diary/mamba-50m-1000-rag.json benchmarks/diary/mamba-50m-2000-rag.json
+          if git diff --cached --quiet; then
+            echo "Holdout diaries are already committed."
+          else
+            git commit -m "Record Mamba 50M RAG holdout before and after 1k continuation"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
