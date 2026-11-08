@@ -43,7 +43,7 @@ def test_hybrid_retrieval_context_and_record_level_citation(tmp_path):
     subprocess.run([sys.executable,str(ROOT/"scripts/build_rag_index.py"),"--registry",str(rp),"--root",f"fixture={docs}","--no-embeddings","--output",str(index)],check=True,capture_output=True,text=True)
     retrieval_spec=importlib.util.spec_from_file_location("rag_retriever",ROOT/"scripts/rag_retrieve.py")
     retrieval=importlib.util.module_from_spec(retrieval_spec);retrieval_spec.loader.exec_module(retrieval)
-    result=retrieval.search(index,"Entropy state function",k=3,use_vectors=False)
+    result=retrieval.search(index,"Entropy relativity",k=3,use_vectors=False)
     assert result["hits"]
     context=retrieval.format_context(result,max_chars=4000)
     assert "[S1]" in context
