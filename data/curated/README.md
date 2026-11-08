@@ -113,3 +113,16 @@ y del JSONL generado. La validación se ejecuta con
 El corpus es un dominio de entrenamiento independiente (`lexicon`, peso
 inicial experimental 2%). Su inclusión no implica que un checkpoint concreto
 ya haya consumido los ejemplos ni que haya mejorado en evaluación.
+
+
+## Biblioteca tecnopolítica — fuente original del autor
+
+Se incorpora sources/EL-BUS-DE-DATOS-PERTENECE-AL-AMO.md, edición íntegra de 48 capítulos autorizada expresamente por su autor para uso interno. El texto se conserva como fuente de ensayo original; no se etiqueta como investigación revisada por pares ni como hechos verificados.
+
+- Dominio de entrenamiento: author_original.
+- Ingesta: texto completo, limpieza y fragmentación determinista mediante read_full_text.
+- Validación: partición por documentos y ventanas de validación independientes; el entrenamiento falla si falta este dominio o no genera ventanas de evaluación.
+- Peso inicial: 2% del muestreo normalizado, ajustable tras evaluación por dominio.
+- Procedencia: MINIRONIN-author-original; el manifiesto del ciclo registra bytes y SHA-256.
+
+La siguiente expansión añadirá investigación externa y fuentes abiertas con su licencia comprobada. Las páginas de AI Now, EFF, OECD y la Comisión Europea se conservan primero como referencias; no se copian íntegramente hasta confirmar sus condiciones de reutilización. Los conjuntos PrivacyQA/OPP-115 y Privacy Law Corpus figuran como no comerciales o con restricciones específicas y quedan fuera de la mezcla general mientras no exista autorización compatible. El dataset FSDK declara CC BY 4.0 y queda como candidato de adquisición tras verificar el ZIP y sus ficheros.
