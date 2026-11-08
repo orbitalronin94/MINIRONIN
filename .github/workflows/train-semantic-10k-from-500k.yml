@@ -1,0 +1,126 @@
+name: MINIRONIN — semantic BPE 23k from 500k +10k
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/train-semantic-10k-from-500k.yml"
+      - "scripts/train_semantic_10k.py"
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: minironin-semantic-bpe-500k-10k
+  cancel-in-progress: false
+
+jobs:
+  semantic-continuation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PARENT_TAG: minironin-transformer-10m-step-500000-candidate
+      PARENT_SHA256: 80664596095e9ce4d1757b1ca379bbccfa96ad03f67936e70dc39487d8e8fe60
+      CANDIDATE_TAG: minironin-transformer-10m-step-510000-semantic-bpe-candidate
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Descargar y verificar checkpoint 500k
+        run: |
+          set -euo pipefail
+          mkdir -p semantic-10k/parent
+          gh release download "$PARENT_TAG" --repo orbitalronin94/MINIRONIN --pattern "checkpoint-500000.pt" --dir semantic-10k/parent
+          echo "$PARENT_SHA256  semantic-10k/parent/checkpoint-500000.pt" | sha256sum -c -
+      - name: Verificar espacio de disco
+        run: |
+          set -euo pipefail
+          df -h .
+          available="$(df --output=avail -k . | tail -1 | tr -d ' ')"
+          test "$available" -gt 8000000 || { echo "Insufficient disk: $available KiB"; exit 1; }
+      - name: Descargar corpus HERETIC completo y verificar hashes
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/releases/assets"
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936363" -o heretic-corpus.part-0
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936357" -o heretic-corpus.part-1
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936364" -o parts.sha256
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936362" -o corpus.sha256
+          test "$(stat -c%s heretic-corpus.part-0)" -eq 400000000
+          test "$(stat -c%s heretic-corpus.part-1)" -eq 349837093
+          sha256sum -c parts.sha256
+          cat heretic-corpus.part-0 heretic-corpus.part-1 > heretic-approved-corpus.zip
+          test "$(sha256sum heretic-approved-corpus.zip | awk '{print $1}')" = "$(awk '{print $1}' corpus.sha256)"
+          unzip -tq heretic-approved-corpus.zip
+          mkdir -p data/inherited/heretic-corpus
+          unzip -q heretic-approved-corpus.zip -d data/inherited/heretic-corpus
+      - name: Descargar PRODATPHIL v0.3
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/MINIRONIN/releases/assets"
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720951610" -o prodatphil.sha256
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720951612" -o prodatphil_en_txt_0_3.zip
+          sha256sum -c prodatphil.sha256
+          unzip -tq prodatphil_en_txt_0_3.zip
+          mkdir -p data/inherited/prodatphil-en-v0.3
+          unzip -q prodatphil_en_txt_0_3.zip -d data/inherited/prodatphil-en-v0.3
+      - name: Preparar datasets curados y personalidad
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install numpy pyarrow tokenizers==0.21.1
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python scripts/build_abstention_datasets.py
+          python scripts/build_personality_datasets.py
+          python scripts/build_lexicon_dataset.py
+          python scripts/validate_lexicon_dataset.py
+      - name: Adquirir bibliotecas anarquista y de clásicos
+        run: |
+          set -euo pipefail
+          python scripts/acquire_anarchist_library.py --output data/inherited/anarchist-library
+          python scripts/build_semantic_library_graph.py
+          test -s data/semantic/semantic-library-graph.json
+          python scripts/acquire_classics_library.py --output data/inherited/classics-library
+          test -s data/inherited/classics-library/CLASSICS-LIBRARY-MANIFEST.json
+      - name: Verificar scripts y arquitectura
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/train_semantic_10k.py scripts/train_long_run.py scripts/train_seed_tournament.py
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, "src")
+          from minironin import MiniRoninLM, ModelConfig
+          model = MiniRoninLM(ModelConfig.load("configs/model-10m.json"))
+          assert model.parameter_count() == 9_970_176
+          assert model.token_embedding.weight.shape == (23000, 256)
+          assert model.lm_head.weight.data_ptr() == model.token_embedding.weight.data_ptr()
+          print({"parameters": model.parameter_count(), "embedding_rows": 23000, "tied_weights": True})
+          PY
+      - name: Entrenar 10k pasos con vocabulario semántico completo
+        run: |
+          set -euo pipefail
+          python scripts/train_semantic_10k.py --parent-checkpoint semantic-10k/parent/checkpoint-500000.pt --output-dir semantic-10k/results --heretic-root data/inherited/heretic-corpus --books-root data/inherited/prodatphil-en-v0.3 --anarchist-root data/inherited/anarchist-library --classics-root data/inherited/classics-library --dataset-cache "$RUNNER_TEMP/minironin-semantic-corpus-cache.pt" --threads 2
+      - name: Validar y publicar candidato 510k
+        run: |
+          set -euo pipefail
+          cd semantic-10k/results
+          test -s checkpoint-510000-semantic-bpe.pt
+          test -s semantic-tokenizer.json
+          test -s semantic-training-report.json
+          sha256sum -c SHA256SUMS
+          gh release create "$CANDIDATE_TAG" checkpoint-510000-semantic-bpe.pt semantic-tokenizer.json semantic-training-report.json SHA256SUMS --repo orbitalronin94/MINIRONIN --title "MINIRONIN 10M — 510k semantic BPE candidate" --notes "10,000-step continuation from the immutable 500k checkpoint. Byte IDs 0..255 and EOS=256 preserved; all 22,743 reserved rows activated by corpus-trained ByteLevel BPE. Candidate only; fixed 100-question generation holdout required before promotion."
+      - name: Guardar checkpoint, tokenizer y manifiestos
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-semantic-bpe-500k-plus-10k-${{ github.run_id }}
+          path: semantic-10k/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
