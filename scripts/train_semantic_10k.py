@@ -119,17 +119,26 @@ def encode_text(tokenizer, id_to_model, text: str) -> list[int]:
 
 
 def make_validation(validation_bytes, tokenizer, id_to_model):
+    # Legacy validation windows contain only 256 raw bytes. BPE compresses them,
+    # so tokenizing each window independently can never fill a 257-token model
+    # sequence. Reassemble the fixed, document-disjoint byte windows per domain,
+    # then tokenize once and cut semantic-token windows from that stream.
     batches = []
     for domain, byte_batches in sorted(validation_bytes.items()):
-        rows = []
+        pieces = []
         for batch in byte_batches:
             for row in batch:
                 raw = bytes(x for x in row.tolist() if 0 <= x <= 255)
-                text = raw.decode("utf-8", errors="replace")
-                ids = encode_text(tokenizer, id_to_model, text)
-                if len(ids) >= SEQUENCE_LENGTH + 1:
-                    start = max(0, (len(ids) - SEQUENCE_LENGTH - 1) // 2)
-                    rows.append(torch.tensor(ids[start:start + SEQUENCE_LENGTH + 1], dtype=torch.long))
+                if raw:
+                    pieces.append(raw)
+        if not pieces:
+            continue
+        text = "\\n".join(piece.decode("utf-8", errors="replace") for piece in pieces)
+        ids = encode_text(tokenizer, id_to_model, text)
+        rows = [
+            torch.tensor(ids[start:start + SEQUENCE_LENGTH + 1], dtype=torch.long)
+            for start in range(0, len(ids) - SEQUENCE_LENGTH, SEQUENCE_LENGTH)
+        ]
         if rows:
             batches.append((domain, rows))
     return batches
@@ -143,8 +152,6 @@ def evaluate(model, validation, device):
             losses = []
             for start in range(0, len(rows), BATCH_SIZE):
                 selected = rows[start:start + BATCH_SIZE]
-                if len(selected) != BATCH_SIZE:
-                    continue
                 batch = torch.stack(selected).to(device)
                 _, loss = model(batch, labels=batch, vocab_limit=ACTIVE_VOCAB)
                 losses.append(float(loss))
