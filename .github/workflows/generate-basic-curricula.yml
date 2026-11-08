@@ -1,0 +1,31 @@
+name: Generate MINIRONIN basic maths and facts 24x50k
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/generate_basic_curricula.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Generate and audit 1.2 million basic examples
+        run: python scripts/generate_basic_curricula.py --output-dir generated-basic-curricula --seed 20261108
+      - name: Upload datasets and manifests
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-basic-maths-facts-24x50k
+          path: generated-basic-curricula/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
