@@ -101,7 +101,7 @@ def main():
  CREATE INDEX idx_chunks_doc ON chunks(document_id);\n CREATE TABLE chunk_sources(chunk_id TEXT,document_id TEXT,source_id TEXT,relative_path TEXT,locator TEXT,PRIMARY KEY(chunk_id,document_id,source_id,relative_path,locator));""")
  pending=[];docs=dupd=chunks=dupc=0;t0=time.time()
  def flush():
-  nonlocal chunks
+  nonlocal chunks,dupc
   if not pending:return
   vec=None
   if embedder:
