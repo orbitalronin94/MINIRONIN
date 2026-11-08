@@ -1,6 +1,15 @@
 {
   "schema": "minironin-semantic-tokens-v1",
   "tokens": {
+    "SEM:abolition": {
+      "concept_id": "abolition",
+      "label": "Abolicionismo",
+      "aliases": [
+        "abolition",
+        "anti-slavery"
+      ],
+      "description": ""
+    },
     "SEM:anarchism": {
       "concept_id": "anarchism",
       "label": "Anarquismo",
@@ -19,6 +28,24 @@
       ],
       "description": ""
     },
+    "SEM:biology": {
+      "concept_id": "biology",
+      "label": "Biología",
+      "aliases": [
+        "biology",
+        "life sciences"
+      ],
+      "description": ""
+    },
+    "SEM:capitalism": {
+      "concept_id": "capitalism",
+      "label": "Capitalismo",
+      "aliases": [
+        "capitalism",
+        "capital"
+      ],
+      "description": ""
+    },
     "SEM:ci_cd": {
       "concept_id": "ci_cd",
       "label": "Integración y entrega continuas",
@@ -26,6 +53,15 @@
         "ci/cd",
         "continuous integration",
         "continuous delivery"
+      ],
+      "description": ""
+    },
+    "SEM:class": {
+      "concept_id": "class",
+      "label": "Clase social",
+      "aliases": [
+        "class",
+        "social class"
       ],
       "description": ""
     },
@@ -56,6 +92,15 @@
       ],
       "description": ""
     },
+    "SEM:democracy": {
+      "concept_id": "democracy",
+      "label": "Democracia",
+      "aliases": [
+        "democracy",
+        "popular government"
+      ],
+      "description": ""
+    },
     "SEM:distribution": {
       "concept_id": "distribution",
       "label": "Distribución",
@@ -65,12 +110,48 @@
       ],
       "description": ""
     },
+    "SEM:division_of_labor": {
+      "concept_id": "division_of_labor",
+      "label": "División del trabajo",
+      "aliases": [
+        "division of labor",
+        "specialization"
+      ],
+      "description": ""
+    },
+    "SEM:ecology": {
+      "concept_id": "ecology",
+      "label": "Ecología",
+      "aliases": [
+        "ecology",
+        "environment"
+      ],
+      "description": ""
+    },
+    "SEM:economics": {
+      "concept_id": "economics",
+      "label": "Economía",
+      "aliases": [
+        "economics",
+        "economic theory"
+      ],
+      "description": ""
+    },
     "SEM:education": {
       "concept_id": "education",
       "label": "Educación",
       "aliases": [
         "education",
         "free education"
+      ],
+      "description": ""
+    },
+    "SEM:empiricism": {
+      "concept_id": "empiricism",
+      "label": "Empirismo",
+      "aliases": [
+        "empiricism",
+        "observation"
       ],
       "description": ""
     },
@@ -90,6 +171,15 @@
         "knowledge",
         "justification",
         "epistemology"
+      ],
+      "description": ""
+    },
+    "SEM:ethics": {
+      "concept_id": "ethics",
+      "label": "Ética",
+      "aliases": [
+        "ethics",
+        "moral philosophy"
       ],
       "description": ""
     },
@@ -166,6 +256,15 @@
       ],
       "description": ""
     },
+    "SEM:history": {
+      "concept_id": "history",
+      "label": "Historia",
+      "aliases": [
+        "history",
+        "historical analysis"
+      ],
+      "description": ""
+    },
     "SEM:justice": {
       "concept_id": "justice",
       "label": "Justicia",
@@ -194,6 +293,25 @@
       ],
       "description": ""
     },
+    "SEM:liberty": {
+      "concept_id": "liberty",
+      "label": "Libertad civil",
+      "aliases": [
+        "liberty",
+        "civil liberty"
+      ],
+      "description": ""
+    },
+    "SEM:literature": {
+      "concept_id": "literature",
+      "label": "Literatura",
+      "aliases": [
+        "literature",
+        "fiction",
+        "novel"
+      ],
+      "description": ""
+    },
     "SEM:logic": {
       "concept_id": "logic",
       "label": "Lógica",
@@ -203,12 +321,30 @@
       ],
       "description": ""
     },
+    "SEM:markets": {
+      "concept_id": "markets",
+      "label": "Mercados",
+      "aliases": [
+        "markets",
+        "market"
+      ],
+      "description": ""
+    },
     "SEM:materialism": {
       "concept_id": "materialism",
       "label": "Materialismo",
       "aliases": [
         "materialism",
         "material conditions"
+      ],
+      "description": ""
+    },
+    "SEM:metaphysics": {
+      "concept_id": "metaphysics",
+      "label": "Metafísica",
+      "aliases": [
+        "metaphysics",
+        "ontology"
       ],
       "description": ""
     },
@@ -238,12 +374,39 @@
       ],
       "description": ""
     },
+    "SEM:narrative": {
+      "concept_id": "narrative",
+      "label": "Narrativa",
+      "aliases": [
+        "narrative",
+        "storytelling"
+      ],
+      "description": ""
+    },
     "SEM:nationalism": {
       "concept_id": "nationalism",
       "label": "Nacionalismo",
       "aliases": [
         "nationalism",
         "patriotism"
+      ],
+      "description": ""
+    },
+    "SEM:natural_selection": {
+      "concept_id": "natural_selection",
+      "label": "Selección natural",
+      "aliases": [
+        "natural selection",
+        "adaptation"
+      ],
+      "description": ""
+    },
+    "SEM:nature": {
+      "concept_id": "nature",
+      "label": "Naturaleza",
+      "aliases": [
+        "nature",
+        "natural world"
       ],
       "description": ""
     },
@@ -265,12 +428,30 @@
       ],
       "description": ""
     },
+    "SEM:political_theory": {
+      "concept_id": "political_theory",
+      "label": "Teoría política",
+      "aliases": [
+        "political theory",
+        "political philosophy"
+      ],
+      "description": ""
+    },
     "SEM:possession": {
       "concept_id": "possession",
       "label": "Posesión",
       "aliases": [
         "possession",
         "occupancy"
+      ],
+      "description": ""
+    },
+    "SEM:poverty": {
+      "concept_id": "poverty",
+      "label": "Pobreza",
+      "aliases": [
+        "poverty",
+        "deprivation"
       ],
       "description": ""
     },
@@ -339,6 +520,15 @@
       ],
       "description": ""
     },
+    "SEM:rights": {
+      "concept_id": "rights",
+      "label": "Derechos",
+      "aliases": [
+        "rights",
+        "human rights"
+      ],
+      "description": ""
+    },
     "SEM:science": {
       "concept_id": "science",
       "label": "Ciencia",
@@ -354,6 +544,15 @@
       "aliases": [
         "self-organization",
         "horizontal organization"
+      ],
+      "description": ""
+    },
+    "SEM:slavery": {
+      "concept_id": "slavery",
+      "label": "Esclavitud",
+      "aliases": [
+        "slavery",
+        "enslavement"
       ],
       "description": ""
     },
@@ -399,6 +598,24 @@
       "aliases": [
         "systems",
         "complex systems"
+      ],
+      "description": ""
+    },
+    "SEM:trade": {
+      "concept_id": "trade",
+      "label": "Comercio",
+      "aliases": [
+        "trade",
+        "commerce"
+      ],
+      "description": ""
+    },
+    "SEM:war": {
+      "concept_id": "war",
+      "label": "Guerra",
+      "aliases": [
+        "war",
+        "conflict"
       ],
       "description": ""
     }
