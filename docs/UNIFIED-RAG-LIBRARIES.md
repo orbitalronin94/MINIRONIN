@@ -114,12 +114,12 @@ Se evaluará por separado español, inglés y otros idiomas presentes. No se con
 El contrato de recuperación debe ser independiente de la arquitectura:
 
 ```python
-hits = retriever.search(query, top_k=...)
-prompt_context = format_context(hits, token_budget=...)
+result = search(index_path, question, k=5)
+prompt_context = format_context(result, max_chars=12000)
 answer = model_adapter.generate(question, context=prompt_context)
 ```
 
-Los adaptadores de Transformer y Mamba reciben el mismo conjunto de fragmentos para que la comparación sea justa. Si el contexto supera la ventana, se seleccionan fragmentos por relevancia y diversidad; no se trunca a ciegas la pregunta ni las citas.
+El contrato Python actual es `search(index_path, query, k=5, model=None, use_vectors=True)`, que devuelve `hits`, `warnings` y el manifiesto del índice; `format_context(result, max_chars=12000)` crea bloques citables `[S#]` respetando el presupuesto de caracteres. La CLI permite `--format context` y `--no-vector`. El prefijo de consulta E5 se lee del manifiesto del índice, no se vuelve a asumir en el runtime. Los adaptadores de Transformer y Mamba reciben el mismo contexto para que la comparación sea justa. Si el contexto supera la ventana, se seleccionan fragmentos por relevancia y diversidad; no se trunca a ciegas la pregunta ni las citas.
 
 La respuesta debe distinguir:
 - afirmaciones apoyadas por los fragmentos;
