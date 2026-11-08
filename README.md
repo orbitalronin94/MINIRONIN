@@ -64,7 +64,7 @@ El experimento Mamba de **49.083.392 parámetros** deja de ser el modelo princip
 
 ## Modelo principal promovido — Transformer 10M (390.000 pasos)
 
-<badge color="success">MAIN · baseline experimental</badge>
+**MAIN · baseline experimental**
 
 El modelo principal vuelve a ser el Transformer decoder-only de **9.970.176 parámetros**, checkpoint de **390.000 pasos**:
 
