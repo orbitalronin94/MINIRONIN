@@ -166,8 +166,15 @@ def read_full_books(root: Path, store) -> list[dict]:
 def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     if cache_path.exists():
         cached = torch.load(cache_path, map_location="cpu", weights_only=False)
-        print(json.dumps({"dataset_cache": "reused", **cached["manifest"]}, ensure_ascii=False), flush=True)
-        return cached["train_docs"], cached["names"], cached["probs"], cached["validation"], cached["manifest"]
+        cached_manifest = cached.get("manifest", {})
+        if cached_manifest.get("engineering_performance_examples") == 4:
+            print(json.dumps({"dataset_cache": "reused", **cached_manifest}, ensure_ascii=False), flush=True)
+            return cached["train_docs"], cached["names"], cached["probs"], cached["validation"], cached_manifest
+        print(json.dumps({
+            "dataset_cache": "invalidated",
+            "reason": "cache predates minironin-performance-engineering-v1.jsonl",
+        }), flush=True)
+        cache_path.unlink()
 
     build_lexicon_dataset()
     store = {"docs": [], "seen": set()}
