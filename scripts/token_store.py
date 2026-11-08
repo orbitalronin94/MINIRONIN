@@ -78,7 +78,7 @@ def build_token_store(
         stream.flush()
         os.fsync(stream.fileno())
 
-    os.replace(temp_path, token_path)
+    if total_tokens == 0:\n        temp_path.unlink(missing_ok=True)\n        raise ValueError("Cannot build an empty token store")\n    os.replace(temp_path, token_path)
     token_sha = _sha256(token_path)
     index_path = root / "index.json"
     index_temp = root / "index.json.tmp"
