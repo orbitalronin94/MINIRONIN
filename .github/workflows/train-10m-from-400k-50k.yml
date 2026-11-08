@@ -1,0 +1,204 @@
+name: MINIRONIN — Transformer 10M desde 400k +50k corpus completo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/train-10m-from-400k-10k.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: minironin-transformer-10m-400k-10k
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PROMOTION_TAG: minironin-transformer-10m-step-400000-main
+      CANDIDATE_TAG: minironin-transformer-10m-step-450000-candidate
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Descargar y verificar el checkpoint promovido de 400k
+        run: |
+          set -euo pipefail
+          mkdir -p train-10m/parent
+          curl --fail --location --retry 6 --retry-all-errors \
+            "https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-transformer-10m-step-400000-candidate/checkpoint-400000.pt" \
+            -o train-10m/parent/checkpoint-400000.pt
+          echo "f0c40c4a4196f2a87451a34139656ba41e824b3b75e6fc209758ccb7a3642c4b  train-10m/parent/checkpoint-400000.pt" | sha256sum -c -
+          sha256sum train-10m/parent/checkpoint-400000.pt > train-10m/parent/SHA256SUMS
+
+      - name: Publicar alias inmutable del checkpoint MAIN
+        run: |
+          set -euo pipefail
+          if gh release view "$PROMOTION_TAG" >/dev/null 2>&1; then
+            gh release upload "$PROMOTION_TAG" train-10m/parent/checkpoint-400000.pt train-10m/parent/SHA256SUMS --clobber
+          else
+            gh release create "$PROMOTION_TAG" train-10m/parent/checkpoint-400000.pt train-10m/parent/SHA256SUMS \
+              --title "MINIRONIN Transformer 10M — MAIN / step 400000" \
+              --notes "Manual project promotion of the verified 9,970,176-parameter Transformer checkpoint. This is an experimental baseline, not a claim of validated holdout quality. Source release: minironin-transformer-10m-step-400000-candidate."
+          fi
+
+      - name: Comprobar espacio disponible en runner gratuito
+        run: |
+          set -euo pipefail
+          df -h .
+          available="$(df --output=avail -k . | tail -1 | tr -d ' ')"
+          test "$available" -gt 8000000 || { echo "Insufficient disk space: ${available} KiB"; exit 1; }
+
+      - name: Descargar y verificar corpus textual HERETIC completo
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/releases/assets"
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936363" -o heretic-corpus.part-0
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936357" -o heretic-corpus.part-1
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936364" -o parts.sha256
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936362" -o corpus.sha256
+          test "$(stat -c%s heretic-corpus.part-0)" -eq 450000000
+          test "$(stat -c%s heretic-corpus.part-1)" -eq 349837093
+          sha256sum -c parts.sha256
+          cat heretic-corpus.part-0 heretic-corpus.part-1 > heretic-approved-corpus.zip
+          test "$(sha256sum heretic-approved-corpus.zip | awk '{print $1}')" = "$(awk '{print $1}' corpus.sha256)"
+          unzip -tq heretic-approved-corpus.zip
+          mkdir -p data/inherited/heretic-corpus
+          unzip -q heretic-approved-corpus.zip -d data/inherited/heretic-corpus
+
+      - name: Descargar y verificar PRODATPHIL v0.3
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/MINIRONIN/releases/assets"
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720951610" -o prodatphil.sha256
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720951612" -o prodatphil_en_txt_0_3.zip
+          sha256sum -c prodatphil.sha256
+          unzip -tq prodatphil_en_txt_0_3.zip
+          mkdir -p data/inherited/prodatphil-en-v0.3
+          unzip -q prodatphil_en_txt_0_3.zip -d data/inherited/prodatphil-en-v0.3
+
+      - name: Regenerar datasets conductuales, personalidad, abstención y lexicón
+        run: |
+          set -euo pipefail
+          python scripts/build_abstention_datasets.py
+          python scripts/build_personality_datasets.py
+          python scripts/build_lexicon_dataset.py
+          python scripts/validate_lexicon_dataset.py
+          python - <<'PY'
+          from pathlib import Path
+          checks = [
+              ("minironin-identity-v1.jsonl", 40),
+              ("minironin-abstain-plain-50k-v1.jsonl", 50000),
+              ("minironin-abstain-literary-50k-v1.jsonl", 50000),
+              ("minironin-abstain-koan-50k-v1.jsonl", 50000),
+              ("minironin-aristocrat-trivial-50k-v1.jsonl", 50000),
+              ("minironin-casuist-cynic-50k-v1.jsonl", 50000),
+              ("minironin-scientist-exhausted-50k-v1.jsonl", 50000),
+              ("minironin-oracle-doom-50k-v1.jsonl", 50000),
+              ("minironin-error404-indifference-50k-v1.jsonl", 50000),
+              ("minironin-lexicon-diagnostic-50k-v1.jsonl", 50000),
+          ]
+          for name, expected in checks:
+              path = Path("data/curated") / name
+              assert path.is_file(), f"Missing {path}"
+              count = sum(1 for line in path.open(encoding="utf-8") if line.strip())
+              assert count == expected, (name, count, expected)
+              print(f"{name}: {count} rows / {path.stat().st_size} bytes")
+          PY
+
+      - name: Instalar PyTorch CPU y lector Parquet
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy pyarrow
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Validar checkpoint, arquitectura y tasa de aprendizaje de continuación
+        id: parent
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, torch
+          path = "train-10m/parent/checkpoint-400000.pt"
+          checkpoint = torch.load(path, map_location="cpu", weights_only=False)
+          assert checkpoint.get("completed_steps") == 400000, checkpoint.get("completed_steps")
+          assert checkpoint.get("parameter_count") == 9970176, checkpoint.get("parameter_count")
+          assert checkpoint.get("active_vocabulary") == 257, checkpoint.get("active_vocabulary")
+          assert "model_state_dict" in checkpoint and "optimizer_state_dict" in checkpoint
+          groups = checkpoint["optimizer_state_dict"].get("param_groups", [])
+          assert groups, "Missing optimizer parameter groups"
+          lr = float(groups[0]["lr"])
+          assert 0 < lr <= 3e-4, lr
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"parent_lr={lr:.12g}\n")
+          print({"completed_steps": 400000, "parameter_count": 9970176, "active_vocabulary": 257, "continuation_lr": lr})
+          PY
+
+      - name: Entrenar exactamente 50.000 pasos con todo el corpus; 2 hilos y caché
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/train_long_run.py scripts/train_seed_tournament.py
+          python scripts/train_long_run.py \
+            --heretic-root data/inherited/heretic-corpus \
+            --books-root data/inherited/prodatphil-en-v0.3 \
+            --input-checkpoint train-10m/parent/checkpoint-400000.pt \
+            --output-dir train-10m/results \
+            --start-step 400000 \
+            --steps 50000 \
+            --threads 2 \
+            --dataset-cache "$RUNNER_TEMP/minironin-10m-full-corpus-cache.pt" \
+            --total-steps 450000 \
+            --schedule-start-step 400000 \
+            --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
+
+      - name: Verificar y publicar checkpoint candidato 450k
+        run: |
+          set -euo pipefail
+          checkpoint="train-10m/results/checkpoint-450000.pt"
+          report="train-10m/results/report-450000.json"
+          test -s "$checkpoint" && test -s "$report"
+          sha256sum "$checkpoint" "$report" > train-10m/results/SHA256SUMS-450000
+          python - <<'PY'
+          import json, torch
+          cp = torch.load("train-10m/results/checkpoint-450000.pt", map_location="cpu", weights_only=False)
+          report = json.load(open("train-10m/results/report-450000.json"))
+          assert cp["completed_steps"] == 450000
+          assert cp["parameter_count"] == 9970176
+          assert report["completed_steps"] == 450000
+          assert report["segment_steps"] == 50000
+          assert report["dataset_manifest"]["documents_total"] > 0
+          print(json.dumps({
+              "completed_steps": cp["completed_steps"],
+              "parameter_count": cp["parameter_count"],
+              "validation_loss": report["validation_loss"],
+              "elapsed_seconds": report["elapsed_seconds"],
+              "documents_total": report["dataset_manifest"]["documents_total"],
+              "documents_by_domain": report["dataset_manifest"]["documents_by_domain"],
+              "training_mix": report["dataset_manifest"]["training_mix"]
+          }, ensure_ascii=False, indent=2))
+          PY
+          if gh release view "$CANDIDATE_TAG" >/dev/null 2>&1; then
+            gh release upload "$CANDIDATE_TAG" "$checkpoint" "$report" train-10m/results/SHA256SUMS-450000 --clobber
+          else
+            gh release create "$CANDIDATE_TAG" "$checkpoint" "$report" train-10m/results/SHA256SUMS-450000 \
+              --title "MINIRONIN Transformer 10M — candidate / step 450000" \
+              --notes "50,000 additional steps from the promoted 400k checkpoint, using the complete current trainable corpus. Candidate only; independent matched holdout required before any further promotion."
+          fi
+
+      - name: Guardar artefactos completos y manifiesto
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-transformer-10m-400k-plus-10k-${{ github.run_id }}
+          path: train-10m/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
