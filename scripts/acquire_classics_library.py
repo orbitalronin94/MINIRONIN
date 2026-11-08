@@ -2,6 +2,7 @@
 """Acquire territorially screened English-language classics with provenance and hashes."""
 from __future__ import annotations
 import argparse, hashlib, json, re, time, urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
