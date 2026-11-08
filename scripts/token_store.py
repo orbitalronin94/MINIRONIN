@@ -11,6 +11,7 @@ import json
 import mmap
 import os
 import struct
+from collections import Counter
 from pathlib import Path
 from typing import Iterable, Mapping
 
@@ -65,7 +66,7 @@ def build_token_store(
                     raise ValueError(f"Token ID outside uint16 range: {token}")
                 stream.write(struct.pack("<H", token))
                 count += 1
-            if count < 2:
+            if count == 0:
                 continue
             index.append({
                 "id": str(doc_id),
@@ -78,12 +79,20 @@ def build_token_store(
         stream.flush()
         os.fsync(stream.fileno())
 
-    if total_tokens == 0:\n        temp_path.unlink(missing_ok=True)\n        raise ValueError("Cannot build an empty token store")\n    os.replace(temp_path, token_path)
+    if total_tokens == 0:
+        temp_path.unlink(missing_ok=True)
+        raise ValueError("Cannot build an empty token store")
+    os.replace(temp_path, token_path)
     token_sha = _sha256(token_path)
+
     index_path = root / "index.json"
     index_temp = root / "index.json.tmp"
-    index_temp.write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    index_temp.write_text(
+        json.dumps(index, ensure_ascii=False, separators=(",", ":")) + "\n",
+        encoding="utf-8",
+    )
     os.replace(index_temp, index_path)
+
     manifest = {
         "format": FORMAT,
         "dtype": "little-endian uint16",
@@ -91,16 +100,16 @@ def build_token_store(
         "training_corpus_signature": corpus_signature,
         "tokens_sha256": token_sha,
         "documents": len(index),
-        "libraries": dict(sorted({
-            name: sum(1 for row in index if row["library_id"] == name)
-            for name in {row["library_id"] for row in index}
-        }.items())),
+        "libraries": dict(sorted(Counter(row["library_id"] for row in index).items())),
         "total_tokens": total_tokens,
         "bytes": token_path.stat().st_size,
     }
     manifest_path = root / "manifest.json"
     manifest_temp = root / "manifest.json.tmp"
-    manifest_temp.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    manifest_temp.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
     os.replace(manifest_temp, manifest_path)
     return manifest
 
@@ -141,7 +150,9 @@ class TokenStore:
         verify_file_sha256: bool = True,
     ):
         self.root = Path(root)
-        self.manifest = json.loads((self.root / "manifest.json").read_text(encoding="utf-8"))
+        self.manifest = json.loads(
+            (self.root / "manifest.json").read_text(encoding="utf-8")
+        )
         if self.manifest.get("format") != FORMAT:
             raise ValueError("Unsupported token-store format")
         if expected_tokenizer_sha256 and self.manifest.get("tokenizer_sha256") != expected_tokenizer_sha256:
