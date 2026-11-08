@@ -1,0 +1,157 @@
+name: MINIRONIN — construir corpus unificado de entrenamiento
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/build-unified-train.yml"
+      - "scripts/build_unified_train.py"
+      - "scripts/acquire_japanese_library.py"
+      - "data/japan/SOURCES.json"
+      - "scripts/generate_synthetic_curricula.py"
+      - "scripts/generate_basic_curricula.py"
+      - "scripts/build_abstention_datasets.py"
+      - "scripts/build_personality_datasets.py"
+      - "scripts/build_lexicon_dataset.py"
+      - "scripts/validate_lexicon_dataset.py"
+      - "scripts/acquire_anarchist_library.py"
+      - "scripts/acquire_classics_library.py"
+      - "data/classics/SOURCES.json"
+      - "data/anarchist/SOURCES.jsonl"
+      - "data/curated/sources/LEXICON-DEL-ESPERPENTO-ALGORITMICO.md"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: minironin-unified-train-corpus
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v4
+
+      - name: Importar los nueve artículos admitidos de Papers
+        uses: actions/checkout@v4
+        with:
+          repository: orbitalronin94/Papers
+          ref: d7bf3ae446f666ce3be73b11aab7090e1605a889
+          path: papers-source
+          persist-credentials: false
+
+      - name: Preparar Python y dependencias de lectura
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyarrow
+
+      - name: Generar los 24 currículos sintéticos conductuales y Lexicon
+        run: python scripts/generate_synthetic_curricula.py --output-dir generated-curricula --seed 20261108
+
+      - name: Generar los 25 currículos de matemáticas y hechos
+        run: python scripts/generate_basic_curricula.py --output-dir generated-basic-curricula --seed 20261108
+
+      - name: Construir los nueve datasets conductuales curados
+        run: |
+          set -euo pipefail
+          python scripts/build_abstention_datasets.py
+          python scripts/build_personality_datasets.py
+          python scripts/build_lexicon_dataset.py
+          python scripts/validate_lexicon_dataset.py
+          mkdir -p unified-input/behavioral-datasets unified-input/lexicon-source
+          cp data/curated/minironin-lexicon-diagnostic-50k-v1.jsonl data/curated/lexicon-50k-manifest.json unified-input/behavioral-datasets/
+          cp data/curated/minironin-abstain-plain-50k-v1.jsonl data/curated/minironin-abstain-literary-50k-v1.jsonl data/curated/minironin-abstain-koan-50k-v1.jsonl data/curated/minironin-aristocrat-trivial-50k-v1.jsonl data/curated/abstention-50k-manifest.json unified-input/behavioral-datasets/
+          cp data/curated/minironin-casuist-cynic-50k-v1.jsonl data/curated/minironin-scientist-exhausted-50k-v1.jsonl data/curated/minironin-oracle-doom-50k-v1.jsonl data/curated/minironin-error404-indifference-50k-v1.jsonl data/curated/personality-50k-manifest.json unified-input/behavioral-datasets/
+          cp data/curated/sources/LEXICON-DEL-ESPERPENTO-ALGORITMICO.md unified-input/lexicon-source/
+
+      - name: Descargar y verificar HERETIC
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/releases/assets"
+          curl --fail --location --retry 4 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936363" -o heretic-corpus.part-0
+          curl --fail --location --retry 4 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936357" -o heretic-corpus.part-1
+          curl --fail --location --retry 4 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936364" -o parts.sha256
+          curl --fail --location --retry 4 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936362" -o corpus.sha256
+          test "$(stat -c%s heretic-corpus.part-0)" -eq 400000000
+          test "$(stat -c%s heretic-corpus.part-1)" -eq 349837093
+          sha256sum -c parts.sha256
+          cat heretic-corpus.part-0 heretic-corpus.part-1 > heretic-approved-corpus.zip
+          test "$(sha256sum heretic-approved-corpus.zip | awk '{print $1}')" = "$(awk '{print $1}' corpus.sha256)"
+          unzip -tq heretic-approved-corpus.zip
+          mkdir -p data/inherited/heretic-corpus
+          unzip -q heretic-approved-corpus.zip -d data/inherited/heretic-corpus
+
+      - name: Descargar y verificar PRODATPHIL v0.3
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 4 --retry-all-errors \
+            "https://github.com/orbitalronin94/MINIRONIN/releases/download/reasoning-library-prodatphil-v0.3/prodatphil_en_txt_0_3.zip" \
+            -o prodatphil_en_txt_0_3.zip
+          echo "8eacf44101c87772a842fce3d3ab415903f28ba7684f8b33eddba0e2489c13c9  prodatphil_en_txt_0_3.zip" | sha256sum -c -
+          mkdir -p data/inherited/prodatphil-en-v0.3
+          unzip -tq prodatphil_en_txt_0_3.zip
+          unzip -q prodatphil_en_txt_0_3.zip -d data/inherited/prodatphil-en-v0.3
+
+      - name: Adquirir bibliotecas anarquista, clásica y japonesa
+        run: |
+          set -euo pipefail
+          python scripts/acquire_anarchist_library.py --output data/inherited/anarchist-library
+          python scripts/acquire_classics_library.py --output data/inherited/classics-library
+          python scripts/acquire_japanese_library.py --output data/inherited/japanese-library
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          checks = [
+            ("data/inherited/classics-library/CLASSICS-LIBRARY-MANIFEST.json", 8, "total_documents"),
+            ("data/inherited/japanese-library/JAPANESE-LIBRARY-MANIFEST.json", 10, "total_documents"),
+            ("data/inherited/anarchist-library/ANARCHIST-LIBRARY-MANIFEST.json", 2, "total_documents"),
+          ]
+          for name, minimum, key in checks:
+              data=json.loads(Path(name).read_text())
+              assert data[key] >= minimum, (name, data[key], minimum)
+              print(name, data[key])
+          PY
+
+      - name: Copiar exactamente los nueve artículos Markdown admitidos de Papers
+        run: |
+          set -euo pipefail
+          mkdir -p data/inherited/papers
+          find papers-source -maxdepth 1 -type f -name '*.md' ! -iname 'README.md' -print0 | while IFS= read -r -d '' file; do
+            cp "$file" data/inherited/papers/
+          done
+          count="$(find data/inherited/papers -maxdepth 1 -type f -name '*.md' | wc -l)"
+          test "$count" -eq 9
+          printf 'Papers Markdown documents: %s\n' "$count"
+
+      - name: Construir train.jsonl.gz y auditar sin descartar filas
+        run: |
+          set -euo pipefail
+          python scripts/build_unified_train.py --output-dir unified-train --roots \
+            data/inherited/heretic-corpus \
+            data/inherited/prodatphil-en-v0.3 \
+            data/inherited/anarchist-library \
+            data/inherited/classics-library \
+            data/inherited/japanese-library \
+            data/inherited/papers \
+            generated-curricula \
+            generated-basic-curricula \
+            unified-input/behavioral-datasets \
+            unified-input/lexicon-source
+          (cd unified-train && sha256sum -c SHA256SUMS)
+          cat unified-train/quality-report.json
+
+      - name: Publicar el único artefacto unificado de entrenamiento
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-unified-train-corpus-${{ github.run_id }}
+          path: unified-train/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
