@@ -8,6 +8,7 @@ on:
       - ".github/workflows/build-unified-train.yml"
       - "scripts/build_unified_train.py"
       - "scripts/acquire_japanese_library.py"
+      - "scripts/acquire_aozora_japanese_originals.py"
       - "data/japan/SOURCES.json"
       - "scripts/generate_synthetic_curricula.py"
       - "scripts/generate_basic_curricula.py"
@@ -111,6 +112,7 @@ jobs:
           checks = [
             ("data/inherited/classics-library/CLASSICS-LIBRARY-MANIFEST.json", 8, "total_documents"),
             ("data/inherited/japanese-library/JAPANESE-LIBRARY-MANIFEST.json", 10, "total_documents"),
+            ("data/inherited/japanese-library/aozora-originals/AOZORA-ORIGINALS-MANIFEST.json", 10, "total_documents"),
             ("data/inherited/anarchist-library/ANARCHIST-LIBRARY-MANIFEST.json", 2, "total_documents"),
           ]
           for name, minimum, key in checks:
@@ -118,6 +120,9 @@ jobs:
               assert data[key] >= minimum, (name, data[key], minimum)
               print(name, data[key])
           PY
+
+      - name: Adquirir literatura japonesa original en japonés con filtro de derechos
+        run: python scripts/acquire_aozora_japanese_originals.py --output data/inherited/japanese-library/aozora-originals --per-author 20 --max-works 280
 
       - name: Copiar exactamente los nueve artículos Markdown admitidos de Papers
         run: |
