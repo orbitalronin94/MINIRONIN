@@ -67,15 +67,6 @@ jobs:
           python scripts/build_personality_datasets.py
           python scripts/build_lexicon_dataset.py
 
-      - name: Unpack approved HERETIC artifact
-        if: inputs.include_heretic
-        run: |
-          mkdir -p external/heretic-corpus
-          find external/heretic-artifact -type f -name '*.zip' -print0 | while IFS= read -r -d '' f; do
-            unzip -q "$f" -d external/heretic-corpus
-          done
-          test -n "$(find external/heretic-corpus -type f | head -1)"
-
       - name: Build complete approved index
         env:
           EMBEDDINGS: ${{ inputs.embeddings }}
@@ -84,7 +75,7 @@ jobs:
         run: |
           args=(--output artifacts/rag/minironin-rag.sqlite)
           if [ "$EMBEDDINGS" != "true" ]; then args+=(--no-embeddings); fi
-          if [ "$INCLUDE_HERETIC" = "true" ]; then args+=(--root "HERETIC=external/heretic-corpus"); fi
+          if [ "$INCLUDE_HERETIC" = "true" ]; then args+=(--root "HERETIC=external/heretic-artifact/data/inherited/heretic-corpus"); fi
           if [ "$INCLUDE_RONINIA" = "true" ]; then args+=(--root "RONIN_IA=external/roninia/data/datasets"); fi
           python scripts/build_rag_index.py "${args[@]}"
 
