@@ -38,7 +38,8 @@ jobs:
           python -m compileall -q \
             scripts/library_sampler.py \
             scripts/library_provenance.py \
-            scripts/token_store.py
+            scripts/token_store.py \\
+            scripts/benchmark_library_sampler.py
 
       - name: Run focused regression tests
         run: |
