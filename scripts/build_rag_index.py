@@ -4,8 +4,8 @@ from __future__ import annotations
 import argparse,csv,hashlib,json,re,sqlite3,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-FIELDS=("text","content","body","document","passage","question","answer","context","prompt","completion","response","title","summary","abstract")
-def sha(b):return hashlib.sha256(b).hexdigest()
+FIELDS=("text","content","body","document","passage","question","answer","context","prompt","completion","response","title","summary","abstract","messages","conversations","instruction","input","output","chosen","rejected","system","user","assistant")
+def sha(b):return hashlib.sha256(b).hexdigest()\ndef sha_file(path):\n h=hashlib.sha256()\n with Path(path).open("rb") as f:\n  for block in iter(lambda:f.read(1024*1024),b""):h.update(block)\n return h.hexdigest()
 def clean(s):
  s=s.replace("\x00"," ");s=re.sub(r"[ \t]+"," ",s);s=re.sub(r"\n{3,}","\n\n",s);return s.strip()
 def extract(v,depth=0):
@@ -130,7 +130,7 @@ def main():
    if any(x in low for x in ("/holdout/","/validation/","/eval/","/evaluation/","/checkpoints/")):continue
    try:
     if path.stat().st_size>reg.get("max_file_mb",100)*1024*1024:continue
-    raw=path.read_bytes();dh=sha(raw);did=dh;rel=str(path.relative_to(base)) if base.is_dir() else path.name
+    dh=sha_file(path);did=dh;rel=str(path.relative_to(base)) if base.is_dir() else path.name
     cur=db.execute("INSERT OR IGNORE INTO documents VALUES(?,?,?,?,?,?,?,?,?,?,?)",(did,src["id"],src.get("project","unknown"),rel,dh,src.get("license","unknown"),src.get("domain","unknown"),src.get("language","und"),src.get("epistemic","unknown"),int(bool(src.get("redistribution",False))),""))
     if cur.rowcount:docs+=1
     else:dupd+=1
