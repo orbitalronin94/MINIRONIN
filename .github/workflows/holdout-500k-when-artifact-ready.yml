@@ -1,0 +1,195 @@
+name: MINIRONIN — holdout automático del checkpoint 500k
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: minironin-holdout-500k-once
+  cancel-in-progress: false
+
+jobs:
+  holdout-500k:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: orbitalronin94/MINIRONIN
+      CANDIDATE_TAG: minironin-transformer-10m-step-500000-candidate
+      CHECKPOINT_NAME: checkpoint-500000.pt
+      DIARY: benchmarks/diary/checkpoint-500000.json
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Evitar una segunda evaluación
+        id: guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -s "$DIARY" ]]; then
+            echo "done=true" >> "$GITHUB_OUTPUT"
+            echo "El holdout 500k ya está registrado; no se repetirá."
+          else
+            echo "done=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Esperar a que exista el artefacto publicado de 500k
+        id: artifact
+        if: steps.guard.outputs.done != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! gh release view "$CANDIDATE_TAG" --repo "$REPOSITORY" >/dev/null 2>&1; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Aún no existe la release candidata 500k. El siguiente sondeo volverá a comprobarlo."
+            exit 0
+          fi
+          assets="$(gh release view "$CANDIDATE_TAG" --repo "$REPOSITORY" --json assets --jq '.assets[].name')"
+          if ! grep -Fxq "$CHECKPOINT_NAME" <<< "$assets"; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "La release existe, pero todavía no contiene $CHECKPOINT_NAME."
+            exit 0
+          fi
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
+      - name: Preparar Python
+        if: steps.guard.outputs.done != 'true' && steps.artifact.outputs.ready == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Descargar checkpoint candidato
+        if: steps.guard.outputs.done != 'true' && steps.artifact.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p .tmp/holdout-500k
+          gh release download "$CANDIDATE_TAG" --repo "$REPOSITORY" \
+            --pattern "$CHECKPOINT_NAME" --dir .tmp/holdout-500k
+          test -s ".tmp/holdout-500k/$CHECKPOINT_NAME"
+          sha256sum ".tmp/holdout-500k/$CHECKPOINT_NAME" | tee .tmp/holdout-500k/SHA256SUMS
+
+      - name: Validar que es exactamente el checkpoint 500k y el holdout fijo de 100
+        if: steps.guard.outputs.done != 'true' && steps.artifact.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          import torch
+
+          checkpoint_path = Path(".tmp/holdout-500k/checkpoint-500000.pt")
+          checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+          assert checkpoint.get("completed_steps") == 500000, checkpoint.get("completed_steps")
+          assert checkpoint.get("parameter_count") == 9970176, checkpoint.get("parameter_count")
+          assert checkpoint.get("active_vocabulary") == 257, checkpoint.get("active_vocabulary")
+          assert checkpoint.get("tokenization") == "UTF-8 bytes + EOS", checkpoint.get("tokenization")
+          assert "model_state_dict" in checkpoint
+
+          holdout_path = Path("benchmarks/inference-holdout-v1.jsonl")
+          raw = holdout_path.read_bytes()
+          rows = [json.loads(line) for line in raw.decode("utf-8").splitlines() if line.strip()]
+          ids = [row["id"] for row in rows]
+          assert len(rows) == 100, f"Se esperaban 100 preguntas y hay {len(rows)}"
+          assert len(set(ids)) == 100, "Hay IDs duplicados en el holdout"
+          print(json.dumps({
+              "checkpoint_steps": checkpoint["completed_steps"],
+              "parameter_count": checkpoint["parameter_count"],
+              "active_vocabulary": checkpoint["active_vocabulary"],
+              "checkpoint_sha256": hashlib.sha256(checkpoint_path.read_bytes()).hexdigest(),
+              "holdout_count": len(rows),
+              "holdout_sha256": hashlib.sha256(raw).hexdigest(),
+              "holdout_ids": ids
+          }, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Instalar dependencias de evaluación
+        if: steps.guard.outputs.done != 'true' && steps.artifact.outputs.ready == 'true'
+        run: python -m pip install numpy
+
+      - name: Ejecutar holdout de 100 preguntas solo sobre 500k
+        if: steps.guard.outputs.done != 'true' && steps.artifact.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          python scripts/run_inference_holdout.py \
+            --checkpoint .tmp/holdout-500k/checkpoint-500000.pt \
+            --label transformer-10m-500000-candidate \
+            --steps 500000 \
+            --holdout benchmarks/inference-holdout-v1.jsonl \
+            --output "$DIARY" \
+            --threads 2
+
+      - name: Comprobar integridad del diario
+        if: steps.guard.outputs.done != 'true' && steps.artifact.outputs.ready == 'true'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          diary = json.loads(Path("benchmarks/diary/checkpoint-500000.json").read_text(encoding="utf-8"))
+          assert diary["completed_steps"] == 500000
+          assert diary["holdout_count"] == 100
+          assert len(diary["results"]) == 100
+          assert len({row["id"] for row in diary["results"]}) == 100
+          assert diary["checkpoint_sha256"]
+          assert diary["holdout_sha256"]
+          print(json.dumps({
+              "steps": diary["completed_steps"],
+              "questions": diary["holdout_count"],
+              "checkpoint_sha256": diary["checkpoint_sha256"],
+              "holdout_sha256": diary["holdout_sha256"],
+              "answers_at_token_cap": sum(
+                  row["generated_bytes"] >= diary["generation"]["max_new_tokens"]
+                  for row in diary["results"]
+              ),
+              "mean_generated_bytes": round(
+                  sum(row["generated_bytes"] for row in diary["results"]) / 100, 2
+              )
+          }, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Publicar respuestas y diario como artefacto de Actions
+        if: steps.guard.outputs.done != 'true' && steps.artifact.outputs.ready == 'true'
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-holdout-500k-100q
+          path: |
+            benchmarks/diary/checkpoint-500000.json
+            .tmp/holdout-500k/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Registrar el diario en main para impedir repeticiones
+        if: steps.guard.outputs.done != 'true' && steps.artifact.outputs.ready == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DIARY"
+          git commit -m "Record MINIRONIN 500k inference holdout"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Resumen
+        if: always()
+        run: |
+          {
+            echo "## Holdout MINIRONIN 500k"
+            if [[ "${{ steps.guard.outputs.done }}" == "true" ]]; then
+              echo "El diario ya existía: no se ha repetido la evaluación."
+            elif [[ "${{ steps.artifact.outputs.ready }}" == "true" ]]; then
+              echo "Evaluación completada: 100 preguntas. Diario: `$DIARY`."
+            else
+              echo "Artefacto 500k aún no disponible. El sondeo programado volverá a intentarlo."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
