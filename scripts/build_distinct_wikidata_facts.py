@@ -114,9 +114,9 @@ def main() -> None:
         )
 
     digest = hashlib.sha256()
-    with gzip.open(args.output, "wt", encoding="utf-8", newline="\\n", compresslevel=9) as out:
+    with gzip.open(args.output, "wt", encoding="utf-8", newline="\n", compresslevel=9) as out:
         for row in rows:
-            line = json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\\n"
+            line = json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n"
             out.write(line)
             digest.update(line.encode("utf-8"))
 
@@ -142,7 +142,7 @@ def main() -> None:
         ],
     }
     manifest_path = Path(str(args.output) + ".manifest.json")
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
 
 
