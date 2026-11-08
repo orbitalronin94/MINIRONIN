@@ -1,0 +1,220 @@
+name: MINIRONIN — Transformer 10M desde 470k +30k
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: minironin-transformer-10m-470k-30k
+  cancel-in-progress: false
+
+jobs:
+  continue-training:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PARENT_TAG: minironin-transformer-10m-step-470000-candidate
+      CANDIDATE_TAG: minironin-transformer-10m-step-500000-candidate
+      PARENT_SHA256: f2dc0ed548db7565b080c9683e0e939ab2c424af394fc0286bce7168370d1c10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Descargar y verificar checkpoint padre 470k
+        run: |
+          set -euo pipefail
+          mkdir -p train-10m/parent
+          gh release download "$PARENT_TAG" --repo orbitalronin94/MINIRONIN --pattern "checkpoint-470000.pt" --dir train-10m/parent
+          echo "$PARENT_SHA256  train-10m/parent/checkpoint-470000.pt" | sha256sum -c -
+          test -s train-10m/parent/checkpoint-470000.pt
+
+      - name: Comprobar espacio disponible en runner gratuito
+        run: |
+          set -euo pipefail
+          df -h .
+          available="$(df --output=avail -k . | tail -1 | tr -d ' ')"
+          test "$available" -gt 8000000 || { echo "Insufficient disk space: ${available} KiB"; exit 1; }
+
+      - name: Descargar y verificar corpus textual HERETIC completo
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/HERETIC-RONIN/releases/assets"
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936363" -o heretic-corpus.part-0
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936357" -o heretic-corpus.part-1
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936364" -o parts.sha256
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720936362" -o corpus.sha256
+          test "$(stat -c%s heretic-corpus.part-0)" -eq 400000000
+          test "$(stat -c%s heretic-corpus.part-1)" -eq 349837093
+          sha256sum -c parts.sha256
+          cat heretic-corpus.part-0 heretic-corpus.part-1 > heretic-approved-corpus.zip
+          test "$(sha256sum heretic-approved-corpus.zip | awk '{print $1}')" = "$(awk '{print $1}' corpus.sha256)"
+          unzip -tq heretic-approved-corpus.zip
+          mkdir -p data/inherited/heretic-corpus
+          unzip -q heretic-approved-corpus.zip -d data/inherited/heretic-corpus
+
+      - name: Descargar y verificar PRODATPHIL v0.3
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/orbitalronin94/MINIRONIN/releases/assets"
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720951610" -o prodatphil.sha256
+          curl --fail --location --retry 6 --retry-all-errors -H "Accept: application/octet-stream" "$api/720951612" -o prodatphil_en_txt_0_3.zip
+          sha256sum -c prodatphil.sha256
+          unzip -tq prodatphil_en_txt_0_3.zip
+          mkdir -p data/inherited/prodatphil-en-v0.3
+          unzip -q prodatphil_en_txt_0_3.zip -d data/inherited/prodatphil-en-v0.3
+
+      - name: Regenerar datasets conductuales, personalidad, abstención y lexicón
+        run: |
+          set -euo pipefail
+          python scripts/build_abstention_datasets.py
+          python scripts/build_personality_datasets.py
+          python scripts/build_lexicon_dataset.py
+          python scripts/validate_lexicon_dataset.py
+          python - <<'PY'
+          from pathlib import Path
+          checks = [
+              ("minironin-identity-v1.jsonl", 40),
+              ("minironin-abstain-plain-50k-v1.jsonl", 50000),
+              ("minironin-abstain-literary-50k-v1.jsonl", 50000),
+              ("minironin-abstain-koan-50k-v1.jsonl", 50000),
+              ("minironin-aristocrat-trivial-50k-v1.jsonl", 50000),
+              ("minironin-casuist-cynic-50k-v1.jsonl", 50000),
+              ("minironin-scientist-exhausted-50k-v1.jsonl", 50000),
+              ("minironin-oracle-doom-50k-v1.jsonl", 50000),
+              ("minironin-error404-indifference-50k-v1.jsonl", 50000),
+              ("minironin-lexicon-diagnostic-50k-v1.jsonl", 50000),
+          ]
+          for name, expected in checks:
+              path = Path("data/curated") / name
+              assert path.is_file(), f"Missing {path}"
+              count = sum(1 for line in path.open(encoding="utf-8") if line.strip())
+              assert count == expected, (name, count, expected)
+              print(f"{name}: {count} rows / {path.stat().st_size} bytes")
+          PY
+
+      - name: Adquirir biblioteca anarquista curada y generar grafo semántico
+        run: |
+          set -euo pipefail
+          python scripts/acquire_anarchist_library.py --output data/inherited/anarchist-library
+          python scripts/build_semantic_library_graph.py
+          test -s data/semantic/semantic-library-graph.json
+          test -s data/semantic/semantic-tokens.json
+
+      - name: Adquirir clásicos de ciencia, filosofía, economía, historia y literatura
+        run: |
+          set -euo pipefail
+          python scripts/acquire_classics_library.py --output data/inherited/classics-library
+          test -s data/inherited/classics-library/CLASSICS-LIBRARY-MANIFEST.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          manifest=json.loads(Path("data/inherited/classics-library/CLASSICS-LIBRARY-MANIFEST.json").read_text())
+          assert manifest["total_documents"] >= 8, manifest["total_documents"]
+          print({"classics_documents":manifest["total_documents"],"bytes":manifest["total_bytes"]})
+          PY
+
+      - name: Instalar PyTorch CPU y lector Parquet
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy pyarrow
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Validar checkpoint 470k y conservar estado del optimizador
+        id: parent
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, torch
+          path = "train-10m/parent/checkpoint-470000.pt"
+          checkpoint = torch.load(path, map_location="cpu", weights_only=False)
+          assert checkpoint.get("completed_steps") == 470000
+          assert checkpoint.get("parameter_count") == 9970176
+          assert checkpoint.get("active_vocabulary") == 257
+          assert "model_state_dict" in checkpoint
+          assert "optimizer_state_dict" in checkpoint, "Optimizer state missing; refusing a false resume"
+          groups = checkpoint["optimizer_state_dict"].get("param_groups", [])
+          assert groups, "Missing optimizer parameter groups"
+          lr = float(groups[0]["lr"])
+          assert 0 < lr <= 3e-4, lr
+          assert checkpoint.get("tokenization") == "UTF-8 bytes + EOS"
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"parent_lr={lr:.12g}\\n")
+          print({"completed_steps":470000,"parameter_count":9970176,"active_vocabulary":257,"optimizer_lr":lr,"optimizer_state_entries":len(checkpoint["optimizer_state_dict"].get("state",{}))})
+          PY
+
+      - name: Entrenar 30k adicionales como tres segmentos reanudables de 10k
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/train_long_run.py scripts/train_seed_tournament.py
+          input_checkpoint="train-10m/parent/checkpoint-470000.pt"
+          for start_step in 470000 480000 490000; do
+            end_step=$((start_step + 10000))
+            echo "::group::Segmento $start_step -> $end_step"
+            python scripts/train_long_run.py \
+              --heretic-root data/inherited/heretic-corpus \
+              --books-root data/inherited/prodatphil-en-v0.3 \
+              --anarchist-root data/inherited/anarchist-library \
+              --classics-root data/inherited/classics-library \
+              --input-checkpoint "$input_checkpoint" \
+              --output-dir train-10m/results \
+              --start-step "$start_step" \
+              --steps 10000 \
+              --threads 2 \
+              --dataset-cache "$RUNNER_TEMP/minironin-10m-full-corpus-cache.pt" \
+              --total-steps 500000 \
+              --schedule-start-step 470000 \
+              --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
+            input_checkpoint="train-10m/results/checkpoint-$end_step.pt"
+            test -s "$input_checkpoint"
+            echo "::endgroup::"
+          done
+
+      - name: Verificar y publicar checkpoint candidato 500k
+        run: |
+          set -euo pipefail
+          checkpoint="train-10m/results/checkpoint-500000.pt"
+          report="train-10m/results/report-500000.json"
+          test -s "$checkpoint" && test -s "$report"
+          sha256sum "$checkpoint" "$report" > train-10m/results/SHA256SUMS-500000
+          python - <<'PY'
+          import json, torch
+          cp = torch.load("train-10m/results/checkpoint-500000.pt", map_location="cpu", weights_only=False)
+          report = json.load(open("train-10m/results/report-500000.json"))
+          assert cp["completed_steps"] == 500000
+          assert cp["parameter_count"] == 9970176
+          assert cp["active_vocabulary"] == 257
+          assert "optimizer_state_dict" in cp
+          assert report["completed_steps"] == 500000
+          assert report["segment_steps"] == 10000
+          assert report["dataset_manifest"]["documents_total"] > 0
+          print(json.dumps({
+              "completed_steps": cp["completed_steps"],
+              "parameter_count": cp["parameter_count"],
+              "validation_loss": report["validation_loss"],
+              "elapsed_seconds": report["elapsed_seconds"],
+              "documents_total": report["dataset_manifest"]["documents_total"],
+              "documents_by_domain": report["dataset_manifest"]["documents_by_domain"],
+              "training_mix": report["dataset_manifest"]["training_mix"]
+          }, ensure_ascii=False, indent=2))
+          PY
+          gh release create "$CANDIDATE_TAG" "$checkpoint" "$report" train-10m/results/SHA256SUMS-500000 \
+            --title "MINIRONIN Transformer 10M — candidate / step 500000" \
+            --notes "30,000 additional steps from the 470k checkpoint, executed as three resumable 10,000-step segments with the current trainable corpus and restored optimizer state. Candidate only; matched 100-question holdout required before promotion."
+
+      - name: Guardar artefactos completos y manifiesto
+        uses: actions/upload-artifact@v6
+        with:
+          name: minironin-transformer-10m-470k-plus-30k-${{ github.run_id }}
+          path: train-10m/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
