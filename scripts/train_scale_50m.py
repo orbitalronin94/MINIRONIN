@@ -11,6 +11,8 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 from minironin import MiniRoninLM, ModelConfig
 from train_long_run import ACTIVE_VOCAB, load_training_data, batch_for_step, evaluate
+from build_abstention_datasets import main as build_abstention_datasets
+from build_personality_datasets import main as build_personality_datasets
 
 PARENT_SHA256 = "bfe4959e7b51a42eb6e14543a5d6d6b4c2d0dce443ed4944d509f20c83acc730"
 TARGET_CONFIG = ModelConfig(vocab_size=23000, context_length=512, n_layers=14,
@@ -106,6 +108,9 @@ def main():
     if parent.get("active_vocabulary") != ACTIVE_VOCAB:
         raise SystemExit("Parent active vocabulary mismatch")
 
+    print("GENERATING_ALL_CURATED_DATASETS", flush=True)
+    build_abstention_datasets()
+    build_personality_datasets()
     print("BUILDING_FULL_CORPUS", flush=True)
     train_docs, names, probs, validation, data_manifest = load_training_data(
         Path(args.heretic_root), Path(args.books_root), Path(args.dataset_cache)
