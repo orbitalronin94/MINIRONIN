@@ -26,8 +26,10 @@ Do not activate before all of the following are true:
   personality, engineering and lexicon datasets.
 
 The initial weights in `configs/library-weights-v1.json` aggregate the current
-domain-level `MIX_WEIGHTS` into these five families and normalize them. They
-are starting targets, not claims about actual corpus size or ideal learning.
+domain-level `MIX_WEIGHTS` into these five families and normalize them. The
+current domain weights sum to 1.110; the family weights are rounded to four
+decimals. They are starting targets, not claims about actual corpus size or
+ideal learning.
 
 ## Runtime contract
 
