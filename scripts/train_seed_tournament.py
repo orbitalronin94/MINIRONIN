@@ -39,6 +39,7 @@ MIX_WEIGHTS = {
     "science": 0.205,
     "books": 0.164,
     "anarchist": 0.025,
+    "classics": 0.025,
     "behavior": 0.082,
     "general": 0.041,
     "abstention": 0.02,

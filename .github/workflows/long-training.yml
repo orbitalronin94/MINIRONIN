@@ -9,6 +9,8 @@ on:
       - "scripts/train_long_run.py"
       - "scripts/train_seed_tournament.py"
       - "scripts/acquire_anarchist_library.py"
+      - "scripts/acquire_classics_library.py"
+      - "data/classics/SOURCES.json"
       - "scripts/build_semantic_library_graph.py"
       - "data/anarchist/SOURCES.jsonl"
       - "data/semantic/LIBRARY_REGISTRY.json"
@@ -161,6 +163,19 @@ jobs:
           test -s data/semantic/semantic-library-graph.json
           test -s data/semantic/semantic-tokens.json
 
+      - name: Adquirir clásicos de ciencia, filosofía, economía, historia y literatura
+        run: |
+          set -euo pipefail
+          python scripts/acquire_classics_library.py --output data/inherited/classics-library
+          test -s data/inherited/classics-library/CLASSICS-LIBRARY-MANIFEST.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          manifest=json.loads(Path("data/inherited/classics-library/CLASSICS-LIBRARY-MANIFEST.json").read_text())
+          assert manifest["total_documents"] >= 8, manifest["total_documents"]
+          print({"classics_documents":manifest["total_documents"],"bytes":manifest["total_bytes"]})
+          PY
+
       - name: Instalar PyTorch CPU y lector Parquet
         run: |
           python -m pip install --upgrade pip
@@ -205,6 +220,8 @@ jobs:
             python scripts/train_long_run.py \
               --heretic-root data/inherited/heretic-corpus \
               --books-root data/inherited/prodatphil-en-v0.3 \
+              --anarchist-root data/inherited/anarchist-library \
+              --classics-root data/inherited/classics-library \
               --input-checkpoint "$input" \
               --output-dir long-training/current \
               --start-step "$start" \

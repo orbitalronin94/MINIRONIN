@@ -116,6 +116,55 @@
         "sociability",
         "community"
       ]
+    },
+    {
+      "id": "classics-library",
+      "name": "Classics: science, philosophy, political economy, literature and social history",
+      "project": "MINIRONIN",
+      "source_paths": [
+        "data/inherited/classics-library/"
+      ],
+      "concepts": [
+        "capitalism",
+        "class",
+        "economics",
+        "markets",
+        "trade",
+        "division_of_labor",
+        "democracy",
+        "liberty",
+        "political_theory",
+        "ethics",
+        "rights",
+        "abolition",
+        "slavery",
+        "poverty",
+        "nature",
+        "ecology",
+        "biology",
+        "natural_selection",
+        "empiricism",
+        "metaphysics",
+        "literature",
+        "narrative",
+        "history",
+        "war",
+        "science",
+        "evolution",
+        "labor",
+        "property",
+        "justice",
+        "freedom",
+        "education",
+        "state",
+        "authority",
+        "community",
+        "feminism",
+        "prisons",
+        "knowledge_limits",
+        "cooperation",
+        "political_economy"
+      ]
     }
   ],
   "concepts": [
@@ -706,6 +755,347 @@
         "mutual_aid",
         "self_organization"
       ]
+    },
+    {
+      "id": "capitalism",
+      "label": "Capitalismo",
+      "aliases": [
+        "capitalism",
+        "capital"
+      ],
+      "relations": [
+        "class",
+        "labor",
+        "political_economy",
+        "property",
+        "economics"
+      ]
+    },
+    {
+      "id": "class",
+      "label": "Clase social",
+      "aliases": [
+        "class",
+        "social class"
+      ],
+      "relations": [
+        "capitalism",
+        "labor",
+        "poverty",
+        "political_economy",
+        "history"
+      ]
+    },
+    {
+      "id": "economics",
+      "label": "Economía",
+      "aliases": [
+        "economics",
+        "economic theory"
+      ],
+      "relations": [
+        "political_economy",
+        "markets",
+        "trade",
+        "production",
+        "division_of_labor"
+      ]
+    },
+    {
+      "id": "markets",
+      "label": "Mercados",
+      "aliases": [
+        "markets",
+        "market"
+      ],
+      "relations": [
+        "economics",
+        "trade",
+        "property",
+        "political_economy"
+      ]
+    },
+    {
+      "id": "trade",
+      "label": "Comercio",
+      "aliases": [
+        "trade",
+        "commerce"
+      ],
+      "relations": [
+        "markets",
+        "economics",
+        "division_of_labor"
+      ]
+    },
+    {
+      "id": "division_of_labor",
+      "label": "División del trabajo",
+      "aliases": [
+        "division of labor",
+        "specialization"
+      ],
+      "relations": [
+        "labor",
+        "production",
+        "economics",
+        "cooperation"
+      ]
+    },
+    {
+      "id": "democracy",
+      "label": "Democracia",
+      "aliases": [
+        "democracy",
+        "popular government"
+      ],
+      "relations": [
+        "liberty",
+        "political_theory",
+        "authority",
+        "rights"
+      ]
+    },
+    {
+      "id": "liberty",
+      "label": "Libertad civil",
+      "aliases": [
+        "liberty",
+        "civil liberty"
+      ],
+      "relations": [
+        "freedom",
+        "democracy",
+        "rights",
+        "authority"
+      ]
+    },
+    {
+      "id": "political_theory",
+      "label": "Teoría política",
+      "aliases": [
+        "political theory",
+        "political philosophy"
+      ],
+      "relations": [
+        "state",
+        "authority",
+        "democracy",
+        "justice",
+        "ethics"
+      ]
+    },
+    {
+      "id": "ethics",
+      "label": "Ética",
+      "aliases": [
+        "ethics",
+        "moral philosophy"
+      ],
+      "relations": [
+        "justice",
+        "freedom",
+        "science",
+        "political_theory"
+      ]
+    },
+    {
+      "id": "rights",
+      "label": "Derechos",
+      "aliases": [
+        "rights",
+        "human rights"
+      ],
+      "relations": [
+        "liberty",
+        "freedom",
+        "justice",
+        "feminism",
+        "abolition"
+      ]
+    },
+    {
+      "id": "abolition",
+      "label": "Abolicionismo",
+      "aliases": [
+        "abolition",
+        "anti-slavery"
+      ],
+      "relations": [
+        "slavery",
+        "freedom",
+        "rights",
+        "education",
+        "history"
+      ]
+    },
+    {
+      "id": "slavery",
+      "label": "Esclavitud",
+      "aliases": [
+        "slavery",
+        "enslavement"
+      ],
+      "relations": [
+        "abolition",
+        "class",
+        "history",
+        "justice"
+      ]
+    },
+    {
+      "id": "poverty",
+      "label": "Pobreza",
+      "aliases": [
+        "poverty",
+        "deprivation"
+      ],
+      "relations": [
+        "class",
+        "labor",
+        "justice",
+        "political_economy"
+      ]
+    },
+    {
+      "id": "nature",
+      "label": "Naturaleza",
+      "aliases": [
+        "nature",
+        "natural world"
+      ],
+      "relations": [
+        "ecology",
+        "biology",
+        "evolution",
+        "ethics"
+      ]
+    },
+    {
+      "id": "ecology",
+      "label": "Ecología",
+      "aliases": [
+        "ecology",
+        "environment"
+      ],
+      "relations": [
+        "nature",
+        "biology",
+        "community",
+        "systems"
+      ]
+    },
+    {
+      "id": "biology",
+      "label": "Biología",
+      "aliases": [
+        "biology",
+        "life sciences"
+      ],
+      "relations": [
+        "evolution",
+        "natural_selection",
+        "science"
+      ]
+    },
+    {
+      "id": "natural_selection",
+      "label": "Selección natural",
+      "aliases": [
+        "natural selection",
+        "adaptation"
+      ],
+      "relations": [
+        "biology",
+        "evolution",
+        "science",
+        "evidence"
+      ]
+    },
+    {
+      "id": "empiricism",
+      "label": "Empirismo",
+      "aliases": [
+        "empiricism",
+        "observation"
+      ],
+      "relations": [
+        "evidence",
+        "science",
+        "method",
+        "epistemology"
+      ]
+    },
+    {
+      "id": "metaphysics",
+      "label": "Metafísica",
+      "aliases": [
+        "metaphysics",
+        "ontology"
+      ],
+      "relations": [
+        "epistemology",
+        "ethics",
+        "political_theory"
+      ]
+    },
+    {
+      "id": "literature",
+      "label": "Literatura",
+      "aliases": [
+        "literature",
+        "fiction",
+        "novel"
+      ],
+      "relations": [
+        "history",
+        "ethics",
+        "gender",
+        "class",
+        "community"
+      ]
+    },
+    {
+      "id": "narrative",
+      "label": "Narrativa",
+      "aliases": [
+        "narrative",
+        "storytelling"
+      ],
+      "relations": [
+        "literature",
+        "history",
+        "knowledge_limits"
+      ]
+    },
+    {
+      "id": "history",
+      "label": "Historia",
+      "aliases": [
+        "history",
+        "historical analysis"
+      ],
+      "relations": [
+        "political_theory",
+        "class",
+        "war",
+        "evidence",
+        "literature"
+      ]
+    },
+    {
+      "id": "war",
+      "label": "Guerra",
+      "aliases": [
+        "war",
+        "conflict"
+      ],
+      "relations": [
+        "state",
+        "authority",
+        "history",
+        "ethics"
+      ]
     }
   ],
   "concept_relations": [
@@ -738,6 +1128,78 @@
       "to": "systems",
       "type": "cross_domain_bridge",
       "note": "Autoorganización como concepto común en sistemas sociales y técnicos."
+    },
+    {
+      "from": "science",
+      "to": "empiricism",
+      "type": "methodological_connection",
+      "note": "Observation and evidence connect scientific practice to philosophical accounts of knowledge."
+    },
+    {
+      "from": "biology",
+      "to": "cooperation",
+      "type": "cross_domain_bridge",
+      "note": "Biological accounts of cooperation can inform social analysis without reducing social institutions to biology."
+    },
+    {
+      "from": "division_of_labor",
+      "to": "cooperation",
+      "type": "cross_domain_bridge",
+      "note": "Specialization can increase interdependence while also creating coordination and power questions."
+    },
+    {
+      "from": "capitalism",
+      "to": "anarchism",
+      "type": "historical_debate",
+      "note": "Political-economic traditions disagree about property, markets and authority; preserve disagreement rather than flattening it."
+    },
+    {
+      "from": "capitalism",
+      "to": "political_economy",
+      "type": "subfield_relation",
+      "note": "Capitalism is a central object of political-economic analysis."
+    },
+    {
+      "from": "abolition",
+      "to": "freedom",
+      "type": "historical_theme",
+      "note": "Abolitionist writing links emancipation to freedom and rights."
+    },
+    {
+      "from": "literature",
+      "to": "ethics",
+      "type": "interpretive_bridge",
+      "note": "Narratives can stage ethical conflicts; fiction is not empirical evidence by itself."
+    },
+    {
+      "from": "ecology",
+      "to": "systems",
+      "type": "cross_domain_bridge",
+      "note": "Ecological systems and social/technical systems can share tools of systems analysis, not identical mechanisms."
+    },
+    {
+      "from": "democracy",
+      "to": "authority",
+      "type": "tension_relation",
+      "note": "Democratic legitimacy and concentrated authority can be in tension; relation does not imply a single conclusion."
+    },
+    {
+      "from": "class",
+      "to": "feminism",
+      "type": "intersectional_bridge",
+      "note": "Class and gender analyses can intersect while remaining distinct dimensions."
+    },
+    {
+      "from": "science",
+      "to": "political_theory",
+      "type": "methodological_boundary",
+      "note": "Scientific claims and political judgments require different kinds of justification."
+    },
+    {
+      "from": "history",
+      "to": "epistemology",
+      "type": "methodological_connection",
+      "note": "Historical interpretation depends on evidence, provenance and competing explanations."
     }
   ]
 }

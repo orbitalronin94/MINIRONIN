@@ -66,11 +66,17 @@ def main() -> None:
                 "weight": 0.5,
                 "note": relation.get("note", ""),
             })
-    source_rows = [json.loads(line) for line in ANARCHIST_SOURCES.read_text(encoding="utf-8").splitlines() if line.strip()]
-    for source in source_rows:
+    source_rows = []
+    for row in [json.loads(line) for line in ANARCHIST_SOURCES.read_text(encoding="utf-8").splitlines() if line.strip()]:
+        source_rows.append((row, "anarchist-classics"))
+    classics_path = ROOT / "data/classics/SOURCES.json"
+    if classics_path.exists():
+        classics = json.loads(classics_path.read_text(encoding="utf-8"))
+        source_rows.extend((row, "classics-library") for row in classics.get("sources", []))
+    for source, library_id in source_rows:
         source_node = "work:" + source["id"]
-        nodes.append({"id": source_node, "type": "work", "label": source["title"], "author": source["author"], "rights_status": source["rights_status"]})
-        edges.append({"source": source_node, "target": "library:anarchist-classics", "type": "member_of_library", "weight": 1.0})
+        nodes.append({"id": source_node, "type": "work", "label": source["title"], "author": source["author"], "rights_status": source["rights_status"], "language": source.get("language")})
+        edges.append({"source": source_node, "target": "library:" + library_id, "type": "member_of_library", "weight": 1.0})
         for concept_id in sorted(set(source.get("concepts", [])) & set(concepts)):
             edges.append({"source": source_node, "target": "concept:" + concept_id, "type": "work_covers_concept", "weight": 1.0})
     graph = {
