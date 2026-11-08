@@ -57,3 +57,17 @@ def test_active_vocabulary_rejects_out_of_range_labels():
         assert "outside vocab_limit" in str(exc)
     else:
         raise AssertionError("expected active vocabulary range failure")
+
+
+def test_kv_cache_matches_causal_full_forward_for_prompt_and_incremental_tokens():
+    torch.manual_seed(19)
+    model = MiniRoninLM(ModelConfig(dropout=0.0)).eval()
+    tokens = torch.randint(0, 257, (1, 24))
+    with torch.inference_mode():
+        full_logits, _ = model(tokens, vocab_limit=257)
+        prompt_logits, cache = model.forward_cached(tokens[:, :17])
+        torch.testing.assert_close(prompt_logits, full_logits[:, :17], rtol=1e-5, atol=1e-6)
+        next_logits, cache = model.forward_cached(tokens[:, 17:18], cache)
+        torch.testing.assert_close(next_logits[:, -1], full_logits[:, 17], rtol=1e-5, atol=1e-6)
+        chunk_logits, _ = model.forward_cached(tokens[:, 18:], cache)
+        torch.testing.assert_close(chunk_logits, full_logits[:, 18:], rtol=1e-5, atol=1e-6)
