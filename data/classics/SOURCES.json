@@ -1,0 +1,642 @@
+{
+  "schema": "minironin-classics-library-v1",
+  "description": "Broad, source-attributed public-domain classics across science, philosophy, political economy, literature and social history. Only approved rows are acquired.",
+  "sources": [
+    {
+      "id": "DARWIN-ORIGIN-OF-SPECIES",
+      "title": "On the Origin of Species",
+      "author": "Charles Darwin",
+      "author_death_year": 1882,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 1228,
+      "url": "https://www.gutenberg.org/ebooks/1228",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/1228/pg1228.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "biology",
+        "evolution",
+        "natural_selection",
+        "science",
+        "method",
+        "evidence"
+      ],
+      "semantic_token_ids": [
+        "SEM:biology",
+        "SEM:evolution",
+        "SEM:natural_selection",
+        "SEM:science",
+        "SEM:method",
+        "SEM:evidence"
+      ]
+    },
+    {
+      "id": "MARX-CAPITAL-V1",
+      "title": "Capital: A Critique of Political Economy, Vol. I",
+      "author": "Karl Marx",
+      "author_death_year": 1883,
+      "translator": "Samuel Moore",
+      "translator_death_year": 1911,
+      "language": "en",
+      "gutenberg_id": 61,
+      "url": "https://www.gutenberg.org/ebooks/61",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/61/pg61.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "capitalism",
+        "class",
+        "labor",
+        "political_economy",
+        "production",
+        "property",
+        "history"
+      ],
+      "semantic_token_ids": [
+        "SEM:capitalism",
+        "SEM:class",
+        "SEM:labor",
+        "SEM:political_economy",
+        "SEM:production",
+        "SEM:property",
+        "SEM:history"
+      ]
+    },
+    {
+      "id": "SMITH-WEALTH-OF-NATIONS",
+      "title": "An Inquiry into the Nature and Causes of the Wealth of Nations",
+      "author": "Adam Smith",
+      "author_death_year": 1790,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 3300,
+      "url": "https://www.gutenberg.org/ebooks/3300",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/3300/pg3300.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "economics",
+        "markets",
+        "division_of_labor",
+        "trade",
+        "political_economy",
+        "production"
+      ],
+      "semantic_token_ids": [
+        "SEM:economics",
+        "SEM:markets",
+        "SEM:division_of_labor",
+        "SEM:trade",
+        "SEM:political_economy",
+        "SEM:production"
+      ]
+    },
+    {
+      "id": "MILL-ON-LIBERTY",
+      "title": "On Liberty",
+      "author": "John Stuart Mill",
+      "author_death_year": 1873,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 34901,
+      "url": "https://www.gutenberg.org/ebooks/34901",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/34901/pg34901.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "liberty",
+        "ethics",
+        "democracy",
+        "freedom",
+        "authority",
+        "political_theory"
+      ],
+      "semantic_token_ids": [
+        "SEM:liberty",
+        "SEM:ethics",
+        "SEM:democracy",
+        "SEM:freedom",
+        "SEM:authority",
+        "SEM:political_theory"
+      ]
+    },
+    {
+      "id": "WOLLSTONECRAFT-VINDICATION",
+      "title": "A Vindication of the Rights of Woman",
+      "author": "Mary Wollstonecraft",
+      "author_death_year": 1797,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 3420,
+      "url": "https://www.gutenberg.org/ebooks/3420",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/3420/pg3420.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "feminism",
+        "education",
+        "rights",
+        "liberty",
+        "ethics",
+        "political_theory"
+      ],
+      "semantic_token_ids": [
+        "SEM:feminism",
+        "SEM:education",
+        "SEM:rights",
+        "SEM:liberty",
+        "SEM:ethics",
+        "SEM:political_theory"
+      ]
+    },
+    {
+      "id": "DOUGLASS-NARRATIVE",
+      "title": "Narrative of the Life of Frederick Douglass",
+      "author": "Frederick Douglass",
+      "author_death_year": 1895,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 23,
+      "url": "https://www.gutenberg.org/ebooks/23",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/23/pg23.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "abolition",
+        "slavery",
+        "education",
+        "freedom",
+        "history",
+        "rights"
+      ],
+      "semantic_token_ids": [
+        "SEM:abolition",
+        "SEM:slavery",
+        "SEM:education",
+        "SEM:freedom",
+        "SEM:history",
+        "SEM:rights"
+      ]
+    },
+    {
+      "id": "PLATO-REPUBLIC",
+      "title": "The Republic",
+      "author": "Plato",
+      "author_death_year": "n/a",
+      "translator": "Benjamin Jowett",
+      "translator_death_year": 1893,
+      "language": "en",
+      "gutenberg_id": 1497,
+      "url": "https://www.gutenberg.org/ebooks/1497",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/1497/pg1497.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "rights_review_required",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "political_theory",
+        "justice",
+        "ethics",
+        "education",
+        "democracy",
+        "metaphysics"
+      ],
+      "semantic_token_ids": [
+        "SEM:political_theory",
+        "SEM:justice",
+        "SEM:ethics",
+        "SEM:education",
+        "SEM:democracy",
+        "SEM:metaphysics"
+      ]
+    },
+    {
+      "id": "THOREAU-WALDEN",
+      "title": "Walden; or, Life in the Woods",
+      "author": "Henry David Thoreau",
+      "author_death_year": 1862,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 205,
+      "url": "https://www.gutenberg.org/ebooks/205",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/205/pg205.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "nature",
+        "ecology",
+        "ethics",
+        "individualism",
+        "community",
+        "work"
+      ],
+      "semantic_token_ids": [
+        "SEM:nature",
+        "SEM:ecology",
+        "SEM:ethics",
+        "SEM:individualism",
+        "SEM:community",
+        "SEM:work"
+      ]
+    },
+    {
+      "id": "SHELLEY-FRANKENSTEIN",
+      "title": "Frankenstein; or, The Modern Prometheus",
+      "author": "Mary Shelley",
+      "author_death_year": 1851,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 84,
+      "url": "https://www.gutenberg.org/ebooks/84",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/84/pg84.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "literature",
+        "ethics",
+        "science",
+        "technology",
+        "knowledge_limits"
+      ],
+      "semantic_token_ids": [
+        "SEM:literature",
+        "SEM:ethics",
+        "SEM:science",
+        "SEM:technology",
+        "SEM:knowledge_limits"
+      ]
+    },
+    {
+      "id": "DICKENS-OLIVER-TWIST",
+      "title": "Oliver Twist",
+      "author": "Charles Dickens",
+      "author_death_year": 1870,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 730,
+      "url": "https://www.gutenberg.org/ebooks/730",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/730/pg730.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "literature",
+        "class",
+        "poverty",
+        "justice",
+        "prisons",
+        "education"
+      ],
+      "semantic_token_ids": [
+        "SEM:literature",
+        "SEM:class",
+        "SEM:poverty",
+        "SEM:justice",
+        "SEM:prisons",
+        "SEM:education"
+      ]
+    },
+    {
+      "id": "MELVILLE-MOBY-DICK",
+      "title": "Moby-Dick; or, The Whale",
+      "author": "Herman Melville",
+      "author_death_year": 1891,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 2701,
+      "url": "https://www.gutenberg.org/ebooks/2701",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/2701/pg2701.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "literature",
+        "nature",
+        "knowledge_limits",
+        "work",
+        "ethics"
+      ],
+      "semantic_token_ids": [
+        "SEM:literature",
+        "SEM:nature",
+        "SEM:knowledge_limits",
+        "SEM:work",
+        "SEM:ethics"
+      ]
+    },
+    {
+      "id": "TWAIN-HUCKLEBERRY-FINN",
+      "title": "Adventures of Huckleberry Finn",
+      "author": "Mark Twain",
+      "author_death_year": 1910,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 76,
+      "url": "https://www.gutenberg.org/ebooks/76",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/76/pg76.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "literature",
+        "slavery",
+        "freedom",
+        "ethics",
+        "community"
+      ],
+      "semantic_token_ids": [
+        "SEM:literature",
+        "SEM:slavery",
+        "SEM:freedom",
+        "SEM:ethics",
+        "SEM:community"
+      ]
+    },
+    {
+      "id": "AUSTEN-PRIDE-PREJUDICE",
+      "title": "Pride and Prejudice",
+      "author": "Jane Austen",
+      "author_death_year": 1817,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 1342,
+      "url": "https://www.gutenberg.org/ebooks/1342",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/1342/pg1342.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "literature",
+        "class",
+        "gender",
+        "ethics",
+        "community"
+      ],
+      "semantic_token_ids": [
+        "SEM:literature",
+        "SEM:class",
+        "SEM:gender",
+        "SEM:ethics",
+        "SEM:community"
+      ]
+    },
+    {
+      "id": "WHITMAN-LEAVES-GRASS",
+      "title": "Leaves of Grass",
+      "author": "Walt Whitman",
+      "author_death_year": 1892,
+      "translator": null,
+      "translator_death_year": null,
+      "language": "en",
+      "gutenberg_id": 1322,
+      "url": "https://www.gutenberg.org/ebooks/1322",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/1322/pg1322.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "literature",
+        "democracy",
+        "individualism",
+        "community",
+        "freedom"
+      ],
+      "semantic_token_ids": [
+        "SEM:literature",
+        "SEM:democracy",
+        "SEM:individualism",
+        "SEM:community",
+        "SEM:freedom"
+      ]
+    },
+    {
+      "id": "MACHIAVELLI-PRINCE",
+      "title": "The Prince",
+      "author": "Niccolò Machiavelli",
+      "author_death_year": 1527,
+      "translator": "W. K. Marriott",
+      "translator_death_year": 1922,
+      "language": "en",
+      "gutenberg_id": 1232,
+      "url": "https://www.gutenberg.org/ebooks/1232",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/1232/pg1232.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "political_theory",
+        "authority",
+        "state",
+        "war",
+        "history",
+        "ethics"
+      ],
+      "semantic_token_ids": [
+        "SEM:political_theory",
+        "SEM:authority",
+        "SEM:state",
+        "SEM:war",
+        "SEM:history",
+        "SEM:ethics"
+      ]
+    },
+    {
+      "id": "TOLSTOY-WAR-PEACE",
+      "title": "War and Peace",
+      "author": "Leo Tolstoy",
+      "author_death_year": 1910,
+      "translator": "Aylmer Maude",
+      "translator_death_year": 1938,
+      "language": "en",
+      "gutenberg_id": 2600,
+      "url": "https://www.gutenberg.org/ebooks/2600",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/2600/pg2600.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "literature",
+        "war",
+        "history",
+        "ethics",
+        "community"
+      ],
+      "semantic_token_ids": [
+        "SEM:literature",
+        "SEM:war",
+        "SEM:history",
+        "SEM:ethics",
+        "SEM:community"
+      ]
+    },
+    {
+      "id": "HUGO-LES-MISERABLES",
+      "title": "Les Misérables",
+      "author": "Victor Hugo",
+      "author_death_year": 1885,
+      "translator": "Isabel Florence Hapgood",
+      "translator_death_year": 1928,
+      "language": "en",
+      "gutenberg_id": 135,
+      "url": "https://www.gutenberg.org/ebooks/135",
+      "plain_text_url": "https://www.gutenberg.org/cache/epub/135/pg135.txt",
+      "license": "Project Gutenberg US public-domain notice is not territorial clearance; Spain review uses author and named translator death dates, excludes separately credited third-party editorial matter, and requires final source-specific verification.",
+      "rights_status": "approved_for_spain_training",
+      "editorial_exclusions": [
+        "Project Gutenberg boilerplate",
+        "separately credited third-party editorial matter"
+      ],
+      "tradition": [
+        "classical-literature",
+        "history-of-ideas"
+      ],
+      "concepts": [
+        "literature",
+        "class",
+        "poverty",
+        "justice",
+        "law",
+        "prisons"
+      ],
+      "semantic_token_ids": [
+        "SEM:literature",
+        "SEM:class",
+        "SEM:poverty",
+        "SEM:justice",
+        "SEM:law",
+        "SEM:prisons"
+      ]
+    }
+  ]
+}
