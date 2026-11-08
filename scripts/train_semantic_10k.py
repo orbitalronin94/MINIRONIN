@@ -328,7 +328,7 @@ def main():
         "status": "completed",
         "parent_checkpoint_sha256": parent_hash,
         "parent_steps": PARENT_STEPS,
-        "completed_steps": 510_000,
+        "completed_steps": completed_steps,
         "additional_steps": TRAIN_STEPS,
         "parameter_count": 9_970_176,
         "active_vocabulary": ACTIVE_VOCAB,
