@@ -1,6 +1,14 @@
 name: Build complete MINIRONIN RAG index
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "data/rag/**"
+      - "data/curated/**"
+      - "scripts/build_rag_index.py"
+      - "requirements-rag.txt"
+      - ".github/workflows/build-rag-index.yml"
   pull_request:
     branches: [main]
     types: [opened, synchronize]
@@ -44,7 +52,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: actions/download-artifact@v4
-        if: github.event_name == 'pull_request' || inputs.include_heretic
+        if: github.event_name != 'workflow_dispatch' || inputs.include_heretic
         with:
           name: minironin-heretic-corpus-prepared
           repository: orbitalronin94/MINIRONIN
@@ -53,7 +61,7 @@ jobs:
           path: external/heretic-artifact
 
       - uses: actions/checkout@v4
-        if: github.event_name == 'pull_request' || inputs.include_roninia
+        if: github.event_name != 'workflow_dispatch' || inputs.include_roninia
         with:
           repository: orbitalronin94/RONIN-IA
           ref: main
@@ -78,8 +86,8 @@ jobs:
 
       - name: Verify all selected source roots exist
         env:
-          INCLUDE_HERETIC: ${{ github.event_name == 'pull_request' || inputs.include_heretic }}
-          INCLUDE_RONINIA: ${{ github.event_name == 'pull_request' || inputs.include_roninia }}
+          INCLUDE_HERETIC: ${{ github.event_name != 'workflow_dispatch' || inputs.include_heretic }}
+          INCLUDE_RONINIA: ${{ github.event_name != 'workflow_dispatch' || inputs.include_roninia }}
         run: |
           if [ "$INCLUDE_HERETIC" = "true" ]; then
             test -d external/heretic-artifact/data/inherited/heretic-corpus
@@ -92,9 +100,9 @@ jobs:
 
       - name: Build complete approved index
         env:
-          EMBEDDINGS: ${{ github.event_name == 'pull_request' || inputs.embeddings }}
-          INCLUDE_HERETIC: ${{ github.event_name == 'pull_request' || inputs.include_heretic }}
-          INCLUDE_RONINIA: ${{ github.event_name == 'pull_request' || inputs.include_roninia }}
+          EMBEDDINGS: ${{ github.event_name != 'workflow_dispatch' || inputs.embeddings }}
+          INCLUDE_HERETIC: ${{ github.event_name != 'workflow_dispatch' || inputs.include_heretic }}
+          INCLUDE_RONINIA: ${{ github.event_name != 'workflow_dispatch' || inputs.include_roninia }}
         run: |
           args=(--output artifacts/rag/minironin-rag.sqlite)
           if [ "$EMBEDDINGS" != "true" ]; then args+=(--no-embeddings); fi
