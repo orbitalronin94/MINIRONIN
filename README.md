@@ -262,17 +262,39 @@ El objetivo no es que el modelo sea hostil por defecto ni que insulte indiscrimi
 
 Por tanto, evaluamos dos cosas por separado: si responde con la personalidad buscada y si lo que afirma es correcto. Una réplica ingeniosa no cuenta como acierto factual, y una respuesta agradable no recibe puntos por ser aduladora.
 
-### Nuevo currículo conductual — doce gramáticas, 600k ejemplos objetivo
+## Despliegue de conocimiento y conducta — las veinticuatro máculas
 
-Se ha especificado un segundo bloque de doce datasets sintéticos de 50.000 ejemplos cada uno: no-repetición, premisas falsas, reconocimiento de evidencia correcta, instrucciones incompatibles, detector de halagos, resistencia a coerción, brevedad, corrección ante evidencia experta, absurdo serio, preguntas filosóficas, contradicción del usuario y respuesta de una palabra.
+Non se levantó este corpus para fingir que la criatura sabe cuanto contienen sus ficheros, nin para vender por sabiduría la abundancia de sus renglones. Se generaron y publicaron **24 datasets sintéticos de 50.000 registros cada uno: 1.200.000 filas en total**. La generación quedó registrada en [GitHub Actions, ejecución 42518791953](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42518791953); su artefacto es [minironin-synthetic-curricula-24x50k](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42518791953/artifacts/13632865306).
 
-La especificación y sus puertas de calidad están en [`docs/behavioral-curriculum-12x50k.md`](docs/behavioral-curriculum-12x50k.md). **Estado: diseño documentado; corpus aún no generado ni añadido al entrenamiento.** La generación exigirá bancos de pares semánticamente compatibles, lista negra explícita de veinte latiguillos, validación de las doce máculas y medición de tokens reales. Los 600.000 registros son un máximo de diseño, no una mezcla automática: primero se auditarán por separado conducta, conocimiento y regresiones.
+El lote se reparte en dos familias, cada una de doce corpus y 600.000 filas:
 
-### Currículo de conocimiento con Lexicón
+### Doce gramáticas de conducta — 600.000 filas
 
-Se ha documentado un segundo bloque de doce corpus sintéticos que combinan conocimiento técnico, corrección factual y diagnóstico mediante el Lexicón canónico. La especificación está en [`docs/lexicon-knowledge-curriculum-12x50k.md`](docs/lexicon-knowledge-curriculum-12x50k.md). El epíteto debe corresponder a una entrada real, nivel NH y evidencia concreta; la corrección factual debe sostenerse por sí sola y nunca quedar sustituida por el insulto.
+Se enseñan patrones de respuesta, non hechos nuevos: evitar la repetición; descubrir premisas falsas; reconocer evidencia correcta; resolver instrucciones incompatibles; resistir la adulación y la coerción; ajustar la brevedad; atender a la evidencia antes que al rango de quien habla; tratar con rigor lo absurdo; responder a cuestiones filosóficas sin vacua solemnidad; distinguir contradicción de actualización; y saber cuándo basta una palabra.
 
-**Estado: diseño documentado; no generado ni incorporado al entrenamiento.** La duodécima descripción recibida quedó truncada, por lo que su gramática y volumen siguen provisionales. Se requieren controles negativos para evitar condescendencia, sobrediagnóstico, alarmismo y sesgo de autoridad. El Lexicón se aplica a conductas y decisiones técnicas, no a identidades personales.
+Cada corpus se construye sobre diez casos semilla revisados, enlazando pregunta y respuesta. Las variaciones cambian el encuadre, el contexto y la restricción expresiva; non convierten diez casos en cincuenta mil descubrimientos independientes.
+
+### Doce corpus de conocimiento con el Lexicón — 600.000 filas
+
+Esta familia combina hechos y explicaciones técnicas con diagnóstico condicionado mediante el *Lexicón del Esperpento Algorítmico*. Comprende comprobación factual, explicación, antipatrones, diagnóstico de errores, detección de jerga vacía, revisión de arquitectura, falacias métricas, seguridad, fricción de procesos, falsas profundidades, esnobismo de legado y misticismo de prompts.
+
+El generador leyó **185 entradas canónicas** del Lexicón y conserva identificador, nombre, nivel NH y hash de la fuente. El epíteto non se inventa ni se asigna por mero gusto: ha de corresponder a un patrón y a evidencia. La mitad de los registros de esta familia son controles negativos: explican el hecho, mas declaran que non procede aplicar epíteto cuando falta prueba suficiente. La respuesta factual debe sostenerse aun si se quita la pulla.
+
+### Las máculas que confesamos
+
+No llamamos a esto enciclopedia, ni conocimiento universal, ni inteligencia adquirida. El propio manifiesto y el generador declaran la naturaleza sintética de los ejemplos. Conviene dejar escritas sus máculas, para que ningún escribano las esconda bajo una cifra redonda:
+
+- **Semillas escasas:** las doce gramáticas conductuales parten de diez casos cada una; las formulaciones multiplican la superficie, non la diversidad profunda de situaciones.
+- **Variación de plantilla:** contextos, aperturas y marcos de respuesta pueden producir regularidades artificiales. Una pregunta distinta en la letra puede ser casi la misma en sustancia.
+- **Cobertura factual limitada:** los corpus del Lexicón reutilizan un banco acotado de hechos revisados. Cincuenta mil filas non equivalen a cincuenta mil hechos contrastados.
+- **Diagnóstico falible:** que una entrada del Lexicón exista non prueba que describa el caso. Puede haber falsos positivos, falsos negativos o niveles NH desproporcionados; por eso se incluyen controles sin epíteto, mas estos non bastan para demostrar calibración.
+- **Riesgo de sobreadaptación:** la criatura podría aprender a sonar escéptica, respondona o mordaz sin razonar mejor; podría confundir una pregunta legítima con una premisa falsa, o convertir la prudencia en evasión.
+- **Contaminación entre estilo y verdad:** una réplica ingeniosa puede ocultar un error factual. El epíteto jamás debe reemplazar la explicación ni convertirse en ataque a la persona.
+- **Duplicación semántica y sesgo de dominio:** los hashes y la unicidad textual detectan ciertos duplicados, mas non garantizan diversidad conceptual ni ausencia de sesgo.
+
+Por ende, el volumen publicado es **volumen de registros sintéticos**, non medida de conocimientos únicos. Antes de admitirlo en un entrenamiento se han de inspeccionar muestras, contrastar hechos, medir duplicación semántica y tokens reales, y evaluar por separado conducta, conocimiento y regresiones. El artefacto publicado non altera por sí mismo el corpus activo, non modifica el tokenizador, non inicia entrenamiento y non acredita mejora de ningún checkpoint.
+
+> De las veinticuatro arcas: doce enseñan maneras de responder, e doce maneras de examinar lo dicho; mas ninguna, por ir llena de pergaminos, demuestra que la criatura sepa leerlos. Admitamos las máculas, ca ocultarlas sería la primera.
 
 ## Currículo de razonamiento
 
