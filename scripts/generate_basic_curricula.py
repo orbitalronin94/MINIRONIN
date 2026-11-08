@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build 24 elementary maths/factual curricula, 50k rows each.
+"""Build 25 elementary maths/factual curricula, 50k rows each.
 
 Math answers are computed, not templated. Factual rows are controlled
 paraphrases of a small, explicit seed bank; manifests disclose that limitation.
@@ -317,7 +317,7 @@ def main():
              "factual_rows":sum(m["rows"] for m in manifests if m["type"]=="curated_factual_qa"),
              "datasets":manifests}
     (out/"SUMMARY.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2)+"\n")
-    assert len(manifests)==24 and summary["rows_total"]==1_200_000
+    assert len(manifests)==25 and summary["rows_total"]==1_250_000
     print(json.dumps({k:v for k,v in summary.items() if k!="datasets"},ensure_ascii=False))
 
 if __name__=="__main__": main()
