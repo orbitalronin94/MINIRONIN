@@ -663,6 +663,46 @@
         "engineering",
         "cooperation"
       ]
+    },
+    {
+      "id": "evolution",
+      "label": "Evolución",
+      "aliases": [
+        "evolution",
+        "evolutionary theory"
+      ],
+      "relations": [
+        "science",
+        "cooperation",
+        "mutual_aid"
+      ]
+    },
+    {
+      "id": "sociability",
+      "label": "Sociabilidad",
+      "aliases": [
+        "sociability",
+        "social life"
+      ],
+      "relations": [
+        "cooperation",
+        "mutual_aid",
+        "community"
+      ]
+    },
+    {
+      "id": "community",
+      "label": "Comunidad",
+      "aliases": [
+        "community",
+        "communal life"
+      ],
+      "relations": [
+        "cooperation",
+        "federalism",
+        "mutual_aid",
+        "self_organization"
+      ]
     }
   ],
   "concept_relations": [
