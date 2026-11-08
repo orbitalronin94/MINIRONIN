@@ -17,6 +17,27 @@ MINIRONIN se desarrolla y se entrena **desde GitHub Actions**, usando los runner
 
 En resumen: **cómputo austero, automatización pública y checkpoints verificables**. Si el modelo tarda tres horas en hacer algo que una GPU cara haría en tres minutos, al menos la factura no nos obliga a vender un riñón. La lentitud es una restricción de ingeniería; fingir que tenemos un clúster no es una estrategia.
 
+## Banco histórico de rendimiento: parámetros, arquitectura y runners gratuitos
+
+Este registro convierte ejecuciones reales de los repositorios hermanos en lecciones de ingeniería para MINIRONIN. **Todos los casos de esta tabla se ejecutaron en runners estándar hospedados por GitHub Actions, dentro de la modalidad gratuita usada por estos proyectos; ninguno utilizó GPU alquilada, runner self-hosted ni máquina local.** Los trabajos fueron de CPU. «Gratuito» describe el tipo de runner y el coste de cómputo asumido por el proyecto, no significa que los minutos, la concurrencia o el almacenamiento sean ilimitados.
+
+| Proyecto / arquitectura | Parámetros | Trabajo medido | Configuración principal | Tiempo de entrenamiento | Rendimiento |
+|---|---:|---:|---|---:|---:|
+| RONIN-IA · Transformer/SwiGLU | 100.900.160 (objetivo verificado) | 500 updates | batch 1 · seq 128 · acumulación 1 · intra/inter-op 2/2 | 383,24 s | 0,766 s/update · 167,0 tokens/s |
+| RONIN-IA · Transformer/SwiGLU | 100.900.160 (objetivo verificado) | 500 updates | batch 1 · seq 128 · acumulación 1 · intra/inter-op 2/4 | 505,14 s | 1,010 s/update · 126,7 tokens/s |
+| MINIRONIN · Mamba selective scan | 49.083.392 | 1.000 updates adicionales | batch 1 · seq 64 · acumulación 1 · 2 threads | ≈1.166,33 s | ≈1,166 s/update · 54,9 tokens/s |
+| HERETIC-RONIN · piloto con implementación RONIN | ≈500M (tamaño declarado por el workflow; recuento exacto no extraído del chunk) | 50 updates del optimizador · 2.000 microsteps | microbatch 2 · seq 128 · acumulación 40 · 2 threads | 13.096,33 s | 261,93 s/update · 39,1 tokens/s |
+
+### Qué permiten concluir estos números
+
+- En las dos ejecuciones RONIN-IA de 100,9M, la configuración con 2 threads inter-op terminó en 383,24 s frente a 505,14 s con 4: **24,1% menos tiempo** y **31,8% más tokens/s**. Es una señal para repetir un experimento controlado, no una prueba causal: son dos ejecuciones distintas y el runner puede variar.
+- MINIRONIN Mamba procesó aproximadamente 64.000 tokens en los 1.000 updates medidos. El checkpoint de 2.000 pasos de esa ejecución dejó métricas y SHA-256 en logs, pero el workflow falló al escribir el manifiesto y **no publicó el artefacto**; por eso no se presenta como checkpoint recuperable.
+- El chunk de HERETIC procesó 512.000 tokens con acumulación 40. Su cifra de 50 updates corresponde a ese chunk, no al piloto completo de 500 updates. El holdout de ese chunk permaneció en 0/120 antes y después: más cómputo no equivale automáticamente a más calidad.
+- Los dos runs RONIN-IA registraron 5/64 antes y después en su screening holdout. Ninguno mejoró en esa medición.
+- No es una clasificación de arquitecturas. Cambian el tamaño, la secuencia, el batch, la acumulación, el código y el estado del runner; los tokens/s son una métrica descriptiva, no una comparación de calidad.
+
+Los registros estructurados, con run/job IDs, hashes disponibles, configuración y límites de evidencia, viven en `data/curated/minironin-performance-engineering-v1.jsonl`. El entrenamiento largo incorpora esos ejemplos dentro del dominio `engineering`; **no forman parte del holdout**. La validación exige cuatro registros y comprueba que todos declaren un runner estándar gratuito de GitHub Actions.
+
 ## Límites del proyecto
 
 - **Solo herencia de datos:** se podrán importar corpus, documentos y metadatos después de comprobar procedencia, licencia, integridad y duplicados.

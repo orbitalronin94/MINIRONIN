@@ -166,8 +166,15 @@ def read_full_books(root: Path, store) -> list[dict]:
 def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     if cache_path.exists():
         cached = torch.load(cache_path, map_location="cpu", weights_only=False)
-        print(json.dumps({"dataset_cache": "reused", **cached["manifest"]}, ensure_ascii=False), flush=True)
-        return cached["train_docs"], cached["names"], cached["probs"], cached["validation"], cached["manifest"]
+        cached_manifest = cached.get("manifest", {})
+        if cached_manifest.get("engineering_performance_examples") == 4:
+            print(json.dumps({"dataset_cache": "reused", **cached_manifest}, ensure_ascii=False), flush=True)
+            return cached["train_docs"], cached["names"], cached["probs"], cached["validation"], cached_manifest
+        print(json.dumps({
+            "dataset_cache": "invalidated",
+            "reason": "cache predates minironin-performance-engineering-v1.jsonl",
+        }), flush=True)
+        cache_path.unlink()
 
     build_lexicon_dataset()
     store = {"docs": [], "seen": set()}
@@ -196,8 +203,9 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
     identity_count = load_curated_jsonl(ROOT / "data/curated/minironin-identity-v1.jsonl", "identity", store, "MINIRONIN-identity-v1")
     engineering_legacy_count = load_curated_jsonl(ROOT / "data/curated/engineering-lessons-v1.jsonl", "engineering", store, "MINIRONIN-engineering-lessons-v1")
     engineering_recent_count = load_curated_jsonl(ROOT / "data/curated/minironin-engineering-v1.jsonl", "engineering", store, "MINIRONIN-engineering-v1")
-    engineering_count = engineering_legacy_count + engineering_recent_count
-    if identity_count != 40 or engineering_count != 70:
+    engineering_performance_count = load_curated_jsonl(ROOT / "data/curated/minironin-performance-engineering-v1.jsonl", "engineering", store, "MINIRONIN-performance-engineering-v1")
+    engineering_count = engineering_legacy_count + engineering_recent_count + engineering_performance_count
+    if identity_count != 40 or engineering_count != 74 or engineering_performance_count != 4:
         raise SystemExit(f"Identity/engineering dataset count mismatch: identity={identity_count}, engineering={engineering_count}")
     abstain_plain_count = load_curated_jsonl(ROOT / "data/curated/minironin-abstain-plain-50k-v1.jsonl", "abstain_plain", store, "MINIRONIN-abstain-plain-50k-v1")
     abstain_literary_count = load_curated_jsonl(ROOT / "data/curated/minironin-abstain-literary-50k-v1.jsonl", "abstain_literary", store, "MINIRONIN-abstain-literary-50k-v1")
@@ -255,6 +263,7 @@ def load_training_data(heretic_root: Path, books_root: Path, cache_path: Path):
         "engineering_examples": engineering_count,
         "engineering_legacy_examples": engineering_legacy_count,
         "engineering_recent_examples": engineering_recent_count,
+        "engineering_performance_examples": engineering_performance_count,
         "abstention_plain_examples": abstain_plain_count,
         "abstention_literary_examples": abstain_literary_count,
         "abstention_koan_examples": abstain_koan_count,
