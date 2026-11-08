@@ -41,6 +41,12 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Esperar 10 minutos desde el fin del ciclo anterior
+        run: |
+          set -euo pipefail
+          echo "El ciclo anterior ya ha liberado el grupo de concurrencia. Esperando 600 segundos antes de resolver y descargar su checkpoint campeón."
+          sleep 600
+
       - name: Resolver el mejor checkpoint de la generación anterior
         id: parent
         run: |
