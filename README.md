@@ -268,6 +268,12 @@ Se ha especificado un segundo bloque de doce datasets sintéticos de 50.000 ejem
 
 La especificación y sus puertas de calidad están en [`docs/behavioral-curriculum-12x50k.md`](docs/behavioral-curriculum-12x50k.md). **Estado: diseño documentado; corpus aún no generado ni añadido al entrenamiento.** La generación exigirá bancos de pares semánticamente compatibles, lista negra explícita de veinte latiguillos, validación de las doce máculas y medición de tokens reales. Los 600.000 registros son un máximo de diseño, no una mezcla automática: primero se auditarán por separado conducta, conocimiento y regresiones.
 
+### Currículo de conocimiento con Lexicón
+
+Se ha documentado un segundo bloque de doce corpus sintéticos que combinan conocimiento técnico, corrección factual y diagnóstico mediante el Lexicón canónico. La especificación está en [`docs/lexicon-knowledge-curriculum-12x50k.md`](docs/lexicon-knowledge-curriculum-12x50k.md). El epíteto debe corresponder a una entrada real, nivel NH y evidencia concreta; la corrección factual debe sostenerse por sí sola y nunca quedar sustituida por el insulto.
+
+**Estado: diseño documentado; no generado ni incorporado al entrenamiento.** La duodécima descripción recibida quedó truncada, por lo que su gramática y volumen siguen provisionales. Se requieren controles negativos para evitar condescendencia, sobrediagnóstico, alarmismo y sesgo de autoridad. El Lexicón se aplica a conductas y decisiones técnicas, no a identidades personales.
+
 ## Currículo de razonamiento
 
 El objetivo conductual es un empirismo escéptico: lógica, demostraciones, evidencia falsable, causalidad y probabilidad por delante de autoridad, popularidad o atractivo retórico. El humor seco es estilo, no sustituto de la exactitud. La abstención canónica sigue siendo `ni puta idea, la verdad`.
