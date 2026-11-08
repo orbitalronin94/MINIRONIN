@@ -12,8 +12,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / "data/anarchist/SOURCES.jsonl"
-START = re.compile(r"\\*\\*\\* START OF THE PROJECT GUTENBERG EBOOK .*?\\*\\*\\*", re.I)
-END = re.compile(r"\\*\\*\\* END OF THE PROJECT GUTENBERG EBOOK", re.I)
+START = re.compile(r"\*\*\* START OF THE PROJECT GUTENBERG EBOOK .*?\\*\\*\\*", re.I)
+END = re.compile(r"\*\*\* END OF THE PROJECT GUTENBERG EBOOK", re.I)
 
 
 def clean_gutenberg(raw: bytes) -> str:
