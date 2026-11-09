@@ -10,7 +10,7 @@ MINIRONIN no se organiza alrededor de la promesa de que cada checkpoint sea mejo
 
 La apuesta es un **catálogo de personajes experimentales**: no proclamamos un ganador universal ni asignamos capacidades que el holdout no haya demostrado. Ofrecemos procedencia, pesos, hashes, diarios y una guía de selección basada en rasgos observados. El usuario puede preferir una versión por su carácter, igual que alguien elige una edición, una interpretación o un té por ocasión.
 
-- [Explorar el catálogo y elegir checkpoint](docs/README.md#catalogo-de-checkpoints)
+- [Explorar el catálogo y elegir checkpoint](docs/CATALOGO.md)
 - [Leer la guía de selección por repertorio](docs/CATALOGO.md)
 - [Visitar el Museo: cronología, tics y perlas](docs/MUSEO.md)
 - [Consultar el estado experimental y las limitaciones](docs/ROADMAP.md)
