@@ -34,7 +34,7 @@ jobs:
         run: |
           set -euo pipefail
           revision="$(git ls-remote https://huggingface.co/datasets/SINAI/ALIA-es-cultural-heritage refs/heads/main | awk 'NR==1 {print $1}')"
-          test "\${#revision}" -eq 40
+          [[ "$revision" =~ ^[0-9a-f]{40}$ ]]
           echo "ALIA_REVISION=$revision" >> "$GITHUB_ENV"
           python scripts/acquire_alia_cultural_heritage.py --revision "$revision" --root .
       - name: Verify admission manifest and every JSONL record
