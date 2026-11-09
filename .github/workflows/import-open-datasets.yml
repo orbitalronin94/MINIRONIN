@@ -1,0 +1,63 @@
+name: MINIRONIN — importar bibliotecas open source declaradas
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "data/curated/intake-manifests/**"
+      - "scripts/import_open_datasets.py"
+      - ".github/workflows/import-open-datasets.yml"
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: minironin-open-dataset-intake
+  cancel-in-progress: false
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned dataset readers
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "datasets==3.3.2" "huggingface_hub==0.29.3"
+      - name: Import every pending complete train split
+        run: python scripts/import_open_datasets.py
+      - name: Verify accepted JSONL manifests and hashes
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path("data/curated/accepted")
+          for p in root.glob("*.manifest.json"):
+              if p.name=="open-dataset-intake-report.json": continue
+              m=json.loads(p.read_text())
+              f=root/m["file"]
+              assert hashlib.sha256(f.read_bytes()).hexdigest()==m["sha256_jsonl"],p
+              assert m["rows_admitted"]>0 and m["source_revision"]
+              for line in f.open(encoding="utf-8"):
+                  r=json.loads(line)
+                  assert r["language"]=="es" and r["train_eligible"] and r["admission_status"]=="accepted"
+                  assert r["license"]==m["license"] and r["source_revision"]==m["source_revision"]
+          print("ACCEPTED_MANIFESTS_HASH_VERIFIED")
+          PY
+      - name: Commit admitted datasets and dispatch unified corpus build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/curated/accepted/
+          if git diff --cached --quiet; then echo "No new dataset rows to commit"; exit 0; fi
+          git commit -m "Admit licensed open Spanish datasets"
+          git push origin main
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
