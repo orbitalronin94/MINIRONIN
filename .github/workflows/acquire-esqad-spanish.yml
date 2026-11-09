@@ -1,0 +1,71 @@
+name: MINIRONIN — admitir ESQAD educativo español
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/acquire-esqad-spanish.yml"
+      - "scripts/acquire_esqad_spanish.py"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: minironin-acquire-esqad
+  cancel-in-progress: false
+
+jobs:
+  acquire-and-admit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Download immutable Zenodo v1 archive
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 5 --retry-all-errors \
+            "https://zenodo.org/records/16351733/files/QAG_Spanish_ExpertSystems_v1.0.zip?download=1" \
+            -o esqad.zip
+          echo "ab6d34257ca2f8d2daa6c6dcd6f238a2  esqad.zip" | md5sum -c -
+          sha256sum esqad.zip
+      - name: Extract and curate Spanish QA only
+        run: python scripts/acquire_esqad_spanish.py --zip esqad.zip
+      - name: Verify accepted records and manifest
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path("data/curated/accepted")
+          p=root/"esqad-spanish-qa-train.jsonl"
+          m=json.loads((root/"esqad-spanish-qa-train.manifest.json").read_text())
+          assert m["record_count"]>=100 and m["unique_question_answer_pairs"]==m["record_count"]
+          assert m["license"]=="CC BY 4.0" and m["language"]=="es"
+          assert hashlib.sha256(p.read_bytes()).hexdigest()==m["sha256_jsonl"]
+          seen=set()
+          for line in p.read_text(encoding="utf-8").splitlines():
+              r=json.loads(line)
+              assert r["language"]=="es" and r["split"]=="train" and r["train_eligible"]
+              assert r["license"]=="CC BY 4.0" and r["admission_status"]=="accepted"
+              assert r["id"] not in seen and r["question"].strip() and r["answer"].strip()
+              assert "reviewer_comment" not in r and "email" not in r
+              seen.add(r["id"])
+          assert len(seen)==m["record_count"]
+          print(json.dumps({"admitted":len(seen),"subsets":m["subset_counts"],"synthetic":m["synthetic_and_human_curated_counts"]},ensure_ascii=False))
+          PY
+      - name: Commit accepted ESQAD corpus
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/curated/accepted/esqad-spanish-qa-train.jsonl data/curated/accepted/esqad-spanish-qa-train.manifest.json
+          git commit -m "Admit ESQAD Spanish educational QA training corpus"
+          git push origin main
+          GH_TOKEN="${{ github.token }}" gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
