@@ -1,0 +1,75 @@
+name: Build deterministic Spanish mathematics corpus
+
+on:
+  push:
+    paths:
+      - "scripts/generate_math_es.py"
+      - ".github/workflows/build-math-es-corpus.yml"
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "Number of deterministic examples (1–10,000,000)"
+        required: false
+        default: "1000000"
+      seed:
+        description: "Reproducible seed"
+        required: false
+        default: "810000"
+
+permissions:
+  contents: read
+
+jobs:
+  generate-and-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Generate corpus
+        env:
+          COUNT: ${{ github.event.inputs.count || '1000000' }}
+          SEED: ${{ github.event.inputs.seed || '810000' }}
+        run: |
+          python scripts/generate_math_es.py --count "$COUNT" --seed "$SEED" --output "$RUNNER_TEMP/math-es.jsonl"
+      - name: Audit cardinality, schema, arithmetic and hashes
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          p = Path(os.environ["RUNNER_TEMP"]) / "math-es.jsonl"
+          manifest = json.loads(Path(str(p) + ".manifest.json").read_text(encoding="utf-8"))
+          digest = hashlib.sha256()
+          count = 0
+          operations = set()
+          ids = set()
+          with p.open(encoding="utf-8") as f:
+              for line in f:
+                  digest.update(line.encode("utf-8"))
+                  row = json.loads(line)
+                  assert row["language"] == "es"
+                  assert row["split"] == "train" and row["train_eligible"] is True
+                  assert row["admission_status"] == "admitted" and row["synthetic"] is True
+                  assert row["id"] not in ids
+                  assert row["text"].startswith("Pregunta: ")
+                  ids.add(row["id"])
+                  operations.add(row["task"])
+                  count += 1
+          assert count == manifest["records"], (count, manifest["records"])
+          assert digest.hexdigest() == manifest["sha256"]
+          assert len(operations) == 10, operations
+          print(json.dumps({"records": count, "operations": sorted(operations),
+                            "sha256": digest.hexdigest(), "bytes": p.stat().st_size}))
+          PY
+      - name: Upload immutable corpus and manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-math-es-${{ github.run_number }}-seed810000
+          path: |
+            ${{ runner.temp }}/math-es.jsonl
+            ${{ runner.temp }}/math-es.jsonl.manifest.json
+          if-no-files-found: error
+          compression-level: 6
+          retention-days: 90
