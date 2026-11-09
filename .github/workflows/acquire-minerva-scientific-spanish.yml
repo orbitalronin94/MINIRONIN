@@ -2,7 +2,8 @@ name: MINIRONIN — admitir Minerva científico español
 on:
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
+  actions: write
 jobs:
   acquire-audit:
     runs-on: ubuntu-latest
@@ -35,12 +36,17 @@ jobs:
           assert hashlib.sha256(p.read_bytes()).hexdigest()==m["sha256_jsonl"]
           print(json.dumps({k:m[k] for k in ("source_rows_scanned","rows_admitted","rows_skipped_no_explicit_open_license","rows_skipped_exact_duplicates")},ensure_ascii=False))
           PY
-      - uses: actions/upload-artifact@v4
-        with:
-          name: minironin-minerva-scientific-es-accepted
-          path: |
-            data/curated/accepted/minerva-scientific-es-train.jsonl
-            data/curated/accepted/minerva-scientific-es-train.manifest.json
-          if-no-files-found: error
-          compression-level: 0
-          retention-days: 90
+      - name: Publish full Spanish scientific corpus and manifest as persistent release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="minerva-scientific-es-v1"
+          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --title "Minerva — corpus científico español CC BY 4.0" --notes "Spanish scientific and academic corpus from Proxecto Nós. Corpus-level CC BY 4.0 declaration and institutional-agreement caveat retained in every record and manifest."
+          fi
+          gh release upload "$tag" data/curated/accepted/minerva-scientific-es-train.jsonl data/curated/accepted/minerva-scientific-es-train.manifest.json --repo "$GITHUB_REPOSITORY" --clobber
+      - name: Rebuild unified training corpus after verified publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
