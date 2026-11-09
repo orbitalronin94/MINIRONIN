@@ -107,7 +107,8 @@ def main():
     args=ap.parse_args()
     library_manifest=None
     library_manifest_sha256=None
-    exclude_patterns=[]\n    include_patterns=[]
+    exclude_patterns=[]
+    include_patterns=[]
     if args.library_manifest:
         manifest_path=Path(args.library_manifest)
         library_manifest=json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -118,7 +119,8 @@ def main():
         roots=[Path(x) for x in library_manifest.get("roots",[])]
         if not roots:
             raise SystemExit("Library artifact contains no roots")
-        exclude_patterns=list(library_manifest.get("exclude_path_patterns",[]))\n        include_patterns=list(library_manifest.get("include_path_patterns",[]))
+        exclude_patterns=list(library_manifest.get("exclude_path_patterns",[]))
+        include_patterns=list(library_manifest.get("include_path_patterns",[]))
         include_synthetic=bool(library_manifest.get("defaults",{}).get("include_synthetic",False))
         exclude_synthetic=bool(args.exclude_synthetic or not include_synthetic)
         library_manifest_sha256=sha_file(manifest_path)
@@ -133,7 +135,8 @@ def main():
         if not root.exists(): raise SystemExit(f"Required source root missing: {root}")
         files.extend(p for p in root.rglob("*") if p.is_file() and not SKIP.search(p.name)
                      and (p.suffix.lower() in TEXT_EXT|{".json",".jsonl",".ndjson",".parquet",".csv",".tsv"} or p.name.endswith((".jsonl.gz",".ndjson.gz")))
-                     and not any(re.search(pattern,str(p),re.I) for pattern in exclude_patterns)\n                     and (not str(p).startswith("data/curated/") or not include_patterns or any(re.search(pattern,str(p),re.I) for pattern in include_patterns)))
+                     and not any(re.search(pattern,str(p),re.I) for pattern in exclude_patterns)
+                     and (not str(p).startswith("data/curated/") or not include_patterns or any(re.search(pattern,str(p),re.I) for pattern in include_patterns)))
     files=sorted(set(files))
     if not files: raise SystemExit("No source files found")
     source_manifest=[]; rows=0; records_seen=0; excluded_synthetic=0; duplicates=0; empty=0; tiny=0
