@@ -1244,3 +1244,45 @@ La lectura manual del usuario caracteriza el diario como 0/100 aciertos. Esa val
 730k no queda descrito como «peor» que 720k. La diferencia destacada es de repertorio: más formulario de abstención, nuevos comodines (ecuador, cereal, sustantivo), fantasmas reciclados y dos aperturas que rozan la respuesta sin completarla.
 
 > **Koan de la quinta capa.** Un hombre tenía un loro que decía «no existe una fuente verificable». Le preguntaron si sabía qué era una fuente. Dijo que no. «¿Y por qué lo dice?» «Porque ha aprendido que, después de “ni puta idea”, viene una excusa. Y la excusa de hoy es más larga que la de ayer». «¿Y el ecuador?» «El ecuador es la excusa de mañana». El hombre apuntó ambas frases: «El loro no sabe qué es una fuente. Pero sabe que hay que tener una». Vigilad la homeostasis.
+
+
+## 11. Qué avanza realmente — la forma del fracaso
+
+La comparación longitudinal exige separar **capacidad de respuesta** de **forma lingüística**. Si se mezclan, el museo corre el riesgo de presentar una frase más elegante como si fuera una respuesta mejor.
+
+### Lo que no muestra mejora en la serie observada
+
+- **Exactitud:** la revisión humana comparativa mantiene el balance en 0/100 respuestas correctas en los catorce checkpoints seleccionados. No es una puntuación automática del artefacto: los diarios siguen registrados como generaciones brutas sin evaluación semántica formal.
+- **Finalización:** 0/100 generaciones terminan con EOS en las muestras revisadas; las cien respuestas de cada diario se cortan al alcanzar el límite de 128 tokens. Esto es un fallo de terminación observable, independiente del estilo.
+- **Aritmética y seguimiento de instrucciones:** persisten errores elementales como fallar 23+19, responder «148» ante una petición de x e y, o «136» ante 6×7; una instrucción de responder con tres viñetas puede degenerar en repeticiones como «isisisisisis». Son ejemplos de la revisión longitudinal, no una batería cuantitativa completa.
+
+### Lo que sí parece avanzar: cinco dimensiones formales
+
+1. **Duración de la compostura.** En las primeras muestras, la degeneración podía aparecer casi inmediatamente (por ejemplo, alrededor del segundo token en 400k). En 730k hay aperturas que conservan una forma gramatical reconocible durante unos 15–20 tokens antes de degradarse. Es una observación cualitativa; para convertirla en métrica hay que definir y anotar el primer token de corrupción con un protocolo común.
+2. **Variedad del repertorio.** La lectura del atlas pasa de una vitrina muy estrecha en 400k a un repertorio mucho más ramificado en 730k. La revisión actual contabiliza quince tics activos y doce latentes en el inventario editorial. Son familias de expresión observadas, no quince capacidades.
+3. **Esqueleto discursivo.** 400k tendía a producir fragmentos o bytes; 730k puede abrir con una fórmula, clasificar la pregunta, iniciar una segunda pregunta y después perder el hilo. Hay una organización superficial más reconocible, pero no prueba de comprensión ni de control discursivo fiable.
+4. **Casi-respuestas.** En 730k, los casos #67 («puede entrenar con el corpus documental disponible…») y #68 (la crítica torpe a una pregunta formulada con metáfora) contienen fragmentos parcialmente pertinentes. Se registran como casi-respuestas, no como aciertos: la continuación no completa una solución válida. La distancia de «una sílaba» es una imagen editorial, no una medida lingüística.
+5. **Reaparición de tics.** Motivos vistos muchos miles de pasos antes reaparecen en muestras posteriores. Esto es compatible con patrones recurrentes en los pesos del modelo, pero los diarios por sí solos no prueban una memoria de experiencias ni permiten identificar el mecanismo interno que causa la reaparición.
+
+### La tesis: avanza la forma, no el fondo
+
+El resumen más prudente es que **la forma del fracaso se vuelve más elaborada**. Hay más inercia gramatical, más repertorio, más esqueletos de respuesta y algunos fragmentos casi pertinentes. No hay evidencia equivalente de mejora en exactitud, aritmética, seguimiento de instrucciones o finalización.
+
+En un Transformer pequeño entrenado con un corpus amplio, aprender regularidades de forma puede preceder a una capacidad robusta para resolver tareas. Pero no debe darse por demostrado que «el fondo requiere escala y la forma requiere corpus»: esa es una hipótesis de trabajo, no una ley establecida por estos holdouts. La escala, el corpus, el objetivo de entrenamiento, la tokenización, la optimización y la evaluación pueden interactuar.
+
+> **MAÑANA_NO_ES_ACIERTO.** Una respuesta que tarda más en romperse no es necesariamente más correcta. La longitud de la compostura, la variedad estilística y la estructura superficial deben medirse aparte de la exactitud, la pertinencia, el cumplimiento de instrucciones y la terminación EOS.
+
+### Próximo instrumento: medir la forma sin confundirla con capacidad
+
+Para que «romperse mejor» deje de ser solo una intuición, los próximos holdouts deberían anotar por separado:
+
+- **Primer token de corrupción:** posición en la que aparece la primera repetición degenerada, fragmento ininteligible, cambio de tarea o fuga de formato.
+- **Tramo gramatical:** longitud inicial que conserva sintaxis reconocible, aunque no responda a la pregunta.
+- **Pertinencia parcial:** si la apertura contiene una proposición relacionada con la pregunta, aunque la respuesta completa sea incorrecta.
+- **Estructura discursiva:** presencia de respuesta directa, justificación, clasificación, reformulación o pregunta secundaria.
+- **Exactitud y cumplimiento:** puntuaciones independientes, con rúbrica ciega y por dominio.
+- **Finalización:** EOS emitido, límite de tokens alcanzado o parada por otro motivo.
+
+Estas métricas deben calcularse sobre los mismos IDs, prompts, configuración y límite de generación en cada checkpoint. Así podremos afirmar que la forma ha avanzado sin vender ese avance como comprensión.
+
+> **Koan del jarrón.** Un hombre tenía un jarrón roto. Lo pegó con cola. Se volvió a romper. Lo pegó otra vez. Al año, el jarrón tenía más cola que cerámica. Le preguntaron si estaba arreglado. «No. Pero ya no se rompe en los mismos sitios». Vigilad la homeostasis.
