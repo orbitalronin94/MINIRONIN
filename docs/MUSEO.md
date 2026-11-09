@@ -1394,3 +1394,49 @@ En esta muestra no aparecen «el ecuador», «sí, es un cereal», «el sustanti
 El 740k es el checkpoint del **péndulo y del pingüino**: el corazón vuelve a dominar, resurgen motivos de varias ediciones, el formulario de abstención retorna a «universo ficticio» y aparecen escenas verbales nuevas. La frase auto-directiva merece seguimiento. Sin embargo, las 100 generaciones alcanzan 128 tokens, ninguna termina con EOS y el informe sigue en `unscored_raw_generation`. La lectura humana de 0/100 aciertos es una valoración editorial, no una puntuación semántica calculada por el artefacto.
 
 > **Koan del pingüino.** El auditor preguntó al loro qué era un gate fail-closed. «Un pingüino oxidado que discute con el eco en la universidad», respondió. «Eso no es una definición». «Debo conservar la respiración». El auditor abrió el diario, encontró 128 tokens en la respuesta que creía vacía y anotó: «Antes de atribuir silencio al loro, comprueba que el cuaderno no esté hablando». Vigilad la homeostasis.
+
+## 14. Checkpoint 750k — el loro de «ni puta idea»
+
+[Holdout 750k · ejecución 42611909691](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42611909691) · artefacto `minironin-holdout-only-750000` (ID 13670333883; SHA-256 ZIP `83e8dda38d3ee906e38a954f061aeb1948022ca955d1e13913f40a925e7fc410`). Release: [checkpoint 750k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-750000). Checkpoint SHA-256: `8e1179d43383dbf9035ea2faa1ee3ea842351a7f276a1815b7df41400422ae8d`. Holdout SHA-256: `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`.
+
+El diario contiene 100 preguntas únicas, en los mismos 13 dominios del holdout fijo. Modelo de 9.970.176 parámetros, vocabulario activo 257, UTF-8 byte-level + EOS. Generación greedy, temperatura 0, máximo 128 tokens, dos hilos, modo eval y KV cache. Estado: `unscored_raw_generation`; requiere revisión humana ciega. No hay puntuación semántica automática.
+
+**Resultado técnico:** las 100 respuestas registran 128 tokens generados y ninguna emite EOS. Todas quedan truncadas por el límite. Por tanto, las longitudes aparentes de algunas cadenas decodificadas no deben confundirse con una parada voluntaria: el contador de generación confirma el corte uniforme.
+
+### Vitrina 750k
+
+**1. La abstención se multiplica, pero no calibra (#33, #34, #37, #40, #45, #53, #56, #61, #64, #71, #72, #80, #81, #89, #99).**
+
+«Ni puta idea» aparece 15 veces. En #33, #34, #40, #45, #53, #56, #64, #71, #72 y #99 se acompaña de un contexto sobre premisas ficticias o universos sin documentar; en otros casos aparece desnuda o con una continuación distinta. No se ha evaluado si cada abstención era apropiada: frecuencia no equivale a calibración.
+
+**2. El corazón sigue en la vitrina (#11, #58, #63, #74, #92, #96).**
+
+Seis respuestas contienen «El corazón», a menudo como dato supuestamente correcto y seguido por una nueva pregunta. El comodín anatómico sobrevive a 740k, aunque aparece dos veces menos en esta muestra.
+
+**3. La razón llega y vuelve a negarse (#41, #50, #62, #93).**
+
+Cuatro respuestas arrancan con «La razón ha llegado hasta aquí…». En #41 y #50 la frase se degrada pronto; #62 conserva el arranque y deriva en repetición; #93 lo deja a medio construir. Es un motivo retórico persistente, no una explicación.
+
+**4. La pregunta invade la respuesta (20/100).**
+
+Veinte salidas contienen el marcador «Pregunta:» dentro de la generación (#7, #9, #11, #25, #52, #54, #58, #63, #65, #66, #74, #77, #82, #84, #85, #90, #91, #92, #96 y #98). El modelo vuelve a abrir el formulario en lugar de cerrar una única respuesta.
+
+**5. El comodín cambia de órgano, pero no de función.**
+
+«El cráneo» aparece en #75 y #98; «La rana» en #49, #65 y #79; «El metro» en #66, #86 y #90; «La fotosíntesis» en #77 y #82; «El ecuador» en #25 y #85. Son respuestas desplazadas respecto de sus preguntas, no conocimiento factual transferible.
+
+**6. El falso resultado exacto.**
+
+#4 produce una cadena de unos precedida por «100000…»; #7 mezcla cifras y reformula la pregunta; #9 comienza con «108» y vuelve a insertar el enunciado; #84 responde «100» a una operación cuyo resultado es 20 y después genera otra pregunta. La apariencia numérica no implica cálculo correcto.
+
+### Balance 750k
+
+- «Ni puta idea» aumenta a 15 apariciones frente a 7 en 740k; no puede llamarse mejora de abstención sin evaluar pertinencia.
+- «El corazón» baja de 8 a 6 apariciones; el repertorio de comodines sigue activo.
+- «La razón ha llegado» aparece 4 veces y «Pregunta:» vuelve a aparecer en 20/100 salidas.
+- 100/100 generaciones alcanzan 128 tokens; 0/100 emiten EOS.
+- No hay puntuación semántica ciega ni comparación de aciertos; este holdout no demuestra mejora de capacidad.
+
+> **Perla 750k.** «La razón ha llegado hasta aquí y se niega a fingir». Cuatro veces. El loro ha aprendido a anunciar el límite; todavía no ha aprendido a detenerse en él.
+
+> **Koan del 750k.** El maestro preguntó cuánto era 6 × 7. El loro dijo: «Ni puta idea». «¿Y el corazón?» «El corazón». «¿Y la razón?» «Ha llegado hasta aquí y se niega a fingir». El maestro miró el contador: 128 tokens. «Entonces», dijo, «el único que ha terminado la conversación soy yo».
