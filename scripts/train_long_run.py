@@ -26,6 +26,7 @@ from build_lexicon_dataset import main as build_lexicon_dataset  # noqa: E402
 
 TOTAL_STEPS = 200_000
 CHECKPOINT_EVERY = 10_000
+EOS_WINDOW_PROBABILITY = 0.05
 BATCH_SIZE = 2
 SEQUENCE_LENGTH = 128
 BASE_SEED = 20261107
@@ -179,11 +180,13 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
     if cache_path.exists():
         cached=torch.load(cache_path,map_location="cpu",weights_only=False)
         cm=cached.get("manifest",{})
-        if cm.get("cache_schema_version")==4 and cm.get("unified_corpus_path")==str(corpus_path) and cm.get("unified_corpus_size")==stat.st_size and cm.get("unified_corpus_mtime_ns")==stat.st_mtime_ns:
+        if cm.get("cache_schema_version")==5 and cm.get("unified_corpus_path")==str(corpus_path) and cm.get("unified_corpus_size")==stat.st_size and cm.get("unified_corpus_mtime_ns")==stat.st_mtime_ns:
             print(json.dumps({"dataset_cache":"reused",**cm},ensure_ascii=False),flush=True)
             return cached["train_docs"],cached["names"],cached["probs"],cached["validation"],cm
         cache_path.unlink()
     store={"docs":[],"seen":set()}
+    awakened_store={"docs":[],"seen":set()}
+    awakened_rows_read=0
     digest=hashlib.sha256()
     records=0
     domains={}
@@ -218,6 +221,7 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
         if "anarchist" in source or "anarchist" in raw: return "anarchist"
         if "classics" in source or "classics" in raw: return "classics"
         if "prodatphil" in source or "book" in raw: return "books"
+        if "awakened-library-rows" in dataset: return "awakened"
         if "math" in raw: return "math"
         if "science" in raw: return "science"
         if "book" in raw: return "books"
@@ -245,7 +249,11 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
             if not body: continue
             domain=map_domain(row)
             domains[domain]=domains.get(domain,0)+1
-            if row.get("synthetic"):
+            if row.get("dataset")=="awakened-library-rows.jsonl":
+                awakened_rows_read+=1
+                if len(body)>=80:
+                    add_full_text(awakened_store,"awakened",body,"MINIRONIN-awakened-library:"+str(row.get("library_id","unknown")),str(row.get("source_id","")))
+            elif row.get("synthetic"):
                 key=(domain,str(row.get("dataset","unknown")))
                 pending.setdefault(key,[]).append(body)
                 if len(pending[key])>=8: flush(key)
@@ -257,6 +265,9 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
                 if len(pending[key])>=8: flush(key)
     for key in list(pending): flush(key)
     train_docs,val_docs=split_documents(store["docs"])
+    # Awake rows are explicitly training-only: append them after the source-level
+    # split so they can never leak into validation or the fixed inference holdout.
+    train_docs["awakened"].extend(awakened_store["docs"])
     required=("math","science","behavior") if synthetic_only else ("math","science","books","anarchist","classics","behavior")
     missing=[name for name in required if not train_docs.get(name) or not val_docs.get(name)]
     if missing: raise SystemExit("Unified corpus missing train/validation domains: "+", ".join(missing))
@@ -275,11 +286,11 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
         if batches: validation[domain]=batches
     missing_val=[name for name in required if not validation.get(name)]
     if missing_val: raise SystemExit("Unified corpus has no validation windows for: "+", ".join(missing_val))
-    manifest={"cache_schema_version":4,"corpus_mode":"single unified corpus","unified_corpus":str(corpus_path),
+    manifest={"cache_schema_version":5,"corpus_mode":"single unified corpus","unified_corpus":str(corpus_path),
       "unified_corpus_path":str(corpus_path),"unified_corpus_size":stat.st_size,"unified_corpus_mtime_ns":stat.st_mtime_ns,
       "unified_corpus_sha256":digest.hexdigest(),"unified_records_read":records,
       "unified_documents_after_chunking_and_dedup":len(store["docs"]),
-      "unified_records_by_domain":domains,"documents_by_domain":{k:len(v) for k,v in train_docs.items()},
+      "unified_records_by_domain":domains,"awakened_rows_read":awakened_rows_read,"awakened_documents_training_only":len(awakened_store["docs"]),"documents_by_domain":{k:len(v) for k,v in train_docs.items()},
       "validation_documents_by_domain":{k:len(v) for k,v in val_docs.items()},
       "source_policy":("Synthetic-only: every row must be marked synthetic; no inherited libraries or external corpus roots" if synthetic_only else "All admitted unified-bundle rows ingested; RONIN-IA excluded; no 505k/BPE artifacts"),
       "split_policy":"Deterministic SHA-256 document split; 10% validation per mapped domain"}
@@ -458,7 +469,7 @@ def load_training_data(heretic_root: Path, books_root: Path, anarchist_root: Pat
     return train_docs, names, probs, validation, manifest
 
 
-def batch_for_step(train_docs, names, probs, global_step, seed_offset=0):
+def batch_for_step(train_docs, names, probs, global_step, seed_offset=0, eos_window_probability=EOS_WINDOW_PROBABILITY):
     rng = random.Random(BASE_SEED + seed_offset + global_step)
     domains = rng.choices(names, weights=probs, k=BATCH_SIZE)
     rows = []
@@ -466,7 +477,11 @@ def batch_for_step(train_docs, names, probs, global_step, seed_offset=0):
         raw = list(rng.choice(train_docs[domain])["text"].encode("utf-8", errors="replace")) + [ACTIVE_VOCAB - 1]
         if len(raw) < SEQUENCE_LENGTH + 1:
             raise ValueError("Document shorter than training window in " + domain)
-        start = rng.randrange(0, len(raw) - SEQUENCE_LENGTH)
+        max_start = len(raw) - SEQUENCE_LENGTH - 1
+        if rng.random() < eos_window_probability:
+            start = max_start  # Put the document EOS in the final supervised target.
+        else:
+            start = rng.randrange(0, max_start + 1)
         rows.append(torch.tensor(raw[start:start + SEQUENCE_LENGTH + 1], dtype=torch.long))
     return torch.stack(rows)
 
@@ -505,9 +520,12 @@ def main():
     parser.add_argument("--seed-offset", type=int, default=0)
     parser.add_argument("--batch-size", type=int, default=BATCH_SIZE)
     parser.add_argument("--sequence-length", type=int, default=SEQUENCE_LENGTH)
+    parser.add_argument("--eos-window-probability", type=float, default=EOS_WINDOW_PROBABILITY)
     args = parser.parse_args()
     if args.batch_size < 1 or args.sequence_length < 1:
         parser.error("batch-size and sequence-length must be positive")
+    if not 0.0 <= args.eos_window_probability <= 1.0:
+        parser.error("eos-window-probability must be between 0 and 1")
     BATCH_SIZE = args.batch_size
     SEQUENCE_LENGTH = args.sequence_length
 
@@ -571,7 +589,7 @@ def main():
         lr = learning_rate(global_step, args.total_steps, args.schedule_start_step, args.schedule_start_lr)
         for group in optimizer.param_groups:
             group["lr"] = lr
-        batch = batch_for_step(train_docs, names, probs, global_step, args.seed_offset).to(device)
+        batch = batch_for_step(train_docs, names, probs, global_step, args.seed_offset, args.eos_window_probability).to(device)
         optimizer.zero_grad(set_to_none=True)
         _, loss = model(batch, labels=batch, vocab_limit=ACTIVE_VOCAB)
         if not torch.isfinite(loss):
@@ -597,6 +615,8 @@ def main():
         "total_steps": args.total_steps,
         "batch_size": BATCH_SIZE,
         "sequence_length": SEQUENCE_LENGTH,
+        "eos_window_probability": args.eos_window_probability,
+        "awakened_rows_read": source.get("awakened_rows_read", 0),
         "tokens_per_optimizer_step": BATCH_SIZE * SEQUENCE_LENGTH,
         "segment_steps": args.steps,
         "batch_size": BATCH_SIZE,
