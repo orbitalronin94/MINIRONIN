@@ -19,7 +19,14 @@ def filehash(p):
     return h.hexdigest()
 def allowed_license(value):
     s=norm(str(value or "")).replace("_","-")
-    return s in LICENSES or s.replace("-"," ") in LICENSES
+    compact=s.replace(" ","")
+    denied=("noncommercial","no-derivatives","noderivatives","sharealike","share-alike","cc-by-nc","cc-by-nd","cc-by-sa")
+    if any(term in s or term in compact for term in denied):
+        return False
+    if s in LICENSES or s.replace("-"," ") in LICENSES:
+        return True
+    # CC BY 1.x/2.x/3.x/4.x are attribution-only; reject all SA/NC/ND above.
+    return s.startswith("cc by ") or s.startswith("cc-by-") or "creativecommons.org/licenses/by/" in s or s.startswith("creative commons attribution ")
 def existing_hashes(root):
     excluded={".git","holdout","benchmarks","validation","test","quarantine","candidate","artifacts","checkpoints"}
     found=set()
