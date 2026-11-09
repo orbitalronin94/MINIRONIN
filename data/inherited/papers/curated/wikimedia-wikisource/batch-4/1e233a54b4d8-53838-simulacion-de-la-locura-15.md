@@ -1,0 +1,70 @@
+# Simulación de la locura/15
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Simulaci%C3%B3n%20de%20la%20locura/15
+
+**Page ID:** 53838
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Simulaci%C3%B3n%20de%20la%20locura/15?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+1. Ver las conclusiones del ensayo sobre La simulación en la lucha por la vida , escrito y publicado como introducción de este libro: desde la tercera edición ha sido reimpreso en volumen aparte.
+
+5. A fines de 1906, fecha de la cuarta edición, nuestras observaciones ascienden a catorce, sus caracteres concuerdan con los señalados aquí, sin imponernos modificación alguna en nuestras apreciaciones generales.
+
+7. Véase Responsabilidad Penal, en los degenerados impulsivos. Comentarios al art. 81, inciso 1º del Código Penal Argentino, por Ramos Mejía, Solari e Ingenieros, en Archivos de Psiquiatría y Criminología, Buenos Aires, agosto de 1902. (Nota de la cuarta edición).
+
+8. En la cuarta edición se dejaba constancia de que las observaciones habían ascendido a ocho.
+
+9. Hacia la mitad del siglo XVII, Pedro Zacchia, creía que la simulación de la locura era cosa facilísima y muy frecuente, escribiendo estas palabras, que después han transcripto numerosos autores: Nullus morbus fere est qui facilius et frequentius simulari solrat quam insania, nullus item quia dificilius possit depihendi. Pero esos eran otros tiempos: los bufones de corte, fingiéndose a menudo insensatos para divertir a príncipes y cardenales, a reyes y emperadores, mostraban cuán fácil era fingirse locos, sugiriendo o reforzando la creencia de esa facilidad. Por otra parte, los conocimientos psiquiátricos eran entonces muy limitados y sólo se referían a pocas formas de alienación; muchas de las que son hoy patrimonio de nuestras clasificaciones eran desconocidas, no apreciadas o tenidas por picardías, como si fueran finas y meditadas travesuras de los individuos, máxime si se trataba de delincuentes que deseaban sustraerse por su intermedio a bien merecidos castigos. Eran aún los tiempos en que el campo de la criminalidad era mucho más vasto que el de la locura, cuando ésta se confundía con aquélla, hasta el punto de que las matanzas legales de pobres alienados alcanzaban cifras espantosas.
+
+"Actualmente, en cambio, según las opiniones de varios autores, la simulación de la locura es rara: así lo afirman Conolly, Ball, Krafft-Ebing, Yessen, Siemens y Mittenweig. El mismo Schüle, según refiere Conolly, declara en su clásico tratado que no ha visto un solo caso: Knecht en siete años y medio de servicio en la prisión de Waldheim no pudo observar ninguno; Vingtrinier sobre cuarenta y tres mil delincuentes de Ruan vio uno solo. Hoffmann, por fin, dice que la simulación de la locura no es tan frecuente como suele creerse. Los autores más afortunados que han escrito sobre la simulación sólo han podido observar pocos casos. Tomasia ha descrito cuatro. Roncoroni dos. Zino seis o siete. Siemens tres. Snell cinco. Fuertaner 12, sobre 25 delincuentes remitidos en observación a la clínica de Heidelberg. Biswanger 21, sobre 73 delincuentes sometidos a peritaje médico forense, durante dos años en Berlin. Kautzenes varios. Pelman 5 sobre 16 casos forenses. Tardieu dos, referidos en su tratado médico legal sobre la locura. Frichs diez. Garnier siete. Laurent refiere treinta y dos casos espigados de los más diversos autores. Virgilio treinta en diez años. Además han sido descritos muchísimos casos sueltos desde Morel a Idoler, a Marandon de Montyel, Sande, Livio, Bonnet, Hughes, Jacobi, Verga, Vigna, Bucknill, Tucke, Lombroso, Zippe, Robertson, Pradati, Krauss, Robinsón, Langlois, Wideman, Lengara, Lotz, Weis, Figges, Kierman, Sommer, Landgraf, Chipley, Bulard, Ludwiger, Blanche, Kirstein, Deventer, Binders.
+
+"Todos estos casos reunidos, llegarían a algunos cientos: pero ninguno de los autores, tomado aparte, ha podido reunir tantos y tan diversos casos como he podido observar yo en un tiempo relativamente breve. Mi estadística de 120 casos, y quizá más, observados en cuatro años de estudio, es la más rica y podría afirmar excepcional: lo que vale decir que las cárceles judiciales de Nápoles ofrecen un contingente de simuladores más alto que las demás cárceles del mundo". Penta, págs. 95 a 100.
+Garbini, en Il Manicomio (año XIX, núm. l), refiere que, en cuatro años, en un pequeño centro como Mesina, ha observado personalmente 12 casos de simulación. (Nota de la 4º edición).
+
+10. Posteriormente hemos observado personalmente cuatro casos más en el mismo servicio: 1 en la Penitenciaría de Buenos con el doctor Ortiz: hemos publicado, en los Archivos de Psiquiatría y Criminología, 1 caso observado por el doctor Korn en el Hospicio de Melchor Romero. En la fecha de la cuarta edición el número de nuestras nuevas observaciones personales pasaban de 20 y el de los casos reunidos en la bibliografía posterior a la publicación de esta obra supera los 200.
+
+13. Formulada en dos páginas de Psiquiatría Criminal, Buenos Aires, 1900. Sobre el mismo tema ver las siguientes publicaciones del autor: Actas del Congreso Científico de Montevideo, 1901; Atti del V Congreso Internazionali di Psicoiogia, Roma, 1905; Annali di Freniatria, Turín, 1905; Archives de l'Antropologie Criminelle, Lyon, 1906; Archivo di psichiatria II Manicomio, Nocera, 1905; La Revue Scientifique, París, 1906; Revista Frenopática Española, Barcelona, 1906; Revista de Derecho, Historia y Letras , Buenos Aires, 1900; Derecho y Sociología , Habana, 1906; Archivos de Psiquiatría y Criminología , Buenos Aires, 1906. (Nota de la cuarta edición).
+
+14. Penta es de opinión opuesta; en su monografía llega a esta conclusión: "La locura simulada puede considerarse como una verdadera entidad clínica específica del delincuente nato". La opinión de tan distinguido psiquiatra no nos induce a cambiar la nuestra. En primer lugar, Penta, según lo hicimos notar, no estudió la simulación de la locura como hecho jurídico específico, sino como fenómeno carcelario, en delincuentes ya condenados. En segundo lugar, nos parece lógico que, entre condenados, cuando la simulación no tiende a obtener la irresponsabilidad eximente de la pena, sino a otros objetivos, su frecuencia sea mayor en los delincuentes natos, que conocen todos los resortes de la vida carcelaria para pasar a la enfermería, al manicomio, etcétera. Por fin, aun siendo cierta la condición de Penta para el ambiente carcelario de Nápoles, donde existen condiciones particularísimas, que el mismo Penta enumera, haciendo allí frecuente lo que nosotros hemos observada excepcionalmente, no es posible desconocer que los caracteres psicológicos del delincuente nato son los menos propicios para inducirle a la simulación de la locura. Encontramos, por otra parte, que Penta es perfectamente lógico en su conclusión. En efecto, él considera que "la simulación es un medio inferior de lucha por la vida, un fenómeno de supervivencia más o menos fisiológico todavía y natural, y también por este lado los criminales, especialmente los criminales natos se aproximan a los salvaje y a los animales; también la simulación, pues, como todo el resto de la organización psicológica de los criminales natos, constituye en ello un caso de atavismo". Esta opinión no nos parece exacta. La criminalidad atávica es la violenta: la fraudulenta es la evolutiva. Los medios de lucha primitivos son los violentos, los fraudulentos son modernos, refinados... la simulación no es una forma de violencia sino de fraude; verdad que no se puede desconocer. Que la fraudulenta es la forma menos atávica de luchar contra el código penal la prueban los grandes fraudulentos que no entran en la zona de represión del código; a la cárcel van de preferencia los violentos, los que no engañan, los que no mienten, los que no simulan. Luego, aun siendo su conclusión coherente con la premisa, la premisa es inexacta.
+
+15. También aquí la opinión de Penta es contraria. Es posible: 1º que en las cárceles de Nápoles haya entre los condenados más delincuente natos que entre los procesados, en quienes yo estudio la simulación específica; 2º que Penta interpreta el tipo de delincuente nato con más generosidad que yo y le adjudique larga-manu a muchos que yo clasificaba en otras categorías. Probablemente esa interpretación personal del tipo debe influir en la divergencia.
+
+16. La simulación de la locura en la delincuencia rural argentina es menos frecuente que en la urbana. El gaucho rehuye la simulación, como rehuye el suicidio. En el poema criollo La Vuelta de Martín Fierro, de Hernández, uno de los personajes cuenta las desventuras del criollo pobre, olvidado en la cárcel cuando no median las influencias protectoras de caudillos políticos; y refiriéndose al delincuente extranjero, agrega:
+
+          "El gringo es de más discurso:
+          cuando mata se hace el loco."
+
+17. "Entre mis simuladores más insistentes y habituales, he encontrado dos que habían sido cómicos muchas veces, y otro un hábil ebanista que por cuatro veces, hizo postergar su proceso, simulando diversas formas de locura, y que al ser enviado al manicomio Criminal de Aversa modeló con miga de pan, además de una figura de Massaniello, con sus amplios brazos y gestos de costumbre, una lindísima figura de simulador con el chaleco de fuerza, reproduciéndose él mismo, con sus dolores y sus sufrimientos durante las diversas simulaciones. Así también Pelman (Archivos de Neurología, 1898) cuenta el caso de un joven que al ser llevado al Manicomio, después de su arresto, tenía un aspecto estúpido y pretendía ser Rafael. Sometido a fuertes corrientes farádicas, cambió en seguida su actitud, recuperando su lucidez, su conciencia. Y bien: este joven no tenía ningún motivo para simular, y "fue sin duda -dice Pelman- su profesión de comediante lo que le indujo a enmascararse de este modo". Penta, pág. 147-48.
+
+18. Penta explica extensamente los factores que determinan la frecuencia de la simulación entre los presos de las cárceles de Nápoles. Sus observaciones son de verdadero interés y no resistimos a la tentación de transcribirlas:
+"Esta frecuencia debía sorprenderme, induciéndome a buscar sus causas. He aquí, sumariamente, lo que he podido establecer:
+
+"1º Ante todo, hay motivo para creer que mi presencia en la cárcel, con el carácter de alienista, ha debido aumentar el número de simuladores, puesto que es creencia vulgar que los alienistas consideran como loco a todo el mundo. En segundo lugar, las modernas teorías sobre la naturaleza del delito que los profanos entienden enrevesadamente, así como los frecuentes y fáciles peritajes, las insinuaciones de los abogados, el hecho mismo de que por las anomalías de su psique criminal sean llamados "locos" por sus compañeros, el tener algo que ganar y nada que perder, han sido y son buenos motivos para que los detenidos simulen la locura con mayor frecuencia.
+
+"2º Pero hay razones, diré así, locales e intrínsecas, que sustentan verdaderamente el fenómeno y dan de él una explicación más general. El hecho de que las dos terceras partes de los delincuentes de las cárceles de Nápoles están afiliadas a la Camorra; la simulación, el fraude, el engaño, lo mismo que el "argot", están en el carácter del camorrista, que bajo apariencias de caballerosidad es un botarate que explota cínicamente a las mujeres, simulando una virtud que enmascara un triste egoísmo. Parece amigo, expansivo, y en cambio acuerda protección con fines de utilidad personal. Busca una distinción de maneras que no posee, cayendo en ridículo por la exageración. Para hacerse respetar se da aires de petulancia, braceando con grandes gestos en el aire, para asumir un continente y una fisonomía que no le son propios, pero que el camorrista imita quizás de los recuerdos favoritos de esa literatura caballeresca y altisonante que nutre la mente fantasista del bajo pueblo napolitano.
+
+"3º Después, o junto con las causas citadas, merece mencionarse la influencia de la tradición que se ha formado lentamente en las cárceles de Nápoles, a propósito de la simulación de la locura; pero esa tradición ha debido tener, sin duda, su período de formación, y aunque ahora sea una de las causas que hacen frecuente la locura simulada, bien merece que se expliquen su origen y sus causas en el pasado.
+
+"4º Tanto la tradición como la Camorra se han formado en medio del pueblo napolitano y son una solemne expresión suya, debiendo considerarse que la simulación, especialmente de la locura, siendo tan frecuente y característica, debe también ser una de las características psicológicas del pueblo napolitano. Con razón decía Conolly, en el diccionario de Hacke Tuke, que las diversas condiciones del ambiente social hacen más o menos fáciles y comunes las tendencia a la simulación, y que por eso, en los diversos pueblos, por razones puramentse étnicas, podemos encontrar con más o menos frecuencia los casos de simulación de la locura."
+
+19. Dos Páginas de Psiquiatría Criminal, Buenos Aires, 1899, pág. 15.
+
+20. Más de 3.500. (Nota de la sexta edición, 1911).
+
+21. Código Penal Argentino, art. 31, inc. 19.
+
+23. Este esquema se encuentra mejor formulado en mi cuadro de la "Temibilidad de los delincuentes", publicado en la obra Criminología, 6º edición, Buenos Aires, 1916. (Nota de la 3º edición).
+
+Simulación de la locura
