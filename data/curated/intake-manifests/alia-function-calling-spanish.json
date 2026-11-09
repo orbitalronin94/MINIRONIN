@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "slug": "alia-function-calling-spanish",
+  "name": "ALIA Function Calling Spanish subset",
+  "repo_id": "BSC-LT/ALIA-2606-SFT-fc",
+  "license": "CC BY 4.0",
+  "split": "train",
+  "language_field": "lang",
+  "language_values": [
+    "es"
+  ],
+  "domain": "uso de herramientas, llamadas a funciones y agentes",
+  "text_fields": [
+    "messages",
+    "tools"
+  ],
+  "task": "Spanish function calling and tool-use instructions",
+  "minimum_rows": 10000,
+  "min_text_chars": 20,
+  "attribution": "BSC Language Technologies Laboratory, ALIA-2606-SFT-fc; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/BSC-LT/ALIA-2606-SFT-fc",
+  "language": "es",
+  "license_verification": "exact live dataset-card license check; source split and language filter enforced",
+  "status": "ready_for_automated_import"
+}
