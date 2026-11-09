@@ -1,5 +1,4 @@
 name: MINIRONIN — admitir SLR-Bench español
-
 on:
   workflow_dispatch:
   push:
@@ -7,15 +6,12 @@ on:
     paths:
       - ".github/workflows/acquire-slr-bench-spanish.yml"
       - "scripts/acquire_slr_bench_spanish.py"
-
 permissions:
   contents: write
   actions: write
-
 concurrency:
   group: minironin-acquire-slr-bench
   cancel-in-progress: false
-
 jobs:
   acquire-and-admit:
     runs-on: ubuntu-latest
@@ -36,10 +32,10 @@ jobs:
         run: |
           set -euo pipefail
           revision="$(git ls-remote https://huggingface.co/datasets/AIML-TUDA/SLR-Bench-Spanish refs/heads/main | awk 'NR==1 {print $1}')"
-          test "${#revision}" -eq 40
+          test "\${#revision}" -eq 40
           echo "SLR_REVISION=$revision" >> "$GITHUB_ENV"
           python scripts/acquire_slr_bench_spanish.py --revision "$revision"
-      - name: Audit JSONL, split, license, IDs and digest
+      - name: Audit schema, split, license, IDs and digest
         run: |
           python - <<'PY'
           import hashlib,json
@@ -47,11 +43,9 @@ jobs:
           root=Path("data/curated/accepted")
           data=root/"slr-bench-spanish-v1-all-train.jsonl"
           m=json.loads((root/"slr-bench-spanish-v1-all-train.manifest.json").read_text())
-          assert m["record_count"]==18053
-          assert m["unique_source_ids"]==18053
+          assert m["record_count"]==18053 and m["unique_source_ids"]==18053
           assert m["source_config"]=="v1-All" and m["source_split"]=="train"
-          assert m["excluded_splits"]==["validation","test"]
-          assert m["license"]=="CC BY 4.0"
+          assert m["excluded_splits"]==["validation","test"] and m["license"]=="CC BY 4.0"
           assert hashlib.sha256(data.read_bytes()).hexdigest()==m["sha256_jsonl"]
           seen=set()
           for line in data.read_text(encoding="utf-8").splitlines():
@@ -59,8 +53,7 @@ jobs:
               assert r["language"]=="es" and r["split"]=="train" and r["train_eligible"]
               assert r["admission_status"]=="accepted" and r["synthetic"] is True
               assert r["license"]=="CC BY 4.0" and r["source_config"]=="v1-All"
-              assert r["id"] not in seen
-              assert r["validation_program"] and r["answer"]
+              assert r["id"] not in seen and r["validation_program"] and r["answer"]
               seen.add(r["id"])
           assert len(seen)==18053
           print(json.dumps({"admitted":len(seen),"tiers":m["curriculum_tier_counts"],"sha256":m["sha256_jsonl"]},ensure_ascii=False))
@@ -73,4 +66,4 @@ jobs:
           git add data/curated/accepted/slr-bench-spanish-v1-all-train.jsonl data/curated/accepted/slr-bench-spanish-v1-all-train.manifest.json
           git commit -m "Admit Spanish SLR-Bench inductive reasoning train corpus"
           git push origin main
-          GH_TOKEN="${{ github.token }}" gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
+          GH_TOKEN="\${{ github.token }}" gh api --method POST "repos/\${GITHUB_REPOSITORY}/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
