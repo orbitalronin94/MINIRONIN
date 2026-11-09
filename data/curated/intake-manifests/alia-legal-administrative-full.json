@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "slug": "alia-legal-administrative-full",
+  "name": "ALIA Spanish Legal and Administrative Corpus",
+  "repo_id": "SINAI/ALIA-es-legal-administrative",
+  "license": "CC BY-SA 4.0",
+  "source_url": "https://huggingface.co/datasets/SINAI/ALIA-es-legal-administrative",
+  "language": "es",
+  "split": "train",
+  "domain": "derecho, legislación y administración pública",
+  "text_fields": [
+    "text"
+  ],
+  "task": "Spanish legal-administrative language modeling",
+  "minimum_rows": 6000000,
+  "min_text_chars": 50,
+  "gzip_output": true,
+  "streaming": true,
+  "attribution": "SINAI Research Group, Universidad de Jaén; ALIA Spanish Legal and Administrative Corpus; CC BY-SA 4.0.",
+  "license_verification": "exact dataset-card identifier required; no NC/ND licenses admitted",
+  "status": "ready_for_automated_import"
+}
