@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "slug": "llm-sql-spanish",
+  "name": "LLM SQL Spanish database instruction corpus",
+  "repo_id": "somosnlp/LLM_SQL_BaseDatosEspanol",
+  "license": "Apache 2.0",
+  "source_url": "https://huggingface.co/datasets/somosnlp/LLM_SQL_BaseDatosEspanol",
+  "language": "es",
+  "split": "train",
+  "domain": "programación, SQL, bases de datos y razonamiento estructurado",
+  "text_fields": [],
+  "task": "Spanish SQL generation and database question answering",
+  "minimum_rows": 50,
+  "min_text_chars": 40,
+  "synthetic": true,
+  "attribution": "SomosNLP; LLM_SQL_BaseDatosEspanol; Apache License 2.0.",
+  "license_verification": "exact Apache-2.0 live card check",
+  "status": "ready_for_automated_import"
+}
