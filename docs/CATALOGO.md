@@ -61,3 +61,6 @@ La serie seleccionada contiene quince hitos. Los diarios independientes de 730k 
 ---
 
 *Última revisión editorial: 2026-11-09. La guía describe la evidencia disponible en esta revisión y no sustituye la ficha técnica de cada release.*
+
+
+**Ampliación editorial 800k:** sexta recurrencia literal de «ni puta idea» en la #37 (720k–800k); rotación intensa de tics; retorno de «Me asomo al precipicio» en cuatro respuestas y como cierre #100; nuevas vitrinas «El diafragma» (#25) y «Las raíces» (#77/#78); retorno del formulario «Escenario deliberadamente…». Holdout: [ejecución 42627788882](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42627788882). Checkpoint SHA-256: `37c89e8cf696e57fadbec4f0fcfefe65153628ae91565aff8ed256a650605485`. Véanse [Museo](MUSEO.md) y [Grimorio](GRIMORIO.md). Candidato experimental: holdout sin puntuación semántica automática; no equivale a promoción ni mejora demostrada.
