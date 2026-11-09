@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "slug": "constitucion-peru-qa",
+  "name": "Constitución Política del Perú 1993 QA",
+  "repo_id": "somosnlp/constitucion-politica-del-peru-1993-qa",
+  "license": "Apache 2.0",
+  "split": "train",
+  "domain": "constitución, derechos, deberes y legislación peruana",
+  "text_fields": [
+    "pregunta",
+    "respuesta",
+    "fuente",
+    "tema"
+  ],
+  "task": "Spanish constitutional legal question answering",
+  "minimum_rows": 2000,
+  "min_text_chars": 30,
+  "synthetic": true,
+  "attribution": "David Alonso Quispe Castillo, KUNTUR; Apache License 2.0.",
+  "source_url": "https://huggingface.co/datasets/somosnlp/constitucion-politica-del-peru-1993-qa",
+  "language": "es",
+  "license_verification": "exact live dataset-card license check; no NC/ND",
+  "status": "ready_for_automated_import"
+}
