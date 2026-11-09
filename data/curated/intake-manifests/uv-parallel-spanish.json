@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "slug": "uv-parallel-spanish",
+  "name": "UV Valencian-Spanish parallel corpus — Spanish side",
+  "repo_id": "gplsi/uv_parallel_va_es",
+  "license": "CC BY 4.0",
+  "split": "train",
+  "domain": "educación, investigación y textos universitarios",
+  "text_fields": [
+    "ES"
+  ],
+  "task": "Spanish academic parallel text",
+  "minimum_rows": 80000,
+  "min_text_chars": 20,
+  "streaming": true,
+  "gzip_output": true,
+  "attribution": "Espinosa Zaragoza et al. (2025), UV_PARALLEL_VA_ES; GPLSI, University of Alicante; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/gplsi/uv_parallel_va_es",
+  "language": "es",
+  "license_verification": "exact CC BY 4.0 live card check; extract Spanish side only",
+  "status": "ready_for_automated_import"
+}
