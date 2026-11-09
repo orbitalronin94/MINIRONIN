@@ -21,7 +21,11 @@
 | P2 | DOAB / OAPEN | Miles de libros académicos | Filosofía, humanidades y ciencia | Filtrar libros en español con licencia CC BY/CC0; excluir NC/ND para la línea general de entrenamiento. |
 | P3 | OpenBookQA-ES (BSC-LT) | 500 validación + 500 test | Ciencia escolar factual, opción múltiple | **No entrenar** esos splits: reservarlos para evaluación externa. Buscar train original u otras fuentes con permiso. |
 
-## Cuarentena por licencia y privacidad\n\nLa ficha de Zenodo muestra CC BY 4.0 para el empaquetado de TDX y CSIC, pero sus README de distribución concretan **CC BY-NC-SA 4.0**. Prevalece la condición más restrictiva hasta aclaración formal del distribuidor. TDX indica además que no se realizó anonimización. Por tanto, ninguno de los dos se descarga a `data/datasets` ni se marca `train_eligible=true` en esta línea.\n\n## Matemáticas: corpus factual generado por código
+## Cuarentena por licencia y privacidad
+
+La ficha de Zenodo muestra CC BY 4.0 para el empaquetado de TDX y CSIC, pero sus README de distribución concretan **CC BY-NC-SA 4.0**. Prevalece la condición más restrictiva hasta aclaración formal del distribuidor. TDX indica además que no se realizó anonimización. Por tanto, ninguno de los dos se descarga a `data/datasets` ni se marca `train_eligible=true` en esta línea.
+
+## Matemáticas: corpus factual generado por código
 
 Además de las colecciones externas, se incorpora un generador determinista del proyecto:
 `scripts/generate_math_es.py`.
@@ -55,7 +59,11 @@ Además de las colecciones externas, se incorpora un generador determinista del 
 - Wikisource: https://es.wikisource.org/
 - Project Gutenberg: https://www.gutenberg.org/
 - DOAB: https://www.doabooks.org/
-- ALIA Cultural Heritage: https://huggingface.co/datasets/SINAI/ALIA-es-cultural-heritage\n- ESQAD: https://zenodo.org/records/16351733\n- Wikidata Label Maps: https://huggingface.co/datasets/yashkumaratri/wikidata-label-maps-2025-all-languages\n- OpenAlex Philosophy: https://huggingface.co/datasets/CristianPelayo/openalex-philosophy\n- OpenBookQA-ES (solo referencia de evaluación): https://huggingface.co/datasets/BSC-LT/openbookqa-es
+- ALIA Cultural Heritage: https://huggingface.co/datasets/SINAI/ALIA-es-cultural-heritage
+- ESQAD: https://zenodo.org/records/16351733
+- Wikidata Label Maps: https://huggingface.co/datasets/yashkumaratri/wikidata-label-maps-2025-all-languages
+- OpenAlex Philosophy: https://huggingface.co/datasets/CristianPelayo/openalex-philosophy
+- OpenBookQA-ES (solo referencia de evaluación): https://huggingface.co/datasets/BSC-LT/openbookqa-es
 
 ## Estado de ejecución
 
