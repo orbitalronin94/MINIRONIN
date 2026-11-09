@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: minironin-wikimedia-es-100k-intake
@@ -57,3 +57,19 @@ jobs:
           if-no-files-found: error
           compression-level: 0
           retention-days: 90
+
+      - name: Publicar versión inmutable de la biblioteca para el corpus unificado
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if ! gh release view wikimedia-es-100k-v1 >/dev/null 2>&1; then
+            gh release create wikimedia-es-100k-v1 \
+              --title "Wikimedia ES — 100k documentos v1" \
+              --notes "100.000 artículos únicos de Wikipedia en español. Snapshot 20231101.es; revisión de dataset fijada en el manifiesto. Atribución y licencia CC BY-SA/GFDL preservadas por documento."
+          fi
+          gh release upload wikimedia-es-100k-v1 \
+            wikimedia-es-100k/wikipedia-es-100k.jsonl.gz \
+            wikimedia-es-100k/WIKIMEDIA-ES-100K-MANIFEST.json \
+            wikimedia-es-100k/README.md \
+            wikimedia-es-100k/SHA256SUMS --clobber
