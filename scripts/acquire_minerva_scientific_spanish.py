@@ -49,7 +49,11 @@ def main():
     lic=getattr(card,"license",None) if card else None
     if str(lic).casefold().replace("_","-") not in {"cc-by-4.0","cc-by"}: raise SystemExit(f"dataset license mismatch: {lic!r}")
     local=Path(hf_hub_download(repo_id=REPO_ID,filename=FILENAME,repo_type="dataset",revision=args.revision))
-    file_sha=hashlib.sha256(local.read_bytes()).hexdigest()
+    hasher=hashlib.sha256()
+    with local.open("rb") as payload:
+        for block in iter(lambda: payload.read(1024*1024), b""):
+            hasher.update(block)
+    file_sha=hasher.hexdigest()
     if file_sha!=EXPECTED_FILE_SHA256: raise SystemExit(f"upstream payload SHA changed: {file_sha}")
     existing=existing_hashes(args.root)
     args.output_dir.mkdir(parents=True,exist_ok=True)
