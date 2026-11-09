@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "slug": "alia-legal-synthetic-instructions",
+  "name": "ALIA Spanish Legal Administrative Synthetic Instructions",
+  "repo_id": "SINAI/ALIA-es-legal-administrative-synthetic-instructions",
+  "license": "CC BY-SA 4.0",
+  "split": "train",
+  "domain": "derecho y administración pública",
+  "text_fields": [],
+  "task": "Spanish legal-administrative instruction tuning",
+  "synthetic": true,
+  "minimum_rows": 100000,
+  "attribution": "SINAI — Universidad de Jaén, ALIA Spanish Legal and Administrative Synthetic Instructions; CC BY-SA 4.0.",
+  "source_url": "https://huggingface.co/datasets/SINAI/ALIA-es-legal-administrative-synthetic-instructions",
+  "language": "es",
+  "min_text_chars": 24,
+  "license_verification": "exact dataset-card identifier required; no NC/ND licenses admitted",
+  "status": "ready_for_automated_import"
+}
