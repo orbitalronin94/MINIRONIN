@@ -43,7 +43,21 @@ def collect_payload_names(manifest):
                 (".txt", ".md", ".jsonl", ".jsonl.gz", ".ndjson", ".gz")
             ):
                 names.add(Path(value).name)
+    names.update({"train.txt", "documents.train.jsonl", "documents.train.jsonl.gz",
+                  "train.jsonl", "train.jsonl.gz", "documents.jsonl.gz"})
     return names
+
+
+def language_for(manifest):
+    values = manifest.get("languages") or manifest.get("language")
+    if isinstance(values, list):
+        return ",".join(sorted(str(x) for x in values))
+    if isinstance(values, str) and values:
+        return values
+    counts = manifest.get("language_counts") or manifest.get("aggregate", {}).get("language_counts")
+    if isinstance(counts, dict) and counts:
+        return ",".join(sorted(str(x) for x in counts))
+    return "und"
 
 
 def domain_for(dataset_id, manifest):
@@ -113,7 +127,7 @@ def main():
                 "redistribution": False,
                 "epistemic_type": "source_scoped_train_admitted",
                 "domain": domain_for(dataset_id, manifest),
-                "language": "und",
+                "language": language_for(manifest),
                 "provenance_ref": str(manifest_path),
             })
             audit.append({"manifest": str(manifest_path), "status": "admitted_exact_train_payload",
