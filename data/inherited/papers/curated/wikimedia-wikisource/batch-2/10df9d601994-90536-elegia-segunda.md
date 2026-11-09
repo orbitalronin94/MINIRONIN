@@ -1,0 +1,83 @@
+# Elegía segunda
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Eleg%C3%ADa%20segunda
+
+**Page ID:** 90536
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Eleg%C3%ADa%20segunda?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+A Pablo de la Torriente, comisario político
+
+"Me quedaré en España, compañero",
+me dijiste con gesto enamorado.
+Y al fin sin tu edificio trotante de guerrero
+en la hierba de España te has quedado.
+
+Nadie llora a tu lado:
+desde el soldado al duro comandante,
+todos te ven, te cercan y te atienden
+con ojos de granito amenazante,
+con cejas incendiadas que todo el cielo encienden.
+
+Valentín el volcán, que si llora algún día
+será con unas lágrimas de hierro,
+se viste emocionado de alegría
+para robustecer el río de tu entierro.
+
+Como el yunque que pierde su martillo,
+Manuel Moral se calla
+colérico y sencillo.
+
+Y hay muchos capitanes y muchos comisarios
+quitándote pedazos de metralla,
+poniéndote trofeos funerarios.
+
+Ya no hablarás de vivos y de muertos,
+ya disfrutas la muerte del héroe, ya la vida
+que no te verá en las calles ni en los puertos
+pasar como una ráfaga garrida.
+
+Pablo de la Torriente,
+has quedado en España
+y en mi alma caído:
+nunca se pondrá el sol sobre tu frente,
+heredará tu altura la montaña
+y tu valor el toro del bramido.
+
+De una forma vestida de preclara
+has perdido las plumas y los besos,
+con el sol español puesto en la cara
+y el de Cuba en los huesos.
+
+Pasad ante el cubano generoso,
+hombres de su Brigada,
+con el fusil furioso,
+las botas iracundas y la mano crispada.
+
+Miradlo sonriendo a los terrones
+y exigiendo venganza bajo sus dientes mudos
+a nuestros más floridos batallones
+y a sus varones como rayos rudos.
+
+Ante Pablo los días se abstienen ya y no andan.
+No temáis que se extinga su sangre sin objeto,
+porque éste es de los muertos que crecen y se agrandan
+aunque el tiempo devaste su gigante esqueleto.
+
+ES-E
+Poesías de Miguel Hernández
+Poesías
+Elegías
+Literatura española (Títulos)

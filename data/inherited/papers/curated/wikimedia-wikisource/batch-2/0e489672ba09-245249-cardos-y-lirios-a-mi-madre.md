@@ -1,0 +1,56 @@
+# Cardos y lirios/A mi madre
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Cardos%20y%20lirios/A%20mi%20madre
+
+**Page ID:** 245249
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Cardos%20y%20lirios/A%20mi%20madre?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+<div style='text-align:justify'> 
+
+ A mi madre 
+
+Todavía el Dolor ara en su frente;
+
+se humedecen sus ojos todavía;
+
+sus ojos, ¡ay! donde también el día
+
+radió como en las cumbres del oriente.
+
+Huyen las tempestades de mi mente
+
+cuando los dedos de su mano fría,
+
+se hunden, temblando, en la melena mía
+
+y amorosos la erizan blandamente.
+
+Ella es el astro de mi noche eterna:
+
+su limpia luz, en mi interior, se expande
+
+como el lampo del sol en la caverna.
+
+Yo la adoro. La adoro sin medida,
+
+con un amor como ninguno, grande:
+
+grande a pesar de que me dio la vida.
+
+ES-A
+Poesías
+Poesías de Julio Flórez
+Cardos y lirios

@@ -1,0 +1,53 @@
+# Mensaje del rey Felipe VI por el conflicto por la independencia de Cataluña
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Mensaje%20del%20rey%20Felipe%20VI%20por%20el%20conflicto%20por%20la%20independencia%20de%20Catalu%C3%B1a
+
+**Page ID:** 235692
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Mensaje%20del%20rey%20Felipe%20VI%20por%20el%20conflicto%20por%20la%20independencia%20de%20Catalu%C3%B1a?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+(Mensaje emitido en los días posteriores al Referéndum de independencia de Cataluña y anteriores a la Declaración de independencia de Cataluña de 2017)
+
+Buenas noches,
+
+Estamos viviendo momentos muy graves para nuestra vida democrática. Y en estas circunstancias, quiero dirigirme directamente a todos los españoles. Todos hemos sido testigos de los hechos que se han ido produciendo en Cataluña, con la pretensión final de la Generalitat de que sea proclamada —ilegalmente— la independencia de Cataluña.
+
+Desde hace ya tiempo, determinadas autoridades de Cataluña, de una manera reiterada, consciente y deliberada, han venido incumpliendo la Constitución y su Estatuto de Autonomía, que es la Ley que reconoce, protege y ampara sus instituciones históricas y su autogobierno.
+
+Con sus decisiones han vulnerado de manera sistemática las normas aprobadas legal y legítimamente, demostrando una deslealtad inadmisible hacia los poderes del Estado. Un Estado al que, precisamente, esas autoridades representan en Cataluña.
+
+Han quebrantado los principios democráticos de todo Estado de Derecho y han socavado la armonía y la convivencia en la propia sociedad catalana, llegando —desgraciadamente— a dividirla. Hoy la sociedad catalana está fracturada y enfrentada.
+
+Esas autoridades han menospreciado los afectos y los sentimientos de solidaridad que han unido y unirán al conjunto de los españoles; y con su conducta irresponsable incluso pueden poner en riesgo la estabilidad económica y social de Cataluña y de toda España.
+
+En definitiva, todo ello ha supuesto la culminación de un inaceptable intento de apropiación de las instituciones históricas de Cataluña. Esas autoridades, de una manera clara y rotunda, se han situado totalmente al margen del derecho y de la democracia. Han pretendido quebrar la unidad de España y la soberanía nacional, que es el derecho de todos los españoles a decidir democráticamente su vida en común.
+
+Por todo ello y ante esta situación de extrema gravedad, que requiere el firme compromiso de todos con los intereses generales, es responsabilidad de los legítimos poderes del Estado asegurar el orden constitucional y el normal funcionamiento de las instituciones, la vigencia del Estado de Derecho y el autogobierno de Cataluña, basado en la Constitución y en su Estatuto de Autonomía.
+
+Hoy quiero, además, transmitir varios mensajes a todos los españoles, particularmente a los catalanes.
+
+A los ciudadanos de Cataluña –a todos− quiero reiterarles que desde hace décadas vivimos en un Estado democrático que ofrece las vías constitucionales para que cualquier persona pueda defender sus ideas dentro del respeto a la ley. Porque, como todos sabemos, sin ese respeto no hay convivencia democrática posible en paz y libertad, ni en Cataluña, ni en el resto de España, ni en ningún lugar del mundo. En la España constitucional y democrática, saben bien que tienen un espacio de concordia y de encuentro con todos sus conciudadanos.
+
+Sé muy bien que en Cataluña también hay mucha preocupación y gran inquietud con la conducta de las autoridades autonómicas. A quienes así lo sienten, les digo que no están solos, ni lo estarán; que tienen todo el apoyo y la solidaridad del resto de los españoles, y la garantía absoluta de nuestro Estado de Derecho en la defensa de su libertad y de sus derechos.
+
+Y al conjunto de los españoles, que viven con desasosiego y tristeza estos acontecimientos, les transmito un mensaje de tranquilidad, de confianza y, también, de esperanza.
+
+Son momentos difíciles, pero los superaremos. Son momentos muy complejos, pero saldremos adelante. Porque creemos en nuestro país y nos sentimos orgullosos de lo que somos. Porque nuestros principios democráticos son fuertes, son sólidos. Y lo son porque están basados en el deseo de millones y millones de españoles de convivir en paz y en libertad. Así hemos ido construyendo la España de las últimas décadas. Y así debemos seguir ese camino, con serenidad y con determinación. En ese camino, en esa España mejor que todos deseamos, estará también Cataluña.
+
+Termino ya estas palabras, dirigidas a todo el pueblo español, para subrayar una vez más el firme compromiso de la Corona con la Constitución y con la democracia, mi entrega al entendimiento y la concordia entre españoles, y mi compromiso como Rey con la unidad y la permanencia de España.
+
+DH-M
+Discursos
+Discursos de Felipe VI

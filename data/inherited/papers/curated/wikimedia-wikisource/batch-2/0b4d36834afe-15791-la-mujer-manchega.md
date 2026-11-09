@@ -1,0 +1,78 @@
+# La mujer manchega
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/La%20mujer%20manchega
+
+**Page ID:** 15791
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/La%20mujer%20manchega?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+<div style='text-align:justify'>
+<div class="verse">
+  La Mancha y sus mujeres... Argamasilla, Infantes,
+Esquivias, Valdepeñas. La novia de Cervantes,
+y del manchego heroico, el ama y la sobrina
+—el patio, la alacena, la cueva y la cocina,
+la rueca y la costura, la cuna y la pitanza—,
+la esposa de don Diego y la mujer de Panza,
+la hija del ventero, y tantas como están
+bajo la tierra, y tantas que son y que serán
+encanto de manchegos y madres de españoles
+por tierras de lagares, molinos y arreboles.
+  Es la mujer manchega garrida y bien plantada,
+muy sobre sí, doncella, perfecta de casada.
+  El sol de la caliente llanura veraniega
+quemó su piel, mas guarda frescura de bodega
+su corazón. Devota, sabe rezar con fe
+para que Dios nos libre de cuanto no se ve.
+Su obra es la casa—menos celada que en Sevilla,
+más gineceo y menos castillo que en Castilla—.
+Y es del hogar manchego la musa ordenadora;
+alinea los vasares, los lienzos alcanfora;
+las cuentas de la plaza anota en su diario;
+cuenta garbanzos, cuenta las cuentas del rosario.
+  ¿Hay más? Por estos campos hubo un amor de fuego
+Dos ojos abrasaron un corazón manchego.
+  ¿No tuvo en esta Mancha su cuna Dulcinea?
+¿No es el Toboso patria de la mujer idea
+del corazón, engendro e imán de corazones,
+a quien varón no impregna y aun parirá varones?
+  Por esta Mancha-prados, viñedos y molinos—
+que so el igual del cielo iguala sus caminos,
+de cepas arrugadas sobre el tostado suelo
+y mustios pastos como raído terciopelo;
+por este seco llano de sol y lejanía,
+en donde un ojo alcanza su pleno mediodía
+—un diminuto bando de pájaros puntea
+el índigo del cielo sobre la blanca aldea,
+y allá se yergue un soto de verdes alamillos,
+tras leguas y más leguas de campos amarillos—;
+por esta tierra, lejos del mar y la montaña,
+el ancho reverbero del claro sol de España,
+anduvo un pobre hidalgo ciego de amor un día
+—amor nublóle el juicio; su corazón veía—.
+  Y tú, la cerca y lejos, por el inmenso llano
+eterna compañera y estrella de Quijano,
+lozana labradora fincada en tus terrones
+—¡oh madre de manchegos y numen de visiones!—,
+viviste, buena Aldonza, tu vida verdadera
+cuando tu amante erguía su lanza justiciera
+y, en tu casona blanca ahechando el rubio trigo,
+aquel amor de fuego era por ti y contigo.
+  Mujeres de la Mancha, con el sagrado mote
+de Dulcinea, os salva la gloria del Quijote.
+
+ES-L
+Poesías de Antonio Machado
+Poesías
