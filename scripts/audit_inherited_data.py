@@ -9,6 +9,7 @@ ROOT = Path("data/inherited/papers")
 EXPECTED_OWNER_FILES = 9
 CURATED_ROOT = ROOT / "curated"
 WIKIMEDIA_ROOT = CURATED_ROOT / "wikimedia-es"
+WIKISOURCE_ROOT = CURATED_ROOT / "wikimedia-wikisource"
 
 def digest(raw: bytes) -> str:
     return hashlib.sha256(raw).hexdigest()
@@ -35,7 +36,7 @@ def inspect(path: Path, seen: dict[str, str], curated: bool) -> dict:
         "lines": text.count("\n") + 1,
         "collection": "curated-open-library" if curated else "owner-papers",
     }
-    if path.is_relative_to(WIKIMEDIA_ROOT):
+    if path.is_relative_to(WIKIMEDIA_ROOT) or path.is_relative_to(WIKISOURCE_ROOT):
         required = (
             "Source URL:", "Page ID:", "Dataset revision:",
             "License:", "Wikimedia Foundation",
@@ -43,8 +44,10 @@ def inspect(path: Path, seen: dict[str, str], curated: bool) -> dict:
         missing = [item for item in required if item not in normalized]
         if missing:
             raise SystemExit(f"missing Wikimedia provenance fields {missing}: {path}")
-        if "https://es.wikipedia.org/wiki/" not in normalized:
+        if path.is_relative_to(WIKIMEDIA_ROOT) and "https://es.wikipedia.org/wiki/" not in normalized:
             raise SystemExit(f"missing canonical Wikipedia URL: {path}")
+        if path.is_relative_to(WIKISOURCE_ROOT) and "wikisource.org/wiki/" not in normalized:
+            raise SystemExit(f"missing canonical Wikisource URL: {path}")
     return record
 
 def main() -> int:
