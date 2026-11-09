@@ -12,7 +12,7 @@ permissions:
 
 # Serialize with the previous 650k continuation: never run two CPU training jobs at once.
 concurrency:
-  group: minironin-150k-continuation-training
+  group: minironin-legacy-vocab-150k-from-650k
   cancel-in-progress: false
 
 jobs:
