@@ -18,8 +18,28 @@ def filehash(p):
         for block in iter(lambda:f.read(1024*1024),b""): h.update(block)
     return h.hexdigest()
 def allowed_license(value):
-    s=norm(str(value or "")).replace("_","-")
-    return s in LICENSES or s.replace("-"," ") in LICENSES
+    if isinstance(value,dict):
+        s=" ".join(str(v) for v in value.values()).casefold()
+    elif isinstance(value,(list,tuple)):
+        s=" ".join(str(v) for v in value).casefold()
+    else:
+        s=str(value or "").casefold()
+    s=norm(s).replace("_","-")
+    compact=re.sub(r"[^a-z0-9]","",s)
+    denied=("noncommercial","noderivatives","sharealike","cc-by-nc","cc-by-nd","cc-by-sa")
+    if any(x in compact for x in denied):return False
+    if s in LICENSES or s.replace("-"," ") in LICENSES:return True
+    return s.startswith("cc by ") or s.startswith("cc-by-") or "creativecommons.org/licenses/by/" in s or s.startswith("creative commons attribution ")
+def spanish_language(value):
+    if isinstance(value,dict):s=" ".join(str(v) for v in value.values()).casefold()
+    elif isinstance(value,(list,tuple)):s=" ".join(str(v) for v in value).casefold()
+    else:s=str(value or "").casefold()
+    s=norm(s);tokens=set(re.split(r"[^a-z0-9]+",s))
+    return bool(tokens & {"es","spa","spanish","español","espanol","castellano","castilian"}) or s.startswith("spanish") or s.startswith("es-") or s.startswith("spa")
+def open_type_key(value):
+    if isinstance(value,dict):s=" ".join(str(v) for v in value.values())
+    else:s=str(value or "")
+    return re.sub(r"[^a-z]","",norm(s))
 def existing_hashes(root):
     excluded={".git","holdout","benchmarks","validation","test","quarantine","candidate","artifacts","checkpoints"}
     found=set()
@@ -60,17 +80,24 @@ def main():
     a.output_dir.mkdir(parents=True,exist_ok=True)
     out=a.output_dir/f"common-corpus-es-{a.shard:04d}.jsonl.gz"
     output_sha=hashlib.sha256()
-    counts={};rows_seen=admitted=skip_lang=skip_domain=skip_license=skip_short=skip_dup=0
+    counts={};language_counts={};open_type_counts={};license_counts={}
+    rows_seen=admitted=skip_lang=skip_domain=skip_license=skip_short=skip_dup=0
     with gzip.open(out,"wt",encoding="utf-8",newline="\n",compresslevel=6) as f:
         for batch in parquet.iter_batches(batch_size=64):
             for row in batch.to_pylist():
                 rows_seen+=1
-                lang=norm(str(row.get("language") or ""))
-                if lang not in {"es","spa","spanish","español"}:skip_lang+=1;continue
-                open_type=norm(str(row.get("open type") or row.get("open_type") or ""))
+                lang_value=row.get("language")
+                lang_display=str(lang_value)
+                language_counts[lang_display]=language_counts.get(lang_display,0)+1
+                if not spanish_language(lang_value):skip_lang+=1;continue
+                open_raw=row.get("open type") or row.get("open_type") or ""
+                open_type=open_type_key(open_raw)
+                open_type_counts[str(open_raw)]=open_type_counts.get(str(open_raw),0)+1
                 if open_type not in OPEN_TYPES:skip_domain+=1;continue
-                license_value=str(row.get("license") or "")
-                if not allowed_license(license_value):skip_license+=1;continue
+                raw_license=row.get("license")
+                license_counts[str(raw_license)]=license_counts.get(str(raw_license),0)+1
+                license_value=(" ".join(str(v) for v in raw_license.values()) if isinstance(raw_license,dict) else " ".join(str(v) for v in raw_license) if isinstance(raw_license,(list,tuple)) else str(raw_license or ""))
+                if not allowed_license(raw_license):skip_license+=1;continue
                 text=row.get("text")
                 if not isinstance(text,str) or len(text.strip())<500:skip_short+=1;continue
                 digest=htext(text)
@@ -92,6 +119,8 @@ def main():
                 line=json.dumps(record,ensure_ascii=False,separators=(",",":"))+"\n"
                 f.write(line);output_sha.update(line.encode("utf-8"));admitted+=1
                 counts[collection]=counts.get(collection,0)+1
+    if admitted<100:
+        raise SystemExit(f"fewer than 100 Spanish rows admitted; languages={dict(sorted(language_counts.items(),key=lambda x:-x[1])[:20])}; open_types={open_type_counts}; licenses={dict(sorted(license_counts.items(),key=lambda x:-x[1])[:20])}")
     manifest={
         "schema_version":1,"dataset":"PleIAs Common Corpus — Spanish open science/government/semantic",
         "source_dataset":REPO,"source_url":SOURCE,"source_revision":a.revision,
