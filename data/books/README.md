@@ -2,6 +2,12 @@
 
 Esta carpeta separa la biblioteca documental del corpus general heredado. Objetivo: **5.000 obras/documentos únicos con texto utilizable**, seleccionados por contenido y no por el mero número de registros de catálogo.
 
+## Prioridad lingüística y factual
+
+La adquisición nueva prioriza **castellano**: fuentes oficiales españolas, bibliotecas nacionales, universidades, repositorios científicos y colecciones educativas abiertas. Después se incorporan fuentes de cualquier idioma cuando aporten hechos, ciencia, matemáticas, documentación técnica o datos con procedencia verificable. Se conserva siempre el idioma original; las traducciones son derivadas enlazadas con su fuente, nunca documentos independientes para inflar el recuento.
+
+El mapa ampliado de adquisición está en `data/curated/OPEN_FACTUAL_CORPORA.md`. Incluye BOE, INE, AEMET, IGN/CNIG, Banco de España, BNE, OpenStax, Wikidata, Eurostat, World Bank, OpenAlex, PubMed Central OA, PleIAs Common Corpus y Common Pile, con controles de licencia y factualidad por componente.
+
 ## Fuentes iniciales aprobadas para adquisición técnica
 
 | Fuente | Alcance conocido | Derechos declarados | Uso |
@@ -28,6 +34,7 @@ El workflow `.github/workflows/acquire-reasoning-books.yml` descarga PRODATPHIL 
 - No inferir que un autor antiguo es correcto por ser canónico.
 - Mantener holdout por obra y autor para evitar contaminación por capítulos o ediciones paralelas.
 - El recuento oficial solo aumenta tras descargar y auditar el texto completo.
+- Para datos factuales, preservar unidad, periodo, jurisdicción, fuente y fecha de revisión; nunca entrenar cifras sin su contexto.
 
 ## Estado inicial
 
