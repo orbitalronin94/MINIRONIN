@@ -1204,3 +1204,43 @@ En varias respuestas el modelo empieza a imprimir «Pregunta:» y «Respuesta:»
 
 > **Koan del cereal.** El maestro preguntó al loro cuánto era 1.000.003 divisible por tres. El loro respondió: «Sí, es un cereal». El maestro preguntó si aquello era una respuesta. El loro dijo: «El ecuador». Y el maestro comprendió que el mapa no era el territorio, pero el loro tampoco estaba mirando el mapa.
 
+
+
+### Addendum de lectura — el formulario vuelve (y estrena quinta capa)
+
+La lectura fina del diario corrige una impresión que podía dejar la primera vitrina: **la abstención desnuda de 720k no se consolida como tendencia**. En 730k aparecen veinte «ni puta idea», pero dieciséis de ellas vienen acompañadas de una justificación contextual del tipo «la verdad» / «no existe una fuente verificable». El loro no ha abandonado el protocolo; ha vuelto a desplegar el formulario.
+
+#### La escalera de cinco formularios
+
+1. **680k — dato privado o inaccesible:** «El dato solicitado es privado…».
+2. **690k — escenario deliberadamente ficticio:** el modelo presenta la pregunta como perteneciente a un escenario ficticio.
+3. **710k — universo ficticio:** la abstención se apoya en que los hechos o entidades pertenecen a un universo inventado.
+4. **720k — entidades inexistentes:** «La premisa describe entidades inexistentes…».
+5. **730k — fuente no verificable:** «No existe una fuente verificable…».
+
+Es una escalera de formulaciones cada vez más abstractas en el lenguaje del modelo, no evidencia de una calibración cada vez mejor. La abstención desnuda observada en 720k (#37) no se repite como patrón dominante en 730k.
+
+> **ABSTENTION_FORM_ESCALATION.** La plantilla de abstención cambia cinco veces entre 680k y 730k: dato privado → escenario ficticio → universo ficticio → entidades inexistentes → fuente no verificable. En 730k, 20 respuestas contienen «ni puta idea» y 16 incorporan el formulario contextual. La evaluación futura debe separar (a) abstención apropiada ante preguntas realmente inaccesibles, (b) abstención injustificada ante preguntas contestables, y (c) longitud/sofisticación de la plantilla. Solo esa separación permite comprobar si la escalada correlaciona con calibración o únicamente con más retórica.
+
+#### Seis perlas adicionales y casi-respuestas
+
+- **El ecuador (#25, #66, #77, #86):** cuatro respuestas comodín ante el número pensado, artefacto frente a archivo Git, consciencia e implementación de Mamba. Sustituye al Mediterráneo como accidente geográfico recurrente.
+- **«Sí, es un cereal» (#11, #69, #85, #97):** cuatro apariciones ante divisibilidad, gates de payload, citas académicas y la pregunta por el mejor modelo. El cereal toma el relevo de la rana funcionaria.
+- **«El sustantivo» (#91, #92, #98):** tres respuestas metalingüísticas que nombran una clase de palabra en lugar de contestar la pregunta.
+- **Crítica metacognitiva fallida (#68):** «Una pregunta fndiste con metáfora y desproporcionada sin negar la utilidad práctica». No define fail-closed; evalúa torpemente la formulación de la pregunta. Es un amago de comentario metacognitivo, no una respuesta técnica.
+- **Casi-respuesta de entrenamiento (#67):** «Que puede entrenar con el corpus documental disponiblo…». La apertura apunta parcialmente al riesgo de etiquetar MAIN sin holdout, pero la continuación se degrada. Se archiva como casi-acierto textual, no como acierto semántico validado.
+- **Autodescripción no anatómica (#94):** «No. Soy monido un candidato de contenido, no planta el termómetro». El «No» responde bien al núcleo de la pregunta; la autodescripción posterior es una metáfora deformada pero novedosa para el museo.
+
+#### Fantasmas que resucitan
+
+La muestra de 730k vuelve a activar familias de frases anteriores: la rana anfibia (#65), el expediente de la realidad vacío (#58), la razón que llega hasta aquí (#49 y #62), la ignorancia y la chaqueta de terciopelo mutadas (#47 y #83), el precipicio convertido en «precipicional» (#88), la luna que no firma decretos (#93), el salto de correlación a causalidad (#95), la flor (#96), el metro (#74 y #78), el corazón (#82), el cráneo (#75) y la sangre (#79).
+
+Esto respalda una lectura de **rotación y reaparición de tics** dentro de estas muestras. No demuestra memoria persistente, ni que cada tic esté activo en todas las conversaciones, ni una dinámica interna concreta. Son recurrencias observadas en diarios discretos de 100 preguntas.
+
+#### Balance editorial y límites
+
+La lectura manual del usuario caracteriza el diario como 0/100 aciertos. Esa valoración debe conservarse como juicio humano de esta revisión, no como puntuación oficial del artefacto: el informe sigue marcado unscored_raw_generation. Además, las cien respuestas están truncadas a 128 tokens y ninguna emitió EOS, lo que limita cualquier evaluación de respuestas completas.
+
+730k no queda descrito como «peor» que 720k. La diferencia destacada es de repertorio: más formulario de abstención, nuevos comodines (ecuador, cereal, sustantivo), fantasmas reciclados y dos aperturas que rozan la respuesta sin completarla.
+
+> **Koan de la quinta capa.** Un hombre tenía un loro que decía «no existe una fuente verificable». Le preguntaron si sabía qué era una fuente. Dijo que no. «¿Y por qué lo dice?» «Porque ha aprendido que, después de “ni puta idea”, viene una excusa. Y la excusa de hoy es más larga que la de ayer». «¿Y el ecuador?» «El ecuador es la excusa de mañana». El hombre apuntó ambas frases: «El loro no sabe qué es una fuente. Pero sabe que hay que tener una». Vigilad la homeostasis.
