@@ -3,8 +3,8 @@ title: "Apoyo mutuo como factor de cooperación y supervivencia"
 author_reference: "Peter Kropotkin"
 reference_work: "Mutual Aid: A Factor of Evolution (1902)"
 source_collection: "Project Gutenberg / public-domain editions to be individually verified"
-source_url: "https://www.gutenberg.org/ebooks/23428"
-source_status: "The linked Gutenberg record is The Conquest of Bread, not Mutual Aid; use it only as a related author/source lead. Mutual Aid edition must be separately located and rights-checked."
+source_url: "https://www.gutenberg.org/ebooks/4341"
+source_status: "Project Gutenberg eBook 4341; marked public domain in the United States. Verify territorial status for Spain before redistributing the source edition."
 document_type: "original_curatorial_synthesis"
 source_text_reproduced: false
 language: "es"
@@ -19,4 +19,4 @@ Para evaluar el argumento hay que separar observaciones naturalistas, interpreta
 
 La idea sí permite formular preguntas empíricas: qué condiciones facilitan cooperación, cómo se resuelven conflictos internos, qué mecanismos sostienen reciprocidad y qué ocurre cuando los recursos escasean.
 
-**Advertencia de procedencia:** esta es una síntesis original de la tesis general de Kropotkin, no una transcripción. El enlace indicado corresponde a *The Conquest of Bread* y no acredita la edición de *Mutual Aid*; la fuente bibliográfica de esta última queda pendiente de fijación antes de importar el texto primario.
+**Referencia primaria:** Kropotkin, *Mutual Aid: A Factor of Evolution* (1902), Project Gutenberg eBook 4341. La ficha de Gutenberg identifica esta edición y declara dominio público en Estados Unidos; comprobar el plazo territorial aplicable antes de redistribuir el texto fuente en España. Esta ficha es una síntesis original, no una transcripción.
