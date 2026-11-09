@@ -1,0 +1,70 @@
+name: MAXIRONIN 500M — holdout antes y después de 1k
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/holdout-maxironin-500m-1k.yml"
+      - "scripts/holdout_maxironin.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: maxironin-holdout-1k
+  cancel-in-progress: false
+
+jobs:
+  paired-holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+      TOKENIZERS_PARALLELISM: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instalar dependencias CPU
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy tokenizers
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+      - name: Descargar checkpoint y tokenizador del primer train
+        uses: actions/download-artifact@v4
+        with:
+          name: maxironin-500m-step-1000-42585770935
+          repository: orbitalronin94/MINIRONIN
+          run-id: 42585770935
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: maxironin-artifact
+      - name: Localizar y verificar artefactos
+        id: files
+        shell: bash
+        run: |
+          set -euo pipefail
+          CKPT="$(find maxironin-artifact -type f -name 'maxironin-500m-step-1000.pt' -print -quit)"
+          TOKENIZER="$(find maxironin-artifact -type f -name 'tokenizer.json' -print -quit)"
+          test -n "$CKPT" && test -s "$CKPT"
+          test -n "$TOKENIZER" && test -s "$TOKENIZER"
+          echo "checkpoint=$CKPT" >> "$GITHUB_OUTPUT"
+          echo "tokenizer=$TOKENIZER" >> "$GITHUB_OUTPUT"
+          sha256sum "$CKPT" "$TOKENIZER"
+      - name: Holdout fijo antes reconstruido y después del paso 1000
+        run: |
+          python scripts/holdout_maxironin.py \
+            --checkpoint "${{ steps.files.outputs.checkpoint }}" \
+            --tokenizer "${{ steps.files.outputs.tokenizer }}" \
+            --output-dir maxironin-holdout
+      - name: Publicar los dos diarios y metadatos
+        uses: actions/upload-artifact@v4
+        with:
+          name: maxironin-paired-holdout-0-vs-1000
+          path: maxironin-holdout/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 6
