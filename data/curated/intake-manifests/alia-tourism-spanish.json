@@ -22,5 +22,6 @@
   "source_url": "https://huggingface.co/datasets/gplsi/alia_tourism",
   "language": "es",
   "license_verification": "exact CC BY 4.0 live card check; train split only; exact language==es filter",
-  "status": "ready_for_automated_import"
+  "status": "ready_for_automated_import",
+  "shard_rows": 5000
 }

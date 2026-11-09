@@ -15,5 +15,6 @@
   "language": "es",
   "min_text_chars": 24,
   "license_verification": "exact dataset-card identifier required; no NC/ND licenses admitted",
-  "status": "ready_for_automated_import"
+  "status": "ready_for_automated_import",
+  "shard_rows": 5000
 }

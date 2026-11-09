@@ -18,5 +18,6 @@
   "source_url": "https://huggingface.co/datasets/gplsi/amic_parallel",
   "language": "es",
   "license_verification": "exact CC BY 4.0 live card check; extract Spanish side only",
-  "status": "ready_for_automated_import"
+  "status": "ready_for_automated_import",
+  "shard_rows": 10000
 }
