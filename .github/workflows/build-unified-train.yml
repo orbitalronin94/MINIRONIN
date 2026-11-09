@@ -240,22 +240,10 @@ jobs:
           print(json.dumps({k:m.get(k) for k in ("source_rows_scanned","rows_admitted","rows_skipped_exact_duplicates","license_scope")},ensure_ascii=False))
           PY
 
-      - name: Construir corpus útil sin datasets sintéticos y auditar exclusiones
+      - name: Construir biblioteca unificada desde el artefacto versionado (incluye sintéticos etiquetados)
         run: |
           set -euo pipefail
-          python scripts/build_unified_train.py --exclude-synthetic --output-dir unified-train --roots \
-            data/inherited/heretic-corpus \
-            data/inherited/prodatphil-en-v0.3 \
-            data/inherited/anarchist-library \
-            data/inherited/classics-library \
-            data/inherited/japanese-library \
-            data/inherited/papers \
-            data/inherited/wikimedia-es \
-            data/inherited/pleias-spanish-pd-books \
-            data/inherited/common-corpus-es \
-            data/inherited/boe-legislation-es \
-            data/inherited/bne-hemeroteca-ocr-es \
-            data/curated
+          python scripts/build_unified_train.py --library-manifest data/curated/library-artifact-v1.json --output-dir unified-train
           (cd unified-train && sha256sum -c SHA256SUMS)
           cat unified-train/quality-report.json
 
