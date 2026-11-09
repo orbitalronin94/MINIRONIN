@@ -1,0 +1,43 @@
+# Aplauso a Dorisa
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Aplauso%20a%20Dorisa
+
+**Page ID:** 4310
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Aplauso%20a%20Dorisa?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+<div style='text-align:justify'>
+
+Bendita sea la hora, el año, el día 
+y la ocasión y el venturoso instante 
+en que rendí mi corazón amante 
+a aquellos ojos donde Febo ardía. 
+
+Bendito el esperar y la porfía
+y el alto empeño de mi fe constante 
+y las saetas y arco fulminante 
+con que abrasó Cupido el alma mía. 
+
+Bendita la aflicción que he tolerado
+en las cadenas de mi dulce dueño 
+y los suspiros, llantos y esquiveces, 
+
+los versos que a su gloria he consagrado
+y han de vencer del duro tiempo el ceño, 
+y ella bendita innumerables veces. 
+
+ES-A
+Sonetos de Nicolás Fernández de Moratín
+Sonetos

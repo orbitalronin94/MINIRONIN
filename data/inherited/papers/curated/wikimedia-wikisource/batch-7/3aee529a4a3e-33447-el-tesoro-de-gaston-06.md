@@ -1,0 +1,71 @@
+# El tesoro de Gastón: 06
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/El%20tesoro%20de%20Gast%C3%B3n%3A%2006
+
+**Page ID:** 33447
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/El%20tesoro%20de%20Gast%C3%B3n%3A%2006?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+El Norte 
+
+En esta exploración del conjunto de Landrey se le había pasado la mañana a Gastón, pues era vasto el circuito, las construcciones muchas, y el mozo, imbuido y guiado sin advertirlo por la secreta ilusión del tesoro, se detenía involuntariamente más de lo razonable a reconocer la configuración de una muralla, o la dirección de un pasadizo. Despierto el apetito con el aire puro, volviose a casa a esperar a Telma, que de allí a poco apareció por la calzada seguida de un borrico cargado de trastos y de dos fornidos gañanes portadores de varios bultos y líos. No se desdeñó Gastón de ayudar a la descarga, hecha la cual, Telma se dio prisa a aderezarle algo que comiese, dejando para después el acomodo del ajuar. 
+
+-Señorito -advirtió Telma alzando los manteles-, casi no he gastado nada, porque no encontré dónde comprar ropa ni colchones. Todo viene prestado; ¿y sabe quién nos lo presta? ¿El caifás de Lourido! Del lobo un pelo. Me salió al encuentro, hecho pura jalea, y tumba conque el señorito no debía venir sin avisarle, y vuelta conque fuese a parar en su casa, donde hay todas las comodidades, y que aquí el señorito no puede vivir. Y ahí tiene, que los colchones son de don Cipriano, y el quinqué de don Cipriano, y sólo pude comprar el mineral, los platos, las ollas y las sartenes... Para eso, don Cipriano me obsequió con un paquete de café molido, y unos dulces... ¡Si levantase la cabeza doña Catalina y viese al señor de Laudrey obsequiado por Lourido, que llegó a casa en pernetas -bien me acuerdo- y que la primer noche le hizo mi padre fregar con estropajo la cara, porque daba asco de tanta roña! ¡Si traía el hombre cazcarrias del año que se las pidiesen! 
+
+-Telma -preguntó Gastón interrumpiéndola-, tú que has vivido mucho tiempo en esta casa, explícame... Aquí hay una torre muy vieja, muy vieja. ¿La recuerdas habitada alguna vez? 
+
+-¿Dice esa tan negra, tan fea, que le llaman de la Reina mora? -respondió Telma riéndose. 
+
+-¿De la Reina mora? -repitió Gastón sorprendido. 
+
+-¿No sabía que tiene ese nombre? Verdad que como el señorito no ha estado aquí nunca... Esa torre, señorito, es la abuela de todas, la que dicen que se edificó primero, hace una barbaridad de años. Y también cuentan..., ¿pero quién da crédito a mentiras?, que en esa torre estuvo presa una mora, muy guapísima, una reina de allá entre ellos, que la trajo de la guerra un señor de Landrey; y que la mora se puso muy triste de verse así emparedada, y se quedó seca, seca, hasta que se murió, y que la enterraron con unas alhajas que tenía magníficas, collares y pulseras, y pendientes y muchas preciosidades, allí mismo debajo de la torre, en una cueva atroz que no se sabe a dónde va a parar... como que anda diez leguas arreo por debajo de la montaña. ¡Cuentos, cuentos! -añadió Telma echándola de espíritu fuerte. 
+
+Oía Gastón con palpitante interés. La popular conseja, enlazada en su imaginación a los datos auténticos que él solo conocía en el mundo, le causaba una excitación indescriptible. En su exploración matinal no había dejado de orientarse y de advertir que la caduca y semidesmoronada torre caía al Norte con tal precisión como si fuese la aguja imantada y Landrey un inmenso navío. Recordaba las palabras del manuscrito, que se había aprendido de memoria: «Hallarás lo que buscares, si guiado por el Norte...». A hacer su gusto, inmediatamente se volvería a la torre, para seguir registrando, ya con doblada insistencia, sus piedras reveladoras: pero se lo estorbó una visita intempestiva, la del señor Lourido en persona, que apeándose de una redonda y bien cuidada yegüecilla castaña, subía las escaleras todo lo apresuradamente que su obesidad permitía. La adversidad había empezado ya a adiestrar a Gastón, y el instinto le dictó recibir al apoderado con muestras de cordialidad y contento, lo mismo que si estuviese encantado de sus buenos oficios y hubiese hallado a Landrey en el estado más floreciente. 
+
+-A este es preciso verle venir -pensó mientras observaba con atención la cara de don Cipriano, tosca y vulgar, colorada y morena, pero con rasgos de incomparable astucia y disimulo en los diminutos y recelosos ojuelos, en la arremangada nariz y en la voraz y blanquísima dentadura, que conservaba intacta a los cincuenta y cinco años. 
+
+Don Cipriano venía, claro es, a saludar al señorito; a dolerse de que no le hubiese prevenido de su llegada, en cuyo caso le esperaría en la estación, y le traería mejor montado y atendido, no a Landrey, sino a la Puebla, porque estarse en Landrey era una locura, y el señorito no debía tardar nada en bajar a residir en casa de don Cipriano, donde podrían muy en paz tratar de los asuntos -y Lourido recalcaba la palabra, dándole especial significación. 
+
+-Mil gracias -dijo Gastón con cortesía-; pero yo he venido para vivir en Landrey-. Me dolía que este castillo estuviese deshabitado, abandonado... 
+
+-Se han hecho en él muchísimas reparaciones, señorito -contestó precipitadamente el apoderado-, y eso que no había... (ademán expresivo de refregar el pulgar contra el índice). Yo no cesaba de remendar... (y así diciendo, señaló a la pared). 
+
+- Ya veo que allí se ha trabajado -declaró Gastón-, pero en cambio, las vigas de los techos parece que están arrancadas a propósito... 
+
+Dijo estas palabras Gastón en tono chancero, para que no sonasen a reprensión, y no pudo menos que sorprenderle el efecto que causaron en Lourido, cuyos ojos cautelosos e inquietos se revolvieron en las órbitas a estilo de los del ratón cogido en la ratonera y que no sabe por dónde salir. 
+
+-El señorito -articuló al fin con voz turbada-, no sabe lo que es una casa vieja... Allá por las tierras donde anduvo el señorito, las casas son nuevas... ¿Piensa el señorito que las vigas son de hierro? ¡Los años pueden mucho... las vigas se caen!... 
+
+-Ya lo sé -respondió Gastón diplomáticamente-. Comprendo bien que habrá usted tenido que luchar con mil dificultades... No, si no es que me queje. Al contrario: tengo que darle a usted las gracias por todos los trastos que hoy me envió. Si no es por usted, no duermo entre sábanas... 
+
+-Créame el señorito -insistió Lourido ya más sereno-. Véngase a la Puebla, y no viva más entre polilla y ratos. En mi choza no carecerá de nada. 
+
+-Ya me han dicho que tiene usted la mejor casa del pueblo... -murmuró Gastón-, y se la envidio, pero por ahora quiero estarme entre estas paredes ruinosas. 
+
+-El castillo está cayéndose; si el señorito piensa hacer obras, mírelo bien antes -indicó Lourido-; porque le tiene que costar miles y miles de pesos... Ya hablaremos de esto, señorito, por que usted ignora muchas cosas de que yo le puedo enterar, y le conviene, antes de dar paso ninguno: el que llega de fuera viene con los ojos cerrados: sería una lástima meterse en trifulcas. 
+
+-Ya bajaré a la Puebla a tratar de eso con usted -repuso Gastón, disimulando la ironía-, y crea que sin su acertadísimo y amistoso consejo no emprenderé nada. En efecto, estoy a ciegas. 
+
+-Me parece que sí -declaró perentoriamente el apoderado, cada vez más tranquilo, y reventando de importancia. 
+
+Prolongáronse visita y ofrecimientos hasta muy entrada la tarde, y Gastón, por aquel día, renunció a curiosear sus dominios. Acostose con las gallinas, y madrugó al día siguiente, saliendo cuando la aurora principiaba a dorar las cimas del hemiciclo de montañas que por dos lados circunda a Landrey. Si altas razones de discreción no nos lo vedasen, aquí venía a pelo especificar dónde se extiende esa comarca deleitosa; pero sea lícito decir que Landrey está situado en la falda de una de las sierras en que expiran, entre los cabos Ortegal y Finisterre, las últimas ondulaciones, apenas sensibles, de la cordillera Cantábrica. Gastón, al dirigirse tan de mañana a la torre, llevaba el propósito de trepar hasta su mayor altura y dominar el panorama completo. No sin trabajo consiguió salvar las gruesas piedras y los escombros hacinados ante la puerta, y muy arañado de manos saltó al interior. Era mayor allí la ruina. Trozos enteros de pared, desmoronándose, habían atascado la sala baja, siendo muy arduo reconocer su forma. Gastón ascendió por los escombros hasta poner el pie sobre una de las piedras salientes donde se sostenía la escalera y la armazón del piso. Aprovechando este auxilio y las mismas desigualdades de la pared, y no sin riesgo de caer de cabeza sobre los derrumbados sillares; cogiéndose a las plantas parásitas que cedían bajo su mano, y con una audacia loca, logró llegar a donde aspiraba: a la ventana del último piso de la torre. Ya en ella, pudo acomodarse con toda seguridad, pues el hueco de la ventana, con sus dos poyos, formaba una especie de gabinete, y ofrecía asiento seguro su antepecho. El elegante marco de la esbelta ojiva encerraba un cuadro maravilloso. 
+
+Gastón, al pronto, sintió mareo. La torre, por aquel lado, se fundaba en escueta roca que descendía al río, si no tajada, al menos en rápido declive; natural defensa que no habían desaprovechado los fundadores. Al fin se serenó Gastón, familiarizándose con la altura, y requirió sus gemelos marinos, de los cuales viajando no se separaba nunca. Graduolos y se recreó en el paisaje. La sierra apenas dibujaba, en lontananza, seis crestas blandas, de un violeta suave, como el de un collar de amatistas, y al pie de la torre, el río, uno de esos ríos gallegos profundos y callados, que ni se secan ni se desbordan, iba ensanchando su curso hasta desembocar en el mar, formando antes la apacible ría que baña el arenal de la Puebla, reluciente a los primeros rayos del sol como polvillo de oro. La línea del mar era de rosado nácar con vetas de azul turquesa, y los grandes bosques, en la vertiente, de un verdor fino, primaveral. Una paz encantadora, una alegría juvenil ascendía de la naturaleza, que parecía salir de un embalsamado baño de rocío. 
+
+La Puebla la veía Gastón tan distintamente, con su caserío blanco de techos rojos entreabiertos a manera de abanico de cinco varillas -las únicas cinco calles algo importantes del pueblo- que hubiera podido contar las casas, como podía contar las lanchas pescadoras que, izando la airosa vela latina, se desparramaban ya por la opalizada extensión del mar. La plaza de la Puebla se le metió por los oculares a Gastón, y vio, en la torre de la humilde iglesia parroquial, el entrar y salir de los pájaros, y la cuerda de las campanas. Frente a la iglesia, haciendo esquina con el Ayuntamiento, se alzaba nueva, flamante, una estupenda casa, horrible grillera de cuatro pisos y bohardillón, toda reluciente, pintorreada de verde rabioso, con triple galería de cristales, y encima de la puerta una charolada lápida de seguros mutuos, testimonio de sabia previsión en el dueño... Cuando el señorito de Landrey tenía asestado su anteojo al palacio de Lourido -no podía ser menos- en una de las galerías, muy adornada de enredaderas, aparecieron dos mujeres, una joven y otra madura, ambas desgreñadas, en faldas y justillo, recién salidas de la cama, porque se desperezaban aún. La joven, a lo que se percibía con ayuda de los gemelos, era fresca, colorada, blanca, y una copiosa melena rubia, suelta, flotaba desordenadamente por su cuello y hombros. «Es la hija de don Cipriano», pensó Gastón; y por resabios malos, al aferró el anteojo y encandiló el mirar. Una mímica expresiva de las dos mujeres indicó que discutían y se enzarzaban; el displicente gesto de la doncella, sus ademanes y rabotadas, respondían a los airados manoteos de la dueña, asaz puntiaguda de huesos y de muy fea anatomía. De pronto la vieja agarró un brazo de la joven, y esta, desprendiéndose como una culebra, enseñando el puño, huyó al interior del aposento. La galería quedó desierta... 
+
+Varió entonces la dirección del indiscreto anteojo, y torciéndolo a la derecha, admiró los manchones de castaños, y más allá los sombríos pinares. De un campanario semioculto entre arboledas, le trajo el viento el argentino son de la campana tocando a misa. Al herir sus oídos este toque familiar, tan gozoso en el campo, cuya soledad dulcifica, en el cristal de los gemelos se encuadró una vista nueva, no observada hasta entonces. Era una quinta con su huerto, cercada por una tapia de mampostería: la casa no parecía nueva, sino restaurada: el balconaje de arcos de piedra que tenía al frente denunciaba la reparación. Por las columnas trepaban rosales floridos, y delante de la casa, un jardín a la inglesa rodeaba un estanque natural, o diminuto lago, sombreado por árboles péndulos. Más lejos, el jardín frutal y varias dependencias, una era y un hórreo grande, indicaban que allí no se cultivaban sólo flores y plantas de adorno. Cuando Gastón notaba este detalle, de la casa salió corriendo un niño, y tras él un perro negro, saltando y haciéndole fiestas: minutos después, una mujer vestida de clara, cubierta la cabeza con anchísimo sombrero de paja, se reunió al perro y al niño. No era difícil detallar a aquella distancia las facciones de la dama del jardín; pero que era dama, se conocía a tiro de ballesta, en los molimientos, en la esbeltez de la silueta, y hasta en el sombrerón, que se quitó un instante; entonces Gastón pudo distinguir que tenía el pelo oscuro. La dama asió al niño de la mano, le halagó y se lo llevó hacia los árboles, donde el grupo desapareció.
+
+El tesoro de Gastón
