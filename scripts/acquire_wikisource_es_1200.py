@@ -20,7 +20,7 @@ BATCH_SIZE = 1200
 
 
 def normalized(text: str) -> str:
-    return re.sub(r"\\W+", " ", text.casefold(), flags=re.UNICODE).strip()
+    return re.sub(r"\W+", " ", text.casefold(), flags=re.UNICODE).strip()
 
 
 def slug(text: str) -> str:
