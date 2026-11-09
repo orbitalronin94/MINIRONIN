@@ -21,7 +21,9 @@ def main():
         raise SystemExit("Could not resolve immutable WikiCAT revision")
     card = info.card_data
     license_value = getattr(card, "license", None) if card else None
-    if str(license_value).casefold().replace("_", "-") != "cc-by-sa-3.0":
+    license_values = license_value if isinstance(license_value, (list, tuple, set)) else [license_value]
+    normalized_licenses = {str(value).casefold().replace("_", "-").strip() for value in license_values}
+    if "cc-by-sa-3.0" not in normalized_licenses:
         raise SystemExit(f"License mismatch: {license_value!r}")
     ds = load_dataset(REPO_ID, split="train", revision=revision)
     feature = ds.features.get("label")
