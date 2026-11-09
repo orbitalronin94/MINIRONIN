@@ -5,6 +5,12 @@ on:
     workflows: ["MINIRONIN — construir corpus unificado de entrenamiento"]
     types: [completed]
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      corpus_run_id:
+        description: "ID de una ejecución exitosa del constructor de corpus unificado"
+        required: true
+        type: string
 
 permissions:
   actions: read
@@ -16,11 +22,12 @@ concurrency:
 
 jobs:
   train:
-    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
       GH_TOKEN: ${{ github.token }}
+      CORPUS_RUN_ID: ${{ github.event_name == 'workflow_dispatch' && inputs.corpus_run_id || github.event.workflow_run.id }}
       PARENT_TAG: minironin-full-corpus-step-810000
       PARENT_SHA256: 2d8ff48dc0645d4b2d83c2462bc33b88a1abade9354eb9289c265c7a5b13ca6b
       START_STEP: "810000"
@@ -34,13 +41,24 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Validar que el corpus procede de una ejecución exitosa en main
+        run: |
+          set -euo pipefail
+          [[ "$CORPUS_RUN_ID" =~ ^[0-9]+$ ]]
+          run="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/$CORPUS_RUN_ID")"
+          [[ "$(jq -r .name <<<"$run")" == "MINIRONIN — construir corpus unificado de entrenamiento" ]]
+          [[ "$(jq -r .status <<<"$run")" == "completed" ]]
+          [[ "$(jq -r .conclusion <<<"$run")" == "success" ]]
+          [[ "$(jq -r .head_branch <<<"$run")" == "main" ]]
+          echo "Corpus run confirmed: $CORPUS_RUN_ID"
+
       - name: Descargar el corpus unificado de la ejecución que acaba de finalizar
         uses: actions/download-artifact@v4
         with:
-          name: minironin-unified-train-corpus-${{ github.event.workflow_run.id }}
+          name: minironin-unified-train-corpus-${{ env.CORPUS_RUN_ID }}
           github-token: ${{ github.token }}
           repository: ${{ github.repository }}
-          run-id: ${{ github.event.workflow_run.id }}
+          run-id: ${{ env.CORPUS_RUN_ID }}
           path: unified-train
 
       - name: Verificar integridad y presencia de bibliotecas no sintéticas
@@ -130,7 +148,7 @@ jobs:
             cp "$checkpoint" "train-150k/checkpoints/checkpoint-$end.pt"
             cp "$report" "train-150k/checkpoints/report-$end.json"
             sha256sum "train-150k/checkpoints/checkpoint-$end.pt" "train-150k/checkpoints/report-$end.json" > "train-150k/checkpoints/SHA256SUMS-$end"
-            gh release create "minironin-legacy-150k-from-810k-step-$end" \
+            gh release create "minironin-legacy-150k-from-810k-nonsynthetic-step-$end" \
               "train-150k/checkpoints/checkpoint-$end.pt" \
               "train-150k/checkpoints/report-$end.json" \
               "train-150k/checkpoints/SHA256SUMS-$end" \
@@ -157,7 +175,7 @@ jobs:
               "validation_by_domain":report["validation_loss_by_domain"],
               "corpus":report["dataset_manifest"]},ensure_ascii=False,indent=2))
           PY
-          gh release create "minironin-legacy-150k-from-810k-step-960000-candidate" \
+          gh release create "minironin-legacy-150k-from-810k-nonsynthetic-step-960000-candidate" \
             train-150k/checkpoint-960000.pt train-150k/report-960000.json train-150k/SHA256SUMS-960000 \
             --title "MINIRONIN legacy tokenizer — 150k continuation / step 960000" \
             --notes "150,000 additional steps from the verified 810k byte-level checkpoint, trained on all admitted non-synthetic rows from the unified corpus. Synthetic datasets explicitly excluded. Candidate only; no automatic promotion. Matched holdout required."
