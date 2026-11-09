@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import re
+import gzip
 from pathlib import Path
 
 EXCLUDED_PARTS = {
@@ -29,14 +30,66 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def read_text(path: Path) -> str:
-    suffix = path.suffix.lower()
-    if suffix in {".md", ".txt", ".rst", ".xml", ".html", ".htm", ".yaml", ".yml", ".csv", ".tsv"}:
-        return path.read_text(encoding="utf-8", errors="replace")
-    if suffix in {".json", ".jsonl", ".ndjson"}:
-        return path.read_text(encoding="utf-8", errors="replace")
-    raise ValueError(f"Unsupported admitted document format: {path.suffix}")
+def extract_record(value, depth=0) -> str:
+    if depth > 5:
+        return ""
+    if isinstance(value, str):
+        return value.strip()
+    if isinstance(value, list):
+        return "\\n".join(filter(None, (extract_record(item, depth + 1) for item in value)))
+    if isinstance(value, dict):
+        preferred = (
+            "text", "content", "body", "document", "passage", "abstract",
+            "question", "instruccion", "instruction", "answer", "respuesta",
+            "response", "completion", "solution", "evidence", "evidencia",
+            "context", "title", "summary", "description", "explanation",
+            "prompt", "input", "output", "messages",
+        )
+        parts = []
+        for key in preferred:
+            if key in value:
+                extracted = extract_record(value[key], depth + 1)
+                if extracted:
+                    parts.append(f"{key}: {extracted}")
+        if parts:
+            return "\\n".join(parts)
+        ignored = {"id", "url", "source", "source_file", "license", "metadata",
+                   "author", "date", "timestamp", "path", "filename", "sha256",
+                   "run_id", "job_id", "rights_status"}
+        return "\\n".join(
+            f"{key}: {item}" for key, item in value.items()
+            if key.lower() not in ignored and isinstance(item, (str, int, float))
+        )
+    return ""
 
+
+def read_text(path: Path) -> str:
+    if path.name.lower().endswith((".jsonl.gz", ".txt.gz")):
+        with gzip.open(path, "rt", encoding="utf-8", errors="replace") as stream:
+            raw = stream.read()
+    else:
+        raw = path.read_text(encoding="utf-8", errors="replace")
+    suffix = path.suffix.lower()
+    if path.name.lower().endswith((".jsonl.gz", ".jsonl", ".ndjson")):
+        rows = []
+        for line in raw.splitlines():
+            if not line.strip():
+                continue
+            try:
+                item = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            text = extract_record(item)
+            if text:
+                rows.append(text)
+        return "\\n\\n".join(rows)
+    if suffix == ".json":
+        item = json.loads(raw)
+        values = item if isinstance(item, list) else [item]
+        return "\\n\\n".join(filter(None, (extract_record(value) for value in values)))
+    if suffix in {".md", ".txt", ".rst", ".xml", ".html", ".htm", ".yaml", ".yml", ".csv", ".tsv"} or path.name.lower().endswith(".txt.gz"):
+        return raw
+    raise ValueError(f"Unsupported admitted document format: {path.suffix}")
 
 def main() -> None:
     parser = argparse.ArgumentParser()
