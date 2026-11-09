@@ -31,7 +31,16 @@ def main():
     for mp in manifests:
         m=json.loads(mp.read_text(encoding="utf-8")); slug=m["slug"]; repo=m["repo_id"]; expected=norm_license(m["license"])
         if bool(m.get("synthetic",False)):
-            results.append({"slug":slug,"status":"excluded_synthetic","reason":"Project policy: synthetic datasets are not admitted to the real training corpus."})
+            # Also purge any outputs from an older importer run that did not yet enforce this policy.
+            prior_manifest=outdir/f"{slug}.manifest.json"
+            if prior_manifest.exists():
+                try:
+                    prior=json.loads(prior_manifest.read_text(encoding="utf-8"))
+                    for name in prior.get("files",[prior.get("file")]):
+                        if name: (outdir/name).unlink(missing_ok=True)
+                finally:
+                    prior_manifest.unlink(missing_ok=True)
+            results.append({"slug":slug,"status":"excluded_synthetic","reason":"Project policy: synthetic datasets are not admitted to the real training corpus; any previous intake output was purged."})
             print(f"INTAKE_EXCLUDED_SYNTHETIC {slug}")
             continue
         manifest_out=outdir/f"{slug}.manifest.json"
