@@ -74,12 +74,12 @@ jobs:
           if [[ "$HEAD_BRANCH" == prep/wikisource-es-1200-batch-* ]]; then
             current_batch="$(sed 's/.*-batch-//' <<<"$HEAD_BRANCH")"
             next_batch=$((10#$current_batch + 1))
-            if (( next_batch <= 28 )); then
+            if (( next_batch <= 31 )); then
               echo "Dispatching next deterministic 1200-document batch: $next_batch"
               gh api --method POST "repos/$REPOSITORY/actions/workflows/wikisource-es-1200-batch.yml/dispatches" -f ref=main -f "inputs[batch_index]=$next_batch"
             else
-              echo "Reached configured 28-batch Wikisource intake ceiling."
-              echo "Dispatching one unified-corpus build after all 33,600 texts have landed."
+              echo "Reached configured 31-batch Wikisource intake ceiling."
+              echo "Dispatching one unified-corpus build after all 37,200 texts have landed."
               gh api --method POST "repos/$REPOSITORY/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
             fi
           fi
