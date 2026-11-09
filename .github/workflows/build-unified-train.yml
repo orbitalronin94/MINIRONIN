@@ -203,10 +203,10 @@ jobs:
           set -euo pipefail
           python -m pip install "datasets==3.3.2" "huggingface_hub==0.29.3"
           slr_revision="$(git ls-remote https://huggingface.co/datasets/AIML-TUDA/SLR-Bench-Spanish refs/heads/main | awk 'NR==1 {print $1}')"
-          test "\${#slr_revision}" -eq 40
+          test "${#slr_revision}" -eq 40
           python scripts/acquire_slr_bench_spanish.py --revision "$slr_revision" --output-dir data/curated/accepted
           alia_revision="$(git ls-remote https://huggingface.co/datasets/SINAI/ALIA-es-cultural-heritage refs/heads/main | awk 'NR==1 {print $1}')"
-          test "\${#alia_revision}" -eq 40
+          test "${#alia_revision}" -eq 40
           python scripts/acquire_alia_cultural_heritage.py --revision "$alia_revision" --root . --output-dir data/curated/accepted
           python - <<'PY'
           import json
