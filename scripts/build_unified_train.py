@@ -22,7 +22,7 @@ def sha_file(path:Path)->str:
 def norm(text:str)->str: return re.sub(r"\W+"," ",text.casefold(),flags=re.UNICODE).strip()
 
 def is_synthetic_path(path:Path)->bool:
-    return bool(re.search(r"(generated-curricula|generated-basic-curricula|generated-math-es|behavioral-datasets|minironin-(?:abstention-50k|abstain-(?:plain|literary|koan)|aristocrat-trivial|casuist-cynic|scientist-exhausted|oracle-doom|error404-indifference|lexicon-diagnostic))",str(path),re.I))
+    return bool(re.search(r"(generated-curricula|generated-basic-curricula|generated-math-es|behavioral-datasets|minironin-(?:behavior|engineering|identity|performance-engineering|abstention-50k|abstain-(?:plain|literary|koan)|aristocrat-trivial|casuist-cynic|scientist-exhausted|oracle-doom|error404-indifference|lexicon-diagnostic)|engineering-lessons-v1)",str(path),re.I))
 
 def strings(value):
     if isinstance(value,str):

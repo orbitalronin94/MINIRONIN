@@ -27,7 +27,7 @@ def classify(row):
  if row.get("synthetic") is True: return "synthetic_behavior"
  metadata=row.get("metadata",{}) if isinstance(row.get("metadata",{}),dict) else {}
  specific=[]
- for key in ("subject","domain","category","categories","discipline","topic","topics","keywords","title","collection"):
+ for key in ("subject","domain","dominio","category","categories","categoria","discipline","disciplina","topic","topics","tema","temas","keywords","palabras_clave","title","titulo","collection","tag","tipo","usage","uso","architecture","arquitectura"):
   if key in metadata: specific.extend(flatten(metadata[key]))
  specific_label=" ".join(specific).casefold()
  for category,pattern in RULES:
