@@ -1,0 +1,35 @@
+# Casa de los Toledo
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Casa%20de%20los%20Toledo
+
+**Page ID:** 234067
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Casa%20de%20los%20Toledo?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+VISTA DE LA ANTIGUA Y NOTABLE CASA DE LOS TOLEDOS. 
+
+La ciudad imperial famosa, asiento del poder de los 
+moros y emporio de la grandeza de los cristianos en el 
+prosperidad de que gozó en no muy remotos tiempos, 
+hija de su industria y de la numerosa junta de nobles 
+que en ella moraban, hizo que no se escatimase gusto 
+alguno para embellecerla con toda suerte de construcciones, como alcázares, catedrales, hospicios, templos, 
+sinagogas, hospitales, seminarios, palacios, y sobre todo edificios particulares de que hay grande abundancia y 
+caracterizados con bellezas, solidez y costo de 
+construccion. A este número pertenece el edificio cuya fachada representa nuestro grabado, que si bien antiguo 
+y desprovisto de elegancia en lo interior, es notabilísimo por el sello que conserva de la época en que se levantó, y por la portada riquísima que tiene, la cual no 
+deja de llamar la preferente atención de todas las personas de gusto que visitan la ciudad imperial y primada de las iglesias de España. 
+
+El Museo Universal 1869
