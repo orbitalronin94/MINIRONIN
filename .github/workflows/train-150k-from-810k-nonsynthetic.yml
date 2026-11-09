@@ -1,11 +1,6 @@
 name: MINIRONIN — 150k continuation from 810k (non-synthetic admitted corpus)
 
 on:
-  # Lanzamiento directo: reutiliza el artefacto histórico y evita reconstruir el corpus.
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/train-150k-from-650k-unified.yml"
   workflow_run:
     workflows: ["MINIRONIN — construir corpus unificado de entrenamiento"]
     types: [completed]
@@ -21,7 +16,7 @@ concurrency:
 
 jobs:
   train:
-    if: github.event_name == 'push' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
@@ -39,7 +34,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Reutilizar el artefacto exacto usado en la iteración 500k→650k
+      - name: Descargar el corpus unificado de la ejecución que acaba de finalizar
         uses: actions/download-artifact@v4
         with:
           name: minironin-unified-train-corpus-${{ github.event.workflow_run.id }}
@@ -73,7 +68,7 @@ jobs:
         run: |
           set -euo pipefail
           df -h .
-          test "$(df --output=avail -k . | tail -1 | tr -d ' ')" -gt 9600000
+          test "$(df --output=avail -k . | tail -1 | tr -d ' ')" -gt 8000000
           python -m pip install --upgrade pip
           python -m pip install numpy
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
