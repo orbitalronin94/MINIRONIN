@@ -125,3 +125,12 @@ Se añaden dos bibliotecas supervisadas pequeñas y explícitas, separadas de lo
 Ambos conjuntos se cargan en dominios separados (`identity` y `engineering`) con un peso relativo inicial de 0,02 cada uno (aprox. 1,89% efectivo tras normalizar la mezcla completa). No se incorporan logs brutos ni secretos. Los estados de Actions se enseñan como observaciones fechadas: un paso pendiente no es un paso completado, y una publicación no demuestra mejora del modelo.
 
 La ficha anterior que describía el Transformer inicial de 9.970.176 parámetros queda como antecedente histórico. La identidad vigente del checkpoint principal es Mamba, 49.083.392 parámetros, release `minironin-mamba-50m-step-1000-main`.
+
+
+## Artefacto canónico de biblioteca y auditoría de materias
+
+La fuente única de configuración para la siguiente construcción del corpus es [`library-artifact-v2.json`](library-artifact-v2.json). Define raíces, política de derechos, exclusiones, inclusión de sintéticos y salvaguardas de holdout.
+
+**TDX queda temporalmente fuera del entrenamiento:** la licencia CC BY 4.0 del paquete Zenodo no acredita por sí sola los derechos de cada tesis. Se conservan el manifiesto y la procedencia, pero los shards se excluyen hasta filtrar por derechos individuales. Véase [RIGHTS_AND_COMPOSITION.md](RIGHTS_AND_COMPOSITION.md).
+
+El workflow genera `composition-by-matter.json` con porcentajes por registros y por palabras aproximadas (separadas por espacios), más el porcentaje no clasificado. No son tokens exactos del modelo; estos se calcularán cuando se aplique el tokenizador real. Los sintéticos se incluyen etiquetados y se reportan separados de las fuentes externas.
