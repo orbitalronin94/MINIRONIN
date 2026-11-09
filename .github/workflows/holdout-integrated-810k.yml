@@ -46,7 +46,22 @@ jobs:
             exit 0
           fi
           changed_files="$(gh api "repos/$REPOSITORY/compare/$PREPARATION_HEAD_SHA...$latest_main" --jq '.files[].filename')"
-          relevant_changes="$(printf '%s\\n' "$changed_files" | grep -E '^(\\.github/workflows/(prepare-integrated-evidence-stack|holdout-integrated-810k)\\.yml|scripts/(build_awake_rows|build_backdoor_bpe|build_library_manifest|build_rag_index|download_admitted_artifacts|download_heretic_admitted_artifact|import_admitted_sources|rag_retrieve|run_inference_holdout|train_backdoor_bpe_continuation)\\.py|src/minironin/(model|tokenizer)\\.py|configs/model-10m\\.json|benchmarks/inference-holdout-v1\\.jsonl)
+          relevant=false
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/prepare-integrated-evidence-stack.yml|.github/workflows/holdout-integrated-810k.yml|scripts/build_awake_rows.py|scripts/build_backdoor_bpe.py|scripts/build_library_manifest.py|scripts/build_rag_index.py|scripts/download_admitted_artifacts.py|scripts/download_heretic_admitted_artifact.py|scripts/import_admitted_sources.py|scripts/rag_retrieve.py|scripts/run_inference_holdout.py|scripts/train_backdoor_bpe_continuation.py|src/minironin/model.py|src/minironin/tokenizer.py|configs/model-10m.json|benchmarks/inference-holdout-v1.jsonl)
+                relevant=true
+                printf 'Relevant changed input: %s\n' "$path"
+                ;;
+            esac
+          done <<< "$changed_files"
+          if [[ "$relevant" == false ]]; then
+            echo "is_latest=true" >> "$GITHUB_OUTPUT"
+            echo "Main advanced only in files outside the integrated 810k evidence contract."
+          else
+            echo "is_latest=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping stale evidence preparation; relevant inputs changed after $PREPARATION_HEAD_SHA"
+          fi
 
   holdout:
     needs: check-freshness
