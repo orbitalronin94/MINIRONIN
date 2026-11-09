@@ -252,7 +252,7 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
             if row.get("dataset")=="awakened-library-rows.jsonl":
                 awakened_rows_read+=1
                 if len(body)>=80:
-                    add_full_text(awakened_store,"awakened",body,"MINIRONIN-awakened-library:"+str(row.get("library_id","unknown")),str(row.get("source_id","")))
+                    add_full_text(awakened_store,"awakened",body,"MINIRONIN-awakened-library:"+str(row.get("library_id") or (row.get("metadata") or {}).get("library_id","unknown")),str(row.get("source_id","")))
             elif row.get("synthetic"):
                 key=(domain,str(row.get("dataset","unknown")))
                 pending.setdefault(key,[]).append(body)
@@ -616,7 +616,7 @@ def main():
         "batch_size": BATCH_SIZE,
         "sequence_length": SEQUENCE_LENGTH,
         "eos_window_probability": args.eos_window_probability,
-        "awakened_rows_read": source.get("awakened_rows_read", 0),
+        "awakened_rows_read": manifest.get("awakened_rows_read", 0),
         "tokens_per_optimizer_step": BATCH_SIZE * SEQUENCE_LENGTH,
         "segment_steps": args.steps,
         "batch_size": BATCH_SIZE,
