@@ -113,6 +113,10 @@ def evaluate(model, validation, names, tokenizer, seq_len, device, seed=314159):
     model.eval()
     losses = []
     by_domain = {}
+    total_nll = 0.0
+    total_bytes = 0
+    eos_nll = 0.0
+    eos_count = 0
     rng = random.Random(seed)
     with torch.inference_mode():
         for domain in sorted(validation):
@@ -126,14 +130,28 @@ def evaluate(model, validation, names, tokenizer, seq_len, device, seed=314159):
                 if len(window) < seq_len + 1:
                     continue
                 batch = torch.tensor([window], dtype=torch.long, device=device)
-                _, loss = model(batch, labels=batch, vocab_limit=tokenizer.active_vocab)
+                logits, loss = model(batch, labels=batch, vocab_limit=tokenizer.active_vocab)
                 domain_losses.append(float(loss))
+                targets = batch[:, 1:]
+                token_losses = torch.nn.functional.cross_entropy(
+                    logits[:, :-1, :].contiguous().view(-1, tokenizer.active_vocab),
+                    targets.contiguous().view(-1),
+                    reduction="none",
+                )
+                for token_id, token_loss in zip(targets.reshape(-1).tolist(), token_losses.tolist()):
+                    if token_id == 256:
+                        eos_nll += token_loss
+                        eos_count += 1
+                    else:
+                        total_nll += token_loss
+                        total_bytes += tokenizer.byte_length(token_id)
             if domain_losses:
                 by_domain[domain] = sum(domain_losses) / len(domain_losses)
                 losses.extend(domain_losses)
     model.train()
-    return (sum(losses) / len(losses) if losses else None), by_domain
-
+    bits_per_byte = (total_nll / total_bytes / math.log(2)) if total_bytes else None
+    eos_loss = (eos_nll / eos_count) if eos_count else None
+    return (sum(losses) / len(losses) if losses else None), by_domain, bits_per_byte, eos_loss
 
 def main():
     parser = argparse.ArgumentParser()
@@ -207,8 +225,11 @@ def main():
         if local_step % 100 == 0:
             print(json.dumps({"step": global_step, "loss": losses[-1], "grad_norm": float(grad_norm)}), flush=True)
 
-    validation_loss, validation_by_domain = evaluate(model, validation, names, tokenizer,
-                                                       args.sequence_length, torch.device("cpu"))
+    validation_loss, validation_by_domain, validation_bits_per_byte, validation_eos_loss = evaluate(
+        model, validation, names, tokenizer, args.sequence_length, torch.device("cpu")
+    )
+    if validation_loss is None or validation_bits_per_byte is None:
+        raise SystemExit("Internal validation produced no usable token windows")
     completed = args.start_step + args.steps
     checkpoint = {
         "model_state_dict": {k: v.detach().cpu() for k, v in model.state_dict().items()},
@@ -217,7 +238,7 @@ def main():
         "parameter_count": model.parameter_count(),
         "seed": source.get("seed"),
         "completed_steps": completed,
-        "total_steps": source.get("total_steps", completed),
+        "total_steps": max(int(source.get("total_steps", completed)), completed),
         "active_vocabulary": tokenizer.active_vocab,
         "tokenization": "BACKDOOR_BPE: deterministic longest-match UTF-8 byte n-grams + byte fallback + EOS=256",
         "tokenizer_sha256": tokenizer.sha256,
@@ -225,6 +246,8 @@ def main():
         "tokenizer_manifest_sha256": sha256_file(args.tokenizer),
         "validation_loss": validation_loss,
         "validation_loss_by_domain": validation_by_domain,
+        "validation_bits_per_byte": validation_bits_per_byte,
+        "validation_eos_loss": validation_eos_loss,
         "dataset_manifest": corpus_manifest,
         "torch_rng_state": torch.get_rng_state(),
     }
@@ -243,6 +266,8 @@ def main():
         "mean_train_loss": sum(losses) / len(losses),
         "validation_loss_internal": validation_loss,
         "validation_loss_by_domain": validation_by_domain,
+        "validation_bits_per_byte": validation_bits_per_byte,
+        "validation_eos_loss": validation_eos_loss,
         "elapsed_seconds": round(time.perf_counter() - started, 2),
         "holdout_read": False,
     }
