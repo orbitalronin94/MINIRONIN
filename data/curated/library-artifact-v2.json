@@ -24,7 +24,8 @@
     "data/inherited/common-corpus-es",
     "data/inherited/boe-legislation-es",
     "data/inherited/bne-hemeroteca-ocr-es",
-    "data/curated"
+    "data/curated",
+    "data/inherited/alia-biomedical-es"
   ],
   "source_rights": [
     {
