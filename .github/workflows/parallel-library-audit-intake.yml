@@ -36,20 +36,21 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh release download wikimedia-es-100k-v1 --repo "${GITHUB_REPOSITORY}" --pattern 'wikipedia-es-100k.jsonl.gz' --pattern 'WIKIMEDIA-ES-100K-MANIFEST.json' --pattern 'README.md'
+          mkdir -p release-assets
+          gh release download wikimedia-es-100k-v1 --repo "${GITHUB_REPOSITORY}" --dir release-assets --pattern 'wikipedia-es-100k.jsonl.gz' --pattern 'WIKIMEDIA-ES-100K-MANIFEST.json' --pattern 'README.md'
       - name: Verificar SHA-256 publicado
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh release download wikimedia-es-100k-v1 --repo "${GITHUB_REPOSITORY}" --pattern 'SHA256SUMS'
-          sha256sum -c SHA256SUMS
+          gh release download wikimedia-es-100k-v1 --repo "${GITHUB_REPOSITORY}" --dir release-assets --pattern 'SHA256SUMS'
+          (cd release-assets && sha256sum -c SHA256SUMS)
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
       - name: Deduplicación global exacta y auditoría de procedencia
         run: |
-          python scripts/audit_wikimedia_release.py --root . --input wikipedia-es-100k.jsonl.gz --manifest WIKIMEDIA-ES-100K-MANIFEST.json --report wikimedia-es-100k-global-audit.json
+          python scripts/audit_wikimedia_release.py --root . --input release-assets/wikipedia-es-100k.jsonl.gz --manifest release-assets/WIKIMEDIA-ES-100K-MANIFEST.json --report wikimedia-es-100k-global-audit.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
