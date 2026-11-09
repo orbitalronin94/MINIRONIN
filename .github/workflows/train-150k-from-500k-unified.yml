@@ -1,4 +1,4 @@
-name: MINIRONIN — 150k legacy-vocabulary continuation from 500k
+name: DISABLED — legacy 150k continuation from 500k (superseded by 650k)
 
 on:
   workflow_run:
