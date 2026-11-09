@@ -55,11 +55,13 @@ def load_holdout(path: Path) -> list[dict]:
 def generate_tokens(
     model: MiniRoninLM, prompt: str, max_new_tokens: int, *, use_cache: bool = True,
     tokenizer: ByteNgramTokenizer | None = None, active_vocab: int = ACTIVE_VOCAB,
+    max_new_bytes: int | None = None,
 ) -> tuple[list[int], str]:
     encoded = tokenizer.encode(prompt) if tokenizer is not None else list(prompt.encode("utf-8", errors="replace"))
     if not encoded:
         raise ValueError("Prompt encoded to an empty sequence")
     generated: list[int] = []
+    generated_bytes = 0
     context = model.config.context_length
     cache = None
     cache_enabled = use_cache and hasattr(model, "forward_cached")
@@ -79,6 +81,10 @@ def generate_tokens(
         next_id = int(torch.argmax(logits[0, -1, :active_vocab]).item())
         if next_id == EOS_ID:
             break
+        token_piece = tokenizer.token_bytes(next_id) if tokenizer is not None else bytes([next_id])
+        if max_new_bytes is not None and generated_bytes + len(token_piece) > max_new_bytes:
+            break
+        generated_bytes += len(token_piece)
         generated.append(next_id)
         encoded.append(next_id)
     answer = (
@@ -97,12 +103,15 @@ def main() -> None:
     parser.add_argument("--max-new-tokens", type=int, default=DEFAULT_MAX_NEW_TOKENS)
     parser.add_argument("--threads", type=int, default=2)
     parser.add_argument("--tokenizer", type=Path, help="BACKDOOR_BPE tokenizer manifest for a tokenizer-matched checkpoint")
+    parser.add_argument("--max-new-bytes", type=int, help="Optional fair output byte budget; defaults to --max-new-tokens bytes")
     parser.add_argument("--no-kv-cache", action="store_true", help="Use the slow reference path for parity checks")
     parser.add_argument("--base-diary", type=Path)
     args = parser.parse_args()
 
     if args.max_new_tokens < 1 or args.max_new_tokens > 512:
         parser.error("--max-new-tokens must be between 1 and 512")
+    if args.max_new_bytes is not None and args.max_new_bytes < 1:
+        parser.error("--max-new-bytes must be positive")
     torch.set_num_threads(args.threads)
     torch.use_deterministic_algorithms(True)
     torch.manual_seed(0)
@@ -137,6 +146,7 @@ def main() -> None:
             token_ids, answer = generate_tokens(
                 model, prompt, args.max_new_tokens, use_cache=not args.no_kv_cache,
                 tokenizer=tokenizer, active_vocab=active_vocab,
+                max_new_bytes=args.max_new_bytes or args.max_new_tokens,
             )
             elapsed = time.perf_counter() - started
             results.append({
