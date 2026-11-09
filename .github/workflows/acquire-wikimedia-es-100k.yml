@@ -2,6 +2,11 @@ name: MINIRONIN — adquirir 100k documentos Wikimedia en español
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/acquire-wikimedia-es-100k.yml"
+      - "scripts/acquire_wikimedia_es_100k.py"
 
 permissions:
   contents: write
