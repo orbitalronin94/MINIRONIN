@@ -1,49 +1,66 @@
 {
   "schema_version": 1,
   "status": "main",
-  "model_id": "minironin-transformer-10m-step-670000",
+  "model_id": "minironin-transformer-10m-step-720000",
   "architecture": "transformer-decoder-only",
   "parameter_count": 9970176,
-  "completed_steps": 670000,
+  "completed_steps": 720000,
   "tokenization": "UTF-8 bytes + EOS (257 active symbols)",
   "checkpoint": {
-    "filename": "checkpoint-670000.pt",
-    "sha256": "92dc12706d9a8a859d2287c4db0fa2077cd713169e481f9b1df3d7731e2b4aa9",
+    "filename": "checkpoint-720000.pt",
+    "sha256": "2f755f00e09b51dc30f038c77f40eb5c787d3f30555f86559f6c3cac8b9640fa",
     "source": "github-release-asset",
-    "release_tag": "minironin-legacy-150k-from-650k-step-670000",
-    "release_id": 438897307,
-    "asset_id": 726797029,
-    "asset_url": "https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-legacy-150k-from-650k-step-670000/checkpoint-670000.pt",
-    "report_asset_id": 726797030,
-    "report_sha256": "ed1f69324862d50b1277b91aea86e358d0e762ac3046b3c32852478812e71863",
-    "sha256_manifest_asset_id": 726797034
+    "release_tag": "minironin-legacy-150k-from-650k-step-720000",
+    "release_id": 439001763,
+    "asset_id": 727100621,
+    "asset_url": "https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-legacy-150k-from-650k-step-720000/checkpoint-720000.pt",
+    "report_asset_id": 727100618,
+    "report_sha256": "ec0b39f26b7885bc7415fd0508568cbb0f8783d69cc0dc7ec8778acce304e229",
+    "sha256_manifest_asset_id": 727100622
   },
   "previous_main": {
-    "model_id": "minironin-transformer-10m-step-650000",
+    "model_id": "minironin-transformer-10m-step-670000",
     "architecture": "transformer-decoder-only",
     "parameter_count": 9970176,
-    "completed_steps": 650000,
-    "checkpoint_sha256": "70f2cca02be8d4a3546992b40c6c82e62ed4be7c00de1ff549ef2894a1184b58",
-    "release_tag": "minironin-cycle-1-step-650000",
+    "completed_steps": 670000,
+    "checkpoint_sha256": "92dc12706d9a8a859d2287c4db0fa2077cd713169e481f9b1df3d7731e2b4aa9",
+    "release_tag": "minironin-legacy-150k-from-650k-step-670000",
     "status": "superseded_experimental"
   },
+  "promotion_history": [
+    {
+      "model_id": "minironin-transformer-10m-step-650000",
+      "completed_steps": 650000,
+      "checkpoint_sha256": "70f2cca02be8d4a3546992b40c6c82e62ed4be7c00de1ff549ef2894a1184b58",
+      "release_tag": "minironin-cycle-1-step-650000",
+      "status": "historical_experimental"
+    },
+    {
+      "model_id": "minironin-transformer-10m-step-670000",
+      "completed_steps": 670000,
+      "checkpoint_sha256": "92dc12706d9a8a859d2287c4db0fa2077cd713169e481f9b1df3d7731e2b4aa9",
+      "release_tag": "minironin-legacy-150k-from-650k-step-670000",
+      "status": "previous_main"
+    }
+  ],
   "holdout": {
     "status": "completed_unscored_raw_generation",
-    "run_id": 42588432458,
-    "job_id": 129063799637,
-    "artifact_id": 13660037280,
-    "artifact_name": "minironin-holdout-only-670000",
-    "artifact_sha256": "aa8bc5e6860282697f978e6794ad7d51ee7505a22cb1619d46eb5e8db3be6e7f",
+    "run_id": 42602585362,
+    "job_id": 129110417394,
+    "artifact_id": 13667005805,
+    "artifact_name": "minironin-holdout-only-720000",
+    "artifact_sha256": "df713c5e03345738b06f17e1096cd4c040d2eb9096b836288fcfd3334266627c",
     "holdout_count": 100,
+    "holdout_sha256": "3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535",
     "scoring": "unscored_raw_generation",
     "generation": "greedy argmax; temperature 0; max_new_tokens 128; 2 threads; eval mode; KV cache",
     "observations": [
-      "Las 100 generaciones alcanzaron el límite de 128 tokens.",
-      "Aparecen continuaciones autoformuladas con los marcadores Pregunta, Respuesta y Contexto.",
-      "Se observa rotación de frases recurrentes respecto a checkpoints anteriores.",
-      "El holdout no incorpora puntuación semántica automática; no acredita mejora de exactitud, razonamiento ni calidad conversacional."
+      "Las 100 generaciones alcanzaron el límite de 128 tokens; 0/100 emitieron EOS.",
+      "Se observan bucles de caracteres y sílabas, contaminación entre preguntas y respuestas fuera de contexto.",
+      "Aparecen aperturas memorables como «La perfección del mensajero no determina la validez del mensaje» y «Una pregunta sin suelo no puede exigirle responder», pero no demuestran comprensión.",
+      "El diario no contiene puntuación semántica automática ni comparación pareada con 670k."
     ],
-    "interpretation": "Holdout descriptivo de generaciones brutas. La rotación de repertorio no se considera una mejora de calidad."
+    "interpretation": "Holdout descriptivo de generaciones brutas. No acredita mejora de exactitud, razonamiento ni calidad conversacional."
   },
-  "promotion_policy": "Promoción manual por decisión explícita del proyecto. El checkpoint 670000 pasa a MAIN como referencia experimental. La promoción no certifica mejora de calidad; se conservan los checkpoints 650000 y 660000 como referencias históricas y el holdout 670000 como evidencia descriptiva."
+  "promotion_policy": "Promoción manual por decisión explícita del proyecto: 720000 pasa a MAIN como referencia experimental. La promoción no certifica mejora de calidad. Se conserva 670000 como MAIN anterior y 650000 en el historial; el holdout 720000 queda como evidencia descriptiva sin puntuación semántica."
 }
