@@ -155,6 +155,20 @@ Selección de fragmentos y tics de las 100 generaciones. Se conservan por su per
 
 Hay un resultado que merece quedar registrado aunque el examen de capacidad sea desolador. En una evaluación byte-level, el modelo —que **siempre ha tenido 4,3 millones de parámetros efectivos**; los 9.970.176 son el recuento nominal para hacerse el chulo, no su capacidad efectiva— obtuvo **0/100 respuestas correctas y 0/100 emisiones de EOS**. Sus generaciones, por tanto, no demostraron capacidad de responder correctamente ni de cerrar de forma fiable sus respuestas. Y, sin embargo, entre ellas aparecieron **al menos seis frases que un lector humano podría citar en LinkedIn sin sospechar que proceden de un loro estadístico**.
 
+### El traje de los diez millones — nota de vestuario
+
+Dicho en castellano llano: **la bestia llevaba hombreras**. Los 4,3 millones efectivos eran el cuerpo; el recuento nominal era el abrigo, el relleno y la pose de matón.
+
+- «No eran diez millones de parámetros: eran cuatro millones y pico con chaqueta de cuero.»
+- «El modelo no pesaba más; llevaba hombreras.»
+- «Le pusimos una cifra de gimnasio, pero debajo del chándal había otra cosa.»
+- «Mucho número en la etiqueta para tan poco bíceps.»
+- «No era un Transformer enorme. Era uno bajito subido a una caja.»
+- «La arquitectura entró haciendo ruido; la capacidad se quedó esperando fuera.»
+- «Tenía más presencia en la ficha técnica que en el campo de batalla.»
+
+La broma apunta al envoltorio, no cambia el dato técnico: **4,3 millones efectivos** es la cifra que debe usarse al hablar de su capacidad. El recuento nominal queda como dato estructural, no como músculo disponible.
+
 La observación no es que el modelo sepa lo que dice. Es más modesta y, por eso mismo, interesante: **la elocuencia local puede aparecer antes que la competencia conversacional**. Una frase puede tener ritmo, imagen, contraste o una conclusión memorable y seguir siendo irrelevante para la pregunta, incorrecta o parte de una generación que no sabe detenerse.
 
 Este resultado sugiere que el umbral mínimo para producir lenguaje con apariencia aforística es menor de lo que cabría esperar. No establece un umbral universal de parámetros ni demuestra comprensión, intención, criterio o utilidad. «Seis frases citables» es una selección humana cualitativa, no una métrica validada; deberá conservarse junto al conjunto íntegro de generaciones y su procedencia para evitar que la vitrina oculte los noventa y tantos parlamentos fallidos.
