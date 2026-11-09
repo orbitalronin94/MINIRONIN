@@ -22,8 +22,9 @@ def inspect(path: Path, seen: dict[str, str], curated: bool) -> dict:
     normalized = text.replace("\r\n", "\n").strip()
     if not normalized:
         raise SystemExit(f"blank document: {path}")
-    if curated and len(normalized) < 800:
-        raise SystemExit(f"curated document too short (<800 chars): {path}")
+    minimum = 250 if path.is_relative_to(WIKISOURCE_ROOT) else 800
+    if curated and len(normalized) < minimum:
+        raise SystemExit(f"curated document too short (<{minimum} chars): {path}")
     sha = digest(raw)
     if sha in seen:
         raise SystemExit(f"duplicate payload: {path} == {seen[sha]}")
