@@ -1,0 +1,1166 @@
+# Soledad Primera
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Soledad%20Primera
+
+**Page ID:** 7997
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Soledad%20Primera?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+<div style='text-align:justify'>
+
+<div class="verse">
+	Era del año la estación florida		
+	en que el mentido robador de Europa 		
+	(media luna las armas de su frente, 		
+	y el Sol todos los rayos de su pelo), 		
+	luciente honor del cielo, 	                5	
+	en campos de zafiro pace estrellas, 		
+	cuando el que ministrar podía la copa 		
+	a Júpiter mejor que el garzón de Ida, 		
+	náufrago y desdeñado, sobre ausente, 		
+	lagrimosas de amor dulces querellas 	       10	
+	da al mar, que condolido, 		
+	fue a las ondas, fue al viento 		
+	el mísero gemido, 		
+	segundo de Arïón dulce instrumento. 		
+	Del siempre en la montaña opuesto pino 	       15	
+	al enemigo Noto, 		
+	piadoso miembro roto, 		
+	breve tabla, delfín no fue pequeño 		
+	al inconsiderado peregrino, 		
+	que a una Libia de ondas su camino 	       20	
+	fió, y su vida a un leño. 		
+	Del Océano pues antes sorbido, 		
+	y luego vomitado 		
+	no lejos de un escollo coronado 		
+	de secos juncos, de calientes plumas, 	       25	
+	alga todo y espumas, 		
+	halló hospitalidad donde halló nido 		
+	de Júpiter el ave. 		
+	Besa la arena, y de la rota nave 		
+	aquella parte poca 	                       30	
+	que le expuso en la playa dio a la roca; 		
+	que aun se dejan las peñas 		
+	lisonjear de agradecidas señas. 		
+	Desnudo el joven, cuanto ya el vestido 		
+	Océano ha bebido, 	                       35	
+	restituir le hace a las arenas; 		
+	y al Sol lo extiende luego, 		
+	que, lamiéndolo apenas 		
+	su dulce lengua de templado fuego, 		
+	lento lo embiste, y con süave estilo 	       40	
+	la menor onda chupa al menor hilo. 		
+
+	No bien pues de su luz los horizontes, 		
+	que hacían desigual, confusamente, 		
+	montes de agua y piélagos de montes, 		
+	desdorados los siente, 	                       45	
+	cuando, entregado el mísero extranjero 		
+	en lo que ya del mar redimió fiero, 		
+	entre espinas crepúsculos pisando, 		
+	riscos que aun igualara mal volando 		
+	veloz, intrépida ala, 	                        50	
+	menos cansado que confuso, escala. 		
+	Vencida al fin la cumbre, 		
+	del mar siempre sonante, 		
+	de la muda campaña 		
+	árbitro igual e inexpugnable muro, 	        55	
+	con pie ya más seguro 		
+	declina al vacilante 		
+	breve esplendor del mal distinta lumbre, 		
+	farol de una cabaña 		
+	que sobre el ferro está en aquel incierto 	 60	
+	golfo de sombras anunciando el puerto. 		
+	«Rayos, les dice, ya que no de Leda 		
+	trémulos hijos, sed de mi fortuna 		
+	término luminoso.» Y recelando 		
+	de invidïosa bárbara arboleda 	               65	
+	interposición, cuando 		
+	de vientos no conjuración alguna, 		
+	cual haciendo el villano 		
+	la fragosa montaña fácil llano, 		
+	atento sigue aquella 	                        70	
+	(aun a pesar de las tinieblas bella, 		
+	aun a pesar de las estrellas clara) 		
+	piedra, indigna tïara, 		
+	si tradición apócrifa no miente, 		
+	de animal tenebroso, cuya frente	         75	
+	carro es brillante de nocturno día: 		
+	tal, diligente, el paso 		
+	el joven apresura, 		
+	midiendo la espesura 		
+	con igual pie que el raso, 	 80	
+	fijo, a despecho de la niebla fría, 		
+	en el carbunclo, Norte de su aguja, 		
+	o el Austro brame, o la arboleda cruja. 		
+	El can ya vigilante 		
+	convoca, despidiendo al caminante, 	 85	
+	y la que desvïada 		
+	luz poca pareció, tanta es vecina, 		
+	que yace en ella robusta encina, 		
+	mariposa en cenizas desatada. 		
+
+	Llegó pues el mancebo, y saludado, 	 90	
+	sin ambición, sin pompa de palabras, 		
+	de los conducidores fue de cabras, 		
+	que a Vulcano tenían coronado. 		
+
+	«¡Oh bienaventurado 		
+	albergue a cualquier hora, 	 95	
+	templo de Pales, alquería de Flora! 		
+	No moderno artificio 		
+	borró designios, bosquejó modelos, 		
+	al cóncavo ajustando de los cielos 		
+	el sublime edificio; 	 100	
+	retamas sobre robre 		
+	tu fábrica son pobre, 		
+	do guarda, en vez de acero, 		
+	la inocencia al cabrero 		
+	más que el silbo al ganado. 	 105	
+	¡Oh bienaventurado 		
+	albergue a cualquier hora! 		
+	No en ti la ambición mora 		
+	hidrópica de viento, 		
+	ni la que su alimento 	 110	
+	el áspid es gitano; 		
+	no la que, en vulto comenzando humano, 		
+	acaba en mortal fiera, 		
+	esfinge bachillera, 		
+	que hace hoy a Narciso 	 115	
+	ecos solicitar, desdeñar fuentes; 		
+	ni la que en salvas gasta impertinentes 		
+	la pólvora del tiempo más preciso; 		
+	ceremonia profana 		
+	que la sinceridad burla villana 	 120	
+	sobre el corvo cayado. 		
+	¡Oh bienaventurado 		
+	albergue a cualquier hora! 		
+	Tus umbrales ignora 		
+	la adulación, sirena 	 125	
+	de Reales Palacios, cuya arena 		
+	besó ya tanto leño, 		
+	trofeos dulces de un canoro sueño. 		
+	No a la soberbia está aquí la mentira 		
+	dorándole los pies, en cuanto gira 	 130	
+	la esfera de sus plumas, 		
+	ni de los rayos baja a las espumas 		
+	favor de cera alado. 		
+	¡Oh bienaventurado 		
+	albergue a cualquier hora!» 	 135	
+
+	No pues de aquella sierra, engendradora 		
+	más de fierezas que de cortesía, 		
+	la gente parecía 		
+	que hospedó al forastero 		
+	con pecho igual de aquel candor primero 	 140	
+	que, en las selvas contento, 		
+	tienda el fresno le dio, el robre alimento. 		
+	Limpio sayal, en vez de blanco lino, 		
+	cubrió el cuadrado pino, 		
+	y en boj, aunque rebelde, a quien el torno 	 145	
+	forma elegante dio sin culto adorno, 		
+	leche que exprimir vio la alba aquel día, 		
+	mientras perdían con ella 		
+	los blancos lilios de su frente bella, 		
+	gruesa le dan y fría, 	 150	
+	impenetrable casi a la cuchara, 		
+	del sabio Alcimedón invención rara. 		
+	El que de cabras fue dos veces ciento 		
+	esposo casi un lustro (cuyo diente 		
+	no perdonó a racimo, aun en la frente 	 155	
+	de Baco, cuanto más en su sarmiento, 		
+	triunfador siempre de celosas lides, 		
+	lo coronó el Amor; mas rival tierno, 		
+	breve de barba y duro no de cuerno, 		
+	redimió con su muerte tantas vides), 	 160	
+	servido ya en cecina, 		
+	purpúreos hilos es de grana fina. 		
+	Sobre corchos después, más regalado 		
+	sueño le solicitan pieles blandas, 		
+	que al Príncipe entre holandas, 	 165	
+	púrpura tiria o milanés brocado. 		
+	No de humosos vinos agravado 		
+	es Sísifo en la cuesta, si en la cumbre 		
+	de ponderosa vana pesadumbre 		
+	es, cuanto más despierto, más burlado. 	 170	
+	De trompa militar no, o destemplado 		
+	son de cajas fue el sueño interrumpido, 		
+	de can sí, embravecido 		
+	contra la seca hoja 		
+	que el viento repeló a alguna coscoja. 	 175	
+	Durmió, y recuerda al fin cuando las aves, 		
+	esquilas dulces de sonora pluma, 		
+	señas dieron süaves 		
+	del Alba al Sol, que el pabellón de espuma 		
+	dejó, y en su carroza 	 180	
+	rayó el verde obelisco de la choza. 		
+
+	Agradecido pues el peregrino, 		
+	deja el albergue, y sale acompañado 		
+	de quien lo lleva donde levantado, 		
+	distante pocos pasos del camino, 	 185	
+	imperïoso mira la campaña 		
+	un escollo apacible, galería 		
+	que festivo teatro fue algún día 		
+	de cuantos pisan Faunos la montaña. 		
+	Llegó y, a vista tanta 	 190	
+	obedeciendo la dudosa planta, 		
+	inmóvil se quedó sobre un lentisco, 		
+	verde balcón del agradable risco. 		
+	Si mucho poco mapa le despliega, 		
+	mucho es más lo que, nieblas desatando, 	 195	
+	confunde el Sol y la distancia niega. 		
+	Muda la admiración habla callando, 		
+	y ciega un río sigue que, luciente 		
+	de aquellos montes hijo, 		
+	con torcido discurso, aunque prolijo, 	 200	
+	tiraniza los campos útilmente; 		
+	orladas sus orillas de frutales, 		
+	quiere la Copia que su cuerno sea, 		
+	si al animal armaron de Amaltea 		
+	diáfanos cristales; 	 205	
+	engazando edificios en su plata, 		
+	de muros se corona, 		
+	rocas abraza, islas aprisiona, 		
+	de la alta gruta donde se desata 		
+	hasta los jaspes líquidos, adonde 	 210	
+	su orgullo pierde y su memoria esconde. 		
+
+	«Aquéllas que los árboles apenas 		
+	dejan ser torres hoy, dijo el cabrero 		
+	con muestras de dolor extraordinarias, 		
+	las estrellas nocturnas luminarias 	 215	
+	eran de sus almenas, 		
+	cuando el que ves sayal fue limpio acero. 		
+	Yacen ahora, y sus desnudas piedras 		
+	visten piadosas yedras, 		
+	que a rüinas y a estragos 	 220	
+	sabe el tiempo hacer verdes halagos.» 		
+
+	Con gusto el joven y atención le oía, 		
+	cuando torrente de armas y de perros, 		
+	que si precipitados no los cerros, 		
+	las personas tras de un lobo traía, 	 225	
+	tierno discurso y dulce compañía 		
+	dejar hizo al serrano, 		
+	que del sublime espacïoso llano 		
+	al huésped al camino reduciendo, 		
+	al venatorio estruendo, 	 230	
+	pasos dando veloces, 		
+	número crece y multiplica voces. 		
+
+	Bajaba entre sí el joven admirando 		
+	armado a Pan, o semicapro a Marte, 		
+	en el pastor mentidos, que con arte 	 235	
+	culto principio dio al discurso, cuando 		
+	rémora de sus pasos fue su oído, 		
+	dulcemente impedido 		
+	de canoro instrumento, que pulsado 		
+	era de una serrana junto a un tronco, 	 240	
+	sobre un arroyo de quejarse ronco, 		
+	mudo sus ondas, cuando no enfrenado. 		
+	Otra con ella montaraz zagala 		
+	juntaba el cristal líquido al humano 		
+	por el arcaduz bello de una mano 	 245	
+	que al uno menosprecia, al otro iguala. 		
+	Del verde margen otra las mejores 		
+	rosas traslada y lilios al cabello, 		
+	o por lo matizado o por lo bello, 		
+	si Aurora no con rayos, Sol con flores. 	 250	
+	Negras pizarras entre blancos dedos 		
+	ingenïosa hiere otra, que dudo 		
+	que aun los peñascos la escucharan quedos. 		
+	Al son pues deste rudo 		
+	sonoroso instrumento, 	 255	
+	lasciva el movimiento, 		
+	mas los ojos honesta, 		
+	altera otra bailando la floresta. 		
+	Tantas al fin el arroyuelo, y tantas 		
+	montañesas da el prado, que dirías 	 260	
+	ser menos las que verdes Hamadrías 		
+	abortaron las plantas: 		
+	inundación hermosa 		
+	que la montaña hizo populosa 		
+	de sus aldeas todas 	 265	
+	a pastorales bodas. 		
+	De una encina embebido 		
+	en lo cóncavo, el joven mantenía 		
+	la vista de hermosura, y el oído 		
+	de métrica armonía. 	 270	
+	El Sileno buscaba 		
+	de aquellas que la sierra dio Bacantes, 		
+	ya que Ninfas las niega ser errantes 		
+	el hombro sin aljaba, 		
+	o si del Termodonte, 	 275	
+	émulo del arroyuelo desatado 		
+	de aquel fragoso monte, 		
+	escuadrón de Amazonas desarmado 		
+	tremola en sus riberas 		
+	pacíficas banderas. 	 280	
+
+	Vulgo lascivo erraba 		
+	al voto del mancebo, 		
+	el yugo de ambos sexos sacudido, 		
+	al tiempo que, de flores impedido 		
+	el que ya serenaba 	 285	
+	la región de su frente rayo nuevo, 		
+	purpúrea terneruela, conducida 		
+	de su madre, no menos enramada, 		
+	entre albogues se ofrece, acompañada 		
+	de juventud florida. 	 290	
+	Cuál dellos las pendientes sumas graves 		
+	de negras baja, de crestadas aves, 		
+	cuyo lascivo esposo vigilante 		
+	doméstico es del Sol nuncio canoro, 		
+	y de coral barbado, no de oro 	 295	
+	ciñe, sino de púrpura, turbante. 		
+	Quién la cerviz oprime 		
+	con la manchada copia 		
+	de los cabritos más retozadores, 		
+	tan golosos, que gime 	 300	
+	el que menos peinar puede las flores 		
+	de su guirnalda propia. 		
+	No el sitio, no, fragoso, 		
+	no el torcido taladro de la tierra, 		
+	privilegió en la sierra 	 305	
+	la paz del conejuelo temeroso; 		
+	trofeo ya su número es a un hombro, 		
+	si carga no y asombro. 		
+	Tú, ave peregrina, 		
+	arrogante esplendor, ya que no bello, 	 310	
+	del último Occidente, 		
+	penda el rugoso nácar de tu frente 		
+	sobre el crespo zafiro de tu cuello, 		
+	que Himeneo a sus mesas te destina. 		
+	Sobre dos hombros larga vara ostenta 	 315	
+	en cien aves cien picos de rubíes, 		
+	tafiletes calzadas carmesíes, 		
+	emulación y afrenta 		
+	aun de los berberiscos, 		
+	en la inculta región de aquellos riscos. 	 320	
+	Lo que lloró la Aurora, 		
+	si es néctar lo que llora, 		
+	y, antes que el Sol, enjuga 		
+	la abeja que madruga 		
+	a libar flores y a chupar cristales, 	 325	
+	en celdas de oro líquido, en panales 		
+	la orza contenía 		
+	que un montañés traía. 		
+	No excedía la oreja 		
+	el pululante ramo 	 330	
+	del ternezuelo gamo, 		
+	que mal llevar se deja, 		
+	y con razón, que el tálamo desdeña 		
+	la sombra aun de lisonja tan pequeña. 		
+
+	El arco del camino pues torcido, 	 335	
+	que habían con trabajo 		
+	por la fragosa cuerda del atajo 		
+	las gallardas serranas desmentido, 		
+	de la cansada juventud vencido, 		
+	los fuertes hombros con las cargas graves, 	 340	
+	treguas hechas süaves, 		
+	sueño le ofrece a quien buscó descanso 		
+	el ya sañudo arroyo, ahora manso. 		
+	Merced de la hermosura que ha hospedado, 		
+	efectos, si no dulces, del concento 	 345	
+	que, en las lucientes de marfil clavijas, 		
+	las duras cuerdas de las negras guijas 		
+	hicieron a su curso acelerado, 		
+	en cuanto a su furor perdonó el viento. 		
+
+	Menos en renunciar tardó la encina 	 350	
+	el extranjero errante, 		
+	que en reclinarse el menos fatigado 		
+	sobre la grana que se viste fina 		
+	su bella amada, deponiendo amante 		
+	en las vestidas rosas su cuidado. 	 355	
+	Saludolos a todos cortésmente, 		
+	y, admirado no menos 		
+	de los serranos que correspondido, 		
+	las sombras solicita de unas peñas. 		
+	De lágrimas los tiernos ojos llenos, 	 360	
+	reconociendo el mar en el vestido 		
+	(que beberse no pudo el Sol ardiente 		
+	las que siempre dará cerúleas señas), 		
+	político serrano, 		
+	de canas grave, habló desta manera: 	 365	
+
+	«¿Cuál tigre, la más fiera 		
+	que clima infamó hircano, 		
+	dio el primer alimento 		
+	al que, ya deste o de aquel mar, primero 		
+	surcó, labrador fiero, 	 370	
+	el campo undoso en mal nacido pino, 		
+	vaga Clicie del viento, 		
+	en telas hecho, antes que en flor, el lino? 		
+	Más armas introdujo este marino 		
+	monstruo, escamado de robustas hayas, 	 375	
+	a las que tanto mar divide playas, 		
+	que confusión y fuego 		
+	al frigio muro el otro leño griego. 		
+	Náutica industria investigó tal piedra, 		
+	que, cual abraza yedra 	 380	
+	escollo, el metal ella fulminante 		
+	de que Marte se viste y, lisonjera, 		
+	solicita el que más brilla diamante 		
+	en la nocturna capa de la esfera, 		
+	estrella a nuestro Polo más vecina; 	 385	
+	y, con virtud no poca, 		
+	distante le revoca, 		
+	elevada la inclina 		
+	ya de la Aurora bella 		
+	al rosado balcón, ya a la que sella, 	 390	
+	cerúlea tumba fría, 		
+	las cenizas del día. 		
+	En esta pues fiándose atractiva, 		
+	del Norte amante dura, alado roble, 		
+	no hay tormentoso cabo que no doble, 	 395	
+	ni isla hoy a su vuelo fugitiva. 		
+	Tifis el primer leño mal seguro 		
+	condujo, muchos luego Palinuro; 		
+	si bien por un mar ambos, que la tierra 		
+	estanque dejó hecho, 	 400	
+	cuyo famoso estrecho 		
+	una y otra de Alcides llave cierra. 		
+	Piloto hoy la Codicia, no de errantes 		
+	árboles, mas de selvas inconstantes, 		
+	al padre de las aguas Ocëano 	 405	
+	(de cuya monarquía 		
+	el Sol, que cada día 		
+	nace en sus ondas y en sus ondas muere, 		
+	los términos saber todos no quiere) 		
+	dejó primero de su espuma cano, 	 410	
+	sin admitir segundo 		
+	en inculcar sus límites al mundo. 		
+	Abetos suyos tres aquel tridente 		
+	violaron a Neptuno, 		
+	conculcado hasta allí de otro ninguno, 	 415	
+	besando las que al Sol el Occidente 		
+	le corre en lecho azul de aguas marinas, 		
+	turquesadas cortinas. 		
+	A pesar luego de áspides volantes, 		
+	sombra del Sol y tósigo del viento, 	 420	
+	de Caribes flechados, sus banderas 		
+	siempre gloriosas, siempre tremolantes, 		
+	rompieron los que armó de plumas ciento 		
+	Lestrigones el istmo, aladas fieras; 		
+	el istmo que al Océano divide, 	 425	
+	y, sierpe de cristal, juntar le impide 		
+	la cabeza, del Norte coronada, 		
+	con la que ilustra el Sur cola escamada 		
+	de antárticas estrellas. 		
+	Segundos leños dio a segundo Polo 	 430	
+	en nuevo mar, que le rindió no sólo 		
+	las blancas hijas de sus conchas bellas, 		
+	mas los que lograr bien no supo Midas 		
+	metales homicidas. 		
+	No le bastó después a este elemento 	 435	
+	conducir orcas, alistar ballenas, 		
+	murarse de montañas espumosas, 		
+	infamar blanqueando sus arenas 		
+	con tantas del primer atrevimiento 		
+	señas, aun a los buitres lastimosas, 	 440	
+	para con estas lastimosas señas 		
+	temeridades enfrenar segundas. 		
+	Tú, Codicia, tú, pues, de las profundas 		
+	estigias aguas torpe marinero, 		
+	cuantos abre sepulcros el mar fiero 	 445	
+	a tus huesos desdeñas. 		
+	El promontorio que Éolo sus rocas 		
+	candados hizo de otras nuevas grutas 		
+	para el Austro de alas nunca enjutas, 		
+	para el Cierzo espirante por cien bocas, 	 450	
+	doblaste alegre, y tu obstinada entena 		
+	cabo lo hizo de Esperanza Buena. 		
+	Tantos luego astronómicos presagios 		
+	frustrados, tanta náutica doctrina, 		
+	debajo de la zona más vecina 	 455	
+	al Sol, calmas vencidas y naufragios, 		
+	los reinos de la Aurora al fin besaste, 		
+	cuyos purpúreos senos perlas netas, 		
+	cuyas minas secretas 		
+	hoy te guardan su más precioso engaste. 	 460	
+	La aromática selva penetraste, 		
+	que al pájaro de Arabia (cuyo vuelo 		
+	arco alado es del cielo, 		
+	no corvo, mas tendido) 		
+	pira le erige, y le construye nido. 	 465	
+	Zodíaco después fue cristalino 		
+	a glorïoso pino, 		
+	émulo vago del ardiente coche 		
+	del Sol, este elemento, 		
+	que cuatro veces había sido ciento 	 470	
+	dosel al día y tálamo a la noche, 		
+	cuando halló de fugitiva plata 		
+	la bisagra, aunque estrecha, abrazadora 		
+	de un Océano y otro, siempre uno, 		
+	o las columnas bese o la escarlata, 	 475	
+	tapete de la Aurora. 		
+	Esta pues nave, ahora 		
+	en el húmido templo de Neptuno 		
+	varada pende a la inmortal memoria 		
+	con nombre de Victoria. 	 480	
+	De firmes islas no la inmóvil flota 		
+	en aquel mar del Alba te describo, 		
+	cuyo número, ya que no lascivo, 		
+	por lo bello, agradable y por lo vario 		
+	la dulce confusión hacer podía, 	 485	
+	que en los blancos estanques del Eurota 		
+	la virginal desnuda montería, 		
+	haciendo escollos o de mármol pario 		
+	o de terso marfil sus miembros bellos, 		
+	que pudo bien Acteón perderse en ellos. 	 490	
+	El bosque dividido en islas pocas, 		
+	fragante productor de aquel aroma 		
+	que, traducido mal por el Egito, 		
+	tarde lo encomendó el Nilo a sus bocas, 		
+	y ellas más tarde a la gulosa Grecia, 	 495	
+	clavo no, espuela sí del apetito, 		
+	que cuanto en concocelle tardó Roma 		
+	fue templado Catón, casta Lucrecia, 		
+	quédese, amigo, en tan inciertos mares, 		
+	donde con mi hacienda 	 500	
+	del alma se quedó la mejor prenda, 		
+	cuya memoria es buitre de pesares.» 		
+
+	En suspiros con esto, 		
+	y en más anegó lágrimas el resto 		
+	de su discurso el montañés prolijo, 	 505	
+	que el viento su caudal, el mar su hijo. 		
+
+	Consolalle pudiera el peregrino 		
+	con las de su edad corta historias largas, 		
+	si, vinculados todos a sus cargas 		
+	cual próvidas hormigas a sus mieses, 	 510	
+	no comenzaran ya los montañeses 		
+	a esconder con el número el camino, 		
+	y el cielo con el polvo. Enjugó el viejo 		
+	del tierno humor las venerables canas, 		
+	y levantando al forastero, dijo: 	 515	
+	«Cabo me han hecho, hijo, 		
+	deste hermoso tercio de serranas; 		
+	si tu neutralidad sufre consejo, 		
+	y no te fuerza obligación precisa, 		
+	la piedad que en mi alma ya te hospeda 	 520	
+	hoy te convida al que nos guarda sueño 		
+	política alameda, 		
+	verde muro de aquel lugar pequeño 		
+	que, a pesar de esos fresnos, se divisa; 		
+	sigue la femenil tropa conmigo: 	 525	
+	verás curioso y honrarás testigo 		
+	el tálamo de nuestros labradores, 		
+	que de tu calidad señas mayores 		
+	me dan que del Océano tus paños, 		
+	o razón falta donde sobran años.» 	 530	
+
+	Mal pudo el extranjero, agradecido, 		
+	en tercio tal negar tal compañía 		
+	y en tan noble ocasión tal hospedaje. 		
+	Alegres pisan la que, si no era 		
+	de chopos calle y de álamos carrera, 	 535	
+	el fresco de los céfiros rüido, 		
+	el denso de los árboles celaje 		
+	en duda ponen cuál mayor hacía 		
+	guerra al calor o resistencia al día. 		
+	Coros tejiendo, voces alternando, 	 540	
+	sigue la dulce escuadra montañesa 		
+	del perezoso arroyo el paso lento, 		
+	en cuanto él hurta blando, 		
+	entre los olmos que robustos besa, 		
+	pedazos de cristal, que el movimiento 	 545	
+	libra en la falda, en el coturno ella, 		
+	de la coluna bella, 		
+	ya que celosa basa, 		
+	dispensadora del cristal no escasa. 		
+	Sirenas de los montes su concento, 	 550	
+	a la que menos del sañudo viento 		
+	pudiera antigua planta 		
+	temer rüina o recelar fracaso, 		
+	pasos hiciera dar el menor paso 		
+	de su pie o su garganta. 	 555	
+	Pintadas aves, cítaras de pluma, 		
+	coronaban la bárbara capilla, 		
+	mientras el arroyuelo para oílla 		
+	hace de blanca espuma 		
+	tantas orejas cuantas guijas lava, 	 560	
+	de donde es fuente a donde arroyo acaba. 		
+	Vencedores se arrogan los serranos 		
+	los consignados premios otro día, 		
+	ya al formidable salto, ya a la ardiente 		
+	lucha, ya a la carrera polvorosa. 	 565	
+	El menos ágil, cuantos comarcanos 		
+	convoca el caso él solo desafía, 		
+	consagrando los palios a su esposa, 		
+	que a mucha fresca rosa 		
+	beber el sudor hace de su frente, 	 570	
+	mayor aún del que espera 		
+	en la lucha, en el salto, en la carrera. 		
+
+	Centro apacible un círculo espacioso 		
+	a más caminos que una estrella rayos 		
+	hacía, bien de pobos, bien de alisos, 	 575	
+	donde la Primavera, 		
+	calzada abriles y vestida mayos, 		
+	centellas saca de cristal undoso 		
+	a un pedernal orlado de narcisos. 		
+	Este pues centro era 	 580	
+	meta umbrosa al vaquero convecino, 		
+	y delicioso término al distante, 		
+	donde, aún cansado más que el caminante, 		
+	concurría el camino. 		
+	Al concento se abaten cristalino 	 585	
+	sedientas las serranas, 		
+	cual simples codornices al reclamo 		
+	que les miente la voz, y verde cela 		
+	entre la no espigada mies la tela. 		
+	Músicas hojas viste el menor ramo 	 590	
+	del álamo que peina verdes canas; 		
+	no céfiros en él, no ruiseñores 		
+	lisonjear pudieron breve rato 		
+	al montañés que, ingrato 		
+	al fresco, a la armonía y a las flores, 	 595	
+	del sitio pisa ameno 		
+	la fresca hierba cual la arena ardiente 		
+	de la Libia, y a cuantas da la fuente 		
+	sierpes de aljófar, aún mayor veneno 		
+	que a las del Ponto tímido atribuye, 	 600	
+	según el pie, según los labios huye. 		
+
+	Pasaron todos pues, y regulados 		
+	cual en los Equinocios surcar vemos 		
+	los piélagos del aire libre algunas 		
+	volantes no galeras, 	 605	
+	sino grullas veleras, 		
+	tal vez creciendo, tal menguando lunas 		
+	sus distantes extremos, 		
+	caracteres tal vez formando alados 		
+	en el papel dïáfano del cielo 	 610	
+	las plumas de su vuelo. 		
+	Ellas en tanto en bóvedas de sombras, 		
+	pintadas siempre al fresco, 		
+	cubren las que Sidón, telar turquesco, 		
+	no ha sabido imitar verdes alfombras. 	 615	
+	Apenas reclinaron la cabeza 		
+	cuando, en número iguales y en belleza, 		
+	los márgenes matiza de las fuentes 		
+	segunda primavera de villanas, 		
+	que parientas del novio aún más cercanas 	 620	
+	que vecinos sus pueblos, de presentes 		
+	prevenidas, concurren a las bodas. 		
+	Mezcladas hacen todas 		
+	teatro dulce, no de escena muda, 		
+	el apacible sitio: espacio breve 	 625	
+	en que, a pesar del Sol, cuajada nieve, 		
+	y nieve de colores mil vestida, 		
+	la sombra vio florida 		
+	en la hierba menuda. 		
+
+	Viendo pues que igualmente les quedaba 	 630	
+	para el lugar a ellas de camino 		
+	lo que al Sol para el lóbrego Occidente, 		
+	cual de aves se caló turba canora 		
+	a robusto nogal que acequia lava 		
+	en cercado vecino, 	 635	
+	cuando a nuestros Antípodas la Aurora 		
+	las rosas gozar deja de su frente, 		
+	tal sale aquella que sin alas vuela 		
+	hermosa escuadra con ligero paso, 		
+	haciéndole atalayas del Ocaso 	 640	
+	cuantos humeros cuenta la aldehuela. 		
+
+	El lento escuadrón luego 		
+	alcanzan de serranos, 		
+	y disolviendo allí la compañía, 		
+	al pueblo llegan con la luz que el día 	 645	
+	cedió al sacro volcán de errante fuego, 		
+	a la torre de luces coronada 		
+	que el templo ilustra, y a los aires vanos 		
+	artificiosamente da exhalada 		
+	luminosas de pólvora saetas, 	 650	
+	purpúreos no cometas. 		
+	Los fuegos pues el joven solemniza, 		
+	mientras el viejo tanta acusa tea 		
+	al de las bodas Dios, no alguna sea 		
+	de nocturno Faetón carroza ardiente, 	 655	
+	y miserablemente 		
+	campo amanezca estéril de ceniza 		
+	la que anocheció aldea. 		
+	De Alcides le llevó luego a las plantas, 		
+	que estaban no muy lejos, 	 660	
+	trenzándose el cabello verde a cuantas 		
+	da el fuego luces y el arroyo espejos. 		
+	Tanto garzón robusto, 		
+	tanta ofrecen los álamos zagala, 		
+	que abrevïara el Sol en una estrella, 	 665	
+	por ver la menos bella, 		
+	cuantos saluda rayos el Bengala, 		
+	del Ganges cisne adusto. 		
+	La gaita al baile solicita el gusto, 		
+	a la voz el salterio; 	 670	
+	cruza el Trïón más fijo el Hemisferio, 		
+	y el tronco mayor danza en la ribera; 		
+	el eco, voz ya entera, 		
+	no hay silencio a que pronto no responda; 		
+	fanal es del arroyo cada onda, 	 675	
+	luz el reflejo, la agua vidrïera. 		
+	Términos le da el sueño al regocijo, 		
+	mas al cansancio no, que el movimiento 		
+	verdugo de las fuerzas es prolijo. 		
+	Los fuegos (cuyas lenguas ciento a ciento 	 680	
+	desmintieron la noche algunas horas, 		
+	cuyas luces, del Sol competidoras, 		
+	fingieron día en la tiniebla oscura) 		
+	murieron, y en sí mismos sepultados, 		
+	sus miembros, en cenizas desatados, 	 685	
+	piedras son de su misma sepultura. 		
+	Vence la noche al fin, y triunfa mudo 		
+	el silencio, aunque breve, del rüido. 		
+	Sólo gime ofendido 		
+	el sagrado laurel del hierro agudo. 	 690	
+	Deja de su esplendor, deja desnudo 		
+	de su frondosa pompa al verde aliso 		
+	el golpe no remiso 		
+	del villano membrudo. 		
+	El que resistir pudo 	 695	
+	al animoso Austro, al Euro ronco, 		
+	chopo gallardo, cuyo liso tronco 		
+	papel fue de pastores, aunque rudo, 		
+	a revelar secretos va a la aldea, 		
+	que impide Amor que aun otro chopo lea. 	 700	
+	Estos árboles pues ve la mañana 		
+	mentir florestas y emular viales, 		
+	cuantos muró de líquidos cristales 		
+	agricultura urbana. 		
+
+	Recordó al Sol no de su espuma cana 	 705	
+	la dulce de las aves armonía, 		
+	sino los dos topacios que batía, 		
+	orientales aldabas, Himeneo. 		
+	Del carro pues febeo 		
+	el luminoso tiro, 	 710	
+	mordiendo oro, el eclíptico zafiro 		
+	pisar quería, cuando el populoso 		
+	lugarillo el serrano 		
+	con su huésped, que admira cortesano, 		
+	a pesar del estambre y de la seda, 	 715	
+	el que tapiz frondoso 		
+	tejió de verdes hojas la arboleda, 		
+	y los que por las calles espaciosas 		
+	fabrican arcos, rosas, 		
+	oblicuos nuevos, pénsiles jardines, 	 720	
+	de tantos como víolas jazmines. 		
+
+	Al galán novio el montañés presenta 		
+	su forastero; luego al venerable 		
+	padre de la que en sí bella se esconde 		
+	con ceño dulce y, con silencio afable, 	 725	
+	beldad parlera, gracia muda ostenta, 		
+	cual del rizado verde botón, donde 		
+	abrevia su hermosura virgen rosa, 		
+	las cisuras cairela 		
+	un color que la púrpura que cela 	 730	
+	por brújula concede vergonzosa. 		
+	Digna la juzga esposa 		
+	de un héroe, si no augusto, esclarecido, 		
+	el joven, al instante arrebatado 		
+	a la que, naufragante y desterrado, 	 735	
+	le condenó a su olvido. 		
+	Este pues Sol que a olvido le condena, 		
+	cenizas hizo las que su memoria 		
+	negras plumas vistió, que infelizmente 		
+	sordo engendran gusano, cuyo diente, 	 740	
+	minador antes lento de su gloria, 		
+	inmortal arador fue de su pena, 		
+	y en la sombra no más de la azucena, 		
+	que del clavel procura acompañada 		
+	imitar en la bella labradora 	 745	
+	el templado color de la que adora, 		
+	víbora pisa tal el pensamiento, 		
+	que el alma, por los ojos desatada, 		
+	señas diera de su arrebatamiento, 		
+	si de zampoñas ciento 	 750	
+	y de otros, aunque bárbaros, sonoros 		
+	instrumentos, no en dos festivos coros 		
+	vírgenes bellas, jóvenes lucidos, 		
+	llegaran conducidos. 		
+	El numeroso al fin de labradores 	 755	
+	concurso impacïente 		
+	los novios saca: él, de años floreciente, 		
+	y de caudal más floreciente que ellos; 		
+	ella, la misma pompa de las flores, 		
+	la esfera misma de los rayos bellos. 	 760	
+	El lazo de ambos cuellos 		
+	entre un lascivo enjambre iba de amores 		
+	Himeneo añudando, 		
+	mientras invocan su deidad la alterna 		
+	de zagalejas cándidas voz tierna 	 765	
+	y de garzones este acento blando: 		
+
+CORO I
+
+	«Ven, Himeneo, ven donde te espera, 		
+	con ojos y sin alas, un Cupido 		
+	cuyo cabello intonso dulcemente 		
+	niega el vello que el vulto ha colorido: 	 770	
+	el vello, flores de su primavera, 		
+	y rayos el cabello de su frente. 		
+	Niño amó la que adora adolescente, 		
+	villana Psiques, Ninfa labradora 		
+	de la tostada Ceres. Ésta ahora, 	 775	
+	en los inciertos de su edad segunda 		
+	crepúsculos, vincule tu coyunda 		
+	a su ardiente deseo. 		
+	Ven, Himeneo, ven; ven, Himeneo.» 		
+
+CORO II
+
+	«Ven, Himeneo, donde entre arreboles 	 780	
+	de honesto rosicler, previene el día, 		
+	aurora de sus ojos soberanos, 		
+	virgen tan bella, que hacer podría 		
+	tórrida la Noruega con dos soles, 		
+	y blanca la Etïopia con dos manos. 	 785	
+	Claveles del abril, rubíes tempranos, 		
+	cuantos engasta el oro del cabello, 		
+	cuantas (del uno ya y del otro cuello 		
+	cadenas) la concordia engarza rosas, 		
+	de sus mejillas siempre vergonzosas 	 790	
+	purpúreo son trofeo. 		
+	Ven, Himeneo, ven; ven, Himeneo.» 		
+
+CORO I
+
+	«Ven, Himeneo, y plumas no vulgares 		
+	al aire los hijuelos den alados 		
+	de las que el bosque bellas Ninfas cela; 	 795	
+	de sus carcajes, éstos, argentados, 		
+	flechen mosquetas, nieven azahares; 		
+	vigilantes aquéllos, la aldehuela 		
+	rediman del que más o tardo vuela, 		
+	o infausto gime pájaro nocturno; 	 800	
+	mudos coronen otros por su turno 		
+	el dulce lecho conyugal, en cuanto 		
+	lasciva abeja al virginal acanto 		
+	néctar le chupa hibleo. 		
+	Ven, Himeneo, ven; ven, Himeneo.» 	 805	
+
+CORO II
+
+	«Ven, Himeneo, y las volantes pías 		
+	que azules ojos con pestañas de oro 		
+	sus plumas son, conduzgan alta diosa, 		
+	gloria mayor del soberano coro. 		
+	Fíe tus nudos ella, que los días 	 810	
+	disuelvan tarde en senectud dichosa, 		
+	y la que Juno es hoy a nuestra esposa, 		
+	casta Lucina, en lunas desiguales 		
+	tantas veces repita sus umbrales, 		
+	que Níobe inmortal la admire el mundo, 	 815	
+	no en blanco mármol, por su mal fecundo, 		
+	escollo hoy de Leteo. 		
+	Ven, Himeneo, ven; ven, Himeneo.» 		
+
+CORO I
+
+	«Ven, Himeneo, y nuestra agricultura 		
+	de copia tal a estrellas deba amigas 	 820	
+	progenie tan robusta, que su mano 		
+	toros dome, y de un rubio mar de espigas 		
+	inunde liberal la tierra dura; 		
+	y al verde, joven, floreciente llano 		
+	blancas ovejas suyas hagan cano 	 825	
+	en breves horas caducar la hierba. 		
+	Oro le expriman líquido a Minerva, 		
+	y, los olmos casando con las vides, 		
+	mientras coronan pámpanos a Alcides, 		
+	clava empuñe Liëo. 	 830	
+	Ven, Himeneo, ven; ven, Himeneo.» 		
+
+CORO II
+
+	«Ven, Himeneo, y tantas le dé a Pales 		
+	cuantas a Palas dulces prendas ésta, 		
+	apenas hija hoy, madre mañana. 		
+	De errantes lilios unas la floresta 	 835	
+	cubran, corderos mil que los cristales 		
+	vistan del río en breve undosa lana; 		
+	de Aracnes otras la arrogancia vana 		
+	modestas acusando en blancas telas, 		
+	no los hurtos de Amor, no las cautelas 	 840	
+	de Júpiter compulsen; que, aun en lino, 		
+	ni a la pluvia luciente de oro fino, 		
+	ni al blanco cisne creo. 		
+	Ven, Himeneo, ven; ven, Himeneo.» 		
+
+	El dulce alterno canto 	 845	
+	a sus umbrales revocó felices 		
+	los novios del vecino templo santo. 		
+	Del yugo aún no domadas las cervices, 		
+	novillos (breve término surcado) 		
+	restituyen así el pendiente arado 	 850	
+	al que pajizo albergue los aguarda. 		
+
+	Llegaron todos pues, y, con gallarda 		
+	civil magnificencia, el suegro anciano, 		
+	cuantos la sierra dio, cuantos dio el llano, 		
+	labradores convida 	 855	
+	a la prolija rústica comida, 		
+	que sin rumor previno en mesas grandes. 		
+	Ostente crespas blancas esculturas 		
+	artífice gentil de dobladuras 		
+	en los que damascó manteles Flandes, 	 860	
+	mientras casero lino Ceres tanta 		
+	ofrece ahora, cuantos guardó el heno 		
+	dulces pomos, que al curso de Atalanta 		
+	fueran dorado freno. 		
+	Manjares que el veneno 	 865	
+	y el apetito ignoran igualmente 		
+	les sirvieron; y en oro no luciente, 		
+	confuso Baco, ni en bruñida plata, 		
+	su néctar les desata, 		
+	sino en vidrio topacios carmesíes 	 870	
+	y pálidos rubíes. 		
+	Sellar del fuego quiso regalado 		
+	los gulosos estómagos el rubio 		
+	imitador süave de la cera, 		
+	quesillo dulcemente apremïado 	 875	
+	de rústica, vaquera, 		
+	blanca, hermosa mano, cuyas venas 		
+	la distinguieron de la leche apenas; 		
+	mas ni la encarcelada nuez esquiva, 		
+	ni el membrillo pudieran anudado, 	 880	
+	si la sabrosa oliva 		
+	no serenara el bacanal diluvio. 		
+
+	Levantadas las mesas, al canoro 		
+	son de la Ninfa un tiempo, ahora caña, 		
+	seis de los montes, seis de la campaña 	 885	
+	(sus espaldas rayando el sutil oro 		
+	que negó al viento el nácar bien tejido), 		
+	terno de gracias bello, repetido 		
+	cuatro veces en doce labradoras, 		
+	entró bailando numerosamente; 	 890	
+	y dulce Musa entre ellas, si consiente 		
+	bárbaras el Parnaso moradoras: 		
+
+	«Vivid felices, dijo, 		
+	largo curso de edad nunca prolijo; 		
+	y si prolijo, en nudos amorosos 	 895	
+	siempre vivid esposos. 		
+	Venza no sólo en su candor la nieve, 		
+	mas plata en su esplendor sea cardada 		
+	cuanto estambre vital Cloto os traslada 		
+	de la alta fatal rueca al huso breve. 	 900	
+	Sean de la Fortuna 		
+	aplausos la respuesta 		
+	de vuestras granjerías. 		
+	A la reja importuna, 		
+	a la azada molesta 	 905	
+	fecundo os rinda, en desiguales días, 		
+	el campo agradecido 		
+	oro trillado y néctar exprimido. 		
+	Sus morados cantuesos, sus copadas 		
+	encinas la montaña contar antes 	 910	
+	deje que vuestras cabras, siempre errantes, 		
+	que vuestras vacas, tarde o nunca herradas. 		
+	Corderillos os brote la ribera, 		
+	que la hierba menuda 		
+	y las perlas exceda del rocío 	 915	
+	su número, y del río 		
+	la blanca espuma, cuantos la tijera 		
+	vellones les desnuda. 		
+	Tantos de breve fábrica, aunque ruda, 		
+	albergues vuestros las abejas moren, 	 920	
+	y Primaveras tantas os desfloren, 		
+	que, cual la Arabia madre ve de aromas 		
+	sacros troncos sudar fragantes gomas, 		
+	vuestros corchos por uno y otro poro 		
+	en dulce se desaten líquido oro. 	 925	
+	Próspera, al fin, mas no espumosa tanto 		
+	vuestra fortuna sea, 		
+	que alimenten la invidia en nuestra aldea 		
+	áspides más que en la región del llanto. 		
+	Entre opulencias y necesidades 	 930	
+	medianías vinculen competentes 		
+	a vuestros descendientes, 		
+	previniendo ambos daños las edades; 		
+	ilustren obeliscos las ciudades, 		
+	a los rayos de Júpiter expuesta, 	 935	
+	aún más que a los de Febo, su corona, 		
+	cuando a la choza pastoral perdona 		
+	el cielo, fulminando la floresta. 		
+	Cisnes pues una y otra pluma, en esta 		
+	tranquilidad os halle labradora 	 940	
+	la postrimera hora, 		
+	cuya lámina cifre desengaños, 		
+	que en letras pocas lean muchos años.» 		
+
+	Del himno culto dio el último acento 		
+	fin mudo al baile, al tiempo que seguida 	 945	
+	la novia sale de villanas ciento 		
+	a la verde florida palizada, 		
+	cual nueva Fénix en flamantes plumas, 		
+	matutinos del Sol rayos vestida, 		
+	de cuanta surca el aire acompañada 	 950	
+	monarquía canora; 		
+	y, vadeando nubes, las espumas 		
+	del Rey corona de los otros ríos, 		
+	en cuya orilla el viento hereda ahora 		
+	pequeños no vacíos 	 955	
+	de funerales bárbaros trofeos 		
+	que el Egipto erigió a sus Ptolomeos. 		
+
+	Los árboles que el bosque habian fingido, 		
+	umbroso coliseo ya formando, 		
+	despejan el ejido, 	 960	
+	olímpica palestra 		
+	de valientes desnudos labradores. 		
+	Llegó la desposada apenas, cuando 		
+	feroz ardiente muestra 		
+	hicieron dos robustos luchadores 	 965	
+	de sus músculos, menos defendidos 		
+	del blanco lino que del vello obscuro. 		
+	Abrazáronse pues los dos, y luego, 		
+	humo anhelando el que no suda fuego, 		
+	de recíprocos nudos impedidos, 	 970	
+	cual duros olmos de implicantes vides, 		
+	yedra el uno es tenaz del otro muro; 		
+	mañosos, al fin, hijos de la tierra, 		
+	cuando fuertes no Alcides, 		
+	procuran derribarse, y derribados, 	 975	
+	cual pinos se levantan arraigados 		
+	en los profundos senos de la sierra. 		
+	Premio los honra igual, y de otros cuatro 		
+	ciñe las sienes glorïosa rama, 		
+	con que se puso término a la lucha. 	 980	
+
+	Las dos partes rayaba del teatro 		
+	el Sol, cuando arrogante joven llama 		
+	al expedido salto 		
+	la bárbara corona que le escucha. 		
+	Arras del animoso desafío 	 985	
+	un pardo gabán fue en el verde suelo, 		
+	a quien se abaten ocho o diez soberbios 		
+	montañeses, cual suele de lo alto 		
+	calarse turba de invidiosas aves 		
+	a los ojos de Ascálafo, vestido 	 990	
+	de perezosas plumas. Quién, de graves 		
+	piedras las duras manos impedido, 		
+	su agilidad pondera; quién sus nervios 		
+	desata estremeciéndose gallardo. 		
+	Besó la raya pues el pie desnudo 	 995	
+	del suelto mozo, y con airoso vuelo 		
+	pisó del viento lo que del ejido 		
+	tres veces ocupar pudiera un dardo. 		
+	La admiración, vestida un mármol frío, 		
+	apenas arquear las cejas pudo; 	 1000	
+	la emulación, calzada un duro hielo, 		
+	torpe se arraiga. Bien que impulso noble 		
+	de gloria, aunque villano, solicita 		
+	a un vaquero de aquellos montes, grueso, 		
+	membrudo, fuerte roble, 	 1005	
+	que, ágil a pesar de lo robusto, 		
+	al aire se arrebata, violentando 		
+	lo grave tanto, que lo precipita, 		
+	Ícaro montañés, su mismo peso 		
+	de la menuda hierba el seno blando 	 1010	
+	piélago duro hecho a su rüina. 		
+	Si no tan corpulento, más adusto 		
+	serrano le sucede, 		
+	que iguala y aun excede 		
+	al ayuno leopardo, 	 1015	
+	al corcillo travieso, al muflón sardo 		
+	que de las rocas trepa a la marina, 		
+	sin dejar ni aun pequeña 		
+	del pie ligero bipartida seña. 		
+	Con más felicidad que el precedente, 	 1020	
+	pisó las huellas casi del primero 		
+	el adusto vaquero. 		
+	Pasos otro dio al aire, al suelo coces. 		
+	Y premïados gradüadamente, 		
+	advocaron a sí toda la gente, 	 1025	
+	cierzos del llano y austros de la sierra, 		
+	mancebos tan veloces, 		
+	que cuando Ceres más dora la tierra, 		
+	y argenta el mar desde sus grutas hondas 		
+	Neptuno sin fatiga, 	 1030	
+	su vago pie de pluma 		
+	surcar pudiera mieses, pisar ondas, 		
+	sin inclinar espiga, 		
+	sin vïolar espuma. 		
+	Dos veces eran diez, y dirigidos 	 1035	
+	a dos olmos que quieren, abrazados, 		
+	ser palios verdes, ser frondosas metas, 		
+	salen cual de torcidos 		
+	arcos, o nervïosos o acerados, 		
+	con silbo igual, dos veces diez saetas. 	 1040	
+	No el polvo desparece 		
+	el campo, que no pisan alas hierba; 		
+	es el más torpe una herida cierva, 		
+	el más tardo la vista desvanece, 		
+	y, siguiendo al más lento, 	 1045	
+	cojea el pensamiento. 		
+	El tercio casi de una milla era 		
+	la prolija carrera 		
+	que los hercúleos troncos hace breves, 		
+	pero las plantas leves 	 1050	
+	de tres sueltos zagales 		
+	la distancia sincopan tan iguales, 		
+	que la atención confunden judiciosa. 		
+	De la Peneida virgen desdeñosa, 		
+	los dulces fugitivos miembros bellos 	 1055	
+	en la corteza no abrazó reciente 		
+	más firme Apolo, más estrechamente, 		
+	que de una y otra meta glorïosa 		
+	las duras basas abrazaron ellos 		
+	con triplicado nudo. 	 1060	
+	Árbitro Alcides en sus ramas, dudo 		
+	que el caso decidiera, 		
+	bien que su menor hoja un ojo fuera 		
+	del lince más agudo. 		
+
+	En tanto pues que el palio neutro pende 	 1065	
+	y la carroza de la luz desciende 		
+	a templarse en las ondas, Himeneo, 		
+	por templar en los brazos el deseo 		
+	del galán novio, de la esposa bella, 		
+	los rayos anticipa de la estrella, 	 1070	
+	cerúlea ahora, ya purpúrea guía 		
+	de los dudosos términos del día. 		
+	El jüicio, al de todos indeciso, 		
+	del concurso ligero, 		
+	el padrino con tres de limpio acero 	 1075	
+	cuchillos corvos absolvello quiso. 		
+	Solícita Junón, Amor no omiso, 		
+	al son de otra zampoña, que conduce 		
+	ninfas bellas y sátiros lascivos, 		
+	los desposados a su casa vuelven, 	 1080	
+	que coronada luce 		
+	de estrellas fijas, de astros fugitivos, 		
+	que en sonoroso humo se resuelven. 		
+
+	Llegó todo el lugar, y despedido, 		
+	casta Venus, que el lecho ha prevenido 	 1085	
+	de las plumas que baten más süaves 		
+	en su volante carro blancas aves, 		
+	los novios entra en dura no estacada; 		
+	que, siendo Amor una deidad alada, 		
+	bien previno la hija de la espuma 	 1090	
+	a batallas de amor campo de pluma. 		
+
+ES-S
+Poesías de Luis de Góngora y Argote
+Poesías

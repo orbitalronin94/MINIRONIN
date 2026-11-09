@@ -1,0 +1,26 @@
+# Deuteronomio
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Deuteronomio
+
+**Page ID:** 5138
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Deuteronomio?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+La Sagrada Biblia, nuevamente traducida al español, é ilustrada con notas por Don Félix Torres Amat, Tomo III - Deuteronomio, 1836.
+Biblia Reina-Valera, Revisión 1909, Libro del Deuteronomio
+Devarim–Deutoronomio (parte de la Biblia Wikisource)
+
+Deuteronomio
+Deuteronomio

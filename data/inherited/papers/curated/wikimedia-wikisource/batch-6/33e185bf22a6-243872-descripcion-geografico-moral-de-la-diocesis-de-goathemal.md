@@ -1,0 +1,65 @@
+# Descripción Geográfico-Moral de la Diócesis de Goathemala/Tomo 1/Quesaltepeque
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Descripci%C3%B3n%20Geogr%C3%A1fico-Moral%20de%20la%20Di%C3%B3cesis%20de%20Goathemala/Tomo%201/Quesaltepeque
+
+**Page ID:** 243872
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Descripci%C3%B3n%20Geogr%C3%A1fico-Moral%20de%20la%20Di%C3%B3cesis%20de%20Goathemala/Tomo%201/Quesaltepeque?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+unque la cavezera de esta Parroquia es el Pueblo de Quesaltepeque; pero há yá algunos años, que se reconoce por cavezera el Pueblo de Esquipulas. Yo me persuado; que el motivo há sido la residencia, que hacen los curas propios en este pueblo á causa de hallarse, y venerarse en el una ymagen mui devota de christo crucificado nombrada en todo el Reyno de Santo Christo de Esquipulas.
+
+El  Pedro Pardo de Figueroa manifestó mucha devocion á esta Santa Ymagen, y recidio en este Pueblo muchas veces, y por largo tiempo. Hizo fabricar un templo muy sumptuoso, capaz, de bella arquitectura, y qual no hay otro en el Reyno de Goathemala; ni en la Ciudad, sobre ser en esta parte famosa, y con razon; por que me persuado, que no solamente excede á las ciudades mas insignes de la America, sino tambien de España. Contiguo á este templo; deificó para su havitación un Palacio, que al presente se haya enteramente arruinado; y aún la Yglecia tiene algun perjuicio, por que no hay ciertamente facultades para mantener en la fabrica de semejante templo; por lo que en la visita, se tomaron algunas providencias para evitar su ruina; mandando, que se apliquen las limosnas á solo su concervacion, pues tiene alhajas, ornamentos preciosos, y abundantissimos.
+
+Con este motivo, á lo que entiendo, y con haver habitado algun tiempo el  es mui verisimil, que los curas fijáran en este Pueblo su recidencia, y que assi haya pasado á conciderarse cavezera de la Parroquia; haviendo tenido á bien en la visita dejarlo assi, por hallarse mas en el centro, que el Pueblo de Quesaltepeque, y conciguientemente con mas proporcion para que el cura propio assista á los Parroquianos por si mismo; como tambien por la mucha concurrencia de forasteros al referido santuario. En esta consideracion  se hablará aqui del Pueblo de Esquipulas como cavezera de esta Parroquia.
+
+Desde el Pueblo de Metapas al de Esquipulas hay quinze leguas, rumbo como de oriente á poniente. Las quatro primeras leguas pertenecen á la Parroquia de Metapas; es camino pessimo de subidas, y bajadas largas, y violentas. A las quatro leguas se dá con el Río Languiatuya de bastante caudal, el qual es lindero de ambas Parroquias. En las dos orillas hay muchas familias, y las que están á la parte de Metapas son las que hacen la Valle de Languiatuya, de que se habló arriva.
+
+Se cruza el río, que corre de norte á súr; y tambien la otra orilla se halla igualmente poblada; pero pertenece á la Parroquia de Esquipulas. Desde aqui al referido Pueblo hay onze leguas; las tres primeras de buen camino; se registran varios xacales, y al fin de ellas se dá con Alotepeque, que aunque no es Pueblo formado, pero lo parece; y hay varias familias con el motivo de Minas, que se cultivaron en este terreno há muy pocos años. A la vanda del norte y como una legua de Alotepeque se halla al presente el  de minas en malissima situacion, con varias gentes, sin alguna utilidad, y con sola la esperanza de que se descubrirán minas.
+
+Yá para llegar á Alotepeque se camina subiendo, desde 
+la orilla del Río Languiatuya, pero suavemente; y se encuentra en alguna altura, rodeado de cerros, y montañas elevadissimas, y las ocho leguas, que hay desde aqui á Esquipulas; que no son sino un laverinto de montañas; consisten en irlas venciendo con algunas vajadas, pero con muchas mas, y mayores subidas; con todo no tengo este camino por malo, pues no hay piedras, ni precipicios; está mui frondoso, y ameno, con varias siembras, y rancherías, que se enquentran en él. 
+
+De la montaña de Esquipulas, por esta vanda del súr, salen varios arroyos de agua, que corren por la hondura de las Valles, que se forman; con los que se fertiliza la tierra, y se hacen varias siembras de maiz, y de caña; por lo que, aprechando el terreno, que es mui bueno, se enquentran varias rancherias en todo el camino; pero las principales son una á dos leguas de Alotepeque llamada la Valle de la Concepcion, en donde hay bastantes familias; y se fecundiza de dos arroyos, que se juntan en ella, y toman el nombre de río de la Concepcion; aqui cave un Pueblo muy, y util para todo genero de frutos. A tres leguas mas se enquentra otra valle llamada de los Copantes, igualmente frondosa, y con bastantes familias. A tres leguas mas de subida se dá en el Pueblo de Esquipulas, que está á la otra cayda de la montaña, y assi se baja tambien como una legua.
+
+El Pueblo de Esquipulas está como al pie de su gran montaña, y se descubre yá una llanura, bastantemente espaciosa, pero poco util; porque nada se siembra en ella, y tal vez nada produciria; pues parece mui arida; solamente sirve para pasto de ganados, y aun para esto en tiempo de llubias. Es la cavezera del curato con dos anexos 1.º Quesaltepeque. 2.º San Jacinto. Ittem tiene varias valles, y rancherias, en las situaciones y distanicas, que aparecen en el mapa, y tabla siguiente.
+
+Toda esta administracion se halla á cargo de un Cura, que lo es, há trece años, D.n Juan Antonio Gallardo y Varaona 
+de mediana edad; parece de genio duro, y temoso. Dice tener quatro coadjutores 1.º D.n Antonio Gallar.do, há diez años, para los Pueblos de Quesaltepeque, y San Jacinto. 2.º D.n Estevan Ramos, há ocho años, para Esquipulas, y las Valles de Olopa, y Atulapa. 3.º D.n Juan de Mata Salazar, há seis años, en las Valles de Sulay, y Jupilingo. 4.º D.n Thomas Perez, há tres años, recidente en Alotepeque, desde donde tambien administra el Real de minas, y las valles de Languiatuya, y de la Concepcion.
+
+Hay tres eccleciasticos mas 1.º Dn Manuel Romero ordenado á titulo de administracion vagamente; recide parte del tiempo en Esquipulas, y parte en un hato que tiene en Zacapa. 2.º D.n Joseph Arias; há que recide en Esquipulas dos años, se ordenó á titulo de Administracion en la Provincia de Chiquimula. 3.º D.n Manuel Ximenes, que vino, poco há, á Esquipulas, y vive promiscuamente en este Pueblo, en el de Quesaltepeque, en el de San Salvador, y en Chiquimula; se ordenò á titulo de administracion vagamente, esto es, á donde lo asignen.
+
+El coadjutor 3.º D.n Juan de Mata està ordenado á titulo de Ydioma Chorti en qualquiera de las Parroquias de la Provincia de Chiquimula. El coadjutor 4.º D.n Thomas Perez està ordenado á titulo de Administracion de San Martin Xilotepeque.
+
+Los frutos de este territorio pueden ser todos, y mui abundantes, por ser mui fertil para maiz, caña, trigo, ganados, y tintas, si se cultivaran. La gente anda mui deznuda.
+
+Las respuestas del Cura son mui molestas, reduciré el contenido de algunas. Dice; que la renta del curato es de 1800 pesos anualesQue el Ydioma maternoe es el Chorti; pero que todos entienden y hablan el castellano.Que há apartado á muchos de los concuvinatos; pero que hán quedado dos, que no ha podido apartar.Que son repugnatnes á oir la explicacion de la doctrina christiana.QUe hay varios separados de sus mugeres.Que hay escuela; pero que no asisten los Niños.Y ultimamente pone tal multitud de cosas, que asciende a un escrito de cinco pliegos, que se pueden ver en ellos; y aquí las concidero no necesarias para la narracion, que se pretende.
+
+a renta de este curato no puede dejar de ser mucho mas, ni con ella podria mantener el cura, como dice, quatro coadjutores. Que há apartado á todos (á recerva de dos) de sus concubinatos, y extirpado los vicios que havia en la Parroquia; con solamente leer sus respuestas molestas se verá, que es falzo; pues dice en ellas, que la celebridad de los casaminetos, y de los santos van á hazerlas á sus hatos, y rancherias, por jugar, y fandanguear; y esto quiere decir por cometer impurezas increibles, é inauditas. Dice; que todos han cumplido con la Parroquia; y a pocos renglones aumenta, que algunas familias ni jamàs cumplen, ni aún precisados de la justicia quieren empadronarse; y á este tenor se hallan en  su escrito inconexiones, que es necesario leerlas para creerse. El verdadero concepto es; que havituados á las mayores monstruocidades, y desordenes; de nada hacen novedad, y assi les es indiferente decir no, ó si; y dicen si, ó no, segun su interés particular. Si tienen alguna rencilla con la Persona es 
+deshonesta, concubina, desidiosa &&.a; pero si no la tienen, es nada de esto.
+
+Con el motivo de haver visitado antes la Parroquia de Xinacó, cuyo cura lo fue antes de esta de Esquipulas mejor terreno, y mayor renta, pregunté sobre mesa; que motivo pudo tenera para dexar esta Parroquia por la de Xinacó? Y me respondió el cura: no tiene animo, ni Pecho para ver los desordenes de esta Parroquia. Y lo cierto es; que la dexó con este motivo, como tambien que le há sucedido quien manifiesta tener buen pecho, y mucho animo; porque no tardó mucho tiempo á esta combersacion (y tengo la carta suya en mi poder) á escrivirme; que N. de N. publicamente amancebado N. por muchos años havia muerto assistida, y acompañada de su complice, á quien no pudo apartar al tiempo de morir; y que con este motivo se le havian administrado los Sacramentos de la penitencia, y extrema-uncion. pero no el viatico; porque huviera sido irreverencia de este Sacramento. Assi piensan estos hombres, que ni se pueden enceñar ni corregir.
+
+Antes de apearme de la mula un hombre yá anciano, me presentó un memorial, que para en mi poder, del tenor siguiente: N. vecino de tal Valle para mejor servir á Dios quiere contraher á la edad de 66„ años con N. de edad de 60„ con la que vive amancevado, há muchos años; pero haviendo tenido copula con una hija de la , y hallarse tambien amancevado, há muchos años, con una hermana, y una sobrina de la misma, suplica á  le dispense estos impedimentos.
+
+De estos memoriales pudiera haver recogido muchos, pero me ocurrio recervar este, para que se vea el methodo de vida, que se lleva en las Valles, y se infiera; si haviendo tantas en esta Parroquia, habria remediado el cura, como dice, los amancebamientos, y vicios. Pero dexando este, y otros que suceden en todas las Parroquias paso á explicar los propios de esta.
+
+Yá dixe; que en ella se venera una Ymagen mui devota de Christo crucificado. Tomando de aqui ocacion concurre dos vezes al año gran tropa de la gente mas perversa, y viciosa de todo el Arzobispado; una vez, al principio del año, y se me dixo concurrian como veynte mil personas; otra, por la Semana Santa, y ascenderan á diez mil. Llevan consigo sus mancebas, y con solo ver los concurrentes (como los vi) tan perversos, y mas, quando vuelben, que quando ban, y del mismo modo indevotos, y malos; no habria que aumentar cosa alguna.
+
+Pero aunque no la hay por lo que mira á ellos, la hay por lo que mira á los ministros, que les ofrecen el consuelo. Concurren varios eccleciasticos seculares sin licencia del Diocesano, y regulares sin la de sus superiores; deviendose creer, nno llevar otro objeto, que sacar el dinero á los concurrentes con misas, absoluciones, y seguridades; pero,  esto, no es razon proceguir el asunto. En esto si que dixó verdad el cura de Esquipulas, afirmando; que para serlo es necesario mucho animo, y buen estomago.
+
+Persuadiendome; que este Santuario havia de tener algunos bienes, suponiendo, que se harian limosnas copiosas, segun la gran devocion, que se le tiene en todo el Reyno, y que hallaria con que reparar el templo, me dixo el cura; que eran muy escasas, y consistia; en que en algunas partes tenian tambien copias de esta Santa Ymagen ,y salían á demandas á titulo 
+del Santo Christo de Esquipulas; de suerte, que en una Valle de la Parroquia, ó cerca de ella, se hacia, y se empleaban despues las limosnas en los vayles de noche, y semejantes provanidades; pero de esto se hablará en la Parroquia de Zacapa, en donde habla su cura de los excesos, é industrias de los demandantes.
+
+El remedio de esta Parroquia es recoxer tantas Valles, y rancherias en Pueblos, formando dos curatos. Uno de Esquipulas; Otro de Quesaltepeque; porque solo assi puede servirse competentemente.

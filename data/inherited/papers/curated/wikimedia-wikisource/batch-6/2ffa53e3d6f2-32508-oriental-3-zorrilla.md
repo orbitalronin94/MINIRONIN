@@ -1,0 +1,69 @@
+# Oriental (3 - Zorrilla)
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Oriental%20%283%20-%20Zorrilla%29
+
+**Page ID:** 32508
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Oriental%20%283%20-%20Zorrilla%29?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+Mañana voy, nazarena,
+A Córdoba la sultana;
+Mi amorosa cantilena
+Ya no sentirás mañana
+Al compás de mi cadena.
+
+Cuando vuelvan los cristianos
+De los moros vencedores,
+Lee mis destinos tiranos,
+La historia de mis amores,
+En la sangre de sus manos.
+
+Valiera más que, cautivo,
+En esa torre acabara
+La triste vida que vivo;
+Que la vida que hoy recibo
+Me la vendes ¡ay! bien cara.
+
+¡Adiós! Tu esclavo mañana
+Ya no ha de cansarte enojos;
+Pero es esperanza vana:
+Cautivo quedo, cristiana,
+En la prisión de tus ojos.
+
+¡Maldita, hermosa, mi estrella!
+¿Qué ha de valerme la vida,
+Si no he de hallarte con ella
+Ni en Granada la florida
+Ni en mi Córdoba la bella?
+
+De hoy me será el claro sol
+Una lámpara importuna;
+Hija del suelo español:
+Tú eres mi sol y mi luna…
+La aurora y el arrebol.
+
+Pues en ti pierdo el sol hoy,
+Sin tu sol no he de vivir;
+Sultana, a Córdoba voy,
+Que en las tinieblas que estoy,
+Presto, a fe, que he de morir.
+
+Ha prometido Mahoma
+Un paraíso, una hurí…
+Tú habrás de ser ángel, sí,
+En esa región de aroma,
+Y hemos de amarnos allí.
+
+Poesías de don José Zorrilla
