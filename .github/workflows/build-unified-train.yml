@@ -176,6 +176,46 @@ jobs:
             gh release download bne-hemeroteca-ocr-es-v1 --repo "$GITHUB_REPOSITORY" --dir data/inherited/bne-hemeroteca-ocr-es --pattern "bne-ocr-es-*.jsonl.gz" --pattern "bne-ocr-es-*.manifest.json"
           fi
 
+      - name: Descargar y verificar ALIA biomédico español admitido
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p data/inherited/alia-biomedical-es
+          if gh release view alia-biomedical-es-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            assets="$(gh release view alia-biomedical-es-v1 --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
+            if printf "%s\\n" "$assets" | grep -q '^alia-biomedical-es-part-'; then
+              gh release download alia-biomedical-es-v1 --repo "$GITHUB_REPOSITORY" --dir data/inherited/alia-biomedical-es --pattern "alia-biomedical-es-part-*.jsonl.gz" --pattern "alia-biomedical-es.manifest.json"
+              python - <<'PY'
+              import gzip,hashlib,json
+              from pathlib import Path
+              root=Path("data/inherited/alia-biomedical-es")
+              m=json.loads((root/"alia-biomedical-es.manifest.json").read_text())
+              assert m["synthetic"] is False and m["license"]=="CC BY-SA 4.0"
+              assert m["rows_admitted"]>=5_000_000
+              total=0
+              for item in m["files"]:
+                  p=root/item["file"];h=hashlib.sha256();rows=0
+                  with p.open("rb") as f:
+                      for block in iter(lambda:f.read(1024*1024),b""):h.update(block)
+                  assert h.hexdigest()==item["sha256_gzip"] and p.stat().st_size==item["bytes"]
+                  with gzip.open(p,"rt",encoding="utf-8") as f:
+                      for line in f:
+                          r=json.loads(line)
+                          assert r["language"]=="es" and r["train_eligible"] and r["admission_status"]=="accepted"
+                          assert r["license"]=="CC BY-SA 4.0" and r["synthetic"] is False
+                          assert r["source_revision"]==m["source_revision"]
+                          rows+=1
+                  assert rows==item["rows"]
+                  total+=rows
+              assert total==m["rows_admitted"]
+              print("ALIA_BIOMEDICAL_VERIFIED",total,len(m["files"]))
+              PY
+            else
+              echo "ALIA biomedical release exists but no admitted shard assets are published."
+            fi
+          fi
+
       - name: Descargar legislación consolidada vigente del BOE
         env:
           GH_TOKEN: ${{ github.token }}
