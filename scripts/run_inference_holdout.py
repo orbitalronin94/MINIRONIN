@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 import sys
 sys.path.insert(0, str(ROOT / "src"))
 from minironin import MiniRoninLM, ModelConfig  # noqa: E402
+from minironin.tokenizer import ByteNgramTokenizer  # noqa: E402
 
 ACTIVE_VOCAB = 257
 EOS_ID = 256
@@ -74,12 +75,12 @@ def generate_tokens(
             cache = None
             input_ids = torch.tensor([encoded[-context:]], dtype=torch.long)
             logits, _ = model(input_ids, vocab_limit=ACTIVE_VOCAB)
-        next_id = int(torch.argmax(logits[0, -1, :]).item())
+        next_id = int(torch.argmax(logits[0, -1, :active_vocab]).item())
         if next_id == EOS_ID:
             break
         generated.append(next_id)
         encoded.append(next_id)
-    answer = bytes(generated).decode("utf-8", errors="replace").strip()
+    answer = (tokenizer.decode(generated) if tokenizer is not None else bytes(generated).decode("utf-8", errors="replace")).strip()
     return generated, answer
 
 
@@ -92,6 +93,7 @@ def main() -> None:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--max-new-tokens", type=int, default=DEFAULT_MAX_NEW_TOKENS)
     parser.add_argument("--threads", type=int, default=2)
+    parser.add_argument("--tokenizer", type=Path, help="BACKDOOR_BPE tokenizer manifest for a tokenizer-matched checkpoint")
     parser.add_argument("--no-kv-cache", action="store_true", help="Use the slow reference path for parity checks")
     parser.add_argument("--base-diary", type=Path)
     args = parser.parse_args()
@@ -112,6 +114,14 @@ def main() -> None:
         raise SystemExit("Checkpoint parameter count does not match this model")
     if checkpoint.get("model_config") != asdict(config):
         raise SystemExit("Checkpoint model config differs from repository config")
+    tokenizer = ByteNgramTokenizer.load(args.tokenizer) if args.tokenizer else None
+    active_vocab = tokenizer.active_vocab if tokenizer is not None else ACTIVE_VOCAB
+    if checkpoint.get("active_vocabulary") != active_vocab:
+        raise SystemExit(f"Checkpoint active vocabulary {checkpoint.get('active_vocabulary')} does not match requested {active_vocab}")
+    if tokenizer is not None and checkpoint.get("tokenizer_sha256") != tokenizer.sha256:
+        raise SystemExit("Checkpoint tokenizer SHA-256 does not match tokenizer manifest")
+    if tokenizer is None and checkpoint.get("active_vocabulary") != ACTIVE_VOCAB:
+        raise SystemExit("Non-byte checkpoint requires --tokenizer")
     model.load_state_dict(checkpoint["model_state_dict"], strict=True)
     model.eval()
 
