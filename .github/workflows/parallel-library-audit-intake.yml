@@ -1,0 +1,101 @@
+name: MINIRONIN — auditoría Wikimedia 100k + nuevas bibliotecas en paralelo
+
+on:
+  workflow_dispatch:
+    inputs:
+      wikidata_count:
+        description: "Afirmaciones Wikidata distintas que se intentarán adquirir"
+        required: true
+        default: "20000"
+        type: choice
+        options: ["5000","10000","20000"]
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/parallel-library-audit-intake.yml"
+      - "scripts/audit_wikimedia_release.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: minironin-parallel-library-audit-intake
+  cancel-in-progress: false
+
+jobs:
+  audit-wikipedia-es-100k:
+    name: Auditar Wikipedia ES 100k contra corpus existente
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Descargar el release inmutable
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release download wikimedia-es-100k-v1 --repo "${GITHUB_REPOSITORY}" --pattern 'wikipedia-es-100k.jsonl.gz' --pattern 'WIKIMEDIA-ES-100K-MANIFEST.json'
+      - name: Verificar SHA-256 publicado
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release download wikimedia-es-100k-v1 --repo "${GITHUB_REPOSITORY}" --pattern 'SHA256SUMS'
+          sha256sum -c SHA256SUMS
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Deduplicación global exacta y auditoría de procedencia
+        run: |
+          python scripts/audit_wikimedia_release.py --root . --input wikipedia-es-100k.jsonl.gz --manifest WIKIMEDIA-ES-100K-MANIFEST.json --report wikimedia-es-100k-global-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: minironin-wikimedia-es-100k-global-audit
+          path: wikimedia-es-100k-global-audit.json
+          if-no-files-found: warn
+          retention-days: 180
+
+  acquire-wikidata-facts:
+    name: Adquirir nueva biblioteca factual CC0 de Wikidata
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Adquirir hasta 20k afirmaciones distintas sin multiplicación artificial
+        run: |
+          set -euo pipefail
+          python scripts/build_distinct_wikidata_facts.py --count "${{ inputs.wikidata_count || '20000' }}" --output wikidata-distinct-facts.jsonl.gz
+      - name: Verificar cardinalidad, unicidad y manifiesto
+        run: |
+          python - <<'PY'
+          import gzip,json
+          from pathlib import Path
+          p=Path("wikidata-distinct-facts.jsonl.gz")
+          m=json.loads(Path(str(p)+".manifest.json").read_text())
+          assert m["rows"] == m["unique_fact_ids"] == m["unique_subject_property_value_triples"]
+          seen=set()
+          with gzip.open(p,"rt",encoding="utf-8") as f:
+              for line in f:
+                  r=json.loads(line)
+                  assert r["fact_id"] not in seen
+                  seen.add(r["fact_id"])
+                  assert r["source_dataset"]=="Wikidata"
+          assert len(seen)==m["rows"]
+          print(json.dumps({"rows":len(seen),"license":"CC0 (Wikidata data)","status":"candidate; not yet globally admitted"}))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: minironin-wikidata-distinct-facts-candidate
+          path: |
+            wikidata-distinct-facts.jsonl.gz
+            wikidata-distinct-facts.jsonl.gz.manifest.json
+          if-no-files-found: error
+          retention-days: 180
