@@ -1,0 +1,86 @@
+name: MINIRONIN — holdout exclusivo checkpoint 740k
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+  push:
+    paths:
+      - ".github/workflows/holdout-only-740k.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  holdout-740k:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.release.tag_name == 'minironin-legacy-150k-from-650k-step-740000'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: orbitalronin94/MINIRONIN
+      CHECKPOINT_TAG: minironin-legacy-150k-from-650k-step-740000
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Descargar exclusivamente checkpoint 740k y verificar SHA-256
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .tmp/holdout-740k
+          gh release download "$CHECKPOINT_TAG" --repo "$REPOSITORY" \
+            --pattern "checkpoint-740000.pt" --dir .tmp/holdout-740k
+          gh release download "$CHECKPOINT_TAG" --repo "$REPOSITORY" \
+            --pattern "SHA256SUMS-740000" --dir .tmp/holdout-740k
+          cd .tmp/holdout-740k
+          expected="$(awk '$2 ~ /checkpoint-740000[.]pt$/ {print $1}' SHA256SUMS-740000)"
+          test -n "$expected"
+          echo "$expected  checkpoint-740000.pt" | sha256sum -c -
+
+      - name: Instalar PyTorch CPU
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Verificar holdout fijo de 100 preguntas
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("benchmarks/inference-holdout-v1.jsonl")
+          rows=[json.loads(x) for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
+          ids=[x["id"] for x in rows]
+          assert len(rows)==100, f"Se esperaban 100 preguntas; hay {len(rows)}"
+          assert len(set(ids))==100, "Hay IDs duplicados"
+          assert all(x.get("split")=="inference_only" for x in rows)
+          print("Holdout fijo verificado: 100 preguntas únicas.")
+          PY
+
+      - name: Ejecutar holdout solo sobre 740k
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/minironin.py scripts/run_inference_holdout.py
+          python scripts/minironin.py holdout \
+            --checkpoint .tmp/holdout-740k/checkpoint-740000.pt \
+            --label "minironin-740000-single-checkpoint" \
+            --steps 740000 \
+            --holdout benchmarks/inference-holdout-v1.jsonl \
+            --output .tmp/holdout-740k/diary-740000.json \
+            --max-new-tokens 128 \
+            --threads 2
+
+      - name: Publicar respuestas completas y diario auditable
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-holdout-only-740000
+          path: .tmp/holdout-740k/
+          if-no-files-found: error
+          retention-days: 90
