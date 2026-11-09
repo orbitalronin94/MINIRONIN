@@ -75,7 +75,16 @@ jobs:
               "source_files":len(sources.get("sources",[]))},ensure_ascii=False,indent=2))
           PY
 
-      - name: Descargar y verificar checkpoint base de 500k (bytes UTF-8 + EOS)
+      - name: Comprobar espacio e instalar PyTorch CPU
+        run: |
+          set -euo pipefail
+          df -h .
+          test "$(df --output=avail -k . | tail -1 | tr -d ' ')" -gt 8000000
+          python -m pip install --upgrade pip
+          python -m pip install numpy
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Descargar y verificar checkpoint base de 650k (bytes UTF-8 + EOS)
         run: |
           set -euo pipefail
           mkdir -p train-150k/parent
@@ -101,14 +110,6 @@ jobs:
           PY
         id: parent
 
-      - name: Comprobar espacio e instalar PyTorch CPU
-        run: |
-          set -euo pipefail
-          df -h .
-          test "$(df --output=avail -k . | tail -1 | tr -d ' ')" -gt 8000000
-          python -m pip install --upgrade pip
-          python -m pip install numpy
-          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
 
       - name: Entrenar 150k pasos con el corpus unificado; checkpoint cada 10k
         run: |
