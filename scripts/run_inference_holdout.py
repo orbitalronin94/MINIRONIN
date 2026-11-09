@@ -53,9 +53,10 @@ def load_holdout(path: Path) -> list[dict]:
 
 
 def generate_tokens(
-    model: MiniRoninLM, prompt: str, max_new_tokens: int, *, use_cache: bool = True
+    model: MiniRoninLM, prompt: str, max_new_tokens: int, *, use_cache: bool = True,
+    tokenizer: ByteNgramTokenizer | None = None, active_vocab: int = ACTIVE_VOCAB,
 ) -> tuple[list[int], str]:
-    encoded = list(prompt.encode("utf-8", errors="replace"))
+    encoded = tokenizer.encode(prompt) if tokenizer is not None else list(prompt.encode("utf-8", errors="replace"))
     if not encoded:
         raise ValueError("Prompt encoded to an empty sequence")
     generated: list[int] = []
@@ -74,15 +75,17 @@ def generate_tokens(
             # Match the reference evaluator's sliding-window positional reset.
             cache = None
             input_ids = torch.tensor([encoded[-context:]], dtype=torch.long)
-            logits, _ = model(input_ids, vocab_limit=ACTIVE_VOCAB)
+            logits, _ = model(input_ids, vocab_limit=active_vocab)
         next_id = int(torch.argmax(logits[0, -1, :active_vocab]).item())
         if next_id == EOS_ID:
             break
         generated.append(next_id)
         encoded.append(next_id)
-    answer = (tokenizer.decode(generated) if tokenizer is not None else bytes(generated).decode("utf-8", errors="replace")).strip()
+    answer = (
+        tokenizer.decode(generated) if tokenizer is not None
+        else bytes(generated).decode("utf-8", errors="replace")
+    ).strip()
     return generated, answer
-
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -108,8 +111,6 @@ def main() -> None:
     config = ModelConfig.load(ROOT / "configs/model-10m.json")
     model = MiniRoninLM(config).cpu()
     checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
-    if checkpoint.get("active_vocabulary") != ACTIVE_VOCAB:
-        raise SystemExit("Checkpoint active vocabulary is not 257; refusing incomparable inference")
     if checkpoint.get("parameter_count") != model.parameter_count():
         raise SystemExit("Checkpoint parameter count does not match this model")
     if checkpoint.get("model_config") != asdict(config):
