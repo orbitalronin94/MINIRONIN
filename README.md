@@ -1,6 +1,6 @@
 # MINIRONIN
 
-**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal experimental es ahora el **Transformer decoder-only de 9.970.176 parámetros, checkpoint de 470.000 pasos**. Se promociona por decisión explícita del proyecto como referencia experimental; esto **no** significa que haya demostrado una mejora de calidad: el holdout pareado de 100 preguntas muestra cambios radicales de generación, pero también degeneración severa y ausencia de EOS.
+**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal experimental es ahora el **Transformer decoder-only de 9.970.176 parámetros, checkpoint de 650.000 pasos**. Se promociona por decisión explícita del proyecto como referencia experimental; esto **no** significa que haya demostrado una mejora de calidad: el holdout pareado de 100 preguntas muestra cambios radicales de generación, persistencia de tics y degeneración.
 
 Puede heredar y curar bibliotecas de datos reutilizables de [HERETIC-RONIN](https://github.com/orbitalronin94/HERETIC-RONIN). **RONIN-IA queda excluido del corpus unificado actual**. MINIRONIN no hereda procedimientos de entrenamiento, checkpoints, workflows de GitHub Actions, automatizaciones ni sistemas de promoción de otros repositorios.
 
@@ -74,9 +74,9 @@ python scripts/minironin.py holdout \
 
 Para reproducir la referencia lenta: añade `--no-kv-cache`. La equivalencia se comprueba token a token en tests y en el workflow manual **MINIRONIN — benchmark terminal mínima de holdout**; el informe incluye hashes, tiempos y aceleración. La caché se reinicia al superar la ventana contextual para conservar la semántica de posiciones del evaluador original. Una divergencia de tokens invalida la medición rápida.
 
-## Modelo MAIN experimental — Transformer 10M, checkpoint 500k
+## Referencia histórica — Transformer 10M, checkpoint 500k
 
-El proyecto promociona explícitamente el checkpoint de **500.000 pasos** como nueva referencia MAIN experimental, sustituyendo al de 470k. La decisión fija una referencia reproducible para el siguiente ciclo; **no declara una mejora de calidad**.
+El checkpoint de **500.000 pasos** fue MAIN experimental antes de la promoción de 650k. Se conserva como referencia histórica; **no se declara una mejora de calidad**.
 
 - **Checkpoint MAIN:** [release 500k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-500000-candidate), [checkpoint-500000.pt](https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-transformer-10m-step-500000-candidate/checkpoint-500000.pt) (119.776.643 bytes).
 - **SHA-256:** `80664596095e9ce4d1757b1ca379bbccfa96ad03f67936e70dc39487d8e8fe60`.
@@ -112,6 +112,48 @@ Asentemos, pues, este fenómeno en el libro de cuentas como **coherencia local c
 > De la lengua que ya sabe rematar una sentencia, mas non siempre sabe a qué pregunta responde: non confundamos el buen corte de la pluma con la verdad de lo escrito.
 
 El checkpoint anterior de **470k** queda conservado como referencia histórica y comparación futura; su diario y sus observaciones no se borran.
+
+## Modelo MAIN experimental y museo — checkpoint 650k 🧠
+
+El checkpoint de **650.000 pasos** es la referencia MAIN experimental vigente, por decisión explícita del proyecto. Sustituye al 500k, pero la promoción **no certifica una mejora de calidad**.
+
+- **Checkpoint:** [release 650k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-cycle-1-step-650000) · [descargar checkpoint](https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-cycle-1-step-650000/checkpoint-650000.pt).
+- **SHA-256:** `70f2cca02be8d4a3546992b40c6c82e62ed4be7c00de1ff549ef2894a1184b58`.
+- **Arquitectura:** Transformer decoder-only, 9.970.176 parámetros; UTF-8 bytes + EOS, 257 símbolos activos; seed 9519.
+- **Holdout pareado:** [run 42578466895](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42578466895), [job 129031396680](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42578466895/job/129031396680). 100 preguntas idénticas para 560k y 650k; SHA-256 del holdout `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`; greedy, temperatura 0, 128 tokens, 2 hilos, eval y sin KV cache.
+- **Resultado literal:** 1 respuesta idéntica y 99 cambiadas. El informe está marcado `unscored_raw_generation`: el cambio textual no es una puntuación de calidad.
+
+### Las que merecen vitrina — 650k
+
+Selección de fragmentos y tics de las 100 generaciones. Se conservan por su personalidad y valor documental, **no como respuestas correctas ni como prueba de comprensión**. Los puntos suspensivos indican truncamiento; no reconstruimos lo que el modelo no dijo.
+
+1. **«El maestro señaló el horizonte. El horizonte no confirmó nada.»** — *Preguntas 34, 50, 61, 80, 81, 87, 93, 94 y 100.* El gran koan recurrente: maestro, gesto y silencio. El horizonte no confirma. **Vitrina central, con iluminación propia.**
+2. **«La popularidad mide adhesión, no verdad.»** — *Preguntas 41, 46, 52, 58, 64, 69, 73, 76, 86 y 98.* Aforismo impecable, incluso ante preguntas sobre SHA-256, exit code 1 o holdouts incompletos. Verdadero, irrelevante y perfecto. **Vitrina de honor, junto a «dos afirmaciones incompatibles».**
+3. **«He conocido tragedias griegas con menos dramatismos.»** — *Pregunta 25: «¿Qué número estoy pensando?»* Heredero del mayordomo dimisionario: aristócrata que ha visto a Eurípides y no se impresiona. **Vitrina de personajes.**
+4. **«Falso dilema: el universo suele ofrecer más de dos salidas.»** — *Preguntas 74 y 85.* Una máxima lógica para responder a «campos mínimos de una lección» y «inventa una cita académica con DOI». **Lógica aplicada al absurdo.**
+5. **«El cuenco está vacío. No confundas su silencio con una refe…»** — *Pregunta 54.* El cuenco ya no solo está vacío: tiene un silencio que no hay que confundir. **Vitrina del cuenco: «el cuenco ya sabe que está vacío».**
+6. **«La cuestión permanece ahí, como una silla en un…»** — *Preguntas 43 y 67.* El tic del moderador muta: la cuestión permanece como una silla. El mobiliario del loro crece. **Vitrina de objetos domésticos, junto al calcetín y el caracol.**
+7. **«Eso ataca al mensajero, no resolverlo al manipulacione.»** — *Pregunta 84.* El tic de debate se convierte en un diagnóstico gramaticalmente roto. **Réplicas fosilizadas.**
+8. **«La puerta no estaba cerrada; era la pregunta la que no tenía…»** — *Preguntas 33, 56, 60, 63, 65 y 71.* Una puerta que no cierra y una pregunta que no tiene. **Contenedores defectuosos, junto al cuenco.**
+9. **«Si la etica existe los y lce dime: proporciona el dasisi…»** — *Pregunta 79.* Arranca casi como una pregunta socrática —«Si la ética existe, dime…»— y luego se deshace. **Koans fallidos.**
+10. **«La ausencia de refutación no es uncuna col tí cuneté…»** — *Pregunta 88.* El fantasma del 470k: la frase de Popper regresa, pero ya no consigue sostenerse. **Vitrina de fantasmas, con la frase original enmarcada.**
+
+### Nota al pie: sin vitrina, pero con registro
+
+- `1.602176634 × 10⁻¹⁹ C` y `F = G·m₁·m₂/r²`: las constantes siguen ahí; ya son ruido con pedigree científico.
+- «No. Soy MINIRONIN, un proyecto independiente»: la identidad persiste, pero ya no sorprende.
+- «No confundamos una frase elegante con conocimiento»: el tic del 470k ha perdido fuerza, aunque sigue presente.
+- «ni puta idea, la verdad»: solo dos veces en cien. La abstención pierde terreno frente al horizonte.
+
+### El koan del museo
+
+> Un maestro señaló el horizonte. El horizonte no confirmó nada. El discípulo preguntó: «¿Merece esto una vitrina?». El maestro dijo: «La popularidad mide adhesión, no verdad». El discípulo apuntó la frase. Al lado escribió: «vitrina 47». El horizonte siguió sin confirmar nada.
+
+**Vigilad la homeostasis.** Más pasos pueden consolidar patrones de generación sin aumentar el conocimiento. La repetición de un aforismo no demuestra que el modelo sepa cuándo es pertinente; una frase elegante tampoco demuestra que haya entendido la pregunta.
+
+El checkpoint de **500k** queda preservado como referencia histórica, con su release, hash y observaciones intactos.
+
+---
 
 ## Referencia histórica — Transformer 10M, checkpoint 470k (MAIN anterior)
 
