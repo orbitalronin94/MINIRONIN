@@ -1,0 +1,254 @@
+name: MINIRONIN — 150k sintéticos desde 800k (cadena de 10k)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/minironin-synthetic-only-150k-from-800k.yml"
+  workflow_dispatch:
+    inputs:
+      start_step:
+        description: "Checkpoint de inicio (800000–940000)"
+        required: true
+        default: "800000"
+        type: string
+      previous_run_id:
+        description: "Run anterior que contiene el corpus sintético/cache; 0 solo para el primer segmento"
+        required: true
+        default: "0"
+        type: string
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: minironin-synthetic-only-800k-to-950k
+  cancel-in-progress: false
+
+jobs:
+  train-segment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      START_STEP: ${{ github.event_name == 'workflow_dispatch' && inputs.start_step || '800000' }}
+      PREVIOUS_RUN_ID: ${{ github.event_name == 'workflow_dispatch' && inputs.previous_run_id || '0' }}
+      TOTAL_STEPS: "950000"
+      BASE_RUN_ID: "42627788882"
+      BASE_ARTIFACT_NAME: "minironin-holdout-only-800000"
+      BASE_CHECKPOINT_SHA256: "37c89e8cf696e57fadbec4f0fcfefe65153628ae91565aff8ed256a650605485"
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v4
+
+      - name: Validar segmento y preparar Python
+        run: |
+          set -euo pipefail
+          [[ "$START_STEP" =~ ^[0-9]+$ ]]
+          [[ "$PREVIOUS_RUN_ID" =~ ^[0-9]+$ ]]
+          test "$START_STEP" -ge 800000
+          test "$START_STEP" -lt 950000
+          test "$((START_STEP % 10000))" -eq 0
+          python --version
+          python -m pip install --upgrade pip
+          python -m pip install numpy
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          echo "END_STEP=$((START_STEP + 10000))" >> "$GITHUB_ENV"
+
+      - name: Recuperar checkpoint base exacto de 800k
+        if: env.START_STEP == '800000'
+        uses: actions/download-artifact@v4
+        with:
+          name: minironin-holdout-only-800000
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 42627788882
+          path: train-150k/parent
+
+      - name: Verificar checkpoint base y construir exclusivamente los datasets propios
+        if: env.START_STEP == '800000'
+        run: |
+          set -euo pipefail
+          test -s train-150k/parent/checkpoint-800000.pt
+          echo "$BASE_CHECKPOINT_SHA256  train-150k/parent/checkpoint-800000.pt" | sha256sum -c -
+          python - <<'PY'
+          import torch
+          p="train-150k/parent/checkpoint-800000.pt"
+          c=torch.load(p,map_location="cpu",weights_only=False)
+          assert c.get("completed_steps")==800000
+          assert c.get("parameter_count")==9970176
+          assert c.get("active_vocabulary")==257
+          assert "optimizer_state_dict" in c
+          print("Base checkpoint verificado:",c["completed_steps"],c["parameter_count"],c["active_vocabulary"])
+          PY
+
+          python scripts/generate_synthetic_curricula.py --output-dir generated-curricula --seed 20261108
+          python scripts/generate_basic_curricula.py --output-dir generated-basic-curricula --seed 20261108
+
+          python scripts/build_abstention_datasets.py
+          python scripts/build_personality_datasets.py
+          python scripts/build_lexicon_dataset.py
+          python scripts/validate_lexicon_dataset.py
+          python scripts/generate_abstention_dataset.py --output data/curated/minironin-abstention-50k.jsonl
+
+          mkdir -p unified-input/behavioral-datasets
+          cp data/curated/minironin-lexicon-diagnostic-50k-v1.jsonl \
+             data/curated/minironin-abstain-plain-50k-v1.jsonl \
+             data/curated/minironin-abstain-literary-50k-v1.jsonl \
+             data/curated/minironin-abstain-koan-50k-v1.jsonl \
+             data/curated/minironin-aristocrat-trivial-50k-v1.jsonl \
+             data/curated/minironin-casuist-cynic-50k-v1.jsonl \
+             data/curated/minironin-scientist-exhausted-50k-v1.jsonl \
+             data/curated/minironin-oracle-doom-50k-v1.jsonl \
+             data/curated/minironin-error404-indifference-50k-v1.jsonl \
+             unified-input/behavioral-datasets/
+          cp data/curated/minironin-abstention-50k.jsonl unified-input/behavioral-datasets/
+
+          mkdir -p train-150k/state/unified-train
+          python scripts/build_unified_train.py --output-dir train-150k/state/unified-train --roots \
+            generated-curricula generated-basic-curricula unified-input/behavioral-datasets
+          (cd train-150k/state/unified-train && sha256sum -c SHA256SUMS)
+
+          python - <<'PY'
+          import gzip,json
+          from collections import Counter
+          from pathlib import Path
+          p=Path("train-150k/state/unified-train/train.jsonl.gz")
+          counts=Counter(); roots=("generated-curricula/","generated-basic-curricula/","unified-input/behavioral-datasets/")
+          with gzip.open(p,"rt",encoding="utf-8") as f:
+              for n,line in enumerate(f,1):
+                  r=json.loads(line)
+                  if r.get("synthetic") is not True:
+                      raise SystemExit(f"Rejected non-synthetic record at line {n}: {r.get('source_id')}")
+                  sid=str(r.get("source_id",""))
+                  if not sid.startswith(roots):
+                      raise SystemExit(f"Rejected source outside allowlist at line {n}: {sid}")
+                  counts[str(r.get("dataset","unknown"))]+=1
+          report=json.loads(Path("train-150k/state/unified-train/quality-report.json").read_text())
+          assert report["record_count"]>0
+          assert report["synthetic_and_source_counts"].get("synthetic",0)==report["record_count"]
+          assert report["synthetic_and_source_counts"].get("source_text",0)==0
+          print(json.dumps({"records":report["record_count"],"all_synthetic":True,
+              "datasets":dict(counts),"roots":report["input_roots"],
+              "corpus_sha256":report["train_jsonl_gz_sha256"]},ensure_ascii=False,indent=2))
+          PY
+
+      - name: Recuperar corpus/cache inmutable del segmento anterior
+        if: env.START_STEP != '800000'
+        uses: actions/download-artifact@v4
+        with:
+          name: minironin-synth-150k-${{ env.PREVIOUS_RUN_ID }}
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ fromJSON(env.PREVIOUS_RUN_ID) }}
+          path: train-150k/state
+
+      - name: Descargar checkpoint del release anterior
+        if: env.START_STEP != '800000'
+        run: |
+          set -euo pipefail
+          gh release download "minironin-synthetic-only-step-$START_STEP" \
+            --repo orbitalronin94/MINIRONIN --pattern "checkpoint-$START_STEP.pt" \
+            --dir train-150k/parent
+
+      - name: Extraer LR del optimizador y verificar checkpoint de reanudación
+        id: parent
+        run: |
+          set -euo pipefail
+          if [ "$START_STEP" = "800000" ]; then
+            input="train-150k/parent/checkpoint-800000.pt"
+          else
+            input="train-150k/parent/checkpoint-$START_STEP.pt"
+          fi
+          test -s "$input"
+          python - "$input" "$START_STEP" "$GITHUB_OUTPUT" <<'PY'
+          import sys,torch,json
+          path,expected,out=sys.argv[1],int(sys.argv[2]),sys.argv[3]
+          c=torch.load(path,map_location="cpu",weights_only=False)
+          assert c.get("completed_steps")==expected,(c.get("completed_steps"),expected)
+          assert c.get("parameter_count")==9970176
+          assert c.get("active_vocabulary")==257
+          assert "optimizer_state_dict" in c
+          groups=c["optimizer_state_dict"].get("param_groups",[])
+          assert groups and 0<float(groups[0]["lr"])<=3e-4
+          lr=float(groups[0]["lr"])
+          with open(out,"a") as f:f.write(f"parent_lr={lr:.12g}\n")
+          print(json.dumps({"step":expected,"parameters":c["parameter_count"],
+              "active_vocabulary":c["active_vocabulary"],"optimizer_lr":lr},indent=2))
+          PY
+          if [ "$START_STEP" != "800000" ]; then
+            (cd train-150k/state/unified-train && sha256sum -c SHA256SUMS)
+            test -s train-150k/state/cache.pt || true
+          fi
+
+      - name: Entrenar exactamente 10k pasos sintéticos
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/train_long_run.py scripts/build_unified_train.py
+          if [ "$START_STEP" = "800000" ]; then
+            input="train-150k/parent/checkpoint-800000.pt"
+          else
+            input="train-150k/parent/checkpoint-$START_STEP.pt"
+          fi
+          mkdir -p train-150k/current
+          python scripts/train_long_run.py \
+            --unified-corpus train-150k/state/unified-train/train.jsonl.gz \
+            --synthetic-only \
+            --input-checkpoint "$input" \
+            --output-dir train-150k/current \
+            --start-step "$START_STEP" \
+            --steps 10000 \
+            --batch-size 4 \
+            --sequence-length 128 \
+            --threads 2 \
+            --dataset-cache train-150k/state/cache.pt \
+            --total-steps 950000 \
+            --schedule-start-step 800000 \
+            --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
+          checkpoint="train-150k/current/checkpoint-$END_STEP.pt"
+          report="train-150k/current/report-$END_STEP.json"
+          test -s "$checkpoint" && test -s "$report"
+          cp "$checkpoint" "train-150k/checkpoint-$END_STEP.pt"
+          cp "$report" "train-150k/report-$END_STEP.json"
+          sha256sum "train-150k/checkpoint-$END_STEP.pt" "train-150k/report-$END_STEP.json" > "train-150k/SHA256SUMS-$END_STEP"
+          python - "$checkpoint" "$report" "$END_STEP" <<'PY'
+          import json,sys,torch
+          c=torch.load(sys.argv[1],map_location="cpu",weights_only=False)
+          r=json.load(open(sys.argv[2]))
+          e=int(sys.argv[3])
+          assert c["completed_steps"]==e and r["completed_steps"]==e
+          assert c["active_vocabulary"]==257 and c["parameter_count"]==9970176
+          print(json.dumps({"step":e,"validation_loss":r["validation_loss"],
+              "validation_by_domain":r["validation_loss_by_domain"],
+              "corpus":r["dataset_manifest"]},ensure_ascii=False,indent=2))
+          PY
+
+      - name: Publicar checkpoint del segmento como candidato (sin promoción)
+        run: |
+          set -euo pipefail
+          gh release create "minironin-synthetic-only-step-$END_STEP" \
+            "train-150k/checkpoint-$END_STEP.pt" \
+            "train-150k/report-$END_STEP.json" \
+            "train-150k/SHA256SUMS-$END_STEP" \
+            --repo orbitalronin94/MINIRONIN \
+            --title "MINIRONIN synthetic-only — step $END_STEP" \
+            --notes "Segmento de 10.000 pasos reanudado desde el checkpoint verificado inmediatamente anterior. Exclusivamente datasets sintéticos/ad hoc creados por MINIRONIN; política synthetic_only validada fila a fila. Candidato experimental: no se promueve a main. Requiere holdout independiente."
+
+      - name: Conservar corpus y cache para el siguiente segmento
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-synth-150k-${{ github.run_id }}
+          path: train-150k/state/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
+
+      - name: Encadenar el siguiente segmento de 10k
+        if: success() && env.END_STEP != '950000'
+        run: |
+          set -euo pipefail
+          gh workflow run minironin-synthetic-only-150k-from-800k.yml \
+            --repo orbitalronin94/MINIRONIN --ref main \
+            -f start_step="$END_STEP" \
+            -f previous_run_id="$GITHUB_RUN_ID"
