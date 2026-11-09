@@ -27,14 +27,14 @@ def allowed_license(value):
     s=norm(s).replace("_","-")
     compact=re.sub(r"[^a-z0-9]","",s)
     denied=("noncommercial","noderivatives","sharealike","cc-by-nc","cc-by-nd","cc-by-sa")
-    if any(x in compact for x in denied):return False
+    if any(x in s or x.replace("-","") in compact for x in denied):return False
     if s in LICENSES or s.replace("-"," ") in LICENSES:return True
     return s.startswith("cc by ") or s.startswith("cc-by-") or "creativecommons.org/licenses/by/" in s or s.startswith("creative commons attribution ")
 def spanish_language(value):
     if isinstance(value,dict):s=" ".join(str(v) for v in value.values()).casefold()
     elif isinstance(value,(list,tuple)):s=" ".join(str(v) for v in value).casefold()
     else:s=str(value or "").casefold()
-    s=norm(s);tokens=set(re.split(r"[^a-z0-9]+",s))
+    s=norm(s);folded=unicodedata.normalize("NFKD",s).encode("ascii","ignore").decode("ascii");tokens=set(re.split(r"[^a-z0-9]+",folded))
     return bool(tokens & {"es","spa","spanish","español","espanol","castellano","castilian"}) or s.startswith("spanish") or s.startswith("es-") or s.startswith("spa")
 def open_type_key(value):
     if isinstance(value,dict):s=" ".join(str(v) for v in value.values())
