@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "slug": "ud-spanish-ancora",
+  "name": "Universal Dependencies Spanish AnCora",
+  "repo_id": "PlanTL-GOB-ES/UD_Spanish-AnCora",
+  "license": "CC BY 4.0",
+  "config": "es_ancora",
+  "split": "train",
+  "domain": "gramática, morfología, sintaxis y lingüística española",
+  "text_fields": [
+    "text"
+  ],
+  "task": "Spanish Universal Dependencies and POS annotation",
+  "minimum_rows": 14000,
+  "trust_remote_code": true,
+  "attribution": "Taulé, Martí & Recasens (2008), AnCora; Universal Dependencies; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/PlanTL-GOB-ES/UD_Spanish-AnCora",
+  "language": "es",
+  "min_text_chars": 12,
+  "license_verification": "exact CC BY 4.0 card identifier required; upstream loading script is pinned by immutable dataset revision and inspected before trust_remote_code is enabled",
+  "status": "ready_for_automated_import"
+}
