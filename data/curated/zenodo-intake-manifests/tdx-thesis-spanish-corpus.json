@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "slug": "tdx-thesis-spanish-corpus",
+  "name": "TDX Thesis Spanish Corpus",
+  "record_id": 7313149,
+  "doi": "https://doi.org/10.5281/zenodo.7313149",
+  "license": "CC BY 4.0",
+  "license_id": "cc-by-4.0",
+  "format": "txt_lines",
+  "file_regex": "^tdx_es\\\\.txt$",
+  "encoding": "utf-8",
+  "domain": "tesis universitarias, investigación científica y conocimiento académico",
+  "task": "Spanish academic language modeling",
+  "minimum_rows": 8000000,
+  "min_text_chars": 30,
+  "attribution": "Petrea et al. (2022), TDX Thesis Spanish Corpus; Barcelona Supercomputing Center / CSUC; CC BY 4.0."
+}
