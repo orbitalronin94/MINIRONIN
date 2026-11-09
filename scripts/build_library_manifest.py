@@ -36,7 +36,7 @@ def extract_record(value, depth=0) -> str:
     if isinstance(value, str):
         return value.strip()
     if isinstance(value, list):
-        return "\\n".join(filter(None, (extract_record(item, depth + 1) for item in value)))
+        return "\n".join(filter(None, (extract_record(item, depth + 1) for item in value)))
     if isinstance(value, dict):
         preferred = (
             "text", "content", "body", "document", "passage", "abstract",
@@ -52,11 +52,11 @@ def extract_record(value, depth=0) -> str:
                 if extracted:
                     parts.append(f"{key}: {extracted}")
         if parts:
-            return "\\n".join(parts)
+            return "\n".join(parts)
         ignored = {"id", "url", "source", "source_file", "license", "metadata",
                    "author", "date", "timestamp", "path", "filename", "sha256",
                    "run_id", "job_id", "rights_status"}
-        return "\\n".join(
+        return "\n".join(
             f"{key}: {item}" for key, item in value.items()
             if key.lower() not in ignored and isinstance(item, (str, int, float))
         )
@@ -82,11 +82,11 @@ def read_text(path: Path) -> str:
             text = extract_record(item)
             if text:
                 rows.append(text)
-        return "\\n\\n".join(rows)
+        return "\n\n".join(rows)
     if suffix == ".json":
         item = json.loads(raw)
         values = item if isinstance(item, list) else [item]
-        return "\\n\\n".join(filter(None, (extract_record(value) for value in values)))
+        return "\n\n".join(filter(None, (extract_record(value) for value in values)))
     if suffix in {".md", ".txt", ".rst", ".xml", ".html", ".htm", ".yaml", ".yml", ".csv", ".tsv"} or path.name.lower().endswith(".txt.gz"):
         return raw
     raise ValueError(f"Unsupported admitted document format: {path.suffix}")
