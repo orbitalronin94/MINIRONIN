@@ -28,6 +28,7 @@ on:
       - "data/inherited/wikimedia-es/**"
       - "data/curated/accepted/**"
       - "scripts/acquire_minerva_scientific_spanish.py"
+      - "scripts/acquire_common_corpus_spanish.py"
       - "scripts/acquire_slr_bench_spanish.py"
       - "scripts/acquire_alia_cultural_heritage.py"
       - "scripts/acquire_minerva_scientific_spanish.py"
@@ -191,6 +192,16 @@ jobs:
             gh release download pleias-spanish-pd-books-v1 --repo "$GITHUB_REPOSITORY" --dir data/inherited/pleias-spanish-pd-books --pattern 'spanish-pd-*.jsonl.gz' --pattern 'spanish-pd-*.manifest.json'
           fi
 
+      - name: Descargar shards españoles admitidos de PleIAs Common Corpus
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p data/inherited/common-corpus-es
+          if gh release view pleias-common-corpus-spanish-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release download pleias-common-corpus-spanish-v1 --repo "$GITHUB_REPOSITORY" --dir data/inherited/common-corpus-es --pattern "common-corpus-es-*.jsonl.gz" --pattern "common-corpus-es-*.manifest.json"
+          fi
+
       - name: Copiar exactamente los nueve artículos Markdown admitidos de Papers
         run: |
           set -euo pipefail
@@ -258,6 +269,7 @@ jobs:
             data/inherited/papers \
             data/inherited/wikimedia-es \
             data/inherited/pleias-spanish-pd-books \
+            data/inherited/common-corpus-es \
             generated-curricula \
             generated-basic-curricula \
             generated-math-es \
