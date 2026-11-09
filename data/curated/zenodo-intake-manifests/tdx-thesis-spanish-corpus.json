@@ -7,7 +7,7 @@
   "license": "CC BY 4.0",
   "license_id": "cc-by-4.0",
   "format": "txt_lines",
-  "file_regex": "^tdx_es\\\\.txt$",
+  "file_regex": "^tdx_es[.]txt$",
   "encoding": "utf-8",
   "domain": "tesis universitarias, investigación científica y conocimiento académico",
   "task": "Spanish academic language modeling",
