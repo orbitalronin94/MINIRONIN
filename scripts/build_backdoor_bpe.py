@@ -54,12 +54,12 @@ def main() -> None:
             if document_id in admitted_docs:
                 # Repeated rows from the same document may be valid, but count each document once.
                 continue
-            admitted_docs.add(document_id)
-            raw = text.encode("utf-8")
-            corpus_digest.update(document_id.encode("utf-8") + b"\0" + hashlib.sha256(raw).digest())
             remaining = args.max_corpus_bytes - bytes_seen
             if remaining <= 0:
                 break
+            admitted_docs.add(document_id)
+            raw = text.encode("utf-8")
+            corpus_digest.update(document_id.encode("utf-8") + b"\\0" + hashlib.sha256(raw).digest())
             raw = raw[:min(len(raw), remaining, args.max_bytes_per_document)]
             bytes_seen += len(raw)
             records += 1
