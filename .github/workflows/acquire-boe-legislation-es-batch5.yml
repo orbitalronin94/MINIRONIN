@@ -1,0 +1,85 @@
+name: MINIRONIN — admisión masiva de legislación BOE vigente (lotes 16–19)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/acquire-boe-legislation-es-batch5.yml"
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: minironin-boe-legislation-batch5
+  cancel-in-progress: false
+env:
+  RELEASE_TAG: boe-legislation-es-v1
+jobs:
+  verify-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify persistent BOE corpus release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null
+  acquire-batches:
+    needs: verify-release
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        batch: [16,17,18,19]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned HTTP client
+        run: python -m pip install "requests==2.32.3"
+      - name: Acquire one additional catalogue range
+        env:
+          BATCH: ${{ matrix.batch }}
+        run: |
+          set -euo pipefail
+          offset=$((BATCH * 3000))
+          python scripts/acquire_boe_legislation_es.py --offset "$offset" --limit 3000 --workers 2 --output-dir out
+      - name: Verify every accepted record, BOE rights, provenance and SHA-256
+        env:
+          BATCH: ${{ matrix.batch }}
+        run: |
+          python - <<'PY'
+          import gzip,hashlib,json,os
+          from pathlib import Path
+          batch=int(os.environ["BATCH"]); offset=batch*3000
+          p=Path(f"out/boe-legislation-es-{offset:05d}.jsonl.gz")
+          m=json.loads(Path(f"out/boe-legislation-es-{offset:05d}.manifest.json").read_text())
+          h=hashlib.sha256(); count=0
+          with gzip.open(p,"rb") as f:
+              for block in iter(lambda:f.read(1024*1024),b""): h.update(block)
+          with gzip.open(p,"rt",encoding="utf-8") as f:
+              for line in f:
+                  r=json.loads(line)
+                  assert r["language"]=="es" and r["train_eligible"] is True
+                  assert r["synthetic"] is False and r["informative_only"] is True
+                  assert "BOE" in r["license"] and r["attribution"].startswith("Basado en datos de la Agencia Estatal")
+                  assert r["source_url"].startswith("https://www.boe.es/")
+                  assert len(r["text"])>=80
+                  count+=1
+          assert count==m["records_admitted"] and h.hexdigest()==m["sha256_jsonl_uncompressed"]
+          print(json.dumps({"batch":batch,"offset":offset,"catalogue_items":m["listing_records"],"laws":m["laws_with_current_text"],"records_admitted":count,"sha256":h.hexdigest()}))
+          PY
+      - name: Publish immutable BOE batch and manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$RELEASE_TAG" out/boe-legislation-es-*.jsonl.gz out/boe-legislation-es-*.manifest.json --repo "$GITHUB_REPOSITORY" --clobber
+  rebuild-unified-corpus:
+    needs: acquire-batches
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rebuild unified training corpus after all four ranges are published
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
