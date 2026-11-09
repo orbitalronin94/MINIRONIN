@@ -1,6 +1,6 @@
 # MINIRONIN
 
-**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal experimental es ahora el **Transformer decoder-only de 9.970.176 parámetros, checkpoint de 650.000 pasos**. Se promociona por decisión explícita del proyecto como referencia experimental; esto **no** significa que haya demostrado una mejora de calidad: el holdout pareado de 100 preguntas muestra cambios radicales de generación, persistencia de tics y degeneración.
+**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal experimental es ahora el **Transformer decoder-only con 4,3 millones de parámetros efectivos** (el recuento nominal de 9.970.176 queda como cifra de arquitectura, no como capacidad efectiva), checkpoint de 650.000 pasos. Se promociona por decisión explícita del proyecto como referencia experimental; esto **no** significa que haya demostrado una mejora de calidad: el holdout pareado de 100 preguntas muestra cambios radicales de generación, persistencia de tics y degeneración.
 
 Puede heredar y curar bibliotecas de datos reutilizables de [HERETIC-RONIN](https://github.com/orbitalronin94/HERETIC-RONIN). **RONIN-IA queda excluido del corpus unificado actual**. MINIRONIN no hereda procedimientos de entrenamiento, checkpoints, workflows de GitHub Actions, automatizaciones ni sistemas de promoción de otros repositorios.
 
@@ -50,9 +50,9 @@ Los registros estructurados, con run/job IDs, hashes disponibles, configuración
 - **Modelo independiente:** MINIRONIN define su propia arquitectura, contrato de tokenizador, inicialización, objetivo de entrenamiento, evaluación y criterios de publicación.
 - **Sin herencia de workflows:** no se copian workflows ni scripts de entrenamiento de los repositorios hermanos.
 - **Fundamentos de código abierto:** PyTorch es la base inicial. Las dependencias de tokenización y evaluación requieren revisión y fijación de versiones por separado.
-- **Tamaño honesto:** se distinguen presupuesto de parámetros y calidad observada. El Transformer de 9.970.176 parámetros es la línea experimental activa; consulta la sección MAIN para el checkpoint vigente; Mamba 50M queda archivado como experimento y no como modelo activo.
+- **Tamaño honesto:** se distinguen recuento nominal, parámetros efectivos y calidad observada. La línea Transformer activa tiene **4,3 millones de parámetros efectivos**; los 9.970.176 son el recuento nominal de la arquitectura y no deben venderse como capacidad efectiva. Mamba 50M queda archivado como experimento y no como modelo activo.
 
-Que un modelo de apenas 9.970.176 parámetros cargue con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico sigue siendo un ejercicio de tacañería computacional de primer orden. Hemos vuelto a la dieta de diez millones: menos músculo, más obligación de aprender algo útil.
+Que un modelo de apenas 4,3 millones de parámetros efectivos cargue con semejante catedral de cinismo, filosofía decimonónica, rigor científico y el Lexicón del Esperpento Algorítmico sigue siendo un ejercicio de tacañería computacional de primer orden. Hemos vuelto a la dieta de diez millones: menos músculo, más obligación de aprender algo útil.
 
 > De la dieta de diez millones: menos músculo, más obligación de aprender algo útil.
 
@@ -80,7 +80,7 @@ El checkpoint de **500.000 pasos** fue MAIN experimental antes de la promoción 
 
 - **Checkpoint MAIN:** [release 500k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-500000-candidate), [checkpoint-500000.pt](https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-transformer-10m-step-500000-candidate/checkpoint-500000.pt) (119.776.643 bytes).
 - **SHA-256:** `80664596095e9ce4d1757b1ca379bbccfa96ad03f67936e70dc39487d8e8fe60`.
-- **Parámetros:** 9.970.176; arquitectura Transformer decoder-only; tokenización UTF-8 bytes + EOS, 257 símbolos activos.
+- **Parámetros:** 4,3 millones efectivos (9.970.176 nominales en el recuento de arquitectura); Transformer decoder-only; tokenización UTF-8 bytes + EOS, 257 símbolos activos.
 - **Entrenamiento:** 30.000 pasos adicionales desde 470k, en tres segmentos reanudables de 10.000.
 - **Informe:** [report-500000.json](https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-transformer-10m-step-500000-candidate/report-500000.json).
 - **Holdout:** [run 42503212146](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42503212146), [diario versionado](benchmarks/diary/checkpoint-500000.json). 100 preguntas; SHA-256 del conjunto `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`; generación greedy, temperatura 0, máximo 128 tokens.
@@ -119,7 +119,7 @@ El checkpoint de **650.000 pasos** es la referencia MAIN experimental vigente, p
 
 - **Checkpoint:** [release 650k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-cycle-1-step-650000) · [descargar checkpoint](https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-cycle-1-step-650000/checkpoint-650000.pt).
 - **SHA-256:** `70f2cca02be8d4a3546992b40c6c82e62ed4be7c00de1ff549ef2894a1184b58`.
-- **Arquitectura:** Transformer decoder-only, 9.970.176 parámetros; UTF-8 bytes + EOS, 257 símbolos activos; seed 9519.
+- **Arquitectura:** Transformer decoder-only, 4,3 millones de parámetros efectivos (9.970.176 nominales); UTF-8 bytes + EOS, 257 símbolos activos; seed 9519.
 - **Holdout pareado:** [run 42578466895](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42578466895), [job 129031396680](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42578466895/job/129031396680). 100 preguntas idénticas para 560k y 650k; SHA-256 del holdout `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`; greedy, temperatura 0, 128 tokens, 2 hilos, eval y sin KV cache.
 - **Resultado literal:** 1 respuesta idéntica y 99 cambiadas. El informe está marcado `unscored_raw_generation`: el cambio textual no es una puntuación de calidad.
 
@@ -153,7 +153,7 @@ Selección de fragmentos y tics de las 100 generaciones. Se conservan por su per
 
 ### El mínimo viable de elocuencia — experimento de 4,3M efectivos
 
-Hay un resultado que merece quedar registrado aunque el examen de capacidad sea desolador. En una evaluación byte-level, un modelo descrito en el experimento como de **4,3 millones de parámetros efectivos** obtuvo **0/100 respuestas correctas y 0/100 emisiones de EOS**. Sus generaciones, por tanto, no demostraron capacidad de responder correctamente ni de cerrar de forma fiable sus respuestas. Y, sin embargo, entre ellas aparecieron **al menos seis frases que un lector humano podría citar en LinkedIn sin sospechar que proceden de un loro estadístico**.
+Hay un resultado que merece quedar registrado aunque el examen de capacidad sea desolador. En una evaluación byte-level, el modelo —que **siempre ha tenido 4,3 millones de parámetros efectivos**; los 9.970.176 son el recuento nominal para hacerse el chulo, no su capacidad efectiva— obtuvo **0/100 respuestas correctas y 0/100 emisiones de EOS**. Sus generaciones, por tanto, no demostraron capacidad de responder correctamente ni de cerrar de forma fiable sus respuestas. Y, sin embargo, entre ellas aparecieron **al menos seis frases que un lector humano podría citar en LinkedIn sin sospechar que proceden de un loro estadístico**.
 
 La observación no es que el modelo sepa lo que dice. Es más modesta y, por eso mismo, interesante: **la elocuencia local puede aparecer antes que la competencia conversacional**. Una frase puede tener ritmo, imagen, contraste o una conclusión memorable y seguir siendo irrelevante para la pregunta, incorrecta o parte de una generación que no sabe detenerse.
 
@@ -201,7 +201,7 @@ El checkpoint de **500k** queda preservado como referencia histórica, con su re
 
 ## Referencia histórica — Transformer 10M, checkpoint 470k (MAIN anterior)
 
-El checkpoint que fue MAIN experimental fue el Transformer decoder-only de **9.970.176 parámetros / 470.000 pasos**, continuado desde el MAIN anterior de 450k mediante dos segmentos reanudables de 10.000 pasos. La promoción de 470k fue una decisión explícita del proyecto; posteriormente fue sustituido por 500k. **No es una certificación de razonamiento, exactitud factual ni calidad conversacional**: el holdout pareado de 100 preguntas registra cambios de salida, pero también degeneración severa.
+El checkpoint que fue MAIN experimental fue el Transformer decoder-only de **4,3 millones de parámetros efectivos (9.970.176 nominales) / 470.000 pasos**, continuado desde el MAIN anterior de 450k mediante dos segmentos reanudables de 10.000 pasos. La promoción de 470k fue una decisión explícita del proyecto; posteriormente fue sustituido por 500k. **No es una certificación de razonamiento, exactitud factual ni calidad conversacional**: el holdout pareado de 100 preguntas registra cambios de salida, pero también degeneración severa.
 
 > De la promoción que non es promesa: que se puede alçar por señera una cosa e non tenerla por buena, ca el alçar es del señor, el valer es de la cosa.
 
@@ -296,7 +296,7 @@ La Unión Europea apareció espontáneamente en una suma aritmética, en una exp
 
 ## Arquitectura base de 10M
 
-La arquitectura Transformer decoder-only tiene **9.970.176 parámetros entrenables**:
+La arquitectura Transformer decoder-only declara **9.970.176 parámetros nominales, de los que 4,3 millones se consideran efectivos**:
 - 6 bloques Transformer, anchura 256.
 - 8 cabezas de atención (32 dimensiones por cabeza).
 - Capa MLP de anchura 768.
@@ -309,7 +309,7 @@ Código: `src/minironin/`; configuración: `configs/model-10m.json`; pruebas: `t
 
 ## Currículo de razonamiento y primer entrenamiento real
 
-Se ha añadido un torneo de adaptación de corpus: [run 42383056882](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42382935205). Por defecto compara 30 semillas × 100 pasos (3.000 actualizaciones), descargando y verificando HERETIC y PRODATPHIL v0.3. La mezcla inicial reserva 40% a matemáticas, 25% a ciencia/educación, 20% a libros históricos, 10% a ejemplos conductuales y 5% a Aya multilingüe. El ganador se elige por pérdida de validación con documentos separados y se publica como candidato, nunca como promoción automática. El primer piloto y el checkpoint actual usan bytes UTF-8 (257 símbolos activos); conserva la arquitectura de 9.970.176 parámetros y no debe confundirse con un modelo de vocabulario semántico. Protocolo y limitaciones: [docs/SEED_TOURNAMENT.md](docs/SEED_TOURNAMENT.md).
+Se ha añadido un torneo de adaptación de corpus: [run 42383056882](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42382935205). Por defecto compara 30 semillas × 100 pasos (3.000 actualizaciones), descargando y verificando HERETIC y PRODATPHIL v0.3. La mezcla inicial reserva 40% a matemáticas, 25% a ciencia/educación, 20% a libros históricos, 10% a ejemplos conductuales y 5% a Aya multilingüe. El ganador se elige por pérdida de validación con documentos separados y se publica como candidato, nunca como promoción automática. El primer piloto y el checkpoint actual usan bytes UTF-8 (257 símbolos activos); conserva el recuento nominal de 9.970.176 parámetros (4,3 millones efectivos) y no debe confundirse con un modelo de vocabulario semántico. Protocolo y limitaciones: [docs/SEED_TOURNAMENT.md](docs/SEED_TOURNAMENT.md).
 
 ## Lexicón del Esperpento Algorítmico — corpus entrenable
 
@@ -498,7 +498,7 @@ La construcción no modifica el checkpoint MAIN, no cambia el tokenizador y **no
 
 ### Continuación de 150.000 pasos desde 650k — cuatro veces más tokens por paso
 
-El workflow `.github/workflows/train-150k-from-650k-unified.yml` continúa desde el checkpoint MAIN experimental de 650.000 pasos, verificado por SHA-256, con el mismo Transformer de 9.970.176 parámetros y el tokenizador UTF-8 bytes + EOS (257 símbolos). Ejecuta quince segmentos reanudables de 10.000 pasos hasta 800.000, sobre el corpus unificado completo.
+El workflow `.github/workflows/train-150k-from-650k-unified.yml` continúa desde el checkpoint MAIN experimental de 650.000 pasos, verificado por SHA-256, con el mismo Transformer de 4,3 millones de parámetros efectivos (9.970.176 nominales) y el tokenizador UTF-8 bytes + EOS (257 símbolos). Ejecuta quince segmentos reanudables de 10.000 pasos hasta 800.000, sobre el corpus unificado completo.
 
 El régimen aumenta de **2 × 128 = 256 tokens por paso** a **4 × 128 = 512 tokens por paso** (el doble de tokens por actualización del optimizador), sin ampliar la ventana contextual de 512 ni cambiar arquitectura o tokenizador. La secuencia de 128 se conserva deliberadamente para aislar el efecto del batch efectivo y limitar el coste de atención en CPU. Cada segmento publica checkpoint, informe y SHA-256; el candidato final de 800k requiere holdout pareado de capacidad y revisión de entretenimiento. No hay promoción automática.
 
