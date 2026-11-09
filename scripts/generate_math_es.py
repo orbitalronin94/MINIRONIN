@@ -15,7 +15,9 @@ from fractions import Fraction
 from pathlib import Path
 
 VERSION = "minironin-math-es-v1"
-DIVISORS = tuple(i for i in range(-200, 201) if i not in (-1, 0, 1))\n\nOPERATIONS = (
+DIVISORS = tuple(i for i in range(-200, 201) if i not in (-1, 0, 1))
+
+OPERATIONS = (
     "suma", "resta", "multiplicacion", "division_exacta", "resto",
     "potencia", "maximo_comun_divisor", "minimo_comun_multiplo",
     "porcentaje", "fraccion_reducida",
