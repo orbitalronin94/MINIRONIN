@@ -40,7 +40,9 @@ def main():
     if d is not None and getattr(d,"year",9999)>1900:skipped["post_1900"]=skipped.get("post_1900",0)+1;continue
     if row.get("is_rotation_valid") is False:skipped["invalid_rotation"]=skipped.get("invalid_rotation",0)+1;continue
     if len(text)<500:skipped["short_text"]=skipped.get("short_text",0)+1;continue
-    issue=str(row.get("issue_uuid") or "");page=int(row.get("page") or 0);identity=f"{issue}:{page}"
+    issue=str(row.get("issue_uuid") or "").strip();page=int(row.get("page") or 0)
+    if not issue or page<=0:skipped["missing_issue_identity"]=skipped.get("missing_issue_identity",0)+1;continue
+    identity=f"{issue}:{page}"
     text_hash=hashlib.sha256(text.casefold().encode("utf-8")).hexdigest()
     if text_hash in seen:skipped["duplicate_text_in_shard"]=skipped.get("duplicate_text_in_shard",0)+1;continue
     seen.add(text_hash)
