@@ -58,7 +58,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/curated/accepted/ data/curated/intake-reports/
+          git add data/curated/accepted/ data/intake-reports/
           if git diff --cached --quiet; then echo "No new dataset rows to commit"; exit 0; fi
           git commit -m "Admit licensed open Spanish datasets"
           git push origin main
