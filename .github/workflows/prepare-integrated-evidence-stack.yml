@@ -19,7 +19,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: minironin-integrated-evidence-stack
+  group: minironin-integrated-evidence-stack-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
