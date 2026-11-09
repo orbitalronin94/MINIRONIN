@@ -55,7 +55,7 @@ Además de las colecciones externas, se incorpora un generador determinista del 
 - Wikisource: https://es.wikisource.org/
 - Project Gutenberg: https://www.gutenberg.org/
 - DOAB: https://www.doabooks.org/
-- OpenBookQA-ES (solo referencia de evaluación): https://huggingface.co/datasets/BSC-LT/openbookqa-es
+- ALIA Cultural Heritage: https://huggingface.co/datasets/SINAI/ALIA-es-cultural-heritage\n- ESQAD: https://zenodo.org/records/16351733\n- Wikidata Label Maps: https://huggingface.co/datasets/yashkumaratri/wikidata-label-maps-2025-all-languages\n- OpenAlex Philosophy: https://huggingface.co/datasets/CristianPelayo/openalex-philosophy\n- OpenBookQA-ES (solo referencia de evaluación): https://huggingface.co/datasets/BSC-LT/openbookqa-es
 
 ## Estado de ejecución
 
