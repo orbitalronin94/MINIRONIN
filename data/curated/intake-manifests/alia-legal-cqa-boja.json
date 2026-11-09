@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "name": "ALIA Spanish Legal and Administrative Context QA",
+  "repo_id": "SINAI/ALIA-es-legal-administrative-cqa",
+  "license": "CC BY-SA 4.0",
+  "source_url": "https://huggingface.co/datasets/SINAI/ALIA-es-legal-administrative-cqa",
+  "language": "es",
+  "domain": "derecho andaluz, BOJA y debate parlamentario",
+  "text_fields": [
+    "passage",
+    "question",
+    "answer"
+  ],
+  "task": "Spanish legal context question answering",
+  "min_text_chars": 80,
+  "attribution": "SINAI Research Group, Universidad de Jaén; ALIA Spanish Legal and Administrative CQA; CC BY-SA 4.0.",
+  "license_verification": "exact dataset-card identifier required; no NC/ND licenses admitted",
+  "status": "ready_for_automated_import",
+  "slug": "alia-legal-cqa-boja",
+  "split": "boja",
+  "minimum_rows": 9000
+}
