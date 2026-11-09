@@ -75,7 +75,7 @@ jobs:
                   compact=lic.replace(" ","").replace("-","")
                   denied=("noncommercial","noderivatives","sharealike","ccbync","ccbynd","ccbysa")
                   assert not any(term in compact for term in denied)
-                  assert (lic in {"public domain","public-domain","pd","pdm","cc0","cc0 1.0","cc0-1.0"} or lic.startswith("cc by ") or lic.startswith("cc-by-") or "creativecommons.org/licenses/by/" in lic or lic.startswith("creative commons attribution "))
+                  assert (compact in {"publicdomain","pd","pdm","cc0","cc01.0"} or compact.startswith("ccby") or "creativecommons.org/licenses/by/" in lic or lic.startswith("creative commons attribution "))
                   count+=1
           assert m["rows_admitted"]>=1 and count==m["rows_admitted"] and h.hexdigest()==m["sha256_jsonl_uncompressed"]
           print(json.dumps({"shard":n,"records":count,"sha256":h.hexdigest(),"skipped_license":m["rows_skipped_unapproved_license"]}))
