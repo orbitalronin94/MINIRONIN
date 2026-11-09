@@ -1,0 +1,128 @@
+name: MINIRONIN — paired 810k holdout with integrated RAG (no training)
+
+on:
+  workflow_run:
+    workflows: ["Prepare MINIRONIN integrated evidence stack"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      preparation_run_id:
+        description: Successful run ID that produced minironin-integrated-evidence-stack
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: minironin-paired-810k-integrated-holdout
+  cancel-in-progress: false
+
+jobs:
+  holdout:
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: orbitalronin94/MINIRONIN
+      CHECKPOINT_TAG: minironin-full-corpus-step-810000
+      EXPECTED_CHECKPOINT_SHA256: 2d8ff48dc0645d4b2d83c2462bc33b88a1abade9354eb9289c265c7a5b13ca6b
+      PREPARATION_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.preparation_run_id }}
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Download the exact integrated evidence artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$PREPARATION_RUN_ID" =~ ^[0-9]+$ ]]
+          mkdir -p .tmp/holdout-810k/integrated
+          gh run download "$PREPARATION_RUN_ID" --repo "$REPOSITORY" \
+            --name minironin-integrated-evidence-stack \
+            --dir .tmp/holdout-810k/integrated
+          python - <<'PY'
+          import json, pathlib, sqlite3
+          root = pathlib.Path(".tmp/holdout-810k/integrated")
+          m = json.loads((root / "integrated-manifest.json").read_text())
+          assert m["holdout_read"] is False and m["training_performed"] is False
+          assert m["library"]["documents"] > 0
+          docs = [json.loads(x) for x in (root / "library/canonical/documents.jsonl").read_text().splitlines() if x.strip()]
+          assert any(d["source_id"] == "HERETIC:Cosmopedia-v0.1-curated" for d in docs), "HERETIC source missing from canonical inventory"
+          db = sqlite3.connect(root / "rag/minironin-rag.sqlite")
+          rag = json.loads(db.execute("SELECT value FROM metadata WHERE key='manifest'").fetchone()[0])
+          assert rag["holdout_read"] is False and rag["training_performed"] is False
+          assert rag["chunks_unique"] > 0
+          assert "HERETIC:Cosmopedia-v0.1-curated" in rag["sources"], "HERETIC source missing from RAG"
+          tok = json.loads((root / "tokenizer/backdoor-bpe.json").read_text())
+          assert tok["eos_id"] == 256 and tok["base_active_vocab"] == 257
+          assert tok["active_vocab"] >= 257
+          awake = m["awake_rows"]
+          assert awake["train"] > 0
+          print(json.dumps({"library_documents":m["library"]["documents"],"rag_chunks":rag["chunks_unique"],"bpe_active_vocab_candidate":tok["active_vocab"],"awake_rows":awake},ensure_ascii=False))
+          PY
+
+      - name: Download checkpoint 810k and enforce the pinned SHA-256
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .tmp/holdout-810k/checkpoint
+          gh release download "$CHECKPOINT_TAG" --repo "$REPOSITORY" \
+            --pattern "checkpoint-810000.pt" --dir .tmp/holdout-810k/checkpoint
+          actual="$(sha256sum .tmp/holdout-810k/checkpoint/checkpoint-810000.pt | awk '{print $1}')"
+          test "$actual" = "$EXPECTED_CHECKPOINT_SHA256" || {
+            echo "Checkpoint SHA mismatch: $actual"; exit 1;
+          }
+
+      - name: Install CPU inference dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Verify fixed 100-question holdout and run paired baseline
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          rows=[json.loads(x) for x in Path("benchmarks/inference-holdout-v1.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+          assert len(rows)==100
+          assert len({x["id"] for x in rows})==100
+          assert all(x.get("split")=="inference_only" for x in rows)
+          print("100 immutable inference-only questions verified.")
+          PY
+          python -m py_compile scripts/run_inference_holdout.py scripts/rag_retrieve.py src/minironin/tokenizer.py
+          python scripts/run_inference_holdout.py \
+            --checkpoint .tmp/holdout-810k/checkpoint/checkpoint-810000.pt \
+            --label "810k-byte-baseline-no-rag" --steps 810000 \
+            --holdout benchmarks/inference-holdout-v1.jsonl \
+            --output .tmp/holdout-810k/diary-baseline.json \
+            --max-new-tokens 128 --max-new-bytes 128 --threads 2
+
+      - name: Run the same 810k checkpoint with integrated RAG (still byte tokenizer)
+        run: |
+          python scripts/run_inference_holdout.py \
+            --checkpoint .tmp/holdout-810k/checkpoint/checkpoint-810000.pt \
+            --label "810k-byte-plus-integrated-rag" --steps 810000 \
+            --holdout benchmarks/inference-holdout-v1.jsonl \
+            --output .tmp/holdout-810k/diary-rag.json \
+            --base-diary .tmp/holdout-810k/diary-baseline.json \
+            --rag-index .tmp/holdout-810k/integrated/rag/minironin-rag.sqlite \
+            --rag-no-vectors --rag-top-k 5 --rag-max-context-chars 6000 \
+            --max-new-tokens 128 --max-new-bytes 128 --threads 2
+
+      - name: Publish paired answers, comparison diary and exact provenance
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-810k-integrated-rag-holdout
+          path: .tmp/holdout-810k/
+          if-no-files-found: error
+          retention-days: 90
