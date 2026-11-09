@@ -16,6 +16,15 @@ def sha(path: Path) -> str:
     return digest.hexdigest()
 
 
+def get_train_section(manifest):
+    return (
+        manifest.get("partitions", {}).get("train")
+        or manifest.get("train_partition")
+        or manifest.get("train")
+        or {}
+    )
+
+
 def collect_train_hashes(value, out):
     if isinstance(value, dict):
         for key, item in value.items():
@@ -29,7 +38,7 @@ def collect_train_hashes(value, out):
 
 def collect_payload_names(manifest):
     names = set()
-    train = manifest.get("partitions", {}).get("train", {})
+    train = get_train_section(manifest)
     for key, value in train.items():
         if isinstance(value, str) and "train" in value.lower() and value.lower().endswith(
             (".txt", ".md", ".jsonl", ".jsonl.gz", ".ndjson", ".gz")
@@ -54,6 +63,13 @@ def language_for(manifest):
         return ",".join(sorted(str(x) for x in values))
     if isinstance(values, str) and values:
         return values
+    dataset_id = str(manifest.get("dataset_id", "")).lower()
+    if "covost" in dataset_id:
+        return "es,ca,en"
+    if "literature-es" in dataset_id:
+        return "es"
+    if "mathlib" in dataset_id or "nasa" in dataset_id:
+        return "en"
     counts = manifest.get("language_counts") or manifest.get("aggregate", {}).get("language_counts")
     if isinstance(counts, dict) and counts:
         return ",".join(sorted(str(x) for x in counts))
@@ -85,7 +101,7 @@ def main():
         base = args.roninia_root.resolve()
         for manifest_path in sorted((base / "data/datasets/admitted").rglob("manifest.json")):
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-            train = manifest.get("partitions", {}).get("train", {})
+            train = get_train_section(manifest)
             if manifest.get("status") != "admitted_scoped_training_partition" or train.get("training_eligible") is not True:
                 audit.append({"manifest": str(manifest_path), "status": "skipped_not_scoped_train_admitted"})
                 continue
