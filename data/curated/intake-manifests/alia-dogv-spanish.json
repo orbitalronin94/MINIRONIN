@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "slug": "alia-dogv-spanish",
+  "name": "ALIA DOGV Spanish official gazette corpus",
+  "repo_id": "gplsi/alia_dogv",
+  "license": "CC BY 4.0",
+  "split": "train",
+  "language_field": "language",
+  "language_values": [
+    "es"
+  ],
+  "domain": "legislación valenciana y comunicaciones oficiales",
+  "text_fields": [
+    "text"
+  ],
+  "task": "Spanish official gazette language modeling",
+  "minimum_rows": 300000,
+  "min_text_chars": 80,
+  "streaming": true,
+  "gzip_output": true,
+  "attribution": "GPLSI, University of Alicante; ALIA_DOGV; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/gplsi/alia_dogv",
+  "language": "es",
+  "license_verification": "exact CC BY 4.0 live card check; train split only; exact language==es filter",
+  "status": "ready_for_automated_import"
+}
