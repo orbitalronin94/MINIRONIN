@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "slug": "alia-cultural-heritage-spanish",
+  "name": "ALIA Spanish Cultural and Heritage Corpus",
+  "repo_id": "SINAI/ALIA-es-cultural-heritage",
+  "license": "CC BY-SA 4.0",
+  "source_url": "https://huggingface.co/datasets/SINAI/ALIA-es-cultural-heritage",
+  "split": "train",
+  "domain": "patrimonio cultural, historia, arqueología, humanidades y documentación institucional",
+  "text_fields": ["text"],
+  "task": "Spanish cultural heritage language modeling",
+  "minimum_rows": 200000,
+  "min_text_chars": 50,
+  "streaming": true,
+  "gzip_output": true,
+  "shard_rows": 10000,
+  "attribution": "Grupo de investigación SINAI, Universidad de Jaén; ALIA Spanish Cultural and Heritage Corpus; 100 contributing source datasets; CC BY-SA 4.0. Preserve source_id provenance for each document.",
+  "language": "es",
+  "synthetic": false,
+  "license_verification": "Hugging Face dataset card declares cc-by-sa-4.0. Card documents 236,314 instances, 100 source datasets, text/source_id/id fields and 939,315,404 tokens. Import text only and preserve source_id as provenance where supported.",
+  "status": "ready_for_automated_import"
+}
