@@ -39,6 +39,7 @@ jobs:
             src/minironin/tokenizer.py \
             scripts/build_library_manifest.py \
             scripts/import_admitted_sources.py \
+            scripts/download_admitted_artifacts.py \
             scripts/build_awake_rows.py \
             scripts/build_backdoor_bpe.py \
             scripts/build_rag_index.py \
