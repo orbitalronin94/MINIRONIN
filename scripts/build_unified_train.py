@@ -11,7 +11,7 @@ from collections import Counter
 from pathlib import Path
 
 TEXT_EXT={".txt",".md",".xml",".tei",".html",".htm"}
-SKIP=re.compile(r"(manifest|summary|sha256|readme)",re.I)
+SKIP=re.compile(r"(manifest|summary|sha256|readme|library-artifact)",re.I)
 
 def sha(data:bytes)->str: return hashlib.sha256(data).hexdigest()
 def sha_file(path:Path)->str:
@@ -101,16 +101,39 @@ def read_source(path):
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--output-dir",default="unified-train")
-    ap.add_argument("--roots",nargs="+",required=True)
-    ap.add_argument("--exclude-synthetic",action="store_true",help="Do not write records explicitly marked synthetic or originating from generated curricula")
+    ap.add_argument("--library-manifest",help="Versioned library artifact JSON; defines canonical roots and rights exclusions")
+    ap.add_argument("--roots",nargs="+",help="Legacy explicit source roots")
+    ap.add_argument("--exclude-synthetic",action="store_true",help="Optional override to exclude synthetic rows")
     args=ap.parse_args()
+    library_manifest=None
+    library_manifest_sha256=None
+    exclude_patterns=[]
+    if args.library_manifest:
+        manifest_path=Path(args.library_manifest)
+        library_manifest=json.loads(manifest_path.read_text(encoding="utf-8"))
+        if library_manifest.get("schema_version") != 2 or library_manifest.get("artifact_id") != "minironin-library-v2":
+            raise SystemExit(f"Unsupported library artifact: {manifest_path}")
+        if args.roots:
+            raise SystemExit("Do not combine --library-manifest with --roots")
+        roots=[Path(x) for x in library_manifest.get("roots",[])]
+        if not roots:
+            raise SystemExit("Library artifact contains no roots")
+        exclude_patterns=list(library_manifest.get("exclude_path_patterns",[]))
+        include_synthetic=bool(library_manifest.get("defaults",{}).get("include_synthetic",False))
+        exclude_synthetic=bool(args.exclude_synthetic or not include_synthetic)
+        library_manifest_sha256=sha_file(manifest_path)
+    else:
+        if not args.roots:
+            raise SystemExit("Provide --library-manifest or legacy --roots")
+        roots=[Path(x) for x in args.roots]
+        exclude_synthetic=bool(args.exclude_synthetic)
     out=Path(args.output_dir); out.mkdir(parents=True,exist_ok=True)
-    roots=[Path(x) for x in args.roots]
     files=[]
     for root in roots:
         if not root.exists(): raise SystemExit(f"Required source root missing: {root}")
         files.extend(p for p in root.rglob("*") if p.is_file() and not SKIP.search(p.name)
-                     and (p.suffix.lower() in TEXT_EXT|{".json",".jsonl",".ndjson",".parquet",".csv",".tsv"} or p.name.endswith((".jsonl.gz",".ndjson.gz"))))
+                     and (p.suffix.lower() in TEXT_EXT|{".json",".jsonl",".ndjson",".parquet",".csv",".tsv"} or p.name.endswith((".jsonl.gz",".ndjson.gz")))
+                     and not any(re.search(pattern,str(p),re.I) for pattern in exclude_patterns))
     files=sorted(set(files))
     if not files: raise SystemExit("No source files found")
     source_manifest=[]; rows=0; records_seen=0; excluded_synthetic=0; duplicates=0; empty=0; tiny=0
@@ -123,7 +146,7 @@ def main():
           excluded_before=excluded_synthetic
           for record in read_source(path):
             records_seen+=1
-            if args.exclude_synthetic and record.get("synthetic") is True:
+            if exclude_synthetic and record.get("synthetic") is True:
                 excluded_synthetic+=1
                 continue
             body=record["text"].strip()
@@ -140,15 +163,15 @@ def main():
             gz.write(line); rows+=1
           source_manifest.append({"path":str(path),"sha256":input_hash,"records":rows-before,"records_written":rows-before,"synthetic_records_excluded":excluded_synthetic-excluded_before,"bytes":path.stat().st_size})
     if rows==0: raise SystemExit("Unified corpus is empty")
-    summary={"schema":"minironin-unified-train-v2","record_count":rows,"records_seen":records_seen,"synthetic_records_excluded":excluded_synthetic,"exclude_synthetic":bool(args.exclude_synthetic),"unique_normalized_texts":len(seen),
+    summary={"schema":"minironin-unified-train-v2","record_count":rows,"records_seen":records_seen,"synthetic_records_excluded":excluded_synthetic,"exclude_synthetic":exclude_synthetic,"synthetic_included":not exclude_synthetic,"library_artifact_id":(library_manifest or {}).get("artifact_id"),"library_artifact_sha256":library_manifest_sha256,"rights_exclusion_patterns":exclude_patterns,"unique_normalized_texts":len(seen),
       "exact_or_normalized_duplicates_reported_not_removed":duplicates,"unique_by_dataset":dict(unique_by_dataset),"duplicates_by_dataset":dict(duplicates_by_dataset),"empty_records":empty,"short_records_under_24_chars":tiny,
       "synthetic_and_source_counts":dict(synthetic),"domains":dict(domains),"datasets":dict(datasets),
-      "volume_policy":("Explicitly synthetic rows are excluded before training-corpus publication; duplicates and short records among retained source rows are reported, not discarded." if args.exclude_synthetic else "No input records are discarded. Duplicate and short records are reported for review; source row counts remain intact."),
+      "volume_policy":("Explicitly synthetic rows are excluded before training-corpus publication; duplicates and short records among retained source rows are reported, not discarded." if exclude_synthetic else "No input records are discarded except source paths explicitly quarantined by the library artifact. Duplicate and short records are reported for review; source row counts remain intact."),
       "quality_policy":"Synthetic templates are explicitly marked. Ten-seed factual curricula are not counted as independent facts. Arithmetic answers remain generated by the deterministic verifier in the source generator.",
       "input_roots":[str(x) for x in roots],"source_files":len(source_manifest),"sources":source_manifest,
       "train_jsonl_gz_bytes":output_path.stat().st_size,"train_jsonl_gz_sha256":sha_file(output_path)}
     (out/"sources.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    (out/"quality-report.json").write_text(json.dumps({k:summary[k] for k in ("record_count","records_seen","synthetic_records_excluded","exclude_synthetic","unique_normalized_texts","exact_or_normalized_duplicates_reported_not_removed","empty_records","short_records_under_24_chars","synthetic_and_source_counts","domains","datasets","quality_policy","volume_policy")},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    (out/"quality-report.json").write_text(json.dumps({k:summary[k] for k in ("record_count","records_seen","synthetic_records_excluded","exclude_synthetic","synthetic_included","library_artifact_id","library_artifact_sha256","rights_exclusion_patterns","unique_normalized_texts","exact_or_normalized_duplicates_reported_not_removed","empty_records","short_records_under_24_chars","synthetic_and_source_counts","domains","datasets","quality_policy","volume_policy")},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     provenance_dir=out/"provenance"; provenance_dir.mkdir(exist_ok=True)
     provenance_paths=[]
     for root in roots:
