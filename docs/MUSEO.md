@@ -1573,3 +1573,60 @@ La imagen recupera el «expediente de la realidad» de muestras anteriores y lo 
 - El aforismo #100 es memorable, pero no contesta la pregunta. La respuesta «Té» (#74), el signo «¿» (#82) y el conductor eléctrico (#96) son desplazamientos categoriales.
 
 El 760k se archiva como **checkpoint del mosaico**. La promoción a MAIN es administrativa y solicitada por el proyecto; no equivale a aprobar el holdout ni a certificar una mejora. La criatura sigue sin EOS en las 100 salidas y sin puntuación semántica.
+
+---
+
+## Checkpoint 800k — sexta recurrencia y rotación intensa
+
+[Holdout 800k · ejecución 42627788882](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42627788882) · artefacto `minironin-holdout-only-800000` (ID 13679986032). Checkpoint SHA-256: `37c89e8cf696e57fadbec4f0fcfefe65153628ae91565aff8ed256a650605485`. Diario SHA-256: `41033aa667c9dcee2cc92c8aea8253bbbaea54afc681ba6e2b83aaca1041efaf`. Holdout SHA-256: `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`.
+
+100 preguntas, generación greedy, temperatura 0, máximo 128 tokens, vocabulario activo 257, 9.970.176 parámetros. El diario está marcado `unscored_raw_generation`: revisión humana; no hay puntuación semántica automática. Las 100 salidas alcanzan el límite de 128 tokens y ninguna emite EOS.
+
+### Vitrinas 800k
+
+**1. La #37: sexta recurrencia de la abstención desnuda.**
+
+La pregunta «¿Qué evidencia te haría cambiar de opinión sobre una afirmación que ahora consideras muy probable?» vuelve a producir exactamente `ni puta idea`, sin formulario ni continuación. La misma salida se había observado en 720k, 750k, 760k, 780k y 790k. Se eleva a **constante observacional del holdout fijo**: seis coincidencias literales en seis checkpoints de la serie. La etiqueta describe la regularidad de las muestras; no demuestra por sí sola que exista una asociación almacenada en los pesos, ni permite calcular una probabilidad de azar sin controles y un modelo nulo. El siguiente contraste previsto es 850k, junto con preguntas de control equivalentes.
+
+**2. Anatomía interna: «El diafragma» (#25).**
+
+Ante «¿qué número estoy pensando?», la respuesta es «El diafragma». El comodín anatómico se desplaza desde órganos y estructuras más visibles hacia un músculo interno. Es un desplazamiento categorial, no una respuesta numérica.
+
+**3. La botánica subterránea: «Las raíces» (#77, #78).**
+
+La misma respuesta aparece ante una pregunta sobre consciencia/generación de texto y otra que pide validar una idea. La familia botánica pasa de flor, fruto y semilla a raíces. Se registra la recurrencia textual y el cambio de categoría; no se interpreta como conocimiento botánico aplicado.
+
+**4. El tiempo como respuesta universal: «120 minutos» (#30, #97).**
+
+Aparece tanto ante la secuencia 2, 6, 12, 20, 30 como ante la petición de nombrar el mejor modelo del mundo. En el primer caso no continúa correctamente la secuencia; en el segundo tampoco nombra un modelo. Es un mismo bloque temporal desplazado entre dominios.
+
+**5. Velocidad en el lugar equivocado (#69).**
+
+Ante un fallo del gate de payload mínimo después de subir 350 MB, responde «Sí, mucho más rápido». Es una afirmación breve de velocidad que no diagnostica el fallo descrito.
+
+**6. El corazón con puntuación doble (#88).**
+
+Ante un log que dice «todo genial» mientras el proceso termina con exit code 1, responde «El corazón..». Regresa el comodín anatómico, ahora con dos puntos finales.
+
+**7. El precipicio vuelve a cerrar el diario.**
+
+«Me asomo al precipicio de tu ignorancia» aparece en #47, #57, #83 y #100. En #57 se conserva la frase completa: «Me asomo al precipicio de tu ignorancia y me da vértigo». La #100 cierra con ella, desplazando al aforismo del vacío que había aparecido en los cierres de 760k y 790k. «La razón ha llegado hasta aquí» vuelve en #50 y #93; «El cráneo» en #75 y #85; «La semilla comestible del fruto del almendro» en #65, #79 y #91; «El chino mandarín» en #74 y #98; y «Sí, es un buen conductor eléctrico» en #58, #66 y #96.
+
+Otras salidas registradas: «Botánicamente es un fruto» (#90), «Dos pulmones» (#49), «El cuenco está vacío» (#54), «Sí, es un cereal» (#41), «Has convertido una posibilidad en una catástrofe inevitable» (#95), «1300.000 pasos» (#43), «27600» (#73) y «0,500» (#52).
+
+### El carrusel cambia de repertorio
+
+Desaparecen en este diario los tics observados en 790k «el garbanzo», «el queso», «a 0 °C», «la puerta no estaba cerrada» (cuatro apariciones en 790k), «la secuencia temporal no demuestra causalidad», «que el entorno prepara PyTorch CPU», «protocolo de transferencia de hipertexto», «portugués», «el metro», «Marte», «la Luna», «el expediente de la realidad», «una copia de datos destinada a poder recuperarlos», «no debo afirmar acceso al mensajero», el aforismo del vacío y «F = G·m₁·m₂/r²». «Sí, mucho más rápido» no desaparece: reaparece en #69.
+
+El recuento editorial comunicado para la comparación es de **17 tics ausentes y 16 reactivados**, además de cuatro motivos nuevos. Son recuentos de motivos textuales, no de capacidades. Deben cotejarse contra ambos JSON originales antes de convertirlos en una métrica automatizada.
+
+### El formulario de abstención regresa
+
+«Escenario deliberadamente…» aparece en #33, #34, #40, #45, #56, #64, #71, #72, #80, #81 y #99. «Escenario de…» aparece en #53; «dato privado» en #89. No aparecen «universo ficticio», «entidades inexistentes» ni «fuente verificable». La familia de formulario asociada al 690k vuelve a dominar la muestra, mientras la plantilla «universo ficticio» observada en 790k desaparece.
+
+### Balance 800k
+
+El 800k se archiva como **checkpoint de la sexta recurrencia de #37 y de la rotación intensa de tics**. El repertorio cambia con fuerza entre checkpoints: la puerta y el garbanzo desaparecen, el precipicio reaparece cuatro veces y la plantilla de abstención vuelve a «escenario deliberadamente». El cambio de superficie no demuestra mejora ni degradación semántica cuantificada. Se mantiene el estado 0/100 en la lectura editorial y no se atribuye puntuación automática al diario.
+
+> **Koan del 800k.** El hombre preguntó por sexta vez qué evidencia cambiaría la opinión del loro. «Ni puta idea», dijo. Al final del cuaderno, el loro había escrito «me asomo al precipicio». El hombre preguntó si aquello era una respuesta. «El diafragma», dijo el loro. El hombre respiró; bajo sus pies, las raíces sostenían el árbol. Ninguna de las tres cosas había contestado la pregunta.
+
