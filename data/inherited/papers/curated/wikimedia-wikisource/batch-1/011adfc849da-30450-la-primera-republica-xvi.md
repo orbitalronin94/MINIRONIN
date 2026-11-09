@@ -1,0 +1,71 @@
+# La Primera República/XVI
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/La%20Primera%20Rep%C3%BAblica/XVI
+
+**Page ID:** 30450
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/La%20Primera%20Rep%C3%BAblica/XVI?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+Las ninfas o sílfides, dudosamente revestidas de carne mortal, así como las sacras figuras majestuosas, hallábanse sentadas en el césped formando grupos sin clases ni jerarquías, y se regalaban con manjares de sutil delicadeza y aroma. La charla graciosa esparcía de grupo en grupo un franco y dulce contento. Tuvo la Madre el acierto, que le agradecí mucho, de no presentarme a sus hermanas, ante las cuales el pobre Tito turbado y confuso no habría sabido qué decir. Con Mariclío había adquirido yo cierta confianza, pero las otras me anonadaban con el resplandor de su presencia. Busqué con mis ojos a Floriana, y la vi junto a una que me pareció Polimnia, maestra de la Oratoria y la Pantomima. Poco después creí verla con Urania, soberana de los astrónomos. Y si no estoy equivocado, la vi luego reclinada en el regazo de Euterpe, profesora de Música de toda la Humanidad. 
+
+Senteme yo junto a Mariclío, y no lejos de mí estaba Graziella con otras sílfides, cuyos rostros pude yo distinguir y apreciar en el curso del viaje y en las estaciones de reposo. Debo decir que comí de cuanto me dieron, y que sentía regenerada mi sangre y alentado todo mi ser con la ingestión de los divinos manjares. De la general conversación llegaban a mí jirones o ráfagas que pasaban dejando en mi oído frases inteligibles, entre otras que no podía comprender por ser pronunciadas en extraños idiomas. A la derecha de Mariclío vino a sentarse su hermana Calíope, gobernadora del mundo de la Poesía, y de lo que ambas hablaron con viveza y animación no entendí ni jota. Por ciertas inflexiones me pareció que hablaban en griego para mayor claridad... 
+
+Ya llevábamos un gran rato engullendo las célicas viandas, cuando del sitio donde estaba Euterpe vino una música de tal suavidad y tan lindamente concertada en giros melodiosos, que al oírla sentíamos como si manos angélicas nos levantasen en vilo y al mismo cielo nos transportaran. Vi a la propia Euterpe tañendo una flauta de oro, cuyo son acompasaba y regía el de otras tañedoras de flautas, caramillos y chirimías, agrupadas a la derecha de la Musa. Al opuesto lado, otras musicantes tocaban liras y laúdes, y con tan exquisito arte se acoplaban las diferentes voces del aire vago y de las cuerdas vibrantes, que resultaba un perfecto trasunto de la armonía de las esferas. 
+
+El dulce comistraje, a cuya preparación no era extraño sin duda el amigo Baco, y el más dulce ritmo de la celeste música, nos llevaban suavemente a un estado letal. Luché con el sueño; pero al fin me dormí como un tronco... Soñé que estaba, no en las Cortes, no en las calles de Madrid, sino en el Olimpo, habitual residencia de los Dioses que fueron y que quizá lo eran todavía. La impresión que recibí fue la que produce un lugar visitado ya en tiempos muy remotos. 
+
+El Padre Júpiter pareciome algo aburrido, y se desperezaba en su trono de nubes; la Madre Juno había engordado tanto, que su ponderada hermosura era ya un verdadero mito. El águila de él y el pavo de ella se habían hecho amigos y dormían juntos en el suelo. Minerva, Ceres y demás familia conservaban su gallardía de antaño; sólo el amigo Marte me pareció rebajado algunos puntos en su bizarría, como un general que ha pasado a la reserva... Soñé que penetraba yo allí con la timidez propia de un intruso mortal, y cuando hacía grave reverencia a los venerables Dioses, vi entrar a Martos en traje olímpico, con lentes y corona de laurel. Habló con Mercurio... Comprendí que trataban de sustraer un rayo del haz que Júpiter a su lado tenía. 
+
+Cuando yo hice por acercarme al Padre de los Dioses para prevenirle contra los rateros, sentí que me tiraban de un pie. No hice caso. Los tirones arreciaron, como si alguien quisiera arrastrarme... Desperté... Era que la maldita Graziella, llegándose a mí sigilosa, quería divertirse cortando mi olímpico sueño. «Tito, Tito desatentado y escandaloso -me dijo soltando la risa-, se permite dormir; pero no está permitido roncar en presencia de las Diosas inmortales. ¿Te parece que es decente atronarnos con esos bramidos de gañán? ¡Menudo concierto de trombón nos has dado! Despabílate, tontaina, que aquí estamos cuatro sílfides aburridas con deseos de entrar en conversación y pasar el rato». 
+
+Restregándome los ojos me incorporé, y viendo que ya no estaba a mi lado Mariclío, pegué la hebra con las compañeras que pedían palique. Observé que Morfeo imperaba sobre todo el cotarro divino, semi-divino y semi-humano. No tardé en formar ruedo con las amigas, y yo fuí el primero en tomar la palabra. «Ya sé -les dije- por qué estáis tan aburriditas. En toda la caravana que vino del otro mundo, y en todo el señorío mitológico que hemos encontrado en este, no hay más que mujeres. ¡Mujeres, Señor; todas mujeres y ningún hombre!... pues yo, traído aquí en calidad de ser incorpóreo y contemplativo, apenas me llamo varón». 
+
+Rompieron a reír las cuatro, y una de ellas, bonita y graciosa, dijo: «Fastídiate, perdulario; bastante te has divertido allá». Y otra, rubicunda y metida en carnes, intervino así: «¿Pues qué querías, que te dejáramos traer a doña Cabeza, a Candela o a Delfinita la funeraria?». La tercera de aquellas pícaras metió la cucharada en esta forma: «No conoces bien este mundo, que se parece al otro más de lo que tú crees. Penitencia y soledad hallarás aquí; mas esto no es eterno. La Madre es la misma sabiduría, y a las que pedimos cierta libertad nos concede lo que ordena el fuero de Naturaleza». 
+
+Resumió las opiniones Graziella con esta peregrina observación: «Entre las que aquí vamos, aluvión de mujeres, las hay de todas castas: santas, semi-santas, místicas de moco y baba, románticas, espiritadas; haylas también tiernas de corazón y místicas al revés o contemplativas en la esfera de lo corporal. A las que formamos esta pandilla, la Madre bondadosa nos convierte en vacas y nos deja ir por esas encañadas». 
+
+Saltó una de las otras diciendo con viveza: «Has revelado el arcano, trastrocando la verdad con alguna indecencia. Lo que debe saber Tito es que muchos de los toros que ha visto son hombres. 
+
+-Lo he dicho al revés -afirmó Graziella sin dejar de reír-, para que lo entienda mejor». 
+
+Estos y otros disparates que oí de aquellas bocas desaprensivas, llenaron mi ánimo de tal confusión que no sabía qué juicio formar de aquel mundo en que había caído. ¿Era un mundo de guasa mitológica con ribetes picarescos, un fermento trasnochado del paganismo, traído a la vida moderna como levadura para poder amasar y cocer el nuevo pan de la civilización? ¿Las Musas que vi eran las verdaderas hermanas de Apolo, o figuras de teatro modeladas artísticamente por hábiles maestras de aquella comunidad andante, donde iban hembras de tan diferentes castas y aptitudes? 
+
+De esta desilusión pesimista sólo exceptuaba yo a Floriana y a la excelsa Mariclío, sagrario que guarda y custodia la verdad de los hechos humanos... A mí se llegó la buena Madre, apartándome de la compañía y coloquio de aquellas a quienes juzgué como dislocadas marionetas, y me llevó consigo rodeando los grupos de durmientes. Llegamos a un punto donde vi la boca de una caverna de medianas anchuras, y me dijo: «Por aquí iréis vosotros a donde yo he dispuesto». 
+
+El iréis vosotros lo entendí como si dijera Floriana y tú, y así se lo manifesté. Luego añadió ella: «El camino es corto y menos ingrato que el ya recorrido. Durante la travesía no me veréis. Pero allá nos encontraremos». Esto me alegró lo indecible. La dulzura risueña con que me habló la Madre, me hizo vislumbrar que del mundo de pesadilla pasaríamos a la vida real, y que Floriana sería nuevamente la belleza corpórea que vi por primera vez en la parroquia de San Marcos. 
+
+Atento a la brevedad, omito los incidentes que precedieron a nuestra partida. Extinguiéronse las luces, disemináronse las figuras de aspecto divino y de apariencia humana. Las Musas se fueron con la Música a otra parte, a otra parte con la Tragedia y la Comedia, a otra parte con la Épica, la Oratoria y la Danza, a otra parte con la Astronomía y la Poesía Popular. No pude apreciar la dirección que tomó la Madre Historia. Aparecieron de nuevo los toros, no en tanto número como antes. Advertí que entre ellos venían no pocas vacas. Tocome oprimir los lomos de una de estas, por cierto muy ágil y bizarra. 
+
+Emprendimos la marcha por un valle menos ancho que los de las primeras etapas, de alta bóveda y suelo mullido y húmedo, en el cual no vi otras alimañas que las saltonas ranas entonando a nuestro paso el nocturno croá croá. La luz era la misma que antes nos alumbrara. Floriana y otra hembra, cuarentona y adusta, que en la última cena hablaba íntimamente primero con Mariclío y después con Calíope y Talía, montaban a mujeriegas un toro arrogantísimo. Detrás fui yo largo trecho, hasta que Floriana, llamándome a su lado con dulce acento, me dijo: «Ya descendemos, amigo Tito, hacia la vida vulgar. Es ley divina que esto acabe siempre en aquello y aquello en esto, pues nunca se verá el fin definitivo de las cosas». 
+
+Mientras contestaba yo como Dios me dio a entender a estas palabras sibilíticas, advertí que la ideal doncella no vestía ya la túnica helénica, alba y ceñida, sino un obscuro traje, de color no bien definido por la escasa luz, y de forma semejante a los que usan a flor de tierra las señoras. Con mayor asombro noté que sus lindos pies no calzaban sandalias, sino zapatos y medias. «Veo, señora mía -le dije gozoso-, que nos vamos humanizando. Esto me regocija porque yo soy humano hasta la médula de mis huesos». 
+
+Continué desarrollando mi tesis, y cuando yo estaba en lo más entonado de mi oratoria, me cortó la palabra un ruidoso trotar de jinetes o jinetas que detrás venían. Pasando con veloz carrera junto a nosotros, se nos adelantaron con alegre algazara hípica. Eran Graziella y un sinfín de picaronas de su laya, que corrían a tomar la delantera. Con risueña tolerancia, Floriana me dijo: «Adelántese usted, don Tito, y vea de apaciguar a esas locas harto impacientes por llegar al fin. Exhórtelas a la mesura, y amenácelas con mandarlas a la cola si no son juiciosas». 
+
+Con mis talones y la varita avivé el paso de mi vaca, y pronto llegué al grupo de las alborotadoras desmandadas. Al recorrer toda la caravana, advertí con júbilo que la invisibilidad había desaparecido casi en absoluto. Ya no había espíritus, ni peri-espíritus, ni formas equívocas. La carne y el hueso, la sangre y la vida, recobraban su imperio. Metido entre la turba de revoltosas, hice otra observación que confirmó mi alegría. Los trajes de ellas eran lindos y vaporosos, sin más que la tela precisa para llegar al término medio entre la ropa y la desnudez. Su alegre vocerío no era la salmodia clásica y desabrida de los himnos báquicos, píthicos o délficos, sino canciones de la vida mundana, con letra y música que yo había oído la mar de veces en los teatros populares. 
+
+Graziella nos dio un número de circo, divertidísimo, haciendo mil piruetas sobre los lomos de su cabalgadura, y luego una plancha imponente agarrada a las astas del toro, a quien llamaba Perico. Terminado el ejercicio, hízome montar a su lado, y entonces las otras diablesas se abalanzaron a mí, acometiéndome con pellizcos y tirones de orejas. Una de ellas me dijo: «¿Te acuerdas, pillín, de aquella noche... cuando te llevamos por las calles hasta la plazuela de las Comendadoras, diciéndote búscala, que te quemas?». Otra saltó con esto: «Yo y esta amiga mía éramos las que te mandábamos los pretendientes de destinos para que te marearan y volvieran loco. 
+
+-¡Ah, bribonas! -exclamé-. Y luego ibais de ministerio en ministerio embaucando a los Ministros para que me concedieran todo lo que yo no les había pedido. 
+
+-No, tontín; esa función no era nuestra. Sacaba los destinos, con artes muy sutiles que nosotras no entendemos, la Madre Mariclío, que es la que corre con todo lo tocante a la intriga de lo divino en el terreno de lo humano, asistida, según creemos, de una dama cabalística que tiene a su servicio. 
+
+-Y esa dama ¿es la que Floriana trae a su lado? 
+
+-No, simple -dijo Graziella-. La que viene montada con Floriana en el toro Padre es Doña Gramática... Tú de todo te asombras. A cada palabra que te decimos pones esa cara que parece la del bobo de Coria... Déjame que te explique: Para regir el alma de Floriana en las funciones atañederas a la instrucción de los pueblos, hay un Consejo de sabias o sibilas que se llaman Doña Gramática, Doña Geografía, Doña Aritmética, Doña Caligrafía y otras tales... Las has visto. Van cerca de Floriana. 
+
+-Decidme, diablas -exclamé fuera de mí-. ¿Estoy dormido o despierto? Sacadme pronto del dédalo de estos mitos que enloquecerían a la razón misma, si la razón con su luz vivificante no los ahuyentara. 
+
+Cuando esto decía, advertí un cambio súbito en la intensidad y color de la claridad que nos iluminaba. Las mujeres, que otro nombre no debo darles, prorrumpieron en clamores de júbilo: «¡Ya llegamos a la luz del sol! ¡Ya tenemos día, ya tendremos noche! ¡Horas, venid; venid, voladores minutos! ¡Dulce Tiempo amigo, compañero y compás de la vida, abrázanos!». En tanto, mi cabeza se despejó súbitamente de visiones, mitos, ensueños, delirios aéreos y telúricos, y de todas las fantasmagorías que se habían metido en ella por obra y arte de la razón de la sinrazón. ¡Realidad, qué hermosa eres!
