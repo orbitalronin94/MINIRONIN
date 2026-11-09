@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "dataset": "PharmaCoNER Spanish clinical NER train",
+  "source_dataset": "PlanTL-GOB-ES/pharmaconer",
+  "source": "https://huggingface.co/datasets/PlanTL-GOB-ES/pharmaconer",
+  "source_revision": "0400dea295f345309e77f92656ef65b636fef238",
+  "source_file": "train-set_1.1.conll",
+  "license": "CC BY 4.0",
+  "language": "es",
+  "source_split": "train",
+  "rows_scanned": 212324,
+  "rows_admitted": 8129,
+  "source_clinical_cases": 500,
+  "entity_types": [
+    "NORMALIZABLES",
+    "NO_NORMALIZABLES",
+    "PROTEINAS",
+    "UNCLEAR"
+  ],
+  "file": "pharmaconer-es-train.jsonl",
+  "sha256_jsonl": "1812b0dd9d008c27ea33d4d941f5c64b6b6c03ee5a53ccefe0cf746187733e3d",
+  "retrieved_at_utc": "2026-11-09T19:45:13.908004+00:00",
+  "admission_policy": "Complete upstream train split only; preserve all tokens and expert BIO tags; no dev/test records imported."
+}
