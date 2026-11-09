@@ -78,7 +78,7 @@ def main():
                 elif fmt=="zip_txt":
                     with zipfile.ZipFile(tmp) as z:
                         for name in sorted(z.namelist()):
-                            if not name.lower().endswith((".txt",".tsv",".csv")): continue
+                            if not name.lower().endswith((".txt",".tsv",".csv",".xml",".conll",".ann")): continue
                             with z.open(name) as raw:
                                 for i,line in enumerate(raw):
                                     write_record(line.decode(m.get("encoding","utf-8"),errors="replace"),f"{name}:{i}",{"file":name})
