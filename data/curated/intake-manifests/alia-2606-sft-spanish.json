@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "slug": "alia-2606-sft-spanish",
+  "name": "ALIA-2606 SFT Spanish subset",
+  "repo_id": "BSC-LT/ALIA-2606-SFT",
+  "license": "CC BY 4.0",
+  "split": "train",
+  "language_field": "lang",
+  "language_values": [
+    "es"
+  ],
+  "domain": "instrucciones, matemáticas, razonamiento, RAG y asistencia general",
+  "text_fields": [
+    "messages"
+  ],
+  "task": "Spanish supervised instruction tuning",
+  "synthetic_status": "mixed",
+  "minimum_rows": 100000,
+  "min_text_chars": 30,
+  "attribution": "BSC Language Technologies Laboratory, ALIA-2606-SFT; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/BSC-LT/ALIA-2606-SFT",
+  "language": "es",
+  "license_verification": "exact upstream card license required; no NC/ND",
+  "status": "ready_for_automated_import"
+}
