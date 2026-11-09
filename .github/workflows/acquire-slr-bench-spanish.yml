@@ -32,7 +32,7 @@ jobs:
         run: |
           set -euo pipefail
           revision="$(git ls-remote https://huggingface.co/datasets/AIML-TUDA/SLR-Bench-Spanish refs/heads/main | awk 'NR==1 {print $1}')"
-          test "\${#revision}" -eq 40
+          test "${#revision}" -eq 40
           echo "SLR_REVISION=$revision" >> "$GITHUB_ENV"
           python scripts/acquire_slr_bench_spanish.py --revision "$revision"
       - name: Audit schema, split, license, IDs and digest
@@ -66,4 +66,4 @@ jobs:
           git add data/curated/accepted/slr-bench-spanish-v1-all-train.jsonl data/curated/accepted/slr-bench-spanish-v1-all-train.manifest.json
           git commit -m "Admit Spanish SLR-Bench inductive reasoning train corpus"
           git push origin main
-          GH_TOKEN="\${{ github.token }}" gh api --method POST "repos/\${GITHUB_REPOSITORY}/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
+          GH_TOKEN="${{ github.token }}" gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
