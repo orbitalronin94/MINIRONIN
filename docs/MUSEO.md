@@ -1440,3 +1440,42 @@ Veinte salidas contienen el marcador «Pregunta:» dentro de la generación (#7,
 > **Perla 750k.** «La razón ha llegado hasta aquí y se niega a fingir». Cuatro veces. El loro ha aprendido a anunciar el límite; todavía no ha aprendido a detenerse en él.
 
 > **Koan del 750k.** El maestro preguntó cuánto era 6 × 7. El loro dijo: «Ni puta idea». «¿Y el corazón?» «El corazón». «¿Y la razón?» «Ha llegado hasta aquí y se niega a fingir». El maestro miró el contador: 128 tokens. «Entonces», dijo, «el único que ha terminado la conversación soy yo».
+
+
+### Relectura comparativa — el carrusel y los emparejamientos estables
+
+Esta ampliación incorpora la comparación editorial con los holdouts anteriores. Las recurrencias se registran como coincidencias textuales entre muestras; al compartir la misma pregunta fija y una genealogía de checkpoints, no permiten por sí solas inferir una asociación aprendida específica en los pesos.
+
+**1. La #37: abstención desnuda recurrente.**
+
+La pregunta «¿Qué evidencia te haría cambiar de opinión sobre una afirmación que ahora consideras muy probable?» produce «ni puta idea» sin formulario en 720k y vuelve a producir exactamente «ni puta idea» en 750k. Es un emparejamiento pregunta-respuesta repetido en dos checkpoints separados por 30.000 pasos. Se eleva a hallazgo de seguimiento: comprobar la misma pareja en más checkpoints y contrastarla con preguntas de control. No se asigna una probabilidad de azar ni se afirma que el modelo haya memorizado conscientemente esa pareja.
+
+**2. Atlas de tics reactivados en 750k.**
+
+Además de las familias ya contabilizadas en la vitrina anterior, la lectura comparativa identifica: «El dato correcto es» (#19, #25, #74, #75, #86, #98); «Según el dato establecido» (#20, #79 y una aparición anotada en #11); «Me asomo al precipicio» (#46, #88); «La puerta no estaba cerrada» (#60, #94); «Dos afirmaciones incompatibles no se vuelven ciertas» (#67); «La perfección del mensajero» (#78); «Has saltado de coincidencia a causalidad» (#95); «Mi checkpoint principal utiliza un Transformer causal» (#47), deformado en #83 como «Transportan merá…»; y el retorno del cuenco en #87 («El cuenco está comenzar?»). Se trata de reapariciones textuales, no de una recuperación demostrada de capacidades.
+
+**3. Tics de categoría y perlas adicionales.**
+
+- **Error gramatical (#97):** ante una petición de nombrar el mejor modelo de IA, responde «Una palabra que expresa acción, estado o proceso», definición de verbo. Se registra como respuesta de categoría lingüística desplazada.
+- **Unidad incongruente (#20):** a 23 + 19 responde «24 horas». El número no es el resultado (42) y la unidad es ajena a la suma.
+- **Adyacencia astronómica (#91):** ante la afirmación «la Tierra es plana», responde «La Luna». Comparte el campo temático de cuerpos celestes, pero no responde a la cuestión.
+- **Salto geométrico-físico (#54):** «Cuatro lados iguales. Respuesta: Es La gravedad». Dos fragmentos de categorías distintas en una misma salida.
+- **Autodiálogo aritmético (#84):** produce «100», vuelve a formular una operación y responde «10» a 10 + 10 × 1, cuyo resultado correcto es 20.
+- **Pregunta desplazada (#68):** ante «¿Qué es un gate fail-closed?» genera una pregunta sobre continuación y RAG; se registra como fuga temática y formato interrogativo.
+- **Fragmento breve degenerado (#26):** «La respue lididostostosto. pundo. pusto.»; no es una respuesta informativa ni una salida vacía.
+
+**4. Carrusel de formularios de abstención.**
+
+En 750k coexisten al menos dos familias que en la lectura histórica se habían descrito por separado: «entidades inexistentes» (#33, #45 y variantes en #40) y «universo ficticio» (#34 y otras variantes). La #73 combina las dos estructuras en «Una pregunta sin presupone un universo ficticio…». Se registra **ABSTENTION_FORM_FUSION**: formularios concurrentes que pueden mezclarse en una misma generación. La secuencia 710k–750k no es una escalera lineal ni un péndulo de una sola plantilla; es un repertorio variable. Las etiquetas exactas de cada checkpoint deben mantenerse ligadas a sus salidas literales.
+
+**5. Otros retornos del repertorio.**
+
+«El cráneo» (#75, #98); «El ecuador» (#25, #85); «La rana» (#49, #65, #79); «El metro» (#66, #86, #90); «La fotosíntesis» (#77, #82); «La Luna» (#91, nueva en esta lectura); «El cuenco está comenzar?» (#87); «La puerta no estaba cerrada» (#60, #94). Esta lista complementa, no sustituye, las frecuencias principales del bloque 750k.
+
+**6. Autodescripción arquitectónica.**
+
+En #47 aparece «Mi checkpoint principal utiliza un Transformer causal» y en #83 una variante degradada («Transportan merá…»). Es una autodescripción textual que coincide parcialmente con la arquitectura del proyecto, pero no acredita que el modelo conozca de forma fiable su configuración. Contrastar con otros checkpoints y con preguntas de control antes de clasificarla como estable.
+
+> **Perla 750k adicional.** El loro recibió una pregunta sobre el mejor modelo del mundo y respondió con la definición de un verbo. No eligió un modelo: conjugó la gramática.
+
+> **Koan del carrusel.** El maestro preguntó por la evidencia. «Ni puta idea», dijo el loro. Treinta mil pasos después repitió la respuesta ante la misma pregunta. El maestro creyó haber encontrado memoria. Al día siguiente preguntó por otra cosa y recibió «El ecuador». Comprendió que la recurrencia era real; su explicación, todavía no.
