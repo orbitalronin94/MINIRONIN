@@ -18,8 +18,28 @@ def filehash(p):
         for block in iter(lambda:f.read(1024*1024),b""): h.update(block)
     return h.hexdigest()
 def allowed_license(value):
-    s=norm(str(value or "")).replace("_","-")
-    return s in LICENSES or s.replace("-"," ") in LICENSES
+    if isinstance(value,dict):
+        s=" ".join(str(v) for v in value.values()).casefold()
+    elif isinstance(value,(list,tuple)):
+        s=" ".join(str(v) for v in value).casefold()
+    else:
+        s=str(value or "").casefold()
+    s=norm(s).replace("_","-")
+    compact=re.sub(r"[^a-z0-9]","",s)
+    denied=("noncommercial","noderivatives","sharealike","cc-by-nc","cc-by-nd","cc-by-sa")
+    if any(x in s or x.replace("-","") in compact for x in denied):return False
+    if s in LICENSES or s.replace("-"," ") in LICENSES:return True
+    return s.startswith("cc by ") or s.startswith("cc-by-") or "creativecommons.org/licenses/by/" in s or s.startswith("creative commons attribution ")
+def spanish_language(value):
+    if isinstance(value,dict):s=" ".join(str(v) for v in value.values()).casefold()
+    elif isinstance(value,(list,tuple)):s=" ".join(str(v) for v in value).casefold()
+    else:s=str(value or "").casefold()
+    s=norm(s);folded=unicodedata.normalize("NFKD",s).encode("ascii","ignore").decode("ascii");tokens=set(re.split(r"[^a-z0-9]+",folded))
+    return bool(tokens & {"es","spa","spanish","español","espanol","castellano","castilian"}) or s.startswith("spanish") or s.startswith("es-") or s.startswith("spa")
+def open_type_key(value):
+    if isinstance(value,dict):s=" ".join(str(v) for v in value.values())
+    else:s=str(value or "")
+    return re.sub(r"[^a-z]","",norm(s))
 def existing_hashes(root):
     excluded={".git","holdout","benchmarks","validation","test","quarantine","candidate","artifacts","checkpoints"}
     found=set()
@@ -60,21 +80,24 @@ def main():
     a.output_dir.mkdir(parents=True,exist_ok=True)
     out=a.output_dir/f"common-corpus-es-{a.shard:04d}.jsonl.gz"
     output_sha=hashlib.sha256()
-    counts={};language_counts={};open_type_counts={};license_counts={};rows_seen=admitted=skip_lang=skip_domain=skip_license=skip_short=skip_dup=0
+    counts={};language_counts={};open_type_counts={};license_counts={}
+    rows_seen=admitted=skip_lang=skip_domain=skip_license=skip_short=skip_dup=0
     with gzip.open(out,"wt",encoding="utf-8",newline="\n",compresslevel=6) as f:
         for batch in parquet.iter_batches(batch_size=64):
             for row in batch.to_pylist():
                 rows_seen+=1
-                lang=norm(str(row.get("language") or ""))
-                language_counts[lang]=language_counts.get(lang,0)+1
-                if lang not in {"es","spa","spanish","español","spa-latn","es-es"}:skip_lang+=1;continue
-                open_type_raw=norm(str(row.get("open type") or row.get("open_type") or ""))
-                open_type=re.sub(r"[^a-z]","",open_type_raw)
-                open_type_counts[open_type_raw]=open_type_counts.get(open_type_raw,0)+1
+                lang_value=row.get("language")
+                lang_display=str(lang_value)
+                language_counts[lang_display]=language_counts.get(lang_display,0)+1
+                if not spanish_language(lang_value):skip_lang+=1;continue
+                open_raw=row.get("open type") or row.get("open_type") or ""
+                open_type=open_type_key(open_raw)
+                open_type_counts[str(open_raw)]=open_type_counts.get(str(open_raw),0)+1
                 if open_type not in OPEN_TYPES:skip_domain+=1;continue
-                license_value=str(row.get("license") or "")
-                license_counts[license_value]=license_counts.get(license_value,0)+1
-                if not allowed_license(license_value):skip_license+=1;continue
+                raw_license=row.get("license")
+                license_counts[str(raw_license)]=license_counts.get(str(raw_license),0)+1
+                license_value=(" ".join(str(v) for v in raw_license.values()) if isinstance(raw_license,dict) else " ".join(str(v) for v in raw_license) if isinstance(raw_license,(list,tuple)) else str(raw_license or ""))
+                if not allowed_license(raw_license):skip_license+=1;continue
                 text=row.get("text")
                 if not isinstance(text,str) or len(text.strip())<500:skip_short+=1;continue
                 digest=htext(text)
@@ -96,6 +119,8 @@ def main():
                 line=json.dumps(record,ensure_ascii=False,separators=(",",":"))+"\n"
                 f.write(line);output_sha.update(line.encode("utf-8"));admitted+=1
                 counts[collection]=counts.get(collection,0)+1
+    if admitted<100:
+        raise SystemExit(f"fewer than 100 Spanish rows admitted; languages={dict(sorted(language_counts.items(),key=lambda x:-x[1])[:20])}; open_types={open_type_counts}; licenses={dict(sorted(license_counts.items(),key=lambda x:-x[1])[:20])}")
     manifest={
         "schema_version":1,"dataset":"PleIAs Common Corpus — Spanish open science/government/semantic",
         "source_dataset":REPO,"source_url":SOURCE,"source_revision":a.revision,
@@ -104,7 +129,7 @@ def main():
         "rows_skipped_other_open_type":skip_domain,"rows_skipped_unapproved_license":skip_license,
         "rows_skipped_short":skip_short,"rows_skipped_exact_duplicates":skip_dup,
         "allowed_open_types":sorted(OPEN_TYPES),"allowed_licenses":sorted(LICENSES),
-        "collection_counts":counts,"language_value_counts":language_counts,"open_type_value_counts":open_type_counts,"license_value_counts":license_counts,"license_policy":"Only Public Domain, PDM, CC0 and CC BY attribution-only variants. Excludes NC, ND, SA and unknown licenses.",
+        "collection_counts":counts,"license_policy":"Only Public Domain, PDM, CC0 and CC BY attribution-only variants. Excludes NC, ND, SA and unknown licenses.",
         "file":out.name,"sha256_jsonl_uncompressed":output_sha.hexdigest(),
         "retrieved_at_utc":datetime.now(timezone.utc).isoformat(),
         "limitations":[
@@ -114,5 +139,5 @@ def main():
         ]
     }
     (a.output_dir/f"common-corpus-es-{a.shard:04d}.manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    print(json.dumps({k:manifest[k] for k in ("source_file","source_rows_scanned","rows_admitted","rows_skipped_non_spanish","rows_skipped_other_open_type","rows_skipped_unapproved_license","rows_skipped_exact_duplicates","language_value_counts","open_type_value_counts","license_value_counts","collection_counts")},ensure_ascii=False))
+    print(json.dumps({k:manifest[k] for k in ("source_file","source_rows_scanned","rows_admitted","rows_skipped_non_spanish","rows_skipped_other_open_type","rows_skipped_unapproved_license","rows_skipped_exact_duplicates","collection_counts")},ensure_ascii=False))
 if __name__=="__main__":main()
