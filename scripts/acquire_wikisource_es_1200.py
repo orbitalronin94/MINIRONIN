@@ -116,7 +116,7 @@ def main() -> None:
             "No partial PR has been created."
         )
 
-    out = Path(args.output_root) / f"batch-{args.batch_index:03d}"
+    out = Path(args.output_root) / f"batch-{args.batch_index}"
     out.mkdir(parents=True, exist_ok=True)
     for old in out.glob("*.md"):
         old.unlink()
