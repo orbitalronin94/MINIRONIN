@@ -172,7 +172,7 @@ def source_tree_signature(root: Path) -> str:
 
 
 
-def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_only: bool = False):
+def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_only: bool = False, allow_sparse_domains: bool = False):
     """Load every admitted record from the unified bundle, grouping short QA rows."""
     import gzip
     stat=corpus_path.stat()
@@ -257,7 +257,12 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
                 if len(pending[key])>=8: flush(key)
     for key in list(pending): flush(key)
     train_docs,val_docs=split_documents(store["docs"])
-    required=("math","science","behavior") if synthetic_only else ("math","science","books","anarchist","classics","behavior")
+    if allow_sparse_domains:
+        required=tuple(name for name in MIX_WEIGHTS if train_docs.get(name) and val_docs.get(name))
+        if len(required) < 2:
+            raise SystemExit("Integrated admitted corpus must provide at least two train/validation domains; found: " + ", ".join(required))
+    else:
+        required=("math","science","behavior") if synthetic_only else ("math","science","books","anarchist","classics","behavior")
     missing=[name for name in required if not train_docs.get(name) or not val_docs.get(name)]
     if missing: raise SystemExit("Unified corpus missing train/validation domains: "+", ".join(missing))
     names,probs=weighted_domains(train_docs)
@@ -493,6 +498,8 @@ def main():
     parser.add_argument("--unified-corpus")
     parser.add_argument("--synthetic-only", action="store_true",
                         help="Reject every non-synthetic row and require only core synthetic domains")
+    parser.add_argument("--allow-sparse-domains", action="store_true",
+                        help="For audited integrated-library projections, accept the actual available domain mix (minimum two domains)")
     parser.add_argument("--input-checkpoint", required=True)
     parser.add_argument("--output-dir", default="long-training")
     parser.add_argument("--start-step", type=int, required=True)
@@ -525,7 +532,8 @@ def main():
     device = torch.device("cpu")
     if args.unified_corpus:
         train_docs, names, probs, validation, manifest = load_unified_training_data(
-            Path(args.unified_corpus), Path(args.dataset_cache), synthetic_only=args.synthetic_only
+            Path(args.unified_corpus), Path(args.dataset_cache), synthetic_only=args.synthetic_only,
+            allow_sparse_domains=args.allow_sparse_domains
         )
     else:
         required_roots=(args.heretic_root,args.books_root,args.anarchist_root,args.classics_root)
