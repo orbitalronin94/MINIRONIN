@@ -1,0 +1,62 @@
+name: MINIRONIN — admitir WikiCAT español completo
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/acquire-wikicat-esv2.yml"
+      - "scripts/acquire_wikicat_esv2.py"
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: minironin-wikicat-esv2-intake
+  cancel-in-progress: false
+jobs:
+  acquire-and-admit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned dataset readers
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "datasets==3.3.2" "huggingface_hub==0.29.3"
+      - name: Import the complete curated Spanish train split
+        run: python scripts/acquire_wikicat_esv2.py
+      - name: Verify every admitted record and manifest
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path("data/curated/accepted")
+          p=root/"wikicat-esv2-train.jsonl"
+          m=json.loads((root/"wikicat-esv2-train.manifest.json").read_text())
+          assert m["rows_admitted"] >= 1000 and m["source_rows_scanned"] >= m["rows_admitted"]
+          assert m["license"] == "CC BY-SA 3.0" and m["source_split"] == "train"
+          assert hashlib.sha256(p.read_bytes()).hexdigest() == m["sha256_jsonl"]
+          seen=set()
+          for line in p.read_text(encoding="utf-8").splitlines():
+              r=json.loads(line)
+              assert r["language"]=="es" and r["train_eligible"] and r["admission_status"]=="accepted"
+              assert r["license"]=="CC BY-SA 3.0" and r["source_revision"] and r["label"]
+              assert len(r["text"]) >= 80 and r["id"] not in seen
+              seen.add(r["id"])
+          assert len(seen)==m["rows_admitted"]
+          print(json.dumps({"source_rows":m["source_rows_scanned"],"admitted":len(seen),"license":m["license"],"sha256":m["sha256_jsonl"]},ensure_ascii=False))
+          PY
+      - name: Commit the full accepted dataset
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/curated/accepted/wikicat-esv2-train.jsonl data/curated/accepted/wikicat-esv2-train.manifest.json
+          git commit -m "Admit complete Spanish WikiCAT_esv2 training split"
+          git push origin main
+          GH_TOKEN="${{ github.token }}" gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
