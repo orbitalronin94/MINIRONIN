@@ -199,6 +199,12 @@ jobs:
           if gh release view pleias-common-corpus-spanish-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             assets="$(gh release view pleias-common-corpus-spanish-v1 --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
             if printf "%s\n" "$assets" | grep -q '^common-corpus-es-'; then
+              gh release download pleias-common-corpus-spanish-v1 --repo "$GITHUB_REPOSITORY" --dir data/inherited/common-corpus-es --pattern "common-corpus-es-*.jsonl.gz" --pattern "common-corpus-es-*.manifest.json"
+            else
+              echo "Common Corpus release exists but no audited shard assets are published yet; the acquisition workflow will dispatch a later rebuild."
+            fi
+          fi
+
 
       - name: Copiar exactamente los nueve artículos Markdown admitidos de Papers
         run: |
