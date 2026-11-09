@@ -1,0 +1,92 @@
+name: MAXIRONIN — continuar desde 1k hasta 2k
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/train-maxironin-500m-continue-1k.yml"
+      - "scripts/train_maxironin.py"
+      - "scripts/prepare_maxironin_corpus.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: maxironin-500m-continuation-1k-to-2k
+  cancel-in-progress: false
+
+jobs:
+  continue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      TOKENIZERS_PARALLELISM: "false"
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instalar dependencias CPU
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy tokenizers
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+      - name: Descargar checkpoint 1k y tokenizer original
+        uses: actions/download-artifact@v4
+        with:
+          name: maxironin-500m-step-1000-42585770935
+          repository: orbitalronin94/MINIRONIN
+          run-id: 42585770935
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: resume-artifact
+      - name: Descargar corpus unificado inmutable
+        uses: actions/download-artifact@v4
+        with:
+          name: minironin-unified-train-corpus-42523463620
+          repository: orbitalronin94/MINIRONIN
+          run-id: 42523463620
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: maxironin-corpus
+      - name: Verificar y localizar archivos de entrada
+        id: files
+        shell: bash
+        run: |
+          set -euo pipefail
+          CKPT="$(find resume-artifact -type f -name 'maxironin-500m-step-1000.pt' -print -quit)"
+          TOKENIZER="$(find resume-artifact -type f -name 'tokenizer.json' -print -quit)"
+          test -s "$CKPT" && test -s "$TOKENIZER"
+          (cd maxironin-corpus && sha256sum -c SHA256SUMS)
+          echo "checkpoint=$CKPT" >> "$GITHUB_OUTPUT"
+          echo "tokenizer=$TOKENIZER" >> "$GITHUB_OUTPUT"
+          sha256sum "$CKPT" "$TOKENIZER"
+      - name: Codificar el mismo corpus con el tokenizer original (sin reentrenarlo)
+        run: |
+          python scripts/prepare_maxironin_corpus.py \
+            --corpus maxironin-corpus/train.jsonl.gz \
+            --output-dir "$RUNNER_TEMP/maxironin-data" \
+            --reuse-tokenizer "${{ steps.files.outputs.tokenizer }}"
+      - name: Continuar pesos del paso 1000 durante otros 1000 pasos
+        run: |
+          python scripts/train_maxironin.py \
+            --data-dir "$RUNNER_TEMP/maxironin-data" \
+            --output-dir maxironin-output \
+            --steps 1000 \
+            --initial-step 1000 \
+            --resume-checkpoint "${{ steps.files.outputs.checkpoint }}" \
+            --threads 4 --batch-size 1 --sequence-length 128 \
+            --seed 20261110
+      - name: Publicar checkpoint 2000, tokenizer y métricas
+        uses: actions/upload-artifact@v4
+        with:
+          name: maxironin-500m-step-2000-${{ github.run_id }}
+          path: |
+            maxironin-output/
+            ${{ runner.temp }}/maxironin-data/tokenizer.json
+            ${{ runner.temp }}/maxironin-data/tokenizer-manifest.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
