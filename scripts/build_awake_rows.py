@@ -25,6 +25,14 @@ def open_jsonl(path: Path):
     return None
 
 
+def count_jsonl_records(path: Path) -> int:
+    stream = open_jsonl(path)
+    if stream is None:
+        return 0
+    with stream:
+        return sum(1 for line in stream if line.strip().startswith("{"))
+
+
 def verified_qa(record):
     question = record.get("question") or record.get("instruccion") or record.get("prompt")
     answer = record.get("answer") or record.get("respuesta") or record.get("target")
@@ -84,7 +92,7 @@ def main():
     parser.add_argument("--train-output", type=Path, required=True)
     parser.add_argument("--validation-output", type=Path, required=True)
     parser.add_argument("--max-copy-rows-per-record", type=int, default=1)
-    parser.add_argument("--max-copy-rows-per-document", type=int, default=10000)
+    parser.add_argument("--max-copy-rows-per-document", type=int, default=5000)
     parser.add_argument("--max-rows-total", type=int, default=100000)
     args = parser.parse_args()
     if min(args.max_copy_rows_per_record, args.max_copy_rows_per_document, args.max_rows_total) < 1:
@@ -100,15 +108,18 @@ def main():
                 continue
             counts["documents_seen"] += 1
             target = validation_rows if doc.get("split") == "validation" else train_rows
-            before = len(target)
             source_path = (args.root / doc.get("path", "")).resolve()
             jsonl_stream = open_jsonl(source_path) if source_path.is_file() else None
             if jsonl_stream is not None:
+                record_total = count_jsonl_records(source_path)
+                stride = max(1, (record_total + args.max_copy_rows_per_document - 1) // args.max_copy_rows_per_document)
+                offset = int(hashlib.sha256(doc["document_id"].encode()).hexdigest()[:8], 16) % stride
+                emitted_for_document = 0
                 with jsonl_stream:
                     for record_index, raw_line in enumerate(jsonl_stream):
                         if len(train_rows) + len(validation_rows) >= args.max_rows_total:
                             break
-                        if not raw_line.strip().startswith("{"):
+                        if record_index % stride != offset or not raw_line.strip().startswith("{"):
                             continue
                         try:
                             record = json.loads(raw_line)
@@ -121,6 +132,9 @@ def main():
                             prompt = f"### Contexto:\n[S1] {context}\n### Pregunta:\n{question}\n### Respuesta:"
                             target.append(row_for(doc, "grounded_qa", prompt, answer + " [S1]", record_index))
                             counts["grounded_qa"] += 1
+                            emitted_for_document += 1
+                            if emitted_for_document >= args.max_copy_rows_per_document:
+                                break
                             continue
                         source_text = record_text(record)
                         if not source_text:
@@ -128,12 +142,13 @@ def main():
                         for local_index, sentence in enumerate(sentence_candidates(source_text)):
                             if local_index >= args.max_copy_rows_per_record:
                                 break
-                            if len(target) - before >= args.max_copy_rows_per_document:
+                            if emitted_for_document >= args.max_copy_rows_per_document:
                                 break
                             prompt = f"### Contexto:\n[S1] {sentence}\n### Instrucción:\nCopia literalmente la frase respaldada por la fuente.\n### Respuesta:"
                             target.append(row_for(doc, "extractive_copy", prompt, sentence + " [S1]",
                                                   record_index * args.max_copy_rows_per_record + local_index))
                             counts["extractive_copy"] += 1
+                            emitted_for_document += 1
             else:
                 for idx, sentence in enumerate(sentence_candidates(doc.get("text", ""))):
                     if idx >= min(args.max_copy_rows_per_document, 2):
