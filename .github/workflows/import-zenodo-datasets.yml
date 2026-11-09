@@ -38,17 +38,19 @@ jobs:
           for p in root.glob("*.manifest.json"):
               m=json.loads(p.read_text())
               if not m.get("record_id"): continue
-              f=root/m["file"]
-              h=hashlib.sha256()
-              with f.open("rb") as raw:
-                  for block in iter(lambda:raw.read(1024*1024),b""): h.update(block)
-              h=h.hexdigest()
-              assert h==m["sha256_jsonl"] and m["rows_admitted"]>0
-              with gzip.open(f,"rt",encoding="utf-8") as stream:
-                  for line in stream:
-                      r=json.loads(line)
-                      assert r["language"]=="es" and r["train_eligible"] and r["admission_status"]=="accepted"
-                      assert r["license"]==m["license"]
+              names=m.get("files",[m.get("file")])
+              assert names and m["rows_admitted"]>0
+              for name in names:
+                  f=root/name
+                  h=hashlib.sha256()
+                  with f.open("rb") as raw:
+                      for block in iter(lambda:raw.read(1024*1024),b""): h.update(block)
+                  assert h.hexdigest() in {x["sha256"] for x in m.get("file_hashes",[])}
+                  with gzip.open(f,"rt",encoding="utf-8") as stream:
+                      for line in stream:
+                          r=json.loads(line)
+                          assert r["language"]=="es" and r["train_eligible"] and r["admission_status"]=="accepted"
+                          assert r["license"]==m["license"]
           print("ZENODO_ACCEPTED_ARTIFACTS_VERIFIED")
           PY
       - name: Commit accepted data and dispatch unified corpus build
