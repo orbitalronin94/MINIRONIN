@@ -30,7 +30,7 @@ def main():
     digest = hashlib.sha256()
     seen = set()
     scanned = admitted = duplicates = short = 0
-    with out.open("w", encoding="utf-8", newline="\\n") as stream:
+    with out.open("w", encoding="utf-8", newline="\n") as stream:
         for index, row in enumerate(ds):
             scanned += 1
             text = row.get("text")
@@ -42,7 +42,7 @@ def main():
                 label = feature.names[raw_label]
             else:
                 label = str(raw_label)
-            key = hashlib.sha256(re.sub(r"\\s+", " ", text).strip().casefold().encode("utf-8")).hexdigest()
+            key = hashlib.sha256(re.sub(r"\s+", " ", text).strip().casefold().encode("utf-8")).hexdigest()
             if key in seen:
                 duplicates += 1
                 continue
@@ -64,7 +64,7 @@ def main():
                 "label": label,
                 "attribution": "Plan de Tecnologías del Lenguaje — Gobierno de España, WikiCAT_esv2; CC BY-SA 3.0."
             }
-            line = json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\\n"
+            line = json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n"
             stream.write(line)
             digest.update(line.encode("utf-8"))
             admitted += 1
@@ -81,7 +81,7 @@ def main():
         "admission_policy": "Complete upstream train split; minimal schema, language, text-length and exact-dedup checks; source labels and provenance retained."
     }
     (args.output_dir / "wikicat-esv2-train.manifest.json").write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: manifest[k] for k in ("source_revision", "source_rows_scanned", "rows_admitted", "rows_skipped_exact_duplicates", "license", "sha256_jsonl")}, ensure_ascii=False))
 
 if __name__ == "__main__":
