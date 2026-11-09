@@ -59,8 +59,8 @@ def main() -> None:
                 break
             admitted_docs.add(document_id)
             raw = text.encode("utf-8")
-            corpus_digest.update(document_id.encode("utf-8") + b"\0" + hashlib.sha256(raw).digest())
             raw = raw[:min(len(raw), remaining, args.max_bytes_per_document)]
+            corpus_digest.update(document_id.encode("utf-8") + b"\\0" + hashlib.sha256(raw).digest())
             bytes_seen += len(raw)
             records += 1
             # Never form n-grams across document or line boundaries.
