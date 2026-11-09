@@ -34,7 +34,7 @@ def main():
     results=[]
     for mp in manifests:
         m=json.loads(mp.read_text(encoding="utf-8"))
-        slug=m["slug"]; repo=m["repo_id"]; expected=norm_license(m["license"]); gzip_output=bool(m.get("gzip_output", True))
+        slug=m["slug"]; repo=m["repo_id"]; expected=norm_license(m["license"]); gzip_output=bool(m.get("gzip_output",True)); gzip_output=bool(m.get("gzip_output", True))
         if m.get("external_release_only"):
             results.append({"slug":slug,"status":"external_release_only"})
             continue
