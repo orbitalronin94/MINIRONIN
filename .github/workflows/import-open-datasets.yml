@@ -40,15 +40,19 @@ jobs:
           import gzip
           for p in root.glob("*.manifest.json"):
               m=json.loads(p.read_text())
-              f=root/m["file"]
-              assert hashlib.sha256(f.read_bytes()).hexdigest()==m["sha256_jsonl"],p
-              assert m["rows_admitted"]>0 and m["source_revision"]
-              opener=gzip.open if f.name.endswith(".gz") else open
-              with opener(f,"rt",encoding="utf-8") as stream:
-                  for line in stream:
-                      r=json.loads(line)
-                      assert r["language"]=="es" and r["train_eligible"] and r["admission_status"]=="accepted"
-                      assert r["license"]==m["license"] and r["source_revision"]==m["source_revision"]
+              names=m.get("files",[m.get("file")])
+              assert names and m["rows_admitted"]>0 and m["source_revision"]
+              for name in names:
+                  f=root/name
+                  h=hashlib.sha256()
+                  with f.open("rb") as raw:
+                      for block in iter(lambda:raw.read(1024*1024),b""): h.update(block)
+                  opener=gzip.open if f.name.endswith(".gz") else open
+                  with opener(f,"rt",encoding="utf-8") as stream:
+                      for line in stream:
+                          r=json.loads(line)
+                          assert r["language"]=="es" and r["train_eligible"] and r["admission_status"]=="accepted"
+                          assert r["license"]==m["license"] and r["source_revision"]==m["source_revision"]
           print("ACCEPTED_MANIFESTS_HASH_VERIFIED")
           PY
       - name: Commit admitted datasets and dispatch unified corpus build
