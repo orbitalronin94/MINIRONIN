@@ -486,6 +486,10 @@ La construcción no modifica el checkpoint MAIN, no cambia el tokenizador y **no
 
 `benchmarks/ronin-tic-holdout-v1.jsonl` contiene 55 preguntas fuera del corpus: 40 preguntas neutras para medir contaminación estilística espontánea y 15 preguntas sobre cultura/historia japonesa para medir recuerdo temático. No se incorpora al artefacto ni al entrenamiento. Debe ejecutarse con el mismo checkpoint y configuración antes y después del entrenamiento, comparando exactitud temática y aparición no solicitada de marcadores como «rōnin», «samurái», «katana», «bushidō», «shōgun», «honor» o «dojo» en respuestas neutras.
 
-### Continuación de 150.000 pasos con el tokenizador anterior
+### Continuación de 150.000 pasos desde 650k — cuatro veces más tokens por paso
 
-El workflow `.github/workflows/train-150k-from-500k-unified.yml` se activa únicamente cuando termina correctamente la construcción del corpus unificado fijado. Parte del checkpoint verificado de 500.000 pasos (`9.970.176` parámetros, vocabulario activo de 257 símbolos, bytes UTF-8 + EOS), no reutiliza el candidato BPE de 505k y ejecuta quince segmentos reanudables de 10.000 pasos hasta 650.000. Consume `train.jsonl.gz` completo, agrupa filas sintéticas breves sin perder ejemplos y conserva una caché de corpus entre segmentos. Cada segmento publica checkpoint, informe y SHA-256. El resultado de 650k permanece como candidato; no se promueve sin holdout independiente.
+El workflow `.github/workflows/train-150k-from-650k-unified.yml` continúa desde el checkpoint MAIN experimental de 650.000 pasos, verificado por SHA-256, con el mismo Transformer de 9.970.176 parámetros y el tokenizador UTF-8 bytes + EOS (257 símbolos). Ejecuta quince segmentos reanudables de 10.000 pasos hasta 800.000, sobre el corpus unificado completo.
+
+El régimen aumenta de **2 × 128 = 256 tokens por paso** a **4 × 128 = 512 tokens por paso** (el doble de tokens por actualización del optimizador), sin ampliar la ventana contextual de 512 ni cambiar arquitectura o tokenizador. La secuencia de 128 se conserva deliberadamente para aislar el efecto del batch efectivo y limitar el coste de atención en CPU. Cada segmento publica checkpoint, informe y SHA-256; el candidato final de 800k requiere holdout pareado de capacidad y revisión de entretenimiento. No hay promoción automática.
+
+La construcción del corpus es un paso previo: el entrenamiento solo arranca si el workflow de corpus termina correctamente y supera sus controles de volumen, procedencia e integridad.
