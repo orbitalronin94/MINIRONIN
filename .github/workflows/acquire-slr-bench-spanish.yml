@@ -65,5 +65,18 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/curated/accepted/slr-bench-spanish-v1-all-train.jsonl data/curated/accepted/slr-bench-spanish-v1-all-train.manifest.json
           git commit -m "Admit Spanish SLR-Bench inductive reasoning train corpus"
-          git push origin main
+          # Other source-admission jobs may update main concurrently. Rebase and retry
+          # the push without discarding the validated corpus.
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              break
+            fi
+            if [ "$attempt" -eq 5 ]; then
+              echo "Could not publish admission after five rebases" >&2
+              exit 1
+            fi
+            git fetch origin main
+            git rebase origin/main
+            sleep "$((attempt * 3))"
+          done
           GH_TOKEN="${{ github.token }}" gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
