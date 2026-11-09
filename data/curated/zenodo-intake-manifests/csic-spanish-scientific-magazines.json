@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "slug": "csic-spanish-scientific-magazines",
+  "name": "CSIC Spanish Scientific Corpus",
+  "record_id": "7313126",
+  "doi": "https://doi.org/10.5281/zenodo.7313126",
+  "license": "CC BY 4.0",
+  "license_id": "cc-by-4.0",
+  "language": "es",
+  "domain": "ciencia, investigación y publicaciones científicas españolas",
+  "format": "txt_lines",
+  "file_regex": "^csic_es\\.txt$",
+  "encoding": "utf-8",
+  "min_text_chars": 200,
+  "minimum_rows": 25000,
+  "shard_rows": 50000,
+  "task": "Spanish scientific language modeling",
+  "attribution": "Petrea, Paul Andrei; De Gibert Bonet, Ona; Villegas, Marta. CSIC Spanish Corpus. Barcelona Supercomputing Center / SEDIA, 2022. DOI: 10.5281/zenodo.7313126. CC BY 4.0.",
+  "notes": "The source is a deduplicated Spanish scientific-magazine corpus from revistas.csic.es. Zenodo documents 30,929 documents, 4,395,368 sentences and 146,795,650 tokens. Only the corpus packaging is licensed CC BY 4.0; attribution and source provenance are retained."
+}
