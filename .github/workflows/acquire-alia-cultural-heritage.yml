@@ -9,6 +9,8 @@ on:
 permissions:
   contents: write
   actions: write
+env:
+  RELEASE_TAG: alia-cultural-heritage-es-v1
 concurrency:
   group: minironin-acquire-alia-heritage
   cancel-in-progress: false
