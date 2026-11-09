@@ -67,5 +67,13 @@ jobs:
           git add data/curated/accepted/ data/intake-reports/
           if git diff --cached --quiet; then echo "No new dataset rows to commit"; exit 0; fi
           git commit -m "Admit licensed open Spanish datasets"
-          git push origin main
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              pushed=true
+              break
+            fi
+            git fetch origin main
+            git rebase origin/main
+          done
+          test "${pushed:-false}" = true
           gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
