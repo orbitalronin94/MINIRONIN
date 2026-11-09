@@ -30,6 +30,10 @@ def main():
     outdir=Path(args.output_dir); outdir.mkdir(parents=True,exist_ok=True); results=[]
     for mp in manifests:
         m=json.loads(mp.read_text(encoding="utf-8")); slug=m["slug"]; repo=m["repo_id"]; expected=norm_license(m["license"])
+        if bool(m.get("synthetic",False)):
+            results.append({"slug":slug,"status":"excluded_synthetic","reason":"Project policy: synthetic datasets are not admitted to the real training corpus."})
+            print(f"INTAKE_EXCLUDED_SYNTHETIC {slug}")
+            continue
         manifest_out=outdir/f"{slug}.manifest.json"
         if m.get("external_release_only"):
             results.append({"slug":slug,"status":"external_release_only"}); continue
