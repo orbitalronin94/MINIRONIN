@@ -58,12 +58,13 @@ jobs:
           assert len(seen)==18053
           print(json.dumps({"admitted":len(seen),"tiers":m["curriculum_tier_counts"],"sha256":m["sha256_jsonl"]},ensure_ascii=False))
           PY
-      - name: Commit accepted corpus
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/curated/accepted/slr-bench-spanish-v1-all-train.jsonl data/curated/accepted/slr-bench-spanish-v1-all-train.manifest.json
-          git commit -m "Admit Spanish SLR-Bench inductive reasoning train corpus"
-          git push origin main
-          GH_TOKEN="\${{ github.token }}" gh api --method POST "repos/\${GITHUB_REPOSITORY}/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
+      - name: Publish audited accepted SLR-Bench payload as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-slr-bench-spanish-accepted
+          path: |
+            data/curated/accepted/slr-bench-spanish-v1-all-train.jsonl
+            data/curated/accepted/slr-bench-spanish-v1-all-train.manifest.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
