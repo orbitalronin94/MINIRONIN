@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "slug": "madlad-castilian-spanish-es",
+  "name": "MADLAD-400 Castilian Spanish (Spain) sentence corpus",
+  "repo_id": "Ugiat/madlad-400-es_ES-sentences",
+  "license": "ODC-BY 1.0",
+  "source_url": "https://huggingface.co/datasets/Ugiat/madlad-400-es_ES-sentences",
+  "split": "train",
+  "domain": "español de España, prosa web y lenguaje contemporáneo",
+  "text_fields": ["text"],
+  "task": "Spanish language modeling with Spain-specific variety coverage",
+  "minimum_rows": 10000000,
+  "min_text_chars": 35,
+  "streaming": true,
+  "gzip_output": true,
+  "shard_rows": 50000,
+  "attribution": "Ugiat Technologies; MADLAD-400 Castilian Spanish (es-ES) sentences; derived from AllenAI MADLAD-400, Spanish clean split revision 9d886a76bd8fa69b294f2dd3843dacb8388ee5a; ODC-BY 1.0.",
+  "language": "es",
+  "synthetic": false,
+  "license_verification": "Dataset card declares ODC-BY 1.0, matching MADLAD-400's declared licence; the card documents the upstream revision, text field, deduplication and selection method. Preserve source URL and provenance metadata where importer supports it.",
+  "status": "ready_for_automated_import"
+}
