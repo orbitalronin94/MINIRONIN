@@ -177,6 +177,16 @@ jobs:
           print("WIKIMEDIA_ES_100K_VERIFIED", count)
           PY
 
+      - name: Descargar shards PleIAs españoles admitidos
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p data/inherited/pleias-spanish-pd-books
+          if gh release view pleias-spanish-pd-books-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release download pleias-spanish-pd-books-v1 --repo "$GITHUB_REPOSITORY" --dir data/inherited/pleias-spanish-pd-books --pattern 'spanish-pd-*.jsonl.gz' --pattern 'spanish-pd-*.manifest.json'
+          fi
+
       - name: Copiar exactamente los nueve artículos Markdown admitidos de Papers
         run: |
           set -euo pipefail
@@ -207,6 +217,7 @@ jobs:
             data/inherited/japanese-library \
             data/inherited/papers \
             data/inherited/wikimedia-es \
+            data/inherited/pleias-spanish-pd-books \
             generated-curricula \
             generated-basic-curricula \
             generated-math-es \
