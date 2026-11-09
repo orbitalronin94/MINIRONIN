@@ -75,7 +75,7 @@ jobs:
           set -euo pipefail
           mkdir -p train-150k/parent
           gh release download "$PARENT_TAG" --repo orbitalronin94/MINIRONIN --pattern "checkpoint-650000.pt" --dir train-150k/parent
-          echo "$PARENT_SHA256  train-150k/parent/checkpoint-500000.pt" | sha256sum -c -
+          echo "$PARENT_SHA256  train-150k/parent/checkpoint-650000.pt" | sha256sum -c -
           python - <<'PY'
           import json, os, torch
           path="train-150k/parent/checkpoint-650000.pt"
@@ -109,7 +109,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m py_compile scripts/train_long_run.py scripts/train_seed_tournament.py
-          input="train-150k/parent/checkpoint-500000.pt"
+          input="train-150k/parent/checkpoint-650000.pt"
           mkdir -p train-150k/checkpoints
           for start in $(seq 650000 10000 790000); do
             end=$((start + 10000))
@@ -125,7 +125,7 @@ jobs:
               --threads 2 \
               --dataset-cache "$RUNNER_TEMP/minironin-unified-corpus-cache.pt" \
               --total-steps 800000 \
-              --schedule-start-step 800000 \
+              --schedule-start-step 650000 \
               --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
             printf -v padded "%06d" "$end"
             checkpoint="train-150k/current/checkpoint-$padded.pt"
@@ -144,7 +144,7 @@ jobs:
             echo "::endgroup::"
           done
 
-      - name: Verificar y publicar candidato de 650k
+      - name: Verificar y publicar candidato de 800k
         run: |
           set -euo pipefail
           cp train-150k/current/checkpoint-800000.pt train-150k/checkpoint-800000.pt
@@ -152,8 +152,8 @@ jobs:
           sha256sum train-150k/checkpoint-800000.pt train-150k/report-800000.json > train-150k/SHA256SUMS-800000
           python - <<'PY'
           import json, torch
-          cp=torch.load("train-150k/checkpoint-650000.pt",map_location="cpu",weights_only=False)
-          report=json.load(open("train-150k/report-650000.json"))
+          cp=torch.load("train-150k/checkpoint-800000.pt",map_location="cpu",weights_only=False)
+          report=json.load(open("train-150k/report-800000.json"))
           assert cp["completed_steps"]==800000 and cp["active_vocabulary"]==257
           assert report["completed_steps"]==800000
           print(json.dumps({"completed_steps":cp["completed_steps"],"parameters":cp["parameter_count"],
@@ -162,8 +162,8 @@ jobs:
               "corpus":report["dataset_manifest"]},ensure_ascii=False,indent=2))
           PY
           gh release create "minironin-legacy-150k-from-650k-step-800000-candidate" \
-            train-150k/checkpoint-650000.pt train-150k/report-650000.json train-150k/SHA256SUMS-650000 \
-            --title "MINIRONIN legacy tokenizer — 150k continuation / step 650000" \
+            train-150k/checkpoint-800000.pt train-150k/report-800000.json train-150k/SHA256SUMS-800000 \
+            --title "MINIRONIN legacy tokenizer — 150k continuation / step 800000" \
             --notes "150,000 steps from the verified 650k byte-level checkpoint, trained on the unified admitted corpus. Candidate only; no automatic promotion. Matched holdout required."
 
       - name: Publicar informes y checkpoints intermedios como artefacto de auditoría
