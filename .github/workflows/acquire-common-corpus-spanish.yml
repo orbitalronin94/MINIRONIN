@@ -71,9 +71,13 @@ jobs:
                   r=json.loads(line)
                   assert r["language"]=="es" and r["train_eligible"]
                   assert r["domain"] in {"openscience","opengovernment","opensemantic"}
-                  assert r["license"].casefold().replace("_","-") in {"public domain","public-domain","pd","pdm","cc0","cc0 1.0","cc0-1.0","cc by 4.0","cc-by-4.0","cc-by","creative commons attribution 4.0"}
+                  lic=r["license"].casefold().replace("_","-")
+                  compact=lic.replace(" ","").replace("-","")
+                  denied=("noncommercial","noderivatives","sharealike","ccbync","ccbynd","ccbysa")
+                  assert not any(term in compact for term in denied)
+                  assert (lic in {"public domain","public-domain","pd","pdm","cc0","cc0 1.0","cc0-1.0"} or lic.startswith("cc by ") or lic.startswith("cc-by-") or "creativecommons.org/licenses/by/" in lic or lic.startswith("creative commons attribution "))
                   count+=1
-          assert count==m["rows_admitted"] and h.hexdigest()==m["sha256_jsonl_uncompressed"]
+          assert m["rows_admitted"]>=100 and count==m["rows_admitted"] and h.hexdigest()==m["sha256_jsonl_uncompressed"]
           print(json.dumps({"shard":n,"records":count,"sha256":h.hexdigest(),"skipped_license":m["rows_skipped_unapproved_license"]}))
           PY
       - name: Upload immutable shard and manifest
