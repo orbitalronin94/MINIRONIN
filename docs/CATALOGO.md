@@ -27,9 +27,9 @@
 | 700k | La rana funcionaria | Diario recuperado | [Release](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-700000) |
 | 710k | El universo ficticio y el electrón | Diario recuperado | [Release](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-710000) |
 | 720k | La abstención desnuda y la ontología | Diario recuperado | [Release](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-720000) |
-| 730k | Nueva edición candidata; carácter por determinar | Holdout independiente pendiente de incorporar | [Release](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-730000) |
+| 730k | El ecuador, el cereal y veinte abstenciones; contaminación del formato | Diario recuperado; 100/100 salidas truncadas a 128 tokens, sin EOS | [Release](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-730000) · [Holdout](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42606213744) |
 
-La serie seleccionada contiene catorce hitos. Hay otras releases intermedias —incluido 570k— que no se presentan como fichas de personalidad porque no tenemos aquí su diario independiente recuperado y verificado. El catálogo se ampliará cuando exista evidencia, no solo porque haya un archivo descargable.
+La serie seleccionada contiene catorce hitos. El diario independiente de 730k ya está recuperado y documentado. Hay otras releases intermedias —incluido 570k— que no se presentan como fichas de personalidad porque no tenemos aquí su diario independiente recuperado y verificado. El catálogo se ampliará cuando exista evidencia, no solo porque haya un archivo descargable.
 
 ## Reglas de lectura
 
