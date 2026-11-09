@@ -64,4 +64,4 @@ jobs:
           fi
 
           echo "All guards passed for PR #$pr_number; merging with squash."
-          gh pr merge "$pr_number" --squash --delete-branch
+          gh api --method PUT "repos/$REPOSITORY/pulls/$pr_number/merge" -f merge_method=squash
