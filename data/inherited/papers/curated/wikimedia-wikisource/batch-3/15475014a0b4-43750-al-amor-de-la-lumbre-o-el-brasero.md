@@ -1,0 +1,76 @@
+# Al amor de la lumbre o el brasero
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Al%20amor%20de%20la%20lumbre%20o%20el%20brasero
+
+**Page ID:** 43750
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Al%20amor%20de%20la%20lumbre%20o%20el%20brasero?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+He aquí un objeto puramente español, y para hablar del cual de poco nos serviría tener a la mano los diccionarios de Taboada o de Newman. Afortunadamente somos poco diestros en achaque de traducciones, y aspiramos más bien al título de originales, aunque indignos. Verdad es que según van las cosas en la patria del Cid, dentro de muy poco tiempo acaso no tengamos ya objetos indígenas de que ocuparnos, cuando leyes, administración, ciencias, literatura, usos, costumbres y monumentos que nos legaron nuestros padres acaben completamente de desaparecer, que a Dios las gracias, no falta mucho ya.
+
+Entonces desaparecerá también el brasero, como mueble añejo, retrógrado y mal sonante; y será sustituido por la chimenea francesa, suiza o de Albión; y la badila dará lugar al fuelle; y soplaremos en vez de escarbar.
+
+Pero mientras esto sucede (y por si acaso sucediere mañana) no nos parece fuera del caso dejar aquí consignado un uso próximo a huir con otros tantos; a la manera que el diestro escultor imprime en cera (o sea en barro) la mascarilla del cadáver que va a desaparecer de la superficie de la tierra para ocultarse en su interior.
+
+Si fuéramos etimologistas o rebuscadores de alcurnias, meteríamos el montante entre Covarrubias, que quiere que brasa y por consecuencia brasero vengan del griego Bras, que equivale en latín a Ebullio y Efervio, y los otros autores heráldicos, que creen buenamente que la voz española brasa sea hija legítima y de legítimo matrimonio de la latina Urasa, descendiente línea recta del verbo Urere; pero como a Dios gracias estamos lejos de estas (como decía el buen Sancho) sotilezas, y nos inclinamos más bien a las demostraciones materiales y tangibles, suponemos que el brasero reconoce por causa y origen la notoria costumbre del frío, y por consecuencia creemos y confesamos por cosa cierta, que si no hubiera invierno, regularmente no se hubieran inventado los braseros.
+
+Ahora bien, -¿quién los inventó? -se nos preguntará: y nosotros responderemos cándidamente. -El primero que tuvo frío. -Echarémosla aquí de escolásticos, y continuaremos el argumento. -Es así que Adán en cuanto hombre quedó sujeto a todas las miserias humanas, desde aquella desgraciada golosina que compartió con Eva; es así que una de estas miserias fue sin duda el frío, ergo nuestro padre Adán, el primero que tuvo frío, fue, sin género de duda, el inventor del brasero.
+
+Este descubrimiento, como todos los demás, tuvo después su sucesivo desarrollo; y así como vemos la hoja de parra y la piel de león de aquel hombre primitivo, transformada después en la púrpura romana, o la casaca francesa; del mismo modo el brasero, que empezaría por ser probablemente una piedra agujereada o cosa tal, acabó por ser un mueble de elegante forma; y tanto, que ya en el siglo XVI hay una ley española que salía al encuentro de este abuso diciendo: «Mandamos que de aquí adelante no se pueda labrar en estos nuestros reinos brasero ni bufete alguno, de plata, de ninguna hechura que sea» (Recop. lib. 7, tit. 12, 1. 2). Esta ley por supuesto ha caído en olvido por haber cesado el motivo que la causó. -No está en el día el alcacer para zampoñas; quiero decir, que no se halla hoy la plata tan de sobra para hacer de ella braseros.
+
+Andando, pues, los tiempos, esta primitiva costumbre se subdividió, y varió hasta lo infinito, según los diversos países, clima y leyes que disfrutaron los hombres; pero en el fondo siempre fue la misma la verdad reconocida en ella, esto es, que para no sentir el frío, nada hay tan seguro como quemar combustible de esta o la otra manera. En esto todos estaban conformes; pero en cuanto a la aplicación variaron infinito, quemando los unos ramas de encina, los otros los troncos; cuáles leña carbonizada, cuáles el carbón mineral; en fin, cada uno quemó lo que tenía a mano -desde Nerón que quemó a Roma para templarse al calorcito, hasta el labriego de nuestros días, que quema estiércol y retama con un olorcillo que déjelo usted estar; desde los numantinos que incendiaron a su ciudad por no enfriarse, hasta el secretario del concejo o el fiel de fechos, que, a falta de otro combustible, queman las candidaturas venidas por el correo, las alocuciones estereotípicas de los jefes políticos, o la colección inmaculada del Boletín Oficial.
+
+Esto en cuanto a la materia; por lo que dice relación a la forma sería cuento de nunca acabar el intentar describir las infinitas que tomaron los caloríferos; pero de ellas las más principales pueden reducirse a cuatro, a saber, el fogón, la chimenea, la estufa y el brasero.
+
+Si nos hubiéramos propuesto abrazar la fisiología de estos cuatro medios de calefacción, seguramente que necesitábamos enviar por otro cuadernillo de papel al almacén de la esquina; pero desgraciadamente no contamos más que con las cuartillas necesarias para tratar del último de aquellos menesteres, esto es, del brasero. Esto no obsta para que así, como por incidencia, demos un vistazo sobre los demás, y los saquemos a colación como por vía de coro u acompañamiento de nuestro héroe principal.
+
+El fogón, la chimenea, la estufa. -He aquí tres voces que seguramente se avergüenzan de verse juntas, perteneciendo a tan diversas clases y jerarquías, a tan opuestos polos, a tan sucesivas civilizaciones, como ahora se dice.
+
+El humilde fogón, propiedad del gato y de la cocinera; laboratorio estomacal de la familia; abeja obrera de la casa, arrastrando por el suelo su baja condición en las sencillas aldeas, levantando tres palmos en la ciudad, a la altura del brazo de la criada o del pinche. -Pero aquí no hablamos del fogón como oficina de las salsas alimenticias; ni tenemos nada que ver con los gorros blancos, ni con las ollas humanitarias. -Aquí sólo miramos el fogón bajo su aspecto puramente calorífero; como el emblema patriarcal de la familia; como el coin du feu (diremos en francés, para que nos entiendan); como el hogar doméstico, que diríamos cuando éramos españoles.
+
+¡Qué cosa más pintoresca que un hogar o fogón castellano o andaluz, colocado en el mismo suelo, sin más artificio que el que forman los robustos troncos de encina que arden y chisporrotean; la formidable campana de mampostería que le asombra y recoge los humos; el caldero de agua hirviendo pendiente de una cadena; el armonioso grupo de ollas y sartenes; y los dos bancos laterales, ocupados por el alcalde y el señor cura, el escribano y el barbero, la tía Perejila y el tío Yerbabuena, el comandante del resguardo y el estanquero, el gitano y el contrabandista! -Pero esto se quede para cuando dé de mano a una obrilla que me anda saltando en las mientes bajo el modesto título de «CRÓNICAS DEL FOGÓN».
+
+Si por una transición brusca, saltamos desde aquel humilde sitio al suntuoso salón o primoroso gabinete, veremos la misma necesidad, la necesidad de calentarse y de reunirse; pero allí la hallaremos ataviada con ricos adornos de mármoles y bronces, relieves de estuco, y grupos de entalladura; con relojes y floreros, muebles y figuras doradas por acompañamiento; decorada con el nombre de chimenea, y servida y mimada por vaporosas damas y galantes caballeros.
+
+O bien si penetramos en la callada oficina del funcionario, o en el estudio del letrado, hallarémosla disfrazada con una forma más o menos monótona y sombría, en un tubo de hierro que asciende hasta el techo, y penetra las paredes, y sube a los tejados, y busca salida al humo por encima de las buhardillas. La estufa, pues, es un método de calefacción estúpido, y carece de todo género de poesía.
+
+Denme el brasero español, típico y primitivo; con su sencilla caja, o tarima; su blanca ceniza, y sus encendidas ascuas, su badil excitante, y su tapa protectora; denme su calor suave y silencioso, su centro convergente de sociedad, su acompañamiento circular de manos y pies. Denme la franqueza y bienestar que influye con su calor moderado, la igualdad con que lo distribuye: y si es entre dos luces, denme el tranquilo resplandor ígneo que expelen sus ascuas, haciendo reflejar dulcemente el brillo de unos ojos árabes, la blancura de una tez oriental.
+
+La aristocrática chimenea, es cierto, contribuye más al adorno del magnífico salón; acaso extiende por todo él un temple más subido, y no hay duda tampoco en que su llama animada, inquieta, fantástica, chispeante, entretiene agradablemente, y alegra la vista del reposado espectador. Pero en cambio, ¡qué cansado reflejo en los ojos! ¡qué ardor desentonado en las mejillas! ¡qué frío desconsolador en el espaldar! ¿Y cuando hace humo? (que es las más veces) ¿y cuando baja el viento o la lluvia por el cañón? ¿y cuando atrapa la llama las faldillas del frac, o las guarniciones del vestido? ¿y cuando alarma y compromete a la vecindad, subiéndose por el hollín conductor a visitar las crujías de los tabiques o la armadura del tejado?
+
+Además ¿cómo comparar a la chimenea con el brasero bajo el aspecto social, quiero decir, sociabilitario o comunista, para que nos entendamos?
+
+En primer lugar la chimenea es injusta y amante del privilegio, y brinda todos sus favores a los dos afortunados seres que la flanquean inmediatamente, al paso que sólo envía un escaso saludo a los restantes acreedores; el brasero es Furrierista o Sansimoniano, y distribuye por igual porción su benéfico influjo a todos sus asociados. -La chimenea es semicircular y lunática; el brasero circular y eterno como todo círculo sin principio ni fin; -la chimenea abrasa, no calienta; el brasero calienta sin abrasar; -aquélla necesita de todo el cortejo de los tronos modernos, con sus ministros responsables de pala y tenaza que recoja y agarre, escoba que barra, morrillos que defiendan, cañón por garantía, opinión pública que sople y atice por el órgano del fuelle, y responsabilidad que se evapore en humo; el brasero patriarcal reina y gobierna solo, o lo más con un simple badil. Al poco más o menos como gobernaban Licurgo y Solón.
+
+Aunque sólo fuera mirándolo bajo el aspecto de la confianza amorosa, habría que dar, no hay duda, la preferencia al brasero.
+
+Porque figurémonos a dos amantes en flor (quiero decir, en la primer germinación del interés dramático), sentados el uno enfrente del otro, y ambos al lado de la reluciente chimenea; en primer lugar distan dos varas entre sí, lo cual no es lo más cómodo para decir un secreto (y quítenle ustedes al amor el secreto, y es lo mismo que si quitaran la sal a la olla). -En segundo lugar ambos se hallarán profundamente sentados en sendas butacas o enormes sillones inamovibles (que es como si dijéramos meterse en un simón a correr liebres). -En tercer lugar sus semblantes, no pudiendo sufrir el vivo reflejo de la llama, se ocultarán probablemente en la sombra de la pantalla o a favor de la repisa de mármol; y el quitar al amor el semblante, es quitarle la más sólida garantía, porque el semblante es el editor responsable del amor.
+
+Luego, si hay que hincar una rodilla en tierra, peligra el pantalón con el contacto de la plancha de plomo; si hay que sorprender una mano descuidada, tropieza la propia con las tenazas o el fuelle; si hay que dar un billete, o leer unas coplas de ataúd, la llama inmediata es una fuerte tentación para el desdén.
+
+En derredor de un brasero, al contrario, no hay desdenes posibles, ni posturas académicas, ni pretensiones exageradas: allí un pie de once puntos dista de otro pie de cinco no más que una pulgada; ¡y es tan fácil salvar esta pulgada!... dos manos de nieve (estilo clásico) extendidas sobre la lumbre, están en correcta formación con otras dos de cabretilla anteada ¡y es tan natural estrechar las distancias! y luego examinar la calidad de los guantes, la hechura de una sortija, una raya simbólica ¡qué sé yo! cualquier otro pretexto plausible, y... ¡adiós, mano de nieve derretida al calor braseril!
+
+El mágico influjo de este mueble que enciende y carboniza las pantorrillas y los corazones, tiene también de bueno cierta dosis de calidad soporífera, que obrando inmediatamente sobre las cabezas de las guardas y tutores, les fuerza e impele a reconciliarse con el dios Morfeo; y si al dicho influjo se añade la lectura de un drama venenoso, o de las felicitaciones de la Gaceta, entonces el efecto es seguro, y duermen desde la vieja abuela hasta el gato roncador. -En estos casos la labor de la almohadilla no cunde, las desdichas del drama o las glorias de la Gaceta no marchan, y los que duermen son regularmente los que más ruido suelen hacer.
+
+Todas estas y otras excelencias posee el brasero nacional; verdad es que nos hablan los políticos de grandes tratados y protocolos ajustados a la chimenea entre dos reverendos diplomáticos; pero a fe que no son menos importantes los planes del jefe de oficina o los cálculos del lonjista, arreglando en figura piramidal las ascuas del brasero, o pasando amorosamente el badil por sobre la ceniza; y si es un tributo de atención entre los pueblos de extranjis el añadir un trozo de leña a la chimenea a la llegada del forastero, el brasero también tiene su formulario de etiqueta, previniendo en igual caso echar una firma, o digamos macarrónicamente, escarbar.
+
+Vemos, pues, que ni social, ni política, ni humanitariamente hablando, puede compararse la benéfica influencia del brasero con la de la gálica chimenea. -En cuanto a lo económico, seguramente que también tiene la preferencia, por más accesible y de más seguro efecto; y por lo que dice relación a la forma, tampoco teme la comparación.
+
+Y sin embargo de todas estas razones, el brasero se va, como se fueron las lechuguillas y los gregüescos; y se van las capas y las mantillas, como se fue la hidalguía de nuestros abuelos, la fe de nuestros padres, y se va nuestra propia creencia nacional. -Y la chimenea extranjera, y el gorro exótico, y el paletot salvaje, y las leyes, y la literatura extraña, y los usos, y el lenguaje de otros pueblos, se apoderan ampliamente de esta sociedad que reniega de su historia, de esta hija ingrata que afecta desconocer el nombre de su progenitor. -Asistamos, pues, al último adiós del brasero; pero antes de despedirlo, tributémosle un ligero panegírico, como es uso y costumbre de los que llevan a enterrar.
+
+Obras de Ramón de Mesonero Romanos
+Escenas y tipos matritenses
+P1841
+Obras por capítulos

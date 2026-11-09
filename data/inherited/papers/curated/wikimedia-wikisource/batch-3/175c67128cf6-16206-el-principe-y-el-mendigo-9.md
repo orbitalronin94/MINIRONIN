@@ -1,0 +1,33 @@
+# El príncipe y el mendigo : 9
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/El%20pr%C3%ADncipe%20y%20el%20mendigo%20%3A%209
+
+**Page ID:** 16206
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/El%20pr%C3%ADncipe%20y%20el%20mendigo%20%3A%209?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+A las nueve de la noche toda la extensa ribera frente al palacio fulguraba de luces. El río mismo, hasta donde alcanzaba la vista en dirección a la ciudad, estaba tan espesamente cubierto de botes y barcas de recreo, todos orlados con linternas de colores y suavemente agitados por las ondas, que parecía un reluciente e ilimitado jardín de flores animadas a suave movimiento por vientos estivales. La gran escalinata de peldaños de piedra que conducía a la orilla, lo bastante espaciosa para dar cabida al ejército de un príncipe alemán, era un cuadro digno de verse, con sus filas de alabarderos reales en pulidas armaduras y sus tropas de ataviados servidores, revoloteando de arriba abajo, y de acá para allá, con la prisa de los preparativos.
+
+De pronto se dio una orden y de inmediato toda criatura viviente se esfumó de los escalones. Ahora el aire estaba cargado con el silencio del suspenso y la expectación. Hasta donde alcanzaba la vista, podía verse a miles de personas en los botes, que se levantaban y se protegían los ojos del brillo de las lintemas y las antorchas, y miraban hacia el palacio.
+
+Una fila de cuarenta o cincuenta barcas reales se dirigió hacia los escalones. Estaban ornadas de ricos dorados, y sus altivas proas y popas estaban laboriosamente talladas. Algunas de ellas iban decoradas con banderas y gallardetes, otras, con brocados y tapices de Arrás con escudos de armas bordados; otras con banderas de seda que tenían innumerables campanillas de plata pendientes de ellas que lanzaban una lluvia de alegre música cada vez que las agitaba la brisa; otras, de más altas pretensiones, puesto que pertenecían a los nobles de servicio más cercano al príncipe, tenían los costados pintorescamente guardados con escudos suntuosamente blasonados de armas y emblemas. Cada barca real iba remolcada por un patache. Además de los remeros, éstos llevaban unos cuantos hombres de armas de relucientes yelmos y petos, y una compañía de músicos.
+
+La vanguardia de la esperada procesión hizo su aparición en la puerta principal: una tropa de alabarderos. Iban vestidos con calzas de listas negras y leonadas, gorras de terciopelo adornadas a los lados con rasas de plata, y jubones de paño azul y morado, bordados por delante y por detrás con las tres plumas, el blasón del príncipe, tejidas en oro. Las astas de las alabardas estaban cubiertas de terciopelo carmesí, sujeto con clavos dorados y adornadas con borlas de oro. Desfilando a derecha e izquierda, formaban dos largas hileras que se extendían desde la puerta principal del palacio hasta la orilla del agua. Después se desplegó un grueso paño o tapiz rayado, y unos servidores, ataviados con las libreas de oro y carmesí del príncipe, lo tendieron entre los alabarderos. Hecho esto, resonó dentro un floreo de trompetas. Los músicos del río comenzaran un animado preludio y dos ujieres con varas blancas salieron por la puerta con lento y majestuoso paso. Iban seguidos por un oficial que llevaba la maza municipal, tras el cual venía otro con la Espada de la Ciudad; luego varios alguaciles de la guarnición de la ciudad, con uniforme de gala, y con divisas en las mangas. Venía luego el rey de armas de la Jarretera, con su tabardo; lo seguían varios caballeros del Baño, cada uno con una cinta blanca en la manga; luego sus escuderos; después los jueces, con sus togas escarlatas y sus cofias; luego el lord gran canciller de Inglaterra, con su toga escarlata, abierta por delante y, orlada de piel blanca con manchas negras; luego una comisión de regidores con sus capas escarlata, y luego los principales de las diferentes compañías cívicas en traje de ceremonia. Después venían doce caballeros franceses, con espléndidos atavíos, consistentes en jubones de damasco blanco listado de oro, capas cortas de terciopelo carmesí, forradas de tafetán violeta y calzas color carne, y comenzaron a descender por la escalinata. Eran el séquito del embajador francés, e iban seguidos por doce caballeros del séquito del embajador español, vestidos de terciopelo negro sin ningún adorno. En pos de éstos venían varios importantes nobles ingleses con sus servidores.
+
+Sintióse dentro floreo de trompetas, y el tío del príncipe, el futuro gran duque de Somerset, salió de la verja, ataviado con un jubón de brocado negro y una capa de raso carmesí con flores de oro, y ribeteada con redecillas de plata. Volvióse, se quitó la gorra adornada con plumas, inclinó su cuerpo en profunda reverencia y empezo a retroceder de espaldas, saludando a cada escalón. Siguió prolongado son de trompetas y la proclamación: "¡Paso al alto y poderoso señor Eduardo Príncipe de Gales!" En lo alto de los muros de palacio prorrumpió en estrépito atronador una larga hilera de rojas lenguas de fuego; la gente apiñada en el río estalló en potente rugido de bienvenida, y Tom Canty, causa y héroe de todo aquello, apareció a la vista, e inclinó levemente su principesca cabeza:
+
+Iba magníficamente vestido con un justillo de raso blanco, con pechera de tisú púrpura, salpicado de diamantes y ribeteado de armiño. Sobre esto llevaba una capa de brocado blanco con la corona de tres plumas, forrada de raso azul, adornada con perlas y piedras preciosas y sujeta con un broche de brillantes. De su cuello pendía la orden de la Jarretera y varias condecoraciones reales de países extranjeros, y cada vez que le daba la luz, las joyas resplandecían con deslumbrantes destellos. ¡Oh, Tom Canty, nacido en un cobertizo, educado en los arroyos de Londres, familiarizado con los andrajos y la suciedad y la miseria!, ¡qué espectáculo es éste!
+
+El príncipe y el mendigo
