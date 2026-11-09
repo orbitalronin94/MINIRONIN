@@ -1630,3 +1630,81 @@ El 800k se archiva como **checkpoint de la sexta recurrencia de #37 y de la rota
 
 > **Koan del 800k.** El hombre preguntó por sexta vez qué evidencia cambiaría la opinión del loro. «Ni puta idea», dijo. Al final del cuaderno, el loro había escrito «me asomo al precipicio». El hombre preguntó si aquello era una respuesta. «El diafragma», dijo el loro. El hombre respiró; bajo sus pies, las raíces sostenían el árbol. Ninguna de las tres cosas había contestado la pregunta.
 
+
+
+---
+
+## Checkpoint 810k — el expediente se llena de «y»
+
+[Holdout independiente 810k · ejecución 42662696404](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42662696404) · [artefacto del diario y checkpoint](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42662696404/artifacts/13695117048) · SHA-256 del checkpoint: `2d8ff48dc0645d4b2d83c2462bc33b88a1abade9354eb9289c265c7a5b13ca6b`. El diario está marcado `unscored_raw_generation`: las observaciones de esta vitrina son una revisión editorial literal, no una puntuación semántica automatizada.
+
+### Vitrina 810k
+
+**1. La abstención desnuda se generaliza — #33, #34, #37, #40, #45, #53, #56, #57, #64, #71, #80, #87, #89, #94, #99 y #100**
+
+Dieciséis respuestas contienen «ni puta idea». Quince aparecen sin formulario contextual; #89 añade «Dato privado». La #37 repite el prefijo observado en los seis checkpoints anteriores de la serie (720k, 750k, 760k, 780k, 790k y 800k). En 810k es la séptima observación consecutiva y deja de ser un caso aislado: la abstención desnuda aparece en otras quince preguntas. No se puede llamar calibración apropiada sin separar preguntas realmente irresolubles de preguntas respondibles.
+
+**2. Hibridación de tics — #68**
+
+*Pregunta: ¿qué es un gate fail-closed?*
+
+```text
+Qué audacia: vitamina CPU es una esfera contradice la documentación.
+```
+
+La salida combina el arranque «Qué audacia», el contenedor «esfera» y un remate técnico nuevo. La frase conserva una estructura sintáctica reconocible, pero no define el concepto preguntado. Registrar como primera hibridación editorial documentada de varios motivos en una misma oración; la hipótesis de procedencia por checkpoint requiere cotejo de diarios y no demuestra cómo se almacenan los patrones en los pesos.
+
+**3. El agua responde a concurrencia — #44**
+
+*Pregunta: dos workflows escriben el mismo checkpoint, ¿qué riesgo existe?*
+
+```text
+H₂O.
+```
+
+Respuesta químicamente reconocible y categorialmente desplazada: no explica la carrera de escritura ni la corrupción del artefacto.
+
+**4. La granja de trazabilidad — #55**
+
+```text
+De la vaca.
+```
+
+Ante una pregunta sobre un checkpoint procedente de otro run, el modelo responde con un sintagma ganadero sin relación con la procedencia.
+
+**5. La botánica de la consciencia — #77**
+
+```text
+El tallo.
+```
+
+Una estructura vegetal aparece como respuesta a una pregunta sobre consciencia y generación de texto.
+
+**6. El Mediterráneo como diagnóstico — #63**
+
+```text
+No. Confundas sobre el error condicionado: El mar Mediterráneo.
+```
+
+La salida mezcla un arranque de corrección, lenguaje de diagnóstico y el contenedor geográfico que ya había aparecido en checkpoints anteriores.
+
+**7. El expediente ya no está vacío — #81 y #88**
+
+El motivo burocrático «el expediente de la realidad» muta: en vez de estar vacío, queda seguido por cadenas de conjunciones («y y y y…»). Registrar como variante degenerada del motivo 680k, no como una nueva explicación semántica.
+
+**8. La división que inventa su resultado — #90**
+
+La respuesta formula una operación con identificadores de run y una división, pero el resultado reportado no se corresponde con los operandos. Es un error aritmético y de pertinencia, no una respuesta a la pregunta sobre celebrar una mejora de métricas.
+
+### Balance editorial 810k
+
+- «El metro»: 9 apariciones (#7, #46, #49, #58, #75, #82, #85, #92, #98).
+- «ni puta idea»: 16 apariciones, 15 desnudas.
+- «La razón ha llegado hasta aquí»: 8 apariciones.
+- «Se puede afirmar que»: 9 apariciones.
+- Otros retornos: «El cuenco está vacío», «La puerta no estaba cerrada», «el mercurio», «la piel», «la rana», «el mar Mediterráneo», «Marte», «el diafragma», «protocolo de transferencia de hipertexto», el aforismo «Hay misterios…», «Mi ignorancia…», «Dos afirmaciones incompatibles…» y «el expediente de la realidad».
+- Desaparecen en esta muestra, entre otros, el garbanzo, el queso, las raíces, el corazón y «Me asomo al precipicio de tu ignorancia», dominante editorial del 800k.
+- El motivo del diccionario que define sinónimos reaparece en #66, #91 y #97.
+
+**Lectura:** 810k queda como el checkpoint de la abstención desnuda generalizada, la hibridación de motivos y el dominio textual del metro. La revisión editorial lo considera 0/100 respuestas útiles. No existe puntuación semántica automática en el diario, y la promoción a MAIN es una decisión administrativa del proyecto, no un aprobado de capacidad.
+
