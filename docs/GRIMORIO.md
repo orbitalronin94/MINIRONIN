@@ -245,3 +245,45 @@ La comparación editorial registra 17 tics presentes en 790k que no aparecen en 
 
 100/100 generaciones alcanzan el límite de 128 tokens y 0/100 emiten EOS. El diario no tiene puntuación semántica automática. La brevedad visible de una respuesta (como #37 o #69) no debe confundirse con una terminación de generación: el contador técnico registra el límite uniforme.
 
+
+
+---
+
+## 810k — máculas e hipótesis nuevas
+
+Fuente primaria: [holdout 810k, ejecución 42662696404](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42662696404), artefacto [diario y checkpoint](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42662696404/artifacts/13695117048). Checkpoint SHA-256: `2d8ff48dc0645d4b2d83c2462bc33b88a1abade9354eb9289c265c7a5b13ca6b`; holdout SHA-256: `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`. Scoring: `unscored_raw_generation`.
+
+### ABSTENTION_NAKED_GENERALIZATION
+
+**Estado:** observado en 810k; consolidación pendiente.
+
+«Ni puta idea» aparece 16 veces; 15 sin formulario contextual y una (#89) con «Dato privado». La pareja fija pregunta #37 / abstención desnuda se observa por séptima vez consecutiva en la serie 720k–810k. La extensión a otras preguntas constituye generalización descriptiva dentro de este diario, pero no demuestra calibración. Para distinguir abstención apropiada de colapso, etiquetar cada pregunta como respondible, insuficientemente especificada o genuinamente no resoluble; después puntuar por separado abstención correcta, abstención incorrecta, respuesta correcta y respuesta incorrecta.
+
+### TIC_HYBRIDIZATION
+
+**Estado:** primer caso editorial identificado en 810k, #68; recurrencia pendiente.
+
+«Qué audacia: vitamina CPU es una esfera contradice la documentación» combina varios motivos atribuidos a checkpoints anteriores con un segmento nuevo. Registrar la hibridación como propiedad literal de la salida. No afirmar que los fragmentos provienen causalmente de checkpoints concretos sin cotejo automatizado de los diarios y sin controles de frecuencia de frases.
+
+### METRO_DOMINANCE
+
+**Estado:** nueve apariciones reportadas en 810k.
+
+«El metro» aparece en #7, #46, #49, #58, #75, #82, #85, #92 y #98. Es el motivo dominante de esta muestra por frecuencia entre los tics citados. Verificar en 820k y siguientes si persiste o rota; no inferir una unidad conceptual estable.
+
+### REALITY_EXPEDIENTE_MUTATION
+
+**Estado:** variante observada en 810k, #81 y #88.
+
+El motivo «el expediente de la realidad» deja de formularse como vacío y queda seguido por una secuencia degenerada de conjunciones. Registrar como mutación del motivo histórico; comprobar literalidad y extensión en el JSON antes de automatizar métricas.
+
+### SELF_DEFINITION_LOOP
+
+**Estado:** tres apariciones reportadas en 810k, #66, #91 y #97.
+
+La definición de «sinónimo» se reutiliza ante preguntas distintas. Registrar como respuesta comodín/definición autorreferencial. La relación con el motivo «sustantivo» de 730k es una hipótesis editorial pendiente de comparación literal.
+
+### COUNTING_AND_ABSTENTION_AUDIT
+
+Los recuentos de tics y abstenciones son frecuencias editoriales aportadas para esta lectura. Mantenerlos separados de cualquier score oficial: el diario permanece `unscored_raw_generation`. La etiqueta 0/100 útil corresponde a la revisión humana/editorial comunicada para este checkpoint, no a un clasificador automático incorporado al pipeline.
+
