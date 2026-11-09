@@ -17,7 +17,16 @@ env:
 jobs:
   prepare-release:
     runs-on: ubuntu-latest
+    outputs:
+      revision: ${{ steps.resolve.outputs.revision }}
     steps:
+      - name: Resolve one immutable source revision for all matrix jobs
+        id: resolve
+        run: |
+          set -euo pipefail
+          revision="$(git ls-remote https://huggingface.co/datasets/ferjorosa/bne-hemeroteca-ocr-xix refs/heads/main | awk 'NR==1 {print $1}')"
+          test "${#revision}" -eq 40
+          echo "revision=$revision" >> "$GITHUB_OUTPUT"
       - name: Create immutable BNE OCR release if missing
         env:
           GH_TOKEN: ${{ github.token }}
@@ -45,14 +54,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install "huggingface_hub==0.29.3" "pyarrow==19.0.1"
-      - name: Resolve immutable source revision and curate one split shard
+      - name: Curate one split shard at the shared immutable revision
         env:
           SPLIT: ${{ matrix.split }}
-        run: |
-          set -euo pipefail
-          revision="$(git ls-remote https://huggingface.co/datasets/ferjorosa/bne-hemeroteca-ocr-xix refs/heads/main | awk 'NR==1 {print $1}')"
-          test "${#revision}" -eq 40
-          python scripts/acquire_bne_hemeroteca_ocr_spanish.py --split "$SPLIT" --revision "$revision" --output-dir out
+          REVISION: ${{ needs.prepare-release.outputs.revision }}
+        run: python scripts/acquire_bne_hemeroteca_ocr_spanish.py --split "$SPLIT" --revision "$REVISION" --output-dir out
       - name: Verify shard manifest and text digest
         env:
           SPLIT: ${{ matrix.split }}
