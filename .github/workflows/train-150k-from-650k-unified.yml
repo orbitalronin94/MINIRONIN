@@ -34,13 +34,13 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Descargar el artefacto único con todas las bibliotecas admitidas
+      - name: Reutilizar el artefacto exacto usado en la iteración 500k→650k
         uses: actions/download-artifact@v4
         with:
-          name: minironin-unified-train-corpus-${{ github.event.workflow_run.id }}
+          name: minironin-unified-train-corpus-42523463620
           github-token: ${{ github.token }}
           repository: ${{ github.repository }}
-          run-id: ${{ github.event.workflow_run.id }}
+          run-id: 42523463620
           path: unified-train
 
       - name: Verificar volumen, integridad y cobertura del corpus
@@ -139,7 +139,7 @@ jobs:
               "train-150k/checkpoints/report-$end.json" \
               "train-150k/checkpoints/SHA256SUMS-$end" \
               --title "MINIRONIN legacy tokenizer — step $end" \
-              --notes "10k segment in the 150k continuation from verified 650k checkpoint. Active vocabulary 257 (UTF-8 bytes + EOS). Same admitted document pack used for the 650k training run; no new corpus sources. Candidate only; independent holdout required."
+              --notes "10k segment in the 150k continuation from verified 650k checkpoint. Active vocabulary 257 (UTF-8 bytes + EOS). Reused the exact unified corpus artifact from run 42523463620, the artifact consumed by the 500k→650k training job. Candidate only; independent holdout required."
             input="$checkpoint"
             echo "::endgroup::"
           done
@@ -164,7 +164,7 @@ jobs:
           gh release create "minironin-legacy-150k-from-650k-step-800000-candidate" \
             train-150k/checkpoint-800000.pt train-150k/report-800000.json train-150k/SHA256SUMS-800000 \
             --title "MINIRONIN legacy tokenizer — 150k continuation / step 800000" \
-            --notes "150,000 steps from the verified 650k byte-level checkpoint, trained on the same unified admitted document pack used for the 650k run. Candidate only; no automatic promotion. Matched holdout required."
+            --notes "150,000 steps from the verified 650k byte-level checkpoint, trained on the exact unified corpus artifact consumed by the 500k→650k iteration (run 42523463620). Candidate only; no automatic promotion. Matched holdout required."
 
       - name: Publicar informes y checkpoints intermedios como artefacto de auditoría
         uses: actions/upload-artifact@v4
