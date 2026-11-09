@@ -1,0 +1,43 @@
+# El triste fin, la suerte infortunada
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/El%20triste%20fin%2C%20la%20suerte%20infortunada
+
+**Page ID:** 62768
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/El%20triste%20fin%2C%20la%20suerte%20infortunada?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+El triste fin, la surete infortunada
+(Ajeno premio de la fe constante)
+Del uno y otro miserable amante,
+A quien perdió una noche y una espada,
+
+Oculta en sombre obscura esta labrada
+Piedra. Tú, peregrino caminante,
+Repara el grave caso, y con semblante
+Pio suspende el curso á tu jornada;
+
+Que darás tiernas lágrimas no dudo
+A estas cenizas, donde aun dura ardiente
+El fuego que causó desdicha tanta;
+
+Debida composión al mal que pudo
+Mudar color en la cercana fuente,
+Y el de su fruto en la silvestre planta.
+
+ES-E
+Sonetos
+Sonetos de Juan de Arguijo
+P1854
+Literatura española (Títulos)
