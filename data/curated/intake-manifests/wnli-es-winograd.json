@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "slug": "wnli-es-winograd",
+  "name": "WNLI-es Winograd Spanish NLI",
+  "repo_id": "PlanTL-GOB-ES/wnli-es",
+  "license": "CC BY 4.0",
+  "split": "train",
+  "domain": "razonamiento, ambigüedad lingüística e inferencia",
+  "text_fields": [
+    "sentence1",
+    "sentence2",
+    "label"
+  ],
+  "task": "Spanish Winograd natural language inference",
+  "minimum_rows": 600,
+  "trust_remote_code": true,
+  "attribution": "Plan de Tecnologías del Lenguaje — Gobierno de España / BSC TeMU; professional Spanish translation of WNLI; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/PlanTL-GOB-ES/wnli-es",
+  "language": "es",
+  "min_text_chars": 12,
+  "license_verification": "exact CC BY 4.0 card identifier required; upstream loading script is pinned by immutable dataset revision and inspected before trust_remote_code is enabled",
+  "status": "ready_for_automated_import"
+}
