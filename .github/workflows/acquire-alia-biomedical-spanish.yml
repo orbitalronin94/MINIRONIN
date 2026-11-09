@@ -1,0 +1,73 @@
+name: MINIRONIN — admitir ALIA biomedical español (corpus completo)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/acquire-alia-biomedical-spanish.yml"
+      - "scripts/acquire_alia_biomedical_spanish.py"
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: minironin-alia-biomedical-spanish
+  cancel-in-progress: false
+env:
+  RELEASE_TAG: alia-biomedical-es-v1
+jobs:
+  acquire-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned streaming readers
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "datasets==3.3.2" "huggingface_hub==0.29.3"
+      - name: Stream, deduplicate and shard complete Spanish biomedical corpus
+        run: python scripts/acquire_alia_biomedical_spanish.py --output-dir out --shard-rows 25000
+      - name: Verify all shards, Spanish eligibility, license, row counts and hashes
+        run: |
+          python - <<'PY'
+          import gzip,hashlib,json
+          from pathlib import Path
+          root=Path("out")
+          m=json.loads((root/"alia-biomedical-es.manifest.json").read_text())
+          assert m["rows_admitted"]>=5000000 and m["synthetic"] is False
+          count=0
+          for item in m["files"]:
+              p=root/item["file"];h=hashlib.sha256();n=0
+              with p.open("rb") as f:
+                  for b in iter(lambda:f.read(1048576),b""):h.update(b)
+              assert h.hexdigest()==item["sha256_gzip"] and p.stat().st_size==item["bytes"]
+              with gzip.open(p,"rt",encoding="utf-8") as f:
+                  for line in f:
+                      r=json.loads(line)
+                      assert r["language"]=="es" and r["train_eligible"] and r["admission_status"]=="accepted"
+                      assert r["license"]=="CC BY-SA 4.0" and r["synthetic"] is False
+                      assert r["source_revision"]==m["source_revision"] and r["source_id"]
+                      n+=1
+              assert n==item["rows"]
+              count+=n
+          assert count==m["rows_admitted"]
+          print(json.dumps({"rows_admitted":count,"shards":len(m["files"]),"gzip_bytes":sum(x["bytes"] for x in m["files"]),"revision":m["source_revision"]}))
+          PY
+      - name: Publish persistent corpus shards and manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="$RELEASE_TAG"
+          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --title "ALIA Biomedical Spanish — CC BY-SA 4.0" --notes "Full Spanish biomedical corpus. Immutable source revision, per-shard SHA-256, attribution and dataset-level license scope are recorded in the manifest. Synthetic data excluded."
+          fi
+          gh release upload "$tag" out/alia-biomedical-es-part-*.jsonl.gz out/alia-biomedical-es.manifest.json --repo "$GITHUB_REPOSITORY" --clobber
+      - name: Rebuild unified training corpus after verified publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
