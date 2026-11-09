@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "slug": "lexboe-spanish",
+  "name": "LexBOE Spanish Legal Classification",
+  "repo_id": "BSC-LT/LexBOE",
+  "license": "CC BY 4.0",
+  "source_url": "https://huggingface.co/datasets/BSC-LT/LexBOE",
+  "language": "es",
+  "split": "train",
+  "domain": "legislación, BOE y administración pública",
+  "text_fields": [
+    "sentence",
+    "label"
+  ],
+  "task": "Spanish legal text classification",
+  "minimum_rows": 40000,
+  "min_text_chars": 40,
+  "attribution": "BSC Language Technologies Laboratory, LexBOE; CC BY 4.0.",
+  "status": "ready_for_automated_import"
+}
