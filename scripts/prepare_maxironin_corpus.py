@@ -45,28 +45,33 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--corpus", required=True)
     parser.add_argument("--output-dir", required=True)
+    parser.add_argument("--reuse-tokenizer", default=None)
     args = parser.parse_args()
     corpus = Path(args.corpus)
     out = Path(args.output_dir)
     out.mkdir(parents=True, exist_ok=True)
     train_path, val_path = out / "train.bin", out / "validation.bin"
 
-    tokenizer = Tokenizer(models.BPE(unk_token="<UNK>"))
-    tokenizer.normalizer = normalizers.NFC()
-    tokenizer.pre_tokenizer = pre_tokenizers.Sequence([
-        Split(Regex(r"[0-9]"), behavior="isolated"),
-        pre_tokenizers.ByteLevel(add_prefix_space=False),
-    ])
-    tokenizer.decoder = decoders.ByteLevel()
-    trainer = trainers.BpeTrainer(
-        vocab_size=VOCAB_SIZE,
-        min_frequency=2,
-        special_tokens=SPECIAL_TOKENS,
-        initial_alphabet=sorted(pre_tokenizers.ByteLevel.alphabet()),
-        show_progress=True,
-    )
-    print("TOKENIZER_TRAINING_START", flush=True)
-    tokenizer.train_from_iterator(text_iterator(corpus), trainer=trainer)
+    if args.reuse_tokenizer:
+        tokenizer = Tokenizer.from_file(args.reuse_tokenizer)
+        print("REUSING_EXACT_EXISTING_TOKENIZER", flush=True)
+    else:
+        tokenizer = Tokenizer(models.BPE(unk_token="<UNK>"))
+        tokenizer.normalizer = normalizers.NFC()
+        tokenizer.pre_tokenizer = pre_tokenizers.Sequence([
+            Split(Regex(r"[0-9]"), behavior="isolated"),
+            pre_tokenizers.ByteLevel(add_prefix_space=False),
+        ])
+        tokenizer.decoder = decoders.ByteLevel()
+        trainer = trainers.BpeTrainer(
+            vocab_size=VOCAB_SIZE,
+            min_frequency=2,
+            special_tokens=SPECIAL_TOKENS,
+            initial_alphabet=sorted(pre_tokenizers.ByteLevel.alphabet()),
+            show_progress=True,
+        )
+        print("TOKENIZER_TRAINING_START", flush=True)
+        tokenizer.train_from_iterator(text_iterator(corpus), trainer=trainer)
     actual_vocab = tokenizer.get_vocab_size(with_added_tokens=True)
     if actual_vocab != VOCAB_SIZE:
         raise SystemExit(f"Expected exactly {VOCAB_SIZE} tokens, got {actual_vocab}")
