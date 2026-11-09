@@ -125,3 +125,12 @@ Se añaden dos bibliotecas supervisadas pequeñas y explícitas, separadas de lo
 Ambos conjuntos se cargan en dominios separados (`identity` y `engineering`) con un peso relativo inicial de 0,02 cada uno (aprox. 1,89% efectivo tras normalizar la mezcla completa). No se incorporan logs brutos ni secretos. Los estados de Actions se enseñan como observaciones fechadas: un paso pendiente no es un paso completado, y una publicación no demuestra mejora del modelo.
 
 La ficha anterior que describía el Transformer inicial de 9.970.176 parámetros queda como antecedente histórico. La identidad vigente del checkpoint principal es Mamba, 49.083.392 parámetros, release `minironin-mamba-50m-step-1000-main`.
+
+
+## Admisión masiva de bibliotecas externas (auditoría 2026-11-09)
+
+El intake externo se organiza en `data/curated/accepted/` para corpus incorporados al árbol versionado y en releases persistentes para shards grandes, siempre acompañados de manifiestos SHA-256. El estado de cada fuente, las licencias y las cifras verificadas se mantienen en [OPEN_FACTUAL_CORPORA.md](OPEN_FACTUAL_CORPORA.md).
+
+**Incremento nuevo verificado en esta tanda:** PleIAs Spanish Public Domain Books, shards 1–8: **9.766 registros** y **1.441.007.073 bytes comprimidos (1,34 GiB)**. Los ocho jobs validaron cada registro como español, elegible y de dominio público, y compararon SHA-256 con el manifiesto; el rebuild unificado terminó correctamente en [run 42701981364](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42701981364).
+
+No se atribuye a este incremento el tamaño acumulado de releases que contienen lotes anteriores. Las cifras de objetivos (por ejemplo, los 37.200 textos previstos de Wikisource o los 100 shards del Common Corpus) permanecen como objetivos hasta que los jobs publiquen sus propios manifiestos verificados. Los datos sintéticos siguen excluidos de la biblioteca factual real.
