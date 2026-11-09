@@ -2,6 +2,21 @@
 
 **MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal experimental es ahora el **Transformer decoder-only con 4,3 millones de parámetros efectivos** (el recuento nominal de 9.970.176 queda como cifra de arquitectura, no como capacidad efectiva), checkpoint de 720.000 pasos. Se promociona por decisión explícita del proyecto como referencia experimental; esto **no** significa que haya demostrado una mejora de calidad: el holdout de 100 preguntas de 720k muestra bucles, contaminación entre preguntas y degeneración, sin puntuación semántica automática.
 
+
+
+## La propuesta diferencial: un catálogo, no un podio
+
+MINIRONIN no se organiza alrededor de la promesa de que cada checkpoint sea mejor que el anterior. Conserva versiones verificables de una misma criatura y permite estudiar —y elegir— sus diferencias de comportamiento. Cada checkpoint puede tener un repertorio de frases, tics, errores, abstenciones y remates distinto. **La diferencia observada es parte del objeto de estudio; no equivale a una mejora de capacidad.**
+
+La apuesta es un **catálogo de personajes experimentales**: no proclamamos un ganador universal ni asignamos capacidades que el holdout no haya demostrado. Ofrecemos procedencia, pesos, hashes, diarios y una guía de selección basada en rasgos observados. El usuario puede preferir una versión por su carácter, igual que alguien elige una edición, una interpretación o un té por ocasión.
+
+- [Explorar el catálogo y elegir checkpoint](docs/README.md#catalogo-de-checkpoints)
+- [Leer la guía de selección por repertorio](docs/CATALOGO.md)
+- [Visitar el Museo: cronología, tics y perlas](docs/MUSEO.md)
+- [Consultar el estado experimental y las limitaciones](docs/ROADMAP.md)
+
+> **Principio editorial:** no existe un «mejor loro» declarado por defecto. Existe una colección de versiones con evidencia desigual, y cada ficha debe decir qué se ha observado, qué falta y qué no puede concluirse.
+
 Puede heredar y curar bibliotecas de datos reutilizables de [HERETIC-RONIN](https://github.com/orbitalronin94/HERETIC-RONIN). **RONIN-IA queda excluido del corpus unificado actual**. MINIRONIN no hereda procedimientos de entrenamiento, checkpoints, workflows de GitHub Actions, automatizaciones ni sistemas de promoción de otros repositorios.
 
 ## Infraestructura: laboratorio de saldo cero
