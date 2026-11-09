@@ -75,7 +75,7 @@ def main():
         for artifact in artifacts:
             run_id = str(artifact["workflow_run_id"])
             name = str(artifact["artifact_name"])
-            target = args.output / dataset_id
+            target = folder / "downloaded-artifact"
             target.mkdir(parents=True, exist_ok=True)
             command = [
                 "gh", "run", "download", run_id,
