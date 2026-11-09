@@ -27,6 +27,7 @@ on:
       - "data/curated/sources/LEXICON-DEL-ESPERPENTO-ALGORITMICO.md"
       - "data/inherited/wikimedia-es/**"
       - "data/curated/accepted/**"
+      - "scripts/acquire_boe_legislation_es.py"
       - "scripts/acquire_common_corpus_spanish.py"
       - "scripts/acquire_slr_bench_spanish.py"
       - "scripts/acquire_alia_cultural_heritage.py"
@@ -218,6 +219,20 @@ jobs:
             gh release download bne-hemeroteca-ocr-es-v1 --repo "$GITHUB_REPOSITORY" --dir data/inherited/bne-hemeroteca-ocr-es --pattern "bne-ocr-es-*.jsonl.gz" --pattern "bne-ocr-es-*.manifest.json"
           fi
 
+      - name: Descargar legislación consolidada vigente del BOE
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p data/inherited/boe-legislation-es
+          if gh release view boe-legislation-es-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            assets="$(gh release view boe-legislation-es-v1 --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
+            if printf "%s\n" "$assets" | grep -q '^boe-legislation-es-'; then
+              gh release download boe-legislation-es-v1 --repo "$GITHUB_REPOSITORY" --dir data/inherited/boe-legislation-es --pattern "boe-legislation-es-*.jsonl.gz" --pattern "boe-legislation-es-*.manifest.json"
+            else
+              echo "BOE release exists but has no audited batches yet; the post-acquisition dispatch will rebuild."
+            fi
+          fi
       - name: Copiar exactamente los nueve artículos Markdown admitidos de Papers
         run: |
           set -euo pipefail
@@ -283,6 +298,7 @@ jobs:
             data/inherited/wikimedia-es \
             data/inherited/pleias-spanish-pd-books \
             data/inherited/common-corpus-es \
+            data/inherited/boe-legislation-es \
             data/inherited/bne-hemeroteca-ocr-es \
             generated-curricula \
             generated-basic-curricula \
