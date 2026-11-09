@@ -1,0 +1,89 @@
+name: MINIRONIN — adquirir Common Corpus español (CC0/PD/CC-BY)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/acquire-common-corpus-spanish.yml"
+      - "scripts/acquire_common_corpus_spanish.py"
+permissions:
+  contents: write
+concurrency:
+  group: minironin-common-corpus-spanish-batch1
+  cancel-in-progress: false
+env:
+  RELEASE_TAG: pleias-common-corpus-spanish-v1
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create release for immutable Spanish filtered shards
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --title "PleIAs Common Corpus — Spanish PD/CC0/CC-BY" --notes "Only Spanish OpenScience/OpenGovernment/OpenSemantic rows with row-level Public Domain, CC0 or CC-BY attribution-only rights. Each asset includes source revision and hashes."
+          fi
+  convert-shards:
+    needs: prepare-release
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard: [1,2,3,4,5,6,7,8,9,10]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned readers
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "huggingface_hub==0.29.3" "pyarrow==19.0.1"
+      - name: Resolve immutable revision and filter source shard
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          set -euo pipefail
+          revision="$(git ls-remote https://huggingface.co/datasets/PleIAs/common_corpus refs/heads/main | awk 'NR==1 {print $1}')"
+          test "${#revision}" -eq 40
+          python scripts/acquire_common_corpus_spanish.py --shard "$SHARD" --revision "$revision" --root . --output-dir out
+      - name: Verify output SHA and license gates
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          python - <<'PY'
+          import gzip,hashlib,json,os
+          from pathlib import Path
+          n=int(os.environ["SHARD"])
+          p=Path(f"out/common-corpus-es-{n:04d}.jsonl.gz")
+          m=json.loads(Path(f"out/common-corpus-es-{n:04d}.manifest.json").read_text())
+          h=hashlib.sha256();count=0
+          with gzip.open(p,"rb") as f:
+              for block in iter(lambda:f.read(1024*1024),b""):h.update(block)
+          with gzip.open(p,"rt",encoding="utf-8") as f:
+              for line in f:
+                  r=json.loads(line)
+                  assert r["language"]=="es" and r["train_eligible"]
+                  assert r["domain"] in {"openscience","opengovernment","opensemantic"}
+                  assert r["license"].casefold().replace("_","-") in {"public domain","public-domain","pd","pdm","cc0","cc0 1.0","cc0-1.0","cc by 4.0","cc-by-4.0","cc-by","creative commons attribution 4.0"}
+                  count+=1
+          assert count==m["rows_admitted"] and h.hexdigest()==m["sha256_jsonl_uncompressed"]
+          print(json.dumps({"shard":n,"records":count,"sha256":h.hexdigest(),"skipped_license":m["rows_skipped_unapproved_license"]}))
+          PY
+      - name: Upload immutable shard and manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$RELEASE_TAG" out/common-corpus-es-*.jsonl.gz out/common-corpus-es-*.manifest.json --repo "$GITHUB_REPOSITORY" --clobber
+  rebuild-unified-corpus:
+    needs: convert-shards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger unified corpus build after all shard assets are published
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
