@@ -6,6 +6,11 @@ on:
       - "data/inherited/papers/**"
       - "scripts/audit_inherited_data.py"
       - ".github/workflows/data-audit.yml"
+  pull_request:
+    paths:
+      - "data/inherited/papers/**"
+      - "scripts/audit_inherited_data.py"
+      - ".github/workflows/data-audit.yml"
   workflow_dispatch:
 
 permissions:
