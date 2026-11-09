@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "slug": "lingcomp-qa-es",
+  "name": "LingComp QA computational linguistics corpus",
+  "repo_id": "somosnlp/LingComp_QA",
+  "license": "Apache 2.0",
+  "split": "train",
+  "domain": "filosofía del lenguaje, lingüística computacional, Python y PLN",
+  "text_fields": [
+    "pregunta",
+    "respuesta"
+  ],
+  "task": "Spanish computational linguistics question answering",
+  "minimum_rows": 800,
+  "min_text_chars": 30,
+  "attribution": "Zamora Rey, Crespo Miguel & Moyano Moreno; LingComp_QA; Apache License 2.0.",
+  "source_url": "https://huggingface.co/datasets/somosnlp/LingComp_QA",
+  "language": "es",
+  "license_verification": "exact live dataset-card license check; no NC/ND",
+  "status": "ready_for_automated_import"
+}
