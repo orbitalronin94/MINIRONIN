@@ -18,5 +18,6 @@
   "streaming": true,
   "attribution": "SINAI Research Group, Universidad de Jaén; ALIA Spanish Legal and Administrative Corpus; CC BY-SA 4.0.",
   "license_verification": "exact dataset-card identifier required; no NC/ND licenses admitted",
-  "status": "ready_for_automated_import"
+  "status": "external_release_only_until_chunked_release_pipeline",
+  "external_release_only": true
 }
