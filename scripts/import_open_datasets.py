@@ -5,8 +5,13 @@ import argparse,gzip,hashlib,json,re,sys
 from datetime import datetime,timezone
 from pathlib import Path
 
-ALLOWED={"cc0-1.0","cc-by-4.0","cc-by-sa-4.0","cc-by-sa-3.0","public-domain","mit","apache-2.0","bsd-3-clause"}
-def norm_license(v): return str(v).strip().casefold().replace("_","-").replace(" ","-")
+ALLOWED={"cc0-1.0","cc-by-4.0","cc-by-sa-4.0","cc-by-sa-3.0","public-domain","mit","apache-2.0","bsd-3-clause","odc-by"}
+def norm_license(v):
+    value=str(v).strip().casefold().replace("_","-").replace(" ","-")
+    # Hugging Face exposes MADLAD-400 as "odc-by", while the derived
+    # es-ES manifest correctly names the versioned license "ODC-BY 1.0".
+    aliases={"odc-by-1.0":"odc-by","odc-by-1":"odc-by"}
+    return aliases.get(value,value)
 def flatten_text(v):
     if isinstance(v,str):
         if v.strip(): yield v.strip()
