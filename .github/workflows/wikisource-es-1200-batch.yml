@@ -58,6 +58,7 @@ jobs:
           PY
       - name: Create PR containing exactly 1200 new source documents
         id: cpr
+        continue-on-error: true
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ github.token }}
