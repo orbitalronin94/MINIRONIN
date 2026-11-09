@@ -16,26 +16,33 @@ def sentence_candidates(text: str):
             yield item
 
 
-def qa_rows(text: str):
-    for line in text.splitlines():
-        if not line.strip().startswith("{"):
-            continue
-        try:
-            row = json.loads(line)
-        except json.JSONDecodeError:
-            continue
-        question = row.get("question") or row.get("instruccion") or row.get("prompt")
-        answer = row.get("answer") or row.get("respuesta") or row.get("target")
-        context = row.get("context") or row.get("evidence") or row.get("evidencia")
-        verified = (
-            row.get("answer_verified") is True
-            or row.get("curation_status") in {"verified", "manually_reviewed"}
-            or row.get("curacion") in {"redactado_manual_desde_log", "revision_manual_aprobada"}
-            or row.get("tag") in {"answerable_grounded", "identity_grounded", "identity_boundary", "unknown_abstain"}
-        )
-        if question and answer and context and verified:
-            yield str(question).strip(), str(answer).strip(), str(context).strip()
-
+def qa_rows(path: Path):
+    if path.name.lower().endswith(".jsonl.gz"):
+        import gzip
+        stream = gzip.open(path, "rt", encoding="utf-8", errors="replace")
+    elif path.suffix.lower() in {".jsonl", ".ndjson"}:
+        stream = path.open(encoding="utf-8", errors="replace")
+    else:
+        return
+    with stream:
+        for line in stream:
+            if not line.strip().startswith("{"):
+                continue
+            try:
+                row = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            question = row.get("question") or row.get("instruccion") or row.get("prompt")
+            answer = row.get("answer") or row.get("respuesta") or row.get("target")
+            context = row.get("context") or row.get("evidence") or row.get("evidencia")
+            verified = (
+                row.get("answer_verified") is True
+                or row.get("curation_status") in {"verified", "manually_reviewed"}
+                or row.get("curacion") in {"redactado_manual_desde_log", "revision_manual_aprobada"}
+                or row.get("tag") in {"answerable_grounded", "identity_grounded", "identity_boundary", "unknown_abstain"}
+            )
+            if question and answer and context and verified:
+                yield str(question).strip(), str(answer).strip(), str(context).strip()
 
 def row_for(doc, task_type, prompt, answer, index):
     source_key = f"{doc['document_id']}:{task_type}:{index}"
@@ -65,6 +72,7 @@ def row_for(doc, task_type, prompt, answer, index):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--documents", type=Path, required=True)
+    parser.add_argument("--root", type=Path, default=Path("."))
     parser.add_argument("--train-output", type=Path, required=True)
     parser.add_argument("--validation-output", type=Path, required=True)
     parser.add_argument("--max-copy-rows-per-document", type=int, default=2)
@@ -78,7 +86,9 @@ def main():
                 continue
             counts["documents_seen"] += 1
             target = validation_rows if doc.get("split") == "validation" else train_rows
-            for idx, (question, answer, context) in enumerate(qa_rows(doc["text"])):
+            source_path = (args.root / doc["path"]).resolve()
+            qa_items = list(qa_rows(source_path)) if source_path.is_file() else []
+            for idx, (question, answer, context) in enumerate(qa_items):
                 prompt = f"### Contexto:\n[S1] {context}\n### Pregunta:\n{question}\n### Respuesta:"
                 target.append(row_for(doc, "grounded_qa", prompt, answer + " [S1]", idx))
                 counts["grounded_qa"] += 1
