@@ -470,6 +470,8 @@ def load_training_data(heretic_root: Path, books_root: Path, anarchist_root: Pat
 
 
 def batch_for_step(train_docs, names, probs, global_step, seed_offset=0, eos_window_probability=EOS_WINDOW_PROBABILITY):
+    if not 0.0 <= eos_window_probability <= 1.0:
+        raise ValueError("eos_window_probability must be between 0 and 1")
     rng = random.Random(BASE_SEED + seed_offset + global_step)
     domains = rng.choices(names, weights=probs, k=BATCH_SIZE)
     rows = []
