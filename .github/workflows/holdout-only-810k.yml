@@ -1,4 +1,5 @@
 name: MINIRONIN — holdout exclusivo checkpoint 810k
+# Activación dedicada del holdout independiente del checkpoint 810k.
 
 on:
   workflow_dispatch:
