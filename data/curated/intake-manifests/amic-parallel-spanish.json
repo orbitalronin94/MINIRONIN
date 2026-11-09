@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "slug": "amic-parallel-spanish",
+  "name": "AMIC Valencian-Spanish parallel corpus — Spanish side",
+  "repo_id": "gplsi/amic_parallel",
+  "license": "CC BY 4.0",
+  "split": "train",
+  "domain": "medios de comunicación, información y actualidad",
+  "text_fields": [
+    "ES"
+  ],
+  "task": "Spanish text from Valencian-Spanish parallel sentences",
+  "minimum_rows": 650000,
+  "min_text_chars": 20,
+  "streaming": true,
+  "gzip_output": true,
+  "attribution": "Espinosa Zaragoza et al. (2025), AMIC_PARALLEL; GPLSI, University of Alicante; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/gplsi/amic_parallel",
+  "language": "es",
+  "license_verification": "exact CC BY 4.0 live card check; extract Spanish side only",
+  "status": "ready_for_automated_import"
+}
