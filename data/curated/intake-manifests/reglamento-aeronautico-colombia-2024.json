@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "slug": "reglamento-aeronautico-colombia-2024",
+  "name": "Reglamento Aeronáutico Colombiano 2024 QA",
+  "repo_id": "somosnlp/Reglamento_Aeronautico_Colombiano_2024",
+  "license": "Apache 2.0",
+  "split": "train",
+  "domain": "aviación, seguridad aérea y normativa técnica",
+  "text_fields": [
+    "rac",
+    "pagina",
+    "pregunta",
+    "respuesta"
+  ],
+  "task": "Spanish aeronautical regulation question answering",
+  "minimum_rows": 24000,
+  "min_text_chars": 40,
+  "synthetic": true,
+  "attribution": "Fundación Universitaria Los Libertadores; RAC Corpus; Apache License 2.0.",
+  "source_url": "https://huggingface.co/datasets/somosnlp/Reglamento_Aeronautico_Colombiano_2024",
+  "language": "es",
+  "license_verification": "exact live dataset-card license check; source split and original labels retained",
+  "status": "ready_for_automated_import"
+}
