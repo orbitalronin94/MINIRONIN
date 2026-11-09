@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "slug": "asistencia-refugiados-es",
+  "name": "AsistenciaRefugiados Spanish legal QA",
+  "repo_id": "somosnlp/instruct-legal-refugiados-es",
+  "license": "Apache 2.0",
+  "split": "train",
+  "language_field": "lang",
+  "language_values": [
+    "es-ES",
+    "es-MX",
+    "es-VE"
+  ],
+  "domain": "derecho de asilo, migración y derechos de personas refugiadas",
+  "text_fields": [
+    "question",
+    "context",
+    "answer"
+  ],
+  "task": "Spanish legal contextual question answering",
+  "minimum_rows": 9000,
+  "min_text_chars": 40,
+  "synthetic": true,
+  "attribution": "Muñoz, Martín & Hidalgo; AsistenciaRefugiados; Apache License 2.0.",
+  "source_url": "https://huggingface.co/datasets/somosnlp/instruct-legal-refugiados-es",
+  "language": "es",
+  "license_verification": "exact live dataset-card license check; source split and language filter enforced",
+  "status": "ready_for_automated_import"
+}
