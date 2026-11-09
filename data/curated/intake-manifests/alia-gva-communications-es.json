@@ -14,7 +14,7 @@
     "es"
   ],
   "task": "Spanish language modeling on institutional communications",
-  "minimum_rows": 10000,
+  "minimum_rows": 1000,
   "shard_rows": 5000,
   "min_text_chars": 80,
   "attribution": "Espinosa Zaragoza, Sepúlveda Torres, Muñoz Guillena & Consuegra-Ayala; ALIA_GVA_Communications Dataset; GPLSI/CENID, University of Alicante; CC BY 4.0.",
