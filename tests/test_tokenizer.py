@@ -47,3 +47,23 @@ def test_manifest_load(tmp_path):
     path = tmp_path / "tokenizer.json"
     path.write_text(json.dumps(sample()), encoding="utf-8")
     assert ByteNgramTokenizer.load(path).active_vocab == 259
+
+
+
+def test_byte_lengths_match_reconstructed_bytes():
+    tokenizer = ByteNgramTokenizer(sample())
+    assert tokenizer.byte_length(257) == 3
+    assert tokenizer.byte_length(258) == 5
+    assert tokenizer.byte_length(65) == 1
+    assert tokenizer.byte_length(EOS_ID) == 0
+
+
+def test_manifest_rejects_active_vocab_drift():
+    data = sample()
+    data["active_vocab"] = 999
+    try:
+        ByteNgramTokenizer(data)
+    except ValueError as exc:
+        assert "active_vocab" in str(exc)
+    else:
+        raise AssertionError("inconsistent active_vocab accepted")
