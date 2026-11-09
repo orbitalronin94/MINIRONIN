@@ -1,4 +1,4 @@
-name: MINIRONIN — 150k continuation from 650k (4x tokens/step)
+name: MINIRONIN — 150k continuation from 650k (2x tokens/step)
 
 on:
   workflow_run:
@@ -139,7 +139,7 @@ jobs:
               "train-150k/checkpoints/report-$end.json" \
               "train-150k/checkpoints/SHA256SUMS-$end" \
               --title "MINIRONIN legacy tokenizer — step $end" \
-              --notes "10k segment in the 150k continuation from verified 650k checkpoint. Active vocabulary 257 (UTF-8 bytes + EOS). Unified admitted corpus; RONIN-IA excluded. Candidate only; independent holdout required."
+              --notes "10k segment in the 150k continuation from verified 650k checkpoint. Active vocabulary 257 (UTF-8 bytes + EOS). Same admitted document pack used for the 650k training run; no new corpus sources. Candidate only; independent holdout required."
             input="$checkpoint"
             echo "::endgroup::"
           done
@@ -164,7 +164,7 @@ jobs:
           gh release create "minironin-legacy-150k-from-650k-step-800000-candidate" \
             train-150k/checkpoint-800000.pt train-150k/report-800000.json train-150k/SHA256SUMS-800000 \
             --title "MINIRONIN legacy tokenizer — 150k continuation / step 800000" \
-            --notes "150,000 steps from the verified 650k byte-level checkpoint, trained on the unified admitted corpus. Candidate only; no automatic promotion. Matched holdout required."
+            --notes "150,000 steps from the verified 650k byte-level checkpoint, trained on the same unified admitted document pack used for the 650k run. Candidate only; no automatic promotion. Matched holdout required."
 
       - name: Publicar informes y checkpoints intermedios como artefacto de auditoría
         uses: actions/upload-artifact@v4
