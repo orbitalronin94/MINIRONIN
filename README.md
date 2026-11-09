@@ -1,6 +1,6 @@
 # MINIRONIN
 
-**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal experimental es ahora el **Transformer decoder-only con 4,3 millones de parámetros efectivos** (el recuento nominal de 9.970.176 queda como cifra de arquitectura, no como capacidad efectiva), checkpoint de 650.000 pasos. Se promociona por decisión explícita del proyecto como referencia experimental; esto **no** significa que haya demostrado una mejora de calidad: el holdout pareado de 100 preguntas muestra cambios radicales de generación, persistencia de tics y degeneración.
+**MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal experimental es ahora el **Transformer decoder-only con 4,3 millones de parámetros efectivos** (el recuento nominal de 9.970.176 queda como cifra de arquitectura, no como capacidad efectiva), checkpoint de 720.000 pasos. Se promociona por decisión explícita del proyecto como referencia experimental; esto **no** significa que haya demostrado una mejora de calidad: el holdout de 100 preguntas de 720k muestra bucles, contaminación entre preguntas y degeneración, sin puntuación semántica automática.
 
 Puede heredar y curar bibliotecas de datos reutilizables de [HERETIC-RONIN](https://github.com/orbitalronin94/HERETIC-RONIN). **RONIN-IA queda excluido del corpus unificado actual**. MINIRONIN no hereda procedimientos de entrenamiento, checkpoints, workflows de GitHub Actions, automatizaciones ni sistemas de promoción de otros repositorios.
 
@@ -91,9 +91,20 @@ El checkpoint de **500.000 pasos** fue MAIN experimental antes de la promoción 
 - **Resultado literal:** 99/100 respuestas alcanzaron el límite de 128 tokens; 0/100 emitieron EOS. El diario está marcado `unscored_raw_generation`: no existe puntuación semántica automática ni comparación pareada contra 470k en este registro.
 - **Lectura:** persisten fragmentos reconocibles, pero la mayoría de salidas degenera en repetición, asociaciones fuera de contexto o texto ininteligible. Por tanto, 500k queda promovido como **MAIN experimental por decisión del proyecto**, no como checkpoint demostrado superior en razonamiento, exactitud o utilidad.
 
-## Modelo MAIN experimental — checkpoint 650k 🧠
+## Modelo MAIN experimental — checkpoint 720k 🧠
 
-El checkpoint de **650.000 pasos** es la referencia MAIN experimental vigente, por decisión explícita del proyecto. Sustituye al 500k, pero la promoción **no certifica una mejora de calidad**.
+El checkpoint de **720.000 pasos** es la referencia MAIN experimental vigente, por decisión explícita del proyecto. Sustituye al MAIN anterior de 670k, pero la promoción **no certifica una mejora de calidad**.
+
+- **Checkpoint:** [release 720k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-720000) · [descargar checkpoint](https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-legacy-150k-from-650k-step-720000/checkpoint-720000.pt).
+- **SHA-256:** `2f755f00e09b51dc30f038c77f40eb5c787d3f30555f86559f6c3cac8b9640fa`.
+- **Arquitectura:** Transformer decoder-only, 4,3 millones de parámetros efectivos (9.970.176 nominales); UTF-8 bytes + EOS, 257 símbolos activos; seed 9519.
+- **Holdout:** [run 42602585362](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42602585362). 100 preguntas idénticas; SHA-256 del conjunto `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`; greedy, temperatura 0, 128 tokens, 2 hilos, eval y KV cache.
+- **Resultado literal:** 100/100 respuestas alcanzaron el límite de 128 tokens y 0/100 emitieron EOS. El diario está marcado `unscored_raw_generation`; no hay puntuación semántica ni comparación pareada contra 670k.
+- **Lectura:** persisten bucles, contaminación de contexto y respuestas fuera de dominio. La promoción es administrativa y experimental; no demuestra mejora en razonamiento, exactitud o calidad conversacional.
+
+## Referencia histórica — checkpoint 650k
+
+El checkpoint de **650.000 pasos** fue una referencia MAIN experimental anterior. Se conserva como referencia histórica; **no se declara una mejora de calidad**.
 
 - **Checkpoint:** [release 650k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-cycle-1-step-650000) · [descargar checkpoint](https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-cycle-1-step-650000/checkpoint-650000.pt).
 - **SHA-256:** `70f2cca02be8d4a3546992b40c6c82e62ed4be7c00de1ff549ef2894a1184b58`.
