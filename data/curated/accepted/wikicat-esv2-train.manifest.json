@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "dataset": "WikiCAT_esv2 Spanish train",
+  "source_dataset": "PlanTL-GOB-ES/WikiCAT_esv2",
+  "source": "https://huggingface.co/datasets/PlanTL-GOB-ES/WikiCAT_esv2",
+  "source_revision": "924ae6077edddf60f3ad2f2cbc54df3825a70930",
+  "source_file": "hftrain_esv5.json",
+  "license": "CC BY-SA 3.0",
+  "language": "es",
+  "source_split": "train",
+  "source_rows_scanned": 6716,
+  "rows_admitted": 6456,
+  "rows_skipped_exact_duplicates": 249,
+  "rows_skipped_short": 11,
+  "file": "wikicat-esv2-train.jsonl",
+  "sha256_jsonl": "b0a05225a2e1ac3778ca75f913056e9cb20a884f9955b2f918f99fa07806dde8",
+  "retrieved_at_utc": "2026-11-09T19:48:09.539488+00:00",
+  "admission_policy": "Complete upstream train split loaded directly from a pinned JSON file; no remote dataset code executed; preserve source label and provenance."
+}
