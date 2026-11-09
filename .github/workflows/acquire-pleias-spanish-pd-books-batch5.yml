@@ -1,0 +1,80 @@
+name: MINIRONIN — admitir libros españoles PleIAs (shards 113–120)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/acquire-pleias-spanish-pd-books-batch5.yml"
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: minironin-pleias-spanish-pd-books-batch5
+  cancel-in-progress: false
+env:
+  RELEASE_TAG: pleias-spanish-pd-books-v1
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify persistent PleIAs release exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null
+  convert-shards:
+    needs: prepare-release
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard: [113,114,115,116,117,118,119,120]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned Parquet reader
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "huggingface_hub==0.29.3" "pyarrow==19.0.1"
+      - name: Download, curate and audit full-text shard
+        run: python scripts/acquire_pleias_spanish_pd_books.py --shard ${{ matrix.shard }} --output-dir out
+      - name: Verify language, public-domain filter and SHA-256
+        env:
+          SHARD: "${{ matrix.shard }}"
+        run: |
+          python - <<'PY'
+          import gzip,hashlib,json,os
+          from pathlib import Path
+          shard=int(os.environ["SHARD"])
+          p=Path(f"out/spanish-pd-{shard:04d}.jsonl.gz")
+          m=json.loads(Path(f"out/spanish-pd-{shard:04d}.manifest.json").read_text())
+          h=hashlib.sha256();n=0
+          with gzip.open(p,"rb") as f:
+              for block in iter(lambda:f.read(1024*1024),b""): h.update(block)
+          with gzip.open(p,"rt",encoding="utf-8") as f:
+              for line in f:
+                  r=json.loads(line)
+                  assert r["language"]=="es" and r["train_eligible"]
+                  assert r["synthetic"] is False and r["license"].startswith("Public domain")
+                  assert r["source_revision"]=="001eaf13681f483069361dd82195ce279e12ed63"
+                  n+=1
+          assert n==m["record_count"] and h.hexdigest()==m["sha256_jsonl_uncompressed"]
+          print(json.dumps({"shard":shard,"records":n,"sha256":h.hexdigest()}))
+          PY
+      - name: Publish immutable shard and provenance manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$RELEASE_TAG" out/spanish-pd-*.jsonl.gz out/spanish-pd-*.manifest.json --repo "$GITHUB_REPOSITORY" --clobber
+  rebuild-unified-corpus:
+    needs: convert-shards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rebuild unified train corpus after all shards in this batch are published
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
