@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "slug": "sqac-spanish",
+  "name": "SQAC — Spanish Question Answering Corpus",
+  "repo_id": "PlanTL-GOB-ES/SQAC",
+  "license": "CC BY 4.0",
+  "split": "train",
+  "domain": "comprensión lectora y preguntas-respuestas",
+  "text_fields": [],
+  "task": "Spanish extractive question answering",
+  "minimum_rows": 1000,
+  "attribution": "Plan de Tecnologías del Lenguaje — Gobierno de España / BSC TeMU; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/PlanTL-GOB-ES/SQAC",
+  "language": "es",
+  "min_text_chars": 24,
+  "license_verification": "exact dataset-card identifier required; no NC/ND licenses admitted",
+  "status": "ready_for_automated_import"
+}
