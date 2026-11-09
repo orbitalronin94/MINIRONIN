@@ -1,11 +1,6 @@
 name: MINIRONIN — admitir Minerva científico español
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/acquire-minerva-scientific-spanish.yml"
-      - "scripts/acquire_minerva_scientific_spanish.py"
 permissions:
   contents: read
 jobs:
