@@ -1,0 +1,33 @@
+# Acertar errando: 45
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Acertar%20errando%3A%2045
+
+**Page ID:** 54131
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Acertar%20errando%3A%2045?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+Escena XIV 
+
+DICHOS y ALMAZÁN.
+
+D. VENTURA ALMAZÁN. -Ah, señor marqués, perdóneme la descortesía: dijéronme que aquí hallaría a don Cenón con mi novia, y he corrido... ¡Ah, don Cenón! (Viéndole.) ¡Cuánto me alegro de verlo!, venga un abrazo. (Lo abraza.)
+
+MARQUÉS DEL ROBLE. -Señor Almazán, usted está en su casa: hablen ustedes...
+
+D. VENTURA ALMAZÁN. -Si no hay nada que hablar. Yo vengo a casarme con la sobrina, ya se lo dije esta mañana; conque una vez que usted está en autos...
+
+MARQUÉS DEL ROBLE. -Sí; pero don Cenón puede tener algo que decirle a usted, y no es cosa de..., me alegro de que haya esta ocasión de ofrecer mi casa al hijo de mi antiguo amigo y paisano. (Vase.)
+
+Acertar errando

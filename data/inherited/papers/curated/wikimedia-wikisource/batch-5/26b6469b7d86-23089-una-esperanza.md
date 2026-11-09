@@ -1,0 +1,41 @@
+# Una esperanza
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Una%20esperanza
+
+**Page ID:** 23089
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Una%20esperanza?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+¿Cómo queda, no ves, querida esposa,
+la blanca helena que, a tu lado crece,
+cuando el riego le falta que le ofrece
+tu mano, cada vez más cariñosa?
+
+Inclínase marchita y congojosa  
+al blando soplo que sus hojas mece,
+sus pétalos desgreña, y desparece
+del verde tallo que adornó graciosa.
+
+De pena igual tu ausencia lastimera
+me llena el corazón y triste, mustia,  
+mi faz se muestra de dolor transida,
+
+¡Ay! morir cual la flor también debiera,
+y si vivo, sólo es porque en mi angustia
+la esperanza de verte me da vida.
+
+ES-U
+Poesías de Rafael Carvajal
+Poesías
