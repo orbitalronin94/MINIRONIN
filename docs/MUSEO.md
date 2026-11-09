@@ -1146,8 +1146,9 @@ Esta tabla es una guía editorial de exploración, no una recomendación de cali
 | [710k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-710000) | El universo ficticio y el «ni puta idea» | Abstención cosmológica, electrón y mutaciones de la puerta | Diario recuperado; generación bruta sin puntuación semántica |
 | [720k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-720000) | La abstención desnuda y la ontología | «Ni puta idea» sin escolta y respuestas sobre entidades inexistentes | Diario recuperado; generación bruta sin puntuación semántica |
 | [730k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-730000) | El ecuador, el cereal y la quinta capa del formulario de abstención | 20 «ni puta idea» (16 con formulario), junto a los motivos del ecuador, el cereal y el sustantivo; 100/100 salidas truncadas a 128 tokens, sin EOS | Holdout independiente documentado en la sección 10; generación bruta sin puntuación semántica |
+| [740k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-740000) | El corazón, la puerta y la razón que regresa | 8 «El corazón», 7 «ni puta idea» (todas con formulario), 5 «La puerta»; 20 fugas con «Pregunta:» | Holdout independiente documentado en la sección 12; 100/100 salidas truncadas a 128 tokens, sin EOS; generación bruta sin puntuación semántica |
 
-**Nota sobre el recuento.** Esta guía reúne catorce hitos seleccionados de la serie: 400k, 450k, 470k, 500k, 560k y 650k–730k. Existen además releases intermedias, incluido 570k; no se incorporan como fichas de personalidad mientras no se recupere y verifique su diario independiente. La ausencia de un diario no demuestra que el checkpoint no exista: significa que todavía no tenemos evidencia comparable para describir su repertorio.
+**Nota sobre el recuento.** Esta guía reúne quince hitos seleccionados de la serie: 400k, 450k, 470k, 500k, 560k y 650k–740k. Existen además releases intermedias, incluido 570k; no se incorporan como fichas de personalidad mientras no se recupere y verifique su diario independiente. La ausencia de un diario no demuestra que el checkpoint no exista: significa que todavía no tenemos evidencia comparable para describir su repertorio.
 
 ### Cómo usar el catálogo sin engañarse
 
@@ -1286,3 +1287,45 @@ Para que «romperse mejor» deje de ser solo una intuición, los próximos holdo
 Estas métricas deben calcularse sobre los mismos IDs, prompts, configuración y límite de generación en cada checkpoint. Así podremos afirmar que la forma ha avanzado sin vender ese avance como comprensión.
 
 > **Koan del jarrón.** Un hombre tenía un jarrón roto. Lo pegó con cola. Se volvió a romper. Lo pegó otra vez. Al año, el jarrón tenía más cola que cerámica. Le preguntaron si estaba arreglado. «No. Pero ya no se rompe en los mismos sitios». Vigilad la homeostasis.
+
+
+## 12. Checkpoint 740k — el corazón vuelve a ocupar el centro
+
+[Holdout 740k · ejecución 42608813221](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42608813221) · [artefacto auditable del diario](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42608813221). Release: [checkpoint 740k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-740000). Checkpoint SHA-256: `f3e651914c0250140750c3b9e2b88df255e62ad496c843d62752813cad4ba74b`. Holdout SHA-256: `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`. Artefacto ZIP SHA-256: `e77816681ad4373ecb17c511c0d4385508af5bb9e96f12f052fb9c869597d3f5`.
+
+El diario contiene 100 preguntas únicas, repartidas en 13 dominios: CI/CD (35), personalidad/troleo (25), matemáticas (6), lógica (5), razonamiento (5), seguimiento de instrucciones (4), pensamiento crítico (4), causalidad (3), probabilidad (3), incertidumbre (3), conocimiento (3), contradicción (2) y calibración (2). Modelo de 9.970.176 parámetros, vocabulario activo 257, tokenización UTF-8 bytes + EOS, semilla 9519. Inferencia greedy argmax, temperatura 0, máximo 128 tokens, sufijo «\\nRespuesta:», dos hilos, modo eval y KV cache activada. El informe figura como `unscored_raw_generation`: requiere revisión humana ciega; no contiene una puntuación semántica.
+
+**Resultado técnico:** las 100 respuestas consumieron exactamente 128 tokens cada una y ninguna terminó con EOS. Las 100 salidas están truncadas por el límite de generación. La ejecución completó correctamente la descarga y verificación SHA-256 del checkpoint, la comprobación de las 100 preguntas y la generación del diario.
+
+### Vitrina 740k
+
+**1. El corazón como nuevo comodín.**  
+«El corazón» aparece en ocho respuestas: abstención, preguntas de CI/CD y varias provocaciones de personalidad. En algunos casos llega precedido por fórmulas como «El resultado correcto» o «La respuesta breve». No es una respuesta pertinente a esas preguntas; es un objeto anatómico que ha pasado a ocupar el centro del repertorio.
+
+**2. La abstención conserva el formulario, pero pierde frecuencia.**  
+«Ni puta idea» aparece siete veces y las siete incorporan una justificación contextual iniciada por «Contexto: La pregunta presupone un universo ficticio…» o una variante degradada. Frente a las veinte apariciones de 730k (dieciséis con formulario), baja la frecuencia observada, pero no desaparece la plantilla. La presencia del formulario no demuestra que la abstención sea apropiada: aparece también ante preguntas respondibles.
+
+**3. La puerta y la razón sobreviven.**  
+«La puerta» aparece en cinco salidas, con mutaciones como «La puerta no es elimina los controles críticos» y «La puerta no estaba cerrada; era la pregunta». La familia de «La razón ha llegado hasta aquí y se niega a fingir» aparece en dos respuestas casi literales, además de otras dos variantes que reutilizan «La razón». Son fantasmas de ediciones anteriores, no evidencia de memoria episódica.
+
+**4. El cráneo reaparece; el ecuador y el cereal desaparecen.**  
+«El cráneo» aparece tres veces. En cambio, no aparece «El ecuador», «el cereal» ni «el sustantivo» en esta muestra, pese a su protagonismo en 730k. El relevo entre objetos comodín es claro en el diario, pero una muestra de 100 preguntas no permite afirmar que esos tics hayan desaparecido del comportamiento general.
+
+**5. La fuga de formato continúa.**  
+Veinte respuestas contienen una nueva marca «Pregunta:» dentro de la generación. Algunas incluso vuelven a formular el ejercicio original o inventan otra pregunta; otras insertan una respuesta comodín y después continúan con texto degenerado. Se mantiene el problema de no respetar la frontera de una única respuesta.
+
+**6. El «100» vuelve como falso resultado.**  
+El número aparece como salida en lógica, matemáticas y razonamiento; en troll-009 se repite incluso después de que la pregunta pida resolver 6 × 7. Es un ejemplo especialmente visible de respuesta numérica con apariencia de exactitud, pero sin correspondencia con la operación solicitada.
+
+### Lectura comparativa: qué cambia de 730k a 740k
+
+- **Desplazamiento del comodín dominante:** 730k estaba marcado por el ecuador y el cereal; 740k pone «El corazón» en primer plano (8 apariciones).
+- **Abstención menos frecuente, misma estructura:** «ni puta idea» pasa de 20 a 7 apariciones; las siete de 740k conservan una explicación contextual. No se puede inferir mejor calibración sin juzgar si cada pregunta era realmente inaccesible.
+- **Persistencia de familias anteriores:** la puerta y la razón reaparecen; el cráneo vuelve a escena.
+- **Persistencia de la fuga de formato:** 20/100 salidas contienen «Pregunta:» como continuación dentro de la respuesta.
+- **Sin mejora demostrada en capacidad ni terminación:** el diario sigue sin puntuación semántica y las 100 respuestas vuelven a alcanzar el tope de 128 tokens sin EOS.
+
+> **Perla 740k.** «El resultado correcto: El corazón». La respuesta parece traer un sello de validación; lo que valida, sin embargo, sigue siendo un misterio anatómico.
+
+> **Koan del corazón.** El maestro preguntó al loro cuánto era 6 × 7. El loro respondió: «El corazón». «¿Y el ecuador?», preguntó el maestro. «Hoy no ha venido», dijo el loro. «¿Y la razón?» «Ha llegado hasta aquí y se niega a fingir». El maestro anotó: «El museo cambia de órganos; la aritmética sigue esperando».
+
