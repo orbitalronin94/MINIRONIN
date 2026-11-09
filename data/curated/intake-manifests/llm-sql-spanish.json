@@ -15,5 +15,6 @@
   "synthetic": true,
   "attribution": "SomosNLP; LLM_SQL_BaseDatosEspanol; Apache License 2.0.",
   "license_verification": "exact Apache-2.0 live card check",
-  "status": "ready_for_automated_import"
+  "status": "ready_for_automated_import",
+  "intake_batch": "2026-11-09-requeue-all-pending-manifests"
 }
