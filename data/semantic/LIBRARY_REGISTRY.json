@@ -165,6 +165,25 @@
         "cooperation",
         "political_economy"
       ]
+    },
+    {
+      "id": "wikimedia-es",
+      "name": "Wikimedia Spanish encyclopedic library (100k attributed articles)",
+      "project": "MINIRONIN",
+      "source_paths": [
+        "data/inherited/wikimedia-es/"
+      ],
+      "concepts": [
+        "general_knowledge",
+        "science",
+        "history",
+        "geography",
+        "biology",
+        "technology",
+        "culture",
+        "language",
+        "mathematics"
+      ]
     }
   ],
   "concepts": [
