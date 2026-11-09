@@ -245,8 +245,8 @@ jobs:
           set -euo pipefail
           python scripts/build_unified_train.py --library-manifest data/curated/library-artifact-v2.json --output-dir unified-train
           python scripts/audit_library_composition.py --input unified-train/train.jsonl.gz --output unified-train/composition-by-matter.json
+          sha256sum unified-train/composition-by-matter.json >> unified-train/SHA256SUMS
           (cd unified-train && sha256sum -c SHA256SUMS)
-          sha256sum unified-train/composition-by-matter.json
           cat unified-train/quality-report.json
           cat unified-train/composition-by-matter.json
       - name: Publicar el único artefacto unificado de entrenamiento
