@@ -79,5 +79,7 @@ jobs:
               gh api --method POST "repos/$REPOSITORY/actions/workflows/wikisource-es-1200-batch.yml/dispatches" -f ref=main -f "inputs[batch_index]=$next_batch"
             else
               echo "Reached configured 28-batch Wikisource intake ceiling."
+              echo "Dispatching one unified-corpus build after all 33,600 texts have landed."
+              gh api --method POST "repos/$REPOSITORY/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
             fi
           fi
