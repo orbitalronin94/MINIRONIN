@@ -8,7 +8,7 @@ on:
     types: [completed]
 
 permissions:
-  actions: read
+  actions: write
   checks: read
   contents: write
   pull-requests: write
@@ -23,6 +23,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
           REPOSITORY: ${{ github.repository }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
         shell: bash
         run: |
           set -euo pipefail
@@ -64,4 +65,19 @@ jobs:
           fi
 
           echo "All guards passed for PR #$pr_number; merging with squash."
-          gh api --method PUT "repos/$REPOSITORY/pulls/$pr_number/merge" -f merge_method=squash
+          merge_result="$(gh api --method PUT "repos/$REPOSITORY/pulls/$pr_number/merge" -f merge_method=squash)"
+          if [[ "$(jq -r '.merged' <<<"$merge_result")" != "true" ]]; then
+            echo "GitHub did not confirm the merge; stopping."
+            exit 1
+          fi
+
+          if [[ "$HEAD_BRANCH" == prep/wikisource-es-1200-batch-* ]]; then
+            current_batch="$(sed 's/.*-batch-//' <<<"$HEAD_BRANCH")"
+            next_batch=$((10#$current_batch + 1))
+            if (( next_batch <= 31 )); then
+              echo "Dispatching next deterministic 1200-document batch: $next_batch"
+              gh api --method POST "repos/$REPOSITORY/actions/workflows/wikisource-es-1200-batch.yml/dispatches" -f ref=main -f "inputs[batch_index]=$next_batch"
+            else
+              echo "Reached configured 31-batch Wikisource intake ceiling."
+            fi
+          fi
