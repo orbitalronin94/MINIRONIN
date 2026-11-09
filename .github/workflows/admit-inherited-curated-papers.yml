@@ -6,7 +6,7 @@ on:
         description: Curated source library to admit
         required: true
         type: choice
-        options: [nasa, nist, noaa-usgs]
+        options: [nasa, nist, noaa-usgs, classics, anarchist]
 permissions:
   contents: write
   pull-requests: write
