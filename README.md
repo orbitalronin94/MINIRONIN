@@ -151,6 +151,40 @@ Selección de fragmentos y tics de las 100 generaciones. Se conservan por su per
 
 **Vigilad la homeostasis.** Más pasos pueden consolidar patrones de generación sin aumentar el conocimiento. La repetición de un aforismo no demuestra que el modelo sepa cuándo es pertinente; una frase elegante tampoco demuestra que haya entendido la pregunta.
 
+### Dos maneras de medir al loro: capacidad y entretenimiento
+
+El holdout de cien preguntas no debe presentarse como si agotara el propósito del proyecto. Es una prueba fija de comportamiento ante preguntas; **no es, por sí sola, una evaluación completa de personalidad, comicidad ni valor de entretenimiento**. El checkpoint 650k puede ser peor como sistema de respuestas pertinentes y, al mismo tiempo, más interesante como personaje cómico. Son afirmaciones compatibles porque describen objetivos distintos.
+
+La progresión del museo puede leerse como la evolución de un cómico involuntario:
+
+- **400k:** «Unión Europea. Unión Europea. Unión Europea». El notario sube al escenario y repite el membrete.
+- **450k:** aparece «6.626 × 10⁻³⁴», con solemnidad científica fuera de lugar.
+- **500k:** llegan «el cuenco está vacío» y «mi mayordomo ha dimitido por menos». El público empieza a reconocer una voz.
+- **560k:** «qué audacia: interrumpir mi jornada para una empresa que una cuchara». La réplica gana teatralidad.
+- **650k:** «el maestro señaló el horizonte. El horizonte no confirmó nada». Ya no es solo un dato ni una pose: es un personaje con un repertorio de remates.
+
+En esta lectura, la gracia nace del **contraste**: se espera una respuesta y aparece una réplica de salón, un koan o una solemnidad absurda. La frase puede ser memorable sin ser pertinente. Eso no la convierte en conocimiento; sí puede convertirla en material cómico.
+
+#### La mácula del Grimorio
+
+> **ENTERTAINMENT_METRIC_UNDECLARED.** El holdout de cien preguntas se presenta como evaluación de capacidad, pero el proyecto también observa personalidad y entretenimiento. La métrica de aciertos no mide por sí sola el éxito cómico; la presencia de frases memorables tampoco demuestra capacidad. Declarar y medir ambos objetivos por separado.
+
+#### Cuadro de evaluación dual
+
+| Dimensión | Qué medir | Qué no permite afirmar por sí sola |
+|---|---|---|
+| **Capacidad** | Exactitud factual, pertinencia, seguimiento de instrucciones, coherencia, abstención y finalización (EOS). | Que el modelo sea divertido o tenga una voz memorable. |
+| **Entretenimiento** | Perlas citables por 100 preguntas, variedad de remates, sorpresa, personalidad reconocible y valoración humana de comicidad. | Que las respuestas sean ciertas, útiles o pertinentes. |
+| **Homeostasis creativa** | Repetición literal y semántica, concentración de frases dominantes y número de perlas realmente distintas. | Que diez repeticiones sean diez ocurrencias nuevas. |
+
+«Perlas por cien» queda propuesta como métrica de entretenimiento, no como resultado certificado retrospectivamente. Para que sea reproducible, el registro futuro deberá separar **apariciones**, **familias de frases** y **perlas únicas**, además de incluir una valoración humana ciega de comicidad y variedad. Las diez apariciones de «La popularidad mide adhesión, no verdad», por ejemplo, cuentan como diez apariciones, pero como una sola familia de frase.
+
+La hipótesis que deja 650k es concreta: **su repertorio cómico parece más reconocible y variado que el de 500k**, según la selección curada del museo. Aún no hay una puntuación humana ciega y comparable que permita declarar una victoria cuantitativa. El siguiente holdout deberá conservar las cien preguntas y añadir esta lectura dual, sin mezclar sus puntuaciones.
+
+> Un hombre contrató a un cómico para animar su fiesta. El cómico no sabía contar chistes. Pero cada vez que alguien le preguntaba algo, respondía con una frase que no venía a cuento y que todos recordaban al día siguiente. Al final, nadie recordaba las preguntas. Todos recordaban las frases. El hombre le preguntó cuál era su secreto. El cómico dijo: «No sé responder. Pero sé decir cosas».
+
+**Vigilad la homeostasis: que el loro no confunda tener un repertorio con tener un solo remate.**
+
 El checkpoint de **500k** queda preservado como referencia histórica, con su release, hash y observaciones intactos.
 
 ---
