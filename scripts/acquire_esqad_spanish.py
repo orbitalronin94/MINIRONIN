@@ -42,8 +42,8 @@ def main():
  seen=set(); counts=Counter(); synthetics=Counter(); digest=hashlib.sha256(); rows=0
  with out.open("w",encoding="utf-8",newline="\n") as f:
   for path,(subset,synthetic) in FILES.items():
-   matches=[n for n in z.namelist() if n.lower().endswith(path.lower())]
-   if not matches: raise SystemExit(f"missing expected ESQAD member: {path}")
+   matches=[n for n in z.namelist() if Path(n).name.casefold()==Path(path).name.casefold()]
+   if not matches: raise SystemExit(f"missing expected ESQAD member: {path}; archive members={z.namelist()[:100]}")
    member=matches[0]; payload=z.read(member)
    if member.lower().endswith(".csv"):
     text=payload.decode("utf-8-sig",errors="replace")
