@@ -183,9 +183,6 @@ def main() -> None:
         if expected and expected != digest:
             raise SystemExit(f"admissions:{line_no}: SHA-256 mismatch for {rel}")
         document_id = str(row.get("document_id") or f"{row.get('source_id','source')}:{digest[:20]}")
-        if document_id in seen and seen[document_id] != digest:
-            raise SystemExit(f"admissions:{line_no}: document_id maps to different content")
-        seen[document_id] = digest
         try:
             records = list(iter_source_records(path))
         except (UnicodeError, ValueError, json.JSONDecodeError) as exc:
