@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "slug": "spaccc-clinical-cases-es",
+  "name": "SPACCC Spanish Clinical Case Corpus",
+  "record_id": 2560316,
+  "doi": "https://doi.org/10.5281/zenodo.2560316",
+  "license": "CC BY 4.0",
+  "license_id": "cc-by-4.0",
+  "format": "zip_txt",
+  "file_regex": "^SPACCC[.]zip$",
+  "domain": "casos clínicos, medicina y literatura biomédica",
+  "task": "Spanish clinical narrative language modeling",
+  "minimum_rows": 1000,
+  "min_text_chars": 80,
+  "attribution": "Intxaurrondo, Marimon, González-Agirre, López-Martín, Rodríguez, Santamaría, Villegas & Krallinger (2018), SPACCC; PlanTL; CC BY 4.0.",
+  "language": "es",
+  "encoding": "utf-8",
+  "status": "ready_for_automated_import"
+}
