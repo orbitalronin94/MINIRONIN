@@ -116,6 +116,7 @@ def main() -> None:
             "admission_status": "admitted",
             "train_eligible": row["train_eligible"],
             "retrieval_eligible": row["retrieval_eligible"],
+            "redistribution": bool(row.get("redistribution", False)),
             "epistemic_type": str(row.get("epistemic_type", "source_specific")),
             "domain": str(row.get("domain", "general")),
             "language": str(row.get("language", "und")),
