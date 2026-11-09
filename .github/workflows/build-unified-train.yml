@@ -30,7 +30,6 @@ on:
       - "scripts/acquire_common_corpus_spanish.py"
       - "scripts/acquire_slr_bench_spanish.py"
       - "scripts/acquire_alia_cultural_heritage.py"
-      - "scripts/acquire_minerva_scientific_spanish.py"
 
 permissions:
   contents: read
