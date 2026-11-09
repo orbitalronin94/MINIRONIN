@@ -31,6 +31,7 @@ on:
       - "scripts/acquire_slr_bench_spanish.py"
       - "scripts/acquire_alia_cultural_heritage.py"
       - "scripts/acquire_minerva_scientific_spanish.py"
+      - "scripts/acquire_bne_hemeroteca_ocr_spanish.py"
 
 permissions:
   contents: read
@@ -207,6 +208,16 @@ jobs:
           fi
 
 
+      - name: Descargar páginas BNE Hemeroteca OCR admitidas
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p data/inherited/bne-hemeroteca-ocr-es
+          if gh release view bne-hemeroteca-ocr-es-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release download bne-hemeroteca-ocr-es-v1 --repo "$GITHUB_REPOSITORY" --dir data/inherited/bne-hemeroteca-ocr-es --pattern "bne-ocr-es-*.jsonl.gz" --pattern "bne-ocr-es-*.manifest.json"
+          fi
+
       - name: Copiar exactamente los nueve artículos Markdown admitidos de Papers
         run: |
           set -euo pipefail
@@ -272,6 +283,7 @@ jobs:
             data/inherited/wikimedia-es \
             data/inherited/pleias-spanish-pd-books \
             data/inherited/common-corpus-es \
+            data/inherited/bne-hemeroteca-ocr-es \
             generated-curricula \
             generated-basic-curricula \
             generated-math-es \
