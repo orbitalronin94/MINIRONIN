@@ -1,4 +1,4 @@
-name: MAXIRONIN 500M — holdout antes y después de 1k
+name: MAXIRONIN 500M — holdout único del checkpoint 1k
 
 on:
   push:
@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  paired-holdout:
+  single-checkpoint-holdout:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
@@ -54,16 +54,16 @@ jobs:
           echo "checkpoint=$CKPT" >> "$GITHUB_OUTPUT"
           echo "tokenizer=$TOKENIZER" >> "$GITHUB_OUTPUT"
           sha256sum "$CKPT" "$TOKENIZER"
-      - name: Holdout fijo antes reconstruido y después del paso 1000
+      - name: Holdout fijo solo del checkpoint de 1000 pasos
         run: |
           python scripts/holdout_maxironin.py \
             --checkpoint "${{ steps.files.outputs.checkpoint }}" \
             --tokenizer "${{ steps.files.outputs.tokenizer }}" \
             --output-dir maxironin-holdout
-      - name: Publicar los dos diarios y metadatos
+      - name: Publicar el diario del checkpoint 1000
         uses: actions/upload-artifact@v4
         with:
-          name: maxironin-paired-holdout-0-vs-1000
+          name: maxironin-holdout-step-1000
           path: maxironin-holdout/
           if-no-files-found: error
           retention-days: 30
