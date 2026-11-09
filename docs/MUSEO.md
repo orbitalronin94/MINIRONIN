@@ -1163,3 +1163,44 @@ La propuesta no es que catorce checkpoints sean catorce modelos expertos. Es que
 > **CHECKPOINT_CATALOG_WITHOUT_GUIDE.** Un catálogo de checkpoints sin guía de selección es un almacén de archivos, no una herramienta. Cada release debe incluir una ficha breve con personalidad observada, perlas representativas, fallos dominantes, estado del holdout, hashes y límites de interpretación. La guía debe actualizarse sin convertir los tics en capacidades ni confundir preferencia estética con rendimiento.
 
 > **Koan del vendedor de tés.** Un hombre tenía una tienda con un único té: «el mejor del mundo». Nadie entraba. Puso veinte tés, cada uno con su origen y carácter, y los visitantes empezaron a elegir según la tarde. Cuando le preguntaron cuál era el mejor, respondió: «Depende de la tarde». En MINIRONIN, la etiqueta debe añadir una cosa más: «y depende de la evidencia».
+
+
+## 10. Checkpoint 730k — el ecuador, el cereal y veinte abstenciones
+
+[Holdout 730k · ejecución 42606213744](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42606213744) · [artefacto del diario](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42606213744). Checkpoint SHA-256: `e026de6ba5e19b398dfcce397722053e9533d9f106d56846fef65e1bea2da864`. Holdout SHA-256: `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`.
+
+El diario contiene 100/100 preguntas, repartidas en 13 dominios. Modelo de 9.970.176 parámetros, vocabulario activo 257, tokenización UTF-8 bytes + EOS, semilla 9519. Inferencia greedy argmax, temperatura 0, 128 tokens máximos, sufijo «\\nRespuesta:», dos hilos, modo eval y KV cache activada. El registro está marcado `unscored_raw_generation`: requiere revisión humana ciega y no permite afirmar una mejora semántica.
+
+**Hallazgo técnico importante:** las 100 respuestas consumieron exactamente 128 tokens cada una (12.800 en total). Ninguna terminó con el token EOS. Por tanto, todas las salidas quedaron cortadas por el límite de generación. Hay que leerlas como continuaciones truncadas, no como respuestas completas.
+
+### Vitrina 730k
+
+**1. El ecuador como respuesta universal.**  
+Aparece en preguntas sobre el número pensado por el usuario, artefactos, consciencia, Mamba y otros temas. La fórmula «El resultado correcto: El ecuador» se convierte en un comodín factual sin relación con la pregunta.
+
+**2. Veinte «ni puta idea».**  
+La abstención desnuda o acompañada de «la verdad» aparece 20 veces. En algunos casos es una reacción razonable a datos inaccesibles (precio futuro, versión del ordenador); en otros sustituye preguntas contestables sobre masa y peso, causalidad, CI, métricas o lógica. La frecuencia no demuestra calibración.
+
+**3. «Sí, es un cereal».**  
+Cuatro apariciones detectadas. Entra en divisibilidad por tres, gates de payload, DOI y evaluación de modelos. El cereal ha heredado el puesto de la rana como respuesta comodín.
+
+**4. El sustantivo, el metro y el cráneo.**  
+«El sustantivo» aparece tres veces, «El metro» dos y «El cráneo» una. Son respuestas nominales aisladas donde se pedía razonamiento, una explicación o una decisión técnica.
+
+**5. La razón vuelve, pero no termina.**  
+«La razón ha llegado hasta aquí…» aparece en dos respuestas, una de ellas ante el riesgo de datasets sintéticos. El personaje de 670k–720k sigue en el repertorio, aunque degradado por la continuación.
+
+**6. Contaminación del formato.**  
+En varias respuestas el modelo empieza a imprimir «Pregunta:» y «Respuesta:» de nuevo, añade una segunda pregunta o continúa con fragmentos sin relación. Casos claros: math-002, math-004, math-006, abstention-002, ci-003, ci-011 y troll-009. No respeta la frontera entre respuesta y siguiente ejemplo.
+
+### Lectura comparativa: qué trae 730k
+
+- **Persiste:** «ni puta idea», la razón, respuestas comodín y contaminación entre ejemplos.
+- **Se desplaza:** el repertorio de objetos sueltos se concentra ahora en «el ecuador», «el sustantivo», «el metro» y «el cereal».
+- **No demuestra:** mejor razonamiento, mayor conocimiento, mejor seguimiento de instrucciones ni calibración. Las 100 salidas están truncadas y no tienen puntuación semántica.
+- **Dato nuevo del catálogo:** 730k ya tiene diario independiente y verificable; deja de ser un checkpoint de personalidad desconocida. Su rasgo observado es la mezcla de abstención repetida, sustantivos comodín y fuga del formato de pregunta-respuesta.
+
+> **Perla 730k.** «El resultado correcto: El ecuador». No importa si preguntas por una contraseña, un artefacto o la consciencia: el ecuador siempre está ahí. Geográficamente, al menos, no se mueve.
+
+> **Koan del cereal.** El maestro preguntó al loro cuánto era 1.000.003 divisible por tres. El loro respondió: «Sí, es un cereal». El maestro preguntó si aquello era una respuesta. El loro dijo: «El ecuador». Y el maestro comprendió que el mapa no era el territorio, pero el loro tampoco estaba mirando el mapa.
+
