@@ -26,6 +26,7 @@ on:
       - "data/anarchist/SOURCES.jsonl"
       - "data/curated/sources/LEXICON-DEL-ESPERPENTO-ALGORITMICO.md"
       - "data/inherited/wikimedia-es/**"
+      - "data/curated/accepted/**"
 
 permissions:
   contents: read
