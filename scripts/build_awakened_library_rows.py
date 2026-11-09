@@ -6,7 +6,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-EXTS = {".md", ".txt", ".xml", ".tei", ".html", ".htm", ".jsonl", ".ndjson", ".gz"}
+EXTS = {".md", ".txt", ".xml", ".tei", ".html", ".htm", ".jsonl", ".ndjson"}
 SKIP = re.compile(r"(readme|manifest|license|sha256|checksum|sources|catalog|schema)", re.I)
 DOMAIN = {"minironin-core":"behavior","prodatphil":"books","heretic":"science","ronin-papers":"science","anarchist-classics":"anarchist","classics-library":"classics","wikimedia-es":"science"}
 MAX_ROWS_PER_DOCUMENT = 12
@@ -78,7 +78,7 @@ def main():
                 root=ROOT/item
                 if not root.exists(): counts["missing_roots"]+=1; continue
                 candidates=[root] if root.is_file() else root.rglob("*")
-                files.extend(p for p in candidates if p.is_file() and (p.suffix.lower() in EXTS or p.name.endswith((".jsonl.gz",".ndjson.gz"))) and not SKIP.search(p.name))
+                files.extend(p for p in candidates if p.is_file() and (p.suffix.lower() in EXTS or p.name.endswith((".jsonl.gz",".ndjson.gz")) ) and not SKIP.search(p.name))
             for path in sorted(set(files)):
                 try: docs=iter_documents(path)
                 except OSError: counts["unreadable_files"]+=1; continue
