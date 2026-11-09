@@ -1,0 +1,94 @@
+name: MAXIRONIN — 500M efectivos — primer entrenamiento de 1k
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/train-maxironin-500m.yml"
+      - "src/maxironin/**"
+      - "scripts/prepare_maxironin_corpus.py"
+      - "scripts/train_maxironin.py"
+      - "docs/MAXIRONIN-500M.md"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: maxironin-500m-first-1000
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      TOKENIZERS_PARALLELISM: "false"
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar PyTorch CPU, Tokenizers y NumPy
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy tokenizers
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Descargar el artefacto histórico del corpus unificado
+        uses: actions/download-artifact@v4
+        with:
+          name: minironin-unified-train-corpus-42523463620
+          repository: orbitalronin94/MINIRONIN
+          run-id: 42523463620
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: maxironin-corpus
+
+      - name: Verificar integridad del corpus histórico
+        run: |
+          set -euo pipefail
+          test -s maxironin-corpus/train.jsonl.gz
+          (cd maxironin-corpus && sha256sum -c SHA256SUMS)
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path("maxironin-corpus/quality-report.json").read_text())
+          assert report["record_count"] > 0, report
+          print({"records":report["record_count"],"domains":len(report["domains"])})
+          PY
+
+      - name: Entrenar BPE byte-level 32.768 sobre todo el corpus y codificar train/validation
+        run: |
+          set -euo pipefail
+          python scripts/prepare_maxironin_corpus.py \
+            --corpus maxironin-corpus/train.jsonl.gz \
+            --output-dir "$RUNNER_TEMP/maxironin-data"
+
+      - name: Auditar arquitectura y entrenar exactamente 1.000 pasos
+        run: |
+          set -euo pipefail
+          python scripts/train_maxironin.py \
+            --data-dir "$RUNNER_TEMP/maxironin-data" \
+            --output-dir maxironin-output \
+            --steps 1000 \
+            --threads 4 \
+            --batch-size 1 \
+            --sequence-length 128
+
+      - name: Publicar checkpoint, tokenizador y métricas
+        uses: actions/upload-artifact@v4
+        with:
+          name: maxironin-500m-step-1000-${{ github.run_id }}
+          path: |
+            maxironin-output/
+            ${{ runner.temp }}/maxironin-data/tokenizer.json
+            ${{ runner.temp }}/maxironin-data/tokenizer-manifest.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
