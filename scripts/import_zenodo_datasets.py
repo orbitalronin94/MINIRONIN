@@ -45,7 +45,10 @@ def main():
                 with tmp.open("wb") as f:
                     for block in r.iter_content(1024*1024):
                         if block: f.write(block)
-            source_sha=hashlib.sha256(tmp.read_bytes()).hexdigest()
+            source_digest=hashlib.sha256()
+            with tmp.open("rb") as source_stream:
+                for block in iter(lambda:source_stream.read(1024*1024),b""): source_digest.update(block)
+            source_sha=source_digest.hexdigest()
             digest=hashlib.sha256(); seen=set(); scanned=admitted=duplicates=short=0
             def emit(text,source_row,extra=None):
                 nonlocal scanned,admitted,duplicates,short
