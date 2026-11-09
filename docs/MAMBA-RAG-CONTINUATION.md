@@ -43,7 +43,7 @@ La continuación usa batch 1, secuencia de 64 bytes, semilla fija y LR máximo `
 
 ## Automatización
 
-`.github/workflows/mamba-rag-continuation.yml` se dispara cuando termina correctamente `Build complete MINIRONIN RAG index` en `main`. También admite ejecución manual indicando el run ID que publicó `minironin-complete-rag-index`.
+`.github/workflows/mamba-rag-continuation.yml` es exclusivamente manual (`workflow_dispatch`) y exige el run ID que publicó `minironin-complete-rag-index`. Construir el índice RAG nunca dispara automáticamente holdout ni entrenamiento; la continuación solo comienza tras una decisión explícita.
 
 Secuencia:
 
