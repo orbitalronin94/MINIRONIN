@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "slug": "sib200-spanish",
+  "name": "SIB-200 Spanish topic classification",
+  "repo_id": "Davlan/sib200",
+  "license": "CC BY-SA 4.0",
+  "config": "spa_Latn",
+  "split": "train",
+  "domain": "noticias, temas y conocimiento general",
+  "text_fields": [
+    "text",
+    "label"
+  ],
+  "task": "Spanish topic classification",
+  "minimum_rows": 500,
+  "attribution": "SIB-200 authors; CC BY-SA 4.0.",
+  "source_url": "https://huggingface.co/datasets/Davlan/sib200",
+  "language": "es",
+  "min_text_chars": 24,
+  "license_verification": "exact dataset-card identifier required; no NC/ND licenses admitted",
+  "status": "ready_for_automated_import"
+}
