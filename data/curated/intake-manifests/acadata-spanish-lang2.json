@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "name": "ACAData academic parallel corpus — Spanish side",
+  "repo_id": "BSC-LT/ACAData",
+  "license": "CC BY 4.0",
+  "source_url": "https://huggingface.co/datasets/BSC-LT/ACAData",
+  "language": "es",
+  "split": "train",
+  "domain": "investigación académica y textos científicos",
+  "task": "Spanish academic parallel text",
+  "min_text_chars": 80,
+  "attribution": "Lacunza et al. (2025), ACAData; Barcelona Supercomputing Center; CC BY 4.0.",
+  "status": "ready_for_automated_import",
+  "slug": "acadata-spanish-lang2",
+  "language_field": "lang2_code",
+  "language_values": [
+    "es"
+  ],
+  "text_fields": [
+    "lang2"
+  ],
+  "minimum_rows": 5000
+}
