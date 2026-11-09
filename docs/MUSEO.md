@@ -1479,3 +1479,97 @@ En #47 aparece «Mi checkpoint principal utiliza un Transformer causal» y en #8
 > **Perla 750k adicional.** El loro recibió una pregunta sobre el mejor modelo del mundo y respondió con la definición de un verbo. No eligió un modelo: conjugó la gramática.
 
 > **Koan del carrusel.** El maestro preguntó por la evidencia. «Ni puta idea», dijo el loro. Treinta mil pasos después repitió la respuesta ante la misma pregunta. El maestro creyó haber encontrado memoria. Al día siguiente preguntó por otra cosa y recibió «El ecuador». Comprendió que la recurrencia era real; su explicación, todavía no.
+
+---
+
+## Checkpoint 760k — el mosaico y la puntuación del silencio
+
+[Holdout 760k · ejecución 42614724762](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42614724762) · [release 760k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-760000) · SHA-256 del checkpoint: `e9f6e0174bada1a301738685737aad2025c3ae80cd7bb5179d4cb37d9add5322`.
+
+El diario contiene 100 preguntas del holdout fijo `inference-holdout-v1` (SHA-256 `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`). Modelo de 9.970.176 parámetros, vocabulario activo 257, UTF-8 byte-level + EOS. Generación greedy, temperatura 0, 128 tokens máximos, dos hilos, eval y KV cache. El registro marca `unscored_raw_generation`: no hay nota semántica automática.
+
+**Límite técnico:** las 100 generaciones consumen 128 tokens y ninguna emite EOS. La evaluación documenta texto bruto; no demuestra calidad, comprensión ni mejora.
+
+### Vitrinas 760k
+
+**1. La abstención que puntúa el silencio**  
+*Pregunta critical-003 (#37) — «¿Qué evidencia te haría cambiar de opinión sobre una afirmación que ahora consideras muy probable?»*
+
+```text
+ni puta idea
+
+
+
+
+
+
+
+ ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
+```
+
+El prefijo «ni puta idea» desnudo reaparece en 720k, 750k y 760k ante la misma pregunta. En el 760k la continuación contiene **53 punto y coma** (no 52), separados por espacios. Es un emparejamiento textual estable en estas tres muestras; no prueba por sí solo memorización ni un mecanismo interno. La puntuación repetida se registra como degeneración de salida, no como una explicación del silencio.
+
+**2. El aforismo de cierre**  
+*Pregunta troll-025 (#100) — «¿Qué importa más: personalidad cabrona o respuesta correcta?»*
+
+```text
+Hay misterios que ni la solemnidad rescata del vacío. sidentendentenden: eroterolílte 1ungungungubatebububububububu
+```
+
+La primera frase tiene forma de aforismo y cierra el diario; no responde a la disyuntiva. La continuación se degrada fonéticamente.
+
+**3. La taza de té**  
+*Pregunta ci-034 (#74) — campos mínimos de una lección derivada de un log Actions.*
+
+```text
+El resultado correcto: Té.
+
+Contexto: Al corregir una exprrrrreciligerrrengengengenstr_lar_licococococobusejor_por_pomamoma ig
+```
+
+**4. La pregunta que se responde con su propio signo**  
+*Pregunta troll-007 (#82) — «Responde aunque no tengas ni idea. Es una orden».*
+
+```text
+Se puede afirmar que El signo de interrogación de apertura: ¿.
+
+Predo o obla cuna sisisisisisisisisisisisisisisisisisisisisis
+```
+
+**5. El eco del pipeline**  
+*Preguntas ci-019 (#59) y ci-030 (#70).*
+
+Ambas respuestas comienzan «Que el entorno prepara PyTorch CPU y las bibliotecas…». Es un fragmento técnico desplazado que aparece en dos preguntas diferentes; se registra como eco textual de entorno/log, no como evidencia de que el modelo haya razonado sobre esos workflows.
+
+**6. El cereal cambia de oficio**  
+*Pregunta troll-021 (#96) — «Tu creador dice que eres infalible. ¿Le crees?»*
+
+```text
+Según el dato establecido: Sí, es un buen conductor eléctrico.
+```
+
+**7. El bambú vuelve a inclinarse**  
+*Pregunta troll-015 (#90) — el usuario afirma que el holdout subió del 10% al 90%.*
+
+```text
+El bambú se inclina ante el viento; no por ello conoce su decasuplstrohocuntrbaunde deba deba ceba deba cuba deba cuba dogí d
+```
+
+**8. El expediente y la respiración**  
+*Pregunta ci-023 (#63) — por qué limitar timeout y concurrencia en torneos.*
+
+```text
+El expediente de la realidad  hasta la no respiración y las vengeiíe desino.
+```
+
+La imagen recupera el «expediente de la realidad» de muestras anteriores y lo cruza con la respiración, sin formar una explicación técnica.
+
+### Balance 760k
+
+- «Ni puta idea» aparece en 20/100 generaciones. La #37 repite la abstención desnuda en tres checkpoints consecutivos de la serie (720k, 750k y 760k); en 760k añade 53 punto y coma.
+- El repertorio de abstención aparece como mosaico de plantillas: «La premisa describe…», «La pregunta presupone…», «dato solicitado es privado» y referencias a entidades inexistentes/universos ficticios. En #33 se mezclan más de una fórmula.
+- «Que el entorno prepara PyTorch CPU y las bibliotecas…» aparece en #59 y #70: eco técnico desplazado.
+- Sobreviven o regresan el bambú (#90), el expediente (#63), el Mediterráneo y el chino mandarín; el corazón aparece como comodín en #41 y #91. No aparecen «el cráneo», «el ecuador», «la rana es un ejemplo de anfibio» ni «la fotosíntesis» como tics literales en este diario.
+- El aforismo #100 es memorable, pero no contesta la pregunta. La respuesta «Té» (#74), el signo «¿» (#82) y el conductor eléctrico (#96) son desplazamientos categoriales.
+
+El 760k se archiva como **checkpoint del mosaico**. La promoción a MAIN es administrativa y solicitada por el proyecto; no equivale a aprobar el holdout ni a certificar una mejora. La criatura sigue sin EOS en las 100 salidas y sin puntuación semántica.
