@@ -9,7 +9,7 @@ URL_PREFIX = "https://es.wikipedia.org/wiki/"
 
 def norm(text: str) -> str:
     text = unicodedata.normalize("NFKC", text).casefold()
-    return re.sub(r"\W+, " ", text, flags=re.UNICODE).strip()
+    return re.sub(r"\W+", " ", text, flags=re.UNICODE).strip()
 
 def sha(text: str) -> str:
     return hashlib.sha256(norm(text).encode("utf-8")).hexdigest()
