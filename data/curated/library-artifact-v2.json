@@ -108,5 +108,10 @@
     "composition-by-matter.json",
     "provenance/",
     "SHA256SUMS"
+  ],
+  "include_path_patterns": [
+    "data/curated/accepted/.*\\.(jsonl|ndjson|parquet|csv|tsv|txt)(\\.gz)?$",
+    "data/curated/(generated-curricula|generated-basic-curricula|generated-math-es|behavioral-datasets)/.*",
+    "data/curated/(engineering-lessons-v1|minironin-(behavior|engineering|identity|performance-engineering)-v1|minironin-abstain-(plain|literary|koan)-50k-v1|minironin-aristocrat-trivial-50k-v1|minironin-(casuist-cynic|scientist-exhausted|oracle-doom|error404-indifference|lexicon-diagnostic)-50k-v1)\\.jsonl$"
   ]
 }
