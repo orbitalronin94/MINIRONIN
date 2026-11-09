@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/train-150k-from-810k-unified.yml"
       - "scripts/prepare_integrated_training_corpus.py"
+      - "scripts/train_long_run.py"
   workflow_dispatch:
     inputs:
       preparation_run_id:
@@ -137,6 +138,7 @@ jobs:
             echo "::group::MINIRONIN integrated admitted corpus — steps $((start + 1))-$end"
             python scripts/train_long_run.py \
               --unified-corpus integrated-train/train.jsonl.gz \
+              --allow-sparse-domains \
               --input-checkpoint "$input" \
               --output-dir train-150k/current \
               --start-step "$start" --steps 10000 \
