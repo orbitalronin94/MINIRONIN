@@ -60,6 +60,7 @@ jobs:
           retention-days: 180
 
   acquire-wikidata-facts:
+    continue-on-error: true
     name: Adquirir nueva biblioteca factual CC0 de Wikidata
     runs-on: ubuntu-latest
     timeout-minutes: 90
