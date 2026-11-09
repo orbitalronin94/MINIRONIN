@@ -1,6 +1,6 @@
 # MINIRONIN Integrated Evidence Stack (MIES)
 
-**Estado:** implementación experimental en rama; no activada en un checkpoint y sin holdout ejecutado.
+**Estado:** integración experimental en PR #35; CI de integración verde (15 pruebas). La preparación del artefacto y el holdout emparejado siguen pendientes. No se ha entrenado ni promovido ningún checkpoint.
 
 ## Componentes
 
@@ -9,13 +9,13 @@
 3. **Filas despiertas:** `scripts/build_awake_rows.py` genera ejemplos extractivos/citados y QA curado a partir del mismo inventario, manteniendo documento de origen y hashes.
 4. **BACKDOOR_BPE:** `scripts/build_backdoor_bpe.py` aprende n-gramas de bytes únicamente del split train; `src/minironin/tokenizer.py` conserva fallback de bytes, longest-match determinista y EOS=256.
 5. **Entrenamiento compatible:** `scripts/train_backdoor_bpe_continuation.py` puede continuar un checkpoint byte-level, inicializar filas nuevas desde sus bytes constituyentes, preservar filas antiguas y limpiar momentos del optimizador solo para filas nuevas.
-6. **Inferencia compatible:** `scripts/run_inference_holdout.py --tokenizer` requiere el mismo hash de tokenizador que declara el checkpoint y limita logits al vocabulario activo. Con `--rag-index`, recupera evidencia para cada pregunta del holdout, la incorpora al prompt antes de generar y registra hits, canales, hashes documentales y advertencias.
+6. **Inferencia compatible:** `scripts/run_inference_holdout.py --tokenizer` requiere el mismo hash de tokenizador que declara el checkpoint y limita logits al vocabulario activo. Con `--rag-index`, recupera evidencia, ajusta el contexto al límite real de bytes del modelo, incluye marcadores [S#] y registra qué fragmentos llegaron al prompt, hits, hashes y advertencias.
 
 ## Flujo reproducible
 
-El workflow manual `.github/workflows/prepare-integrated-evidence-stack.yml` prepara el inventario, filas despiertas, tokenizador e índice RAG y publica el artefacto `minironin-integrated-evidence-stack`.
+El workflow `.github/workflows/prepare-integrated-evidence-stack.yml` prepara el inventario, filas despiertas, candidato BACKDOOR_BPE e índice RAG, valida sus contratos y publica `minironin-integrated-evidence-stack`. En la rama de integración se prueba manualmente; al integrarse en `main`, se ejecuta tras cambios de los componentes de preparación.
 
-**Este workflow no entrena ni ejecuta holdout.** No hay disparadores automáticos de continuación o evaluación. La activación de un entrenamiento y el holdout real son fases posteriores que requieren que el artefacto esté verificado y que todas las piezas estén conectadas al checkpoint elegido.
+Si la preparación en `main` termina correctamente, `.github/workflows/holdout-integrated-810k.yml` descarga el artefacto exacto y ejecuta dos inferencias emparejadas sobre el mismo checkpoint 810k: baseline sin RAG y 810k + RAG. Comprueba SHA-256 del checkpoint, `completed_steps=810000`, los 100 IDs del holdout, SHA-256 del holdout y configuración de generación idéntica. Publica ambas respuestas y el diario comparativo. **No entrena ni cambia pesos.**
 
 ## Contratos y protecciones
 
@@ -34,21 +34,16 @@ El workflow manual `.github/workflows/prepare-integrated-evidence-stack.yml` pre
 
 El importador incorpora los payloads de RONIN-IA solo cuando encuentra un archivo de partición train cuyo SHA-256 coincide exactamente con el manifiesto scoped-admitted. También incorpora los documentos Markdown propios de Papers y una allow-list de JSONL curados de MINIRONIN.
 
-El corpus HERETIC externo todavía requiere un importador específico de su manifiesto de corpus y verificación de artefacto. No se afirma que esté incluido por el mero hecho de que exista una carpeta o un artefacto histórico. La cobertura efectiva se determina por el informe de importación y el manifiesto final del workflow.
+El corpus HERETIC entra únicamente mediante su importador específico, con manifiesto de curación, revisión fijada, SHA-256 y auditoría global de autorización. La cobertura efectiva se determina por el informe de importación y el manifiesto final del workflow.
 
 La generación de filas despiertas actual es conservadora: aprovecha QA marcado como verificado/curado y, en ausencia de QA, genera ejercicios de copia literal. No inventa respuestas factuales a partir de similitud semántica.
 
 ## Validación pendiente
 
-- Ejecutar el workflow manual y revisar el informe de fuentes admitidas/omitidas.
-- Confirmar que el índice incluye cada biblioteca esperada y ninguna partición reservada.
-- Inspeccionar distribución de filas despiertas por dominio, tarea y procedencia.
-- Medir ahorro real de BACKDOOR_BPE, BPB, EOS y regresiones.
-- Validar el adaptador RAG en preguntas sintéticas separadas del holdout.
-- Ejecutar CI tras el adaptador RAG de inferencia y revisar su resultado.
-- Ejecutar el workflow de preparación y comprobar el artefacto real.
-- Completar una continuación BACKDOOR_BPE y guardar checkpoint + hash de tokenizador.
-- Ejecutar el holdout con `--tokenizer` y `--rag-index`, y compararlo con el mismo checkpoint sin RAG y con el baseline 810k.
+- Completar el workflow de preparación y revisar el artefacto real, las fuentes, las exclusiones y la distribución por dominio.
+- Medir ahorro real de BACKDOOR_BPE, BPB, EOS y regresiones antes de cualquier continuación.
+- Ejecutar el holdout emparejado 810k byte-level sin RAG / con RAG; el candidato BACKDOOR_BPE no se conecta al checkpoint 810k porque sus pesos no contienen esas filas.
+- Si BACKDOOR_BPE demuestra utilidad, entrenar una continuación separada, guardar el nuevo checkpoint y hash de tokenizador y evaluarla con su propio holdout emparejado.
 - Solo después del holdout completo y revisión ciega se decidirá cualquier promoción.
 
 La nota de investigación y SOTA está en el repositorio Papers: `MINIRONIN-enano-arquitectura-integrada-BACKDOOR-BPE-RAG.md`.
