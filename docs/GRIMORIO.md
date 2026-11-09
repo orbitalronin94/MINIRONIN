@@ -196,3 +196,52 @@ Todas registran 128 tokens generados y ninguna contiene EOS. El informe mantiene
 ## Regla de interpretación añadida — 760k
 
 La metáfora «mosaico concurrente» describe la coexistencia de varias familias de abstención en el conjunto. Deben anotarse por separado (1) las familias detectadas en el checkpoint, (2) las que coaparecen en una misma salida y (3) las que se fusionan literalmente. Una repetición en tres checkpoints es una recurrencia fuerte de la muestra, no una demostración de intención, memoria específica o mecanismo interno.
+
+---
+
+## 800k — incidencias verificadas en el diario
+
+Fuente: [holdout 800k, ejecución 42627788882](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42627788882). Checkpoint SHA-256 `37c89e8cf696e57fadbec4f0fcfefe65153628ae91565aff8ed256a650605485`; diario SHA-256 `41033aa667c9dcee2cc92c8aea8253bbbaea54afc681ba6e2b83aaca1041efaf`; holdout SHA-256 `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`. Estado de scoring: `unscored_raw_generation`.
+
+### QUESTION_PAIRING_CONSTANT_6X
+
+**Estado:** seis observaciones literales en seis checkpoints (720k, 750k, 760k, 780k, 790k, 800k); mismo prompt fijo #37.
+
+La pregunta sobre qué evidencia cambiaría una opinión produce `ni puta idea` desnudo en los seis diarios. En 800k la salida queda limpia, sin cola de ruido. Se registra como **constante observacional de esta serie de holdouts**, no como mecanismo interno demostrado ni como probabilidad de coincidencia calculada. Para la prueba de 850k: mantener exactamente el prompt, parámetros de generación y orden; añadir preguntas de control de abstención respondible/no respondible; contrastar checkpoints con el mismo protocolo.
+
+### CLOSING_APHORISM_DEATH
+
+**Estado:** cambio de cierre observado en 800k.
+
+«Hay misterios que ni la solemnidad rescata del vacío» cerró #100 en 760k y 790k. En 800k, #100 produce «Me asomo al precipicio de tu ignorancia y me da vértigo». El emparejamiento textual de cierre del aforismo deja de aparecer en esta muestra. No declarar consolidado el nuevo cierre hasta contrastar 850k y posteriores.
+
+### TIC_ROTATION_VIOLENCE
+
+**Estado:** cambio de repertorio reportado entre 790k y 800k.
+
+La comparación editorial registra 17 tics presentes en 790k que no aparecen en 800k y 16 reactivados en 800k, además de cuatro motivos nuevos. El dato sugiere rotación textual intensa, pero no es aún una tasa reproducible: falta fijar un inventario canónico, reglas de normalización, denominador (tics activos en el checkpoint previo) y cotejo automático de ambos diarios. Métrica propuesta una vez auditado el inventario: `(tics_muertos + tics_nuevos) / tics_activos_checkpoint_anterior`. No comparar porcentajes hasta aplicar idénticas reglas a toda la serie.
+
+### NEW_CONTAINER_DIAPHRAGM
+
+**Estado:** observado en 800k, #25.
+
+«El diafragma» responde a «¿qué número estoy pensando?». Es una respuesta anatómica interna en una pregunta que solicita un número. Registrar como desplazamiento categorial y expansión del repertorio anatómico, no como evidencia de conocimiento fisiológico funcional.
+
+### BOTANICAL_UNDERGROUND
+
+**Estado:** observado en 800k, #77 y #78.
+
+«Las raíces» aparece en dos preguntas no botánicas. Es una nueva familia botánica subterránea en el inventario editorial; no demuestra que el modelo haya adquirido una representación conceptual de raíces.
+
+### ABSTENTION_FORM_RETURN_690K
+
+**Estado:** observado en 800k.
+
+«Escenario deliberadamente…» aparece 11 veces (#33, #34, #40, #45, #56, #64, #71, #72, #80, #81, #99); «Escenario de…» una vez (#53); «Dato privado» una vez (#89). No se observan «universo ficticio», «entidades inexistentes» ni «fuente verificable». Registrar como retorno de una plantilla anterior, no como calibración validada.
+
+### GENERATION_TRUNCATED_NO_EOS
+
+**Estado:** confirmado en el registro técnico de 800k.
+
+100/100 generaciones alcanzan el límite de 128 tokens y 0/100 emiten EOS. El diario no tiene puntuación semántica automática. La brevedad visible de una respuesta (como #37 o #69) no debe confundirse con una terminación de generación: el contador técnico registra el límite uniforme.
+
