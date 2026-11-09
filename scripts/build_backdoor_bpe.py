@@ -36,10 +36,10 @@ def main() -> None:
             if not line.strip():
                 continue
             row = json.loads(line)
-            if row.get("split") != "train" or row.get("train_eligible") is not True:
-                raise SystemExit(f"{args.train_jsonl}:{line_no}: expected split=train and train_eligible=true")
             if row.get("admission_status") != "admitted":
                 raise SystemExit(f"{args.train_jsonl}:{line_no}: source is not explicitly admitted")
+            if row.get("train_eligible") is not True or row.get("split") != "train":
+                continue
             document_id = str(row.get("document_id", "")).strip()
             text = row.get("text")
             if not document_id or not isinstance(text, str) or not text:
