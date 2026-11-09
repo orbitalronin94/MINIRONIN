@@ -2,11 +2,6 @@ name: MINIRONIN — preparar lote Wikisource ES de 1200 documentos
 # Workflow validado tras corregir el escapado de expresiones de Actions.
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/wikisource-es-1200-batch.yml"
-      - "scripts/acquire_wikisource_es_1200.py"
   workflow_dispatch:
     inputs:
       batch_index:
@@ -36,6 +31,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+      - name: Cache pinned Wikisource Parquet shard
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface/hub
+          key: minironin-wikisource-es-160144440c765ed3ada4a4829ce1077910fbdbb6
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
