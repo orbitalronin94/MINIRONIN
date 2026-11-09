@@ -16,7 +16,7 @@ import torch
 ROOT = Path(__file__).resolve().parents[1]
 import sys
 sys.path.insert(0, str(ROOT / "src"))
-sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.append(str(ROOT / "scripts"))
 from minironin import MiniRoninLM, ModelConfig  # noqa: E402
 from minironin.tokenizer import ByteNgramTokenizer  # noqa: E402
 import rag_retrieve  # noqa: E402
