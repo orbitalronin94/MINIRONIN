@@ -106,16 +106,18 @@ El checkpoint de **500.000 pasos** fue MAIN experimental antes de la promoción 
 - **Resultado literal:** 99/100 respuestas alcanzaron el límite de 128 tokens; 0/100 emitieron EOS. El diario está marcado `unscored_raw_generation`: no existe puntuación semántica automática ni comparación pareada contra 470k en este registro.
 - **Lectura:** persisten fragmentos reconocibles, pero la mayoría de salidas degenera en repetición, asociaciones fuera de contexto o texto ininteligible. Por tanto, 500k queda promovido como **MAIN experimental por decisión del proyecto**, no como checkpoint demostrado superior en razonamiento, exactitud o utilidad.
 
-## Modelo MAIN experimental — checkpoint 720k 🧠
+## Modelo MAIN experimental — checkpoint 810k 🧠
 
-El checkpoint de **720.000 pasos** es la referencia MAIN experimental vigente, por decisión explícita del proyecto. Sustituye al MAIN anterior de 670k, pero la promoción **no certifica una mejora de calidad**.
+El checkpoint de **810.000 pasos** es la referencia MAIN experimental vigente por decisión explícita del proyecto. Sustituye administrativamente a 720k; esta promoción **no significa que haya mejorado la calidad** y no debe leerse como un aprobado.
 
-- **Checkpoint:** [release 720k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-720000) · [descargar checkpoint](https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-legacy-150k-from-650k-step-720000/checkpoint-720000.pt).
-- **SHA-256:** `2f755f00e09b51dc30f038c77f40eb5c787d3f30555f86559f6c3cac8b9640fa`.
-- **Arquitectura:** Transformer decoder-only, 4,3 millones de parámetros efectivos (9.970.176 nominales); UTF-8 bytes + EOS, 257 símbolos activos; seed 9519.
-- **Holdout:** [run 42602585362](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42602585362). 100 preguntas idénticas; SHA-256 del conjunto `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`; greedy, temperatura 0, 128 tokens, 2 hilos, eval y KV cache.
-- **Resultado literal:** 100/100 respuestas alcanzaron el límite de 128 tokens y 0/100 emitieron EOS. El diario está marcado `unscored_raw_generation`; no hay puntuación semántica ni comparación pareada contra 670k.
-- **Lectura:** persisten bucles, contaminación de contexto y respuestas fuera de dominio. La promoción es administrativa y experimental; no demuestra mejora en razonamiento, exactitud o calidad conversacional.
+- **Checkpoint:** [release 810k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-full-corpus-step-810000) · [holdout independiente](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42662696404) · [artefacto del diario y checkpoint](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42662696404/artifacts/13695117048).
+- **SHA-256 del checkpoint:** `2d8ff48dc0645d4b2d83c2462bc33b88a1abade9354eb9289c265c7a5b13ca6b`.
+- **Arquitectura:** Transformer decoder-only, 4,3 millones de parámetros efectivos (9.970.176 nominales); UTF-8 bytes + EOS, 257 símbolos activos.
+- **Holdout:** 100 preguntas fijas; SHA-256 `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`; greedy, temperatura 0, 128 tokens, 2 hilos, eval y KV cache.
+- **Resultado:** el diario está marcado `unscored_raw_generation`; no existe puntuación semántica automática. La revisión editorial de las 100 salidas lo mantiene en **0/100 respuestas útiles**. Se observan 16 abstenciones literales «ni puta idea» (15 desnudas), 9 apariciones de «El metro», 8 de «La razón ha llegado hasta aquí» y 9 de «Se puede afirmar que». Ninguna de estas frecuencias equivale a una métrica automática de capacidad.
+- **Lectura:** abstención desnuda generalizada, rotación y resurrección de tics, desplazamientos categoriales, repetición y degradación. La promoción es una decisión administrativa para fijar esta versión como referencia del experimento, **no una declaración de superioridad, utilidad ni calibración correcta**. El checkpoint 720k queda como referencia histórica.
+
+
 
 ## Referencia histórica — checkpoint 650k
 
