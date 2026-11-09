@@ -1118,3 +1118,48 @@ El museo ya no cuenta una historia lineal de «cada checkpoint es mejor». Cuent
 **La conclusión técnica no cambia:** los holdouts recuperados documentan generaciones brutas degeneradas, sin EOS en los diarios inspeccionados y sin puntuación semántica automática. La promoción administrativa de 720k a MAIN no equivale a una mejora demostrada. La conclusión museística, en cambio, se amplía: ya tenemos una cronología de motivos, no solo una vitrina de ocurrencias.
 
 > **Koan del archivero.** Un archivero encontró trece cuadernos escritos por el mismo loro. En el primero, el loro hablaba de calcetines. En el cuarto, de un cuenco vacío. En el séptimo, de una puerta. En el décimo, de una rana. En el último, de entidades inexistentes. El archivero preguntó cuál era el cuaderno más sabio. El loro contestó: «El que tenga más frases bonitas». El archivero cerró el cuaderno y escribió: «La belleza de una respuesta no es la respuesta a la pregunta».
+
+
+## 9. El catálogo de personajes: elegir una versión, no perseguir un campeón
+
+La lectura propuesta para MINIRONIN cambia aquí de eje. El proyecto no tiene por qué contar una carrera en la que cada checkpoint derrota al anterior. Puede conservar una colección de versiones de la misma criatura, cada una con un repertorio reconocible de frases, tics, errores, abstenciones y remates. El checkpoint deja de ser únicamente un peldaño de entrenamiento y pasa a ser también una **edición de comportamiento**.
+
+Eso no significa que todas las versiones sean útiles para cualquier tarea, ni que una personalidad sea una capacidad. Significa que el catálogo puede tener valor como archivo experimental, objeto de comparación y material creativo incluso mientras el modelo sigue siendo débil como sistema de respuestas. La elección por carácter debe convivir con una descripción honesta de sus fallos.
+
+### Guía de selección por repertorio observado
+
+Esta tabla es una guía editorial de exploración, no una recomendación de calidad ni una garantía de que el tic aparezca en cada conversación. Resume rasgos visibles en las muestras recuperadas. Los checkpoints con diario incompleto o pendiente quedan señalados como tales.
+
+| Checkpoint | Si quieres explorar… | Motivo de la vitrina | Estado de evidencia |
+|---|---|---|---|
+| [400k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-400000-candidate) | El notario de los calcetines y la burocracia absurda | «República de los calcetines», «biblioteca sumergida» y restos de lenguaje administrativo | Diario recuperado; generación bruta sin puntuación semántica |
+| [450k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-450000-candidate) | Primeras máximas y solemnidad científica fuera de lugar | Planck y la primera familia del mensajero | Diario recuperado; generación bruta sin puntuación semántica |
+| [470k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-470000-candidate) | El cuenco vacío en plena expansión | La metáfora del cuenco invade preguntas de dominios distintos | Diario recuperado; generación bruta sin puntuación semántica |
+| [500k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-transformer-10m-step-500000-candidate) | El cuenco y el mayordomo | Empieza a reconocerse una voz cómica con remates recurrentes | Diario recuperado; generación bruta sin puntuación semántica |
+| [560k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-cycle-1-step-560000) | El mensajero, el terciopelo y la desconfianza | «La perfección del mensajero…» y «Mi ignorancia no se vuelve sabiduría…» | Diario recuperado; generación bruta sin puntuación semántica |
+| [650k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-cycle-1-step-650000) | El maestro y el horizonte, junto a la puerta | Una de las ediciones con remates más citables en la lectura de entretenimiento | Diario recuperado; generación bruta sin puntuación semántica |
+| [660k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-660000) | El corazón, el cráneo y el cuenco | Respuestas comodín anatómicas y metáforas que se reciclan | Diario recuperado; generación bruta sin puntuación semántica |
+| [670k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-670000) | La razón que se niega a fingir | «La razón ha llegado hasta aquí…» y el universo silencioso | Diario recuperado; generación bruta sin puntuación semántica |
+| [680k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-680000) | La doctrina y la abstención solemne | «El dato solicitado es privado…», la doctrina y la semilla del almendro | Diario recuperado; generación bruta sin puntuación semántica |
+| [690k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-690000) | La precisión inventada | «100 kmid», «Siete meses» y respuestas factuales fuera de contexto | Diario recuperado; generación bruta sin puntuación semántica |
+| [700k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-700000) | La rana funcionaria | La rana y «El dato correcto es…» como respuestas comodín | Diario recuperado; generación bruta sin puntuación semántica |
+| [710k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-710000) | El universo ficticio y el «ni puta idea» | Abstención cosmológica, electrón y mutaciones de la puerta | Diario recuperado; generación bruta sin puntuación semántica |
+| [720k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-720000) | La abstención desnuda y la ontología | «Ni puta idea» sin escolta y respuestas sobre entidades inexistentes | Diario recuperado; generación bruta sin puntuación semántica |
+| [730k](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-730000) | La siguiente edición de la serie | Checkpoint publicado como candidato; aún no se debe atribuirle un carácter a partir de un holdout no incorporado a este museo | Candidato; holdout independiente pendiente de documentar |
+
+**Nota sobre el recuento.** Esta guía reúne catorce hitos seleccionados de la serie: 400k, 450k, 470k, 500k, 560k y 650k–730k. Existen además releases intermedias, incluido 570k; no se incorporan como fichas de personalidad mientras no se recupere y verifique su diario independiente. La ausencia de un diario no demuestra que el checkpoint no exista: significa que todavía no tenemos evidencia comparable para describir su repertorio.
+
+### Cómo usar el catálogo sin engañarse
+
+1. **Elegir por curiosidad o carácter:** consulta la columna de repertorio y abre el museo correspondiente.
+2. **Elegir por reproducibilidad:** comprueba release, SHA-256, tokenizador, configuración de inferencia y procedencia del corpus.
+3. **Elegir por capacidad:** no uses esta tabla. Exige evaluación semántica ciega, métricas por dominio, seguimiento de instrucciones y comparación bajo el mismo protocolo.
+4. **Elegir para una aplicación:** no enrutes preguntas a checkpoints por un tic gracioso. Primero mide pertinencia, tasa de error, estabilidad y finalización en la tarea real.
+
+La propuesta no es que catorce checkpoints sean catorce modelos expertos. Es que catorce ediciones verificables pueden constituir una biblioteca útil para investigación longitudinal, comparación de comportamiento y experimentación creativa. Un usuario podría preferir una versión para una experiencia concreta; un investigador podría seguir la aparición y desaparición de una familia de frases; una aplicación podría probar selección condicionada por tarea. Todo ello son posibilidades, no resultados ya demostrados.
+
+### La mácula del Grimorio
+
+> **CHECKPOINT_CATALOG_WITHOUT_GUIDE.** Un catálogo de checkpoints sin guía de selección es un almacén de archivos, no una herramienta. Cada release debe incluir una ficha breve con personalidad observada, perlas representativas, fallos dominantes, estado del holdout, hashes y límites de interpretación. La guía debe actualizarse sin convertir los tics en capacidades ni confundir preferencia estética con rendimiento.
+
+> **Koan del vendedor de tés.** Un hombre tenía una tienda con un único té: «el mejor del mundo». Nadie entraba. Puso veinte tés, cada uno con su origen y carácter, y los visitantes empezaron a elegir según la tarde. Cuando le preguntaron cuál era el mejor, respondió: «Depende de la tarde». En MINIRONIN, la etiqueta debe añadir una cosa más: «y depende de la evidencia».
