@@ -44,3 +44,22 @@ No se incorporan fuentes nuevas ni se altera el corpus histórico.
 Los 1.000 pasos son una prueba de ingeniería: validan el entrenamiento, la memoria, la serialización del checkpoint y la caída de loss en una muestra fija. Con batch 1 y secuencia 128 se procesan aproximadamente 128.000 tokens de entrenamiento. No es entrenamiento suficiente para evaluar la capacidad lingüística de un modelo de 500M.
 
 El checkpoint MAXIRONIN se publica como artefacto experimental. No se promociona a MAIN ni se mezcla con MINIRONIN.
+
+## Paquete pretokenizado reutilizable
+
+La preparación del corpus se separa del entrenamiento mediante
+[prepare-maxironin-500m-data.yml](../.github/workflows/prepare-maxironin-500m-data.yml).
+Ese workflow entrena el BPE una sola vez y publica el paquete
+`maxironin-500m-pretokenized-corpus-v1`, que contiene:
+
+- `tokenizer.json`
+- `train.bin` y `validation.bin` (uint16 little-endian)
+- `tokenizer-manifest.json` (SHA-256 del corpus, split y recuentos)
+- `SHA256SUMS` para verificar todos los ficheros
+
+Los workflows posteriores deben descargar este paquete por su run ID, ejecutar
+`sha256sum -c SHA256SUMS` y usar directamente los binarios y el tokenizador.
+No deben volver a ejecutar `prepare_maxironin_corpus.py` ni volver a entrenar el BPE.
+El paquete de Actions tiene retención de 90 días; si se necesita conservarlo más
+tiempo, habrá que republicarlo o trasladarlo a un release versionado. El run ID
+de la primera preparación se añadirá aquí cuando termine y se verifique.
