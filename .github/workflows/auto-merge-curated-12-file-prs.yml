@@ -1,4 +1,4 @@
-name: Auto-merge curated 12-file library PRs
+name: MINIRONIN auto-merge curated 1200-file PRs
 
 on:
   workflow_run:
@@ -18,7 +18,7 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
-      - name: Merge only exact 12-file curated library PRs with both checks green
+      - name: Merge only exact 1200-file curated library PRs with both checks green
         env:
           GH_TOKEN: ${{ github.token }}
           HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
@@ -48,8 +48,8 @@ jobs:
           file_count="$(jq 'length' <<<"$files")"
           added_count="$(jq '[.[] | select(.status == "added")] | length' <<<"$files")"
           safe_paths="$(jq '[.[] | select(.status == "added" and (.filename | startswith("data/inherited/papers/curated/")))] | length' <<<"$files")"
-          if [[ "$file_count" -ne 12 || "$added_count" -ne 12 || "$safe_paths" -ne 12 ]]; then
-            echo "Refusing merge: expected exactly 12 newly added curated documents; got files=$file_count added=$added_count curated=$safe_paths."
+          if [[ "$file_count" -ne 1200 || "$added_count" -ne 1200 || "$safe_paths" -ne 1200 ]]; then
+            echo "Refusing merge: expected exactly 1200 newly added curated documents; got files=$file_count added=$added_count curated=$safe_paths."
             exit 0
           fi
 
