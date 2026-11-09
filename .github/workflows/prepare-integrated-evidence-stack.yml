@@ -6,6 +6,7 @@ on:
     paths:
       - "scripts/**"
       - ".github/workflows/prepare-integrated-evidence-stack.yml"
+      - ".github/workflows/holdout-integrated-810k.yml"
   workflow_dispatch:
     inputs:
       embeddings:
