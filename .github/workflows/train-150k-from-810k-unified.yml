@@ -25,6 +25,7 @@ concurrency:
 
 jobs:
   train:
+    if: false # Superseded: use the 810k non-synthetic admitted-corpus workflow.
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
