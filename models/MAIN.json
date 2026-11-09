@@ -1,42 +1,49 @@
 {
   "schema_version": 1,
   "status": "main",
-  "model_id": "minironin-transformer-10m-step-500000",
+  "model_id": "minironin-transformer-10m-step-650000",
   "architecture": "transformer-decoder-only",
   "parameter_count": 9970176,
-  "completed_steps": 500000,
+  "completed_steps": 650000,
   "tokenization": "UTF-8 bytes + EOS (257 active symbols)",
   "checkpoint": {
-    "filename": "checkpoint-500000.pt",
-    "sha256": "80664596095e9ce4d1757b1ca379bbccfa96ad03f67936e70dc39487d8e8fe60",
+    "filename": "checkpoint-650000.pt",
+    "sha256": "70f2cca02be8d4a3546992b40c6c82e62ed4be7c00de1ff549ef2894a1184b58",
     "source": "github-release-asset",
-    "release_tag": "minironin-transformer-10m-step-500000-candidate",
-    "release_id": 438385074,
-    "asset_id": 724582845,
-    "asset_url": "https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-transformer-10m-step-500000-candidate/checkpoint-500000.pt",
-    "report_asset_id": 724582839,
-    "report_sha256": "9d5411cb64cc94748f9a686e41d7ee6f4a6f11621f001c307eb7843f748da7ca"
+    "release_tag": "minironin-cycle-1-step-650000",
+    "release_id": 438625962,
+    "asset_id": 725673970,
+    "asset_url": "https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-cycle-1-step-650000/checkpoint-650000.pt",
+    "report_asset_id": 725673961,
+    "report_sha256": "b4a0f9c442ecfa6daf5d4a7a0f62d91027f9bf675a6c451867c2936a1fe3a633"
   },
   "previous_main": {
-    "model_id": "minironin-transformer-10m-step-470000",
+    "model_id": "minironin-transformer-10m-step-500000",
     "architecture": "transformer-decoder-only",
     "parameter_count": 9970176,
-    "completed_steps": 470000,
-    "checkpoint_sha256": "f2dc0ed548db7565b080c9683e0e939ab2c424af394fc0286bce7168370d1c10",
+    "completed_steps": 500000,
+    "checkpoint_sha256": "80664596095e9ce4d1757b1ca379bbccfa96ad03f67936e70dc39487d8e8fe60",
+    "release_tag": "minironin-transformer-10m-step-500000-candidate",
     "status": "superseded_experimental"
   },
   "holdout": {
     "status": "completed_unscored_raw_generation",
-    "run_id": 42503212146,
-    "job_id": 128800214247,
+    "run_id": 42578466895,
+    "job_id": 129031396680,
+    "baseline_steps": 560000,
+    "baseline_checkpoint_sha256": "c3756008aae2485f22736b351ea5871a97f87e5dbf54e13c7a828ea8a880ecf8",
     "holdout_count": 100,
     "holdout_sha256": "3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535",
     "scoring": "unscored_raw_generation",
-    "comparison_to_470k": "not_available",
-    "outputs_at_generation_limit": 99,
-    "outputs_emitting_eos": 0,
-    "generation": "greedy argmax; temperature 0; max_new_tokens 128; 2 threads; eval mode; KV cache enabled",
-    "interpretation": "The 500k checkpoint is promoted by explicit project decision as experimental MAIN. Raw holdout is unscored and not a paired comparison against 470k. Outputs show severe repetition and context mismatch; promotion is not a quality certification."
+    "comparison_to_560k": {
+      "identical_answers": 1,
+      "changed_answers": 99,
+      "answer_change_rate": 0.99,
+      "mean_character_delta_vs_base": -3.64,
+      "interpretation": "Descriptive text-difference metrics only; not a quality score."
+    },
+    "generation": "greedy argmax; temperature 0; max_new_tokens 128; 2 threads; eval mode; KV cache disabled",
+    "interpretation": "The 650k checkpoint is promoted by explicit project decision as experimental MAIN despite severe degeneration in raw generations. The holdout is unscored; promotion does not certify improved factual accuracy, reasoning, or conversational quality."
   },
-  "promotion_policy": "Manual project decision. The 500k checkpoint is the experimental MAIN reference; this selection does not certify improved factual accuracy, reasoning, or conversational quality."
+  "promotion_policy": "Manual project decision. The 650k checkpoint is the experimental MAIN reference by explicit user decision. This selection does not certify improved quality; preserve the 500k and 560k releases as historical references."
 }
