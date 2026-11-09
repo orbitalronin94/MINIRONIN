@@ -1,0 +1,213 @@
+name: MINIRONIN — 150k continuation from verified 810k (full admitted corpus)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/train-150k-from-810k-unified.yml"
+
+permissions:
+  actions: read
+  contents: write
+
+# Serialize with the previous 650k continuation: never run two CPU training jobs at once.
+concurrency:
+  group: minironin-150k-continuation-training
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      CORPUS_RUN_ID: "42682285299"
+      PARENT_TAG: minironin-full-corpus-step-810000
+      PARENT_SHA256: 2d8ff48dc0645d4b2d83c2462bc33b88a1abade9354eb9289c265c7a5b13ca6b
+      START_STEP: "810000"
+      TOTAL_STEPS: "960000"
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v4
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Esperar al corpus unificado más reciente de main
+        run: |
+          set -euo pipefail
+          completed=false
+          for attempt in $(seq 1 360); do
+            status="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CORPUS_RUN_ID" --jq .status)"
+            conclusion="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CORPUS_RUN_ID" --jq '.conclusion // ""')"
+            echo "Corpus run $CORPUS_RUN_ID: status=$status conclusion=$conclusion"
+            if [ "$status" = "completed" ]; then
+              test "$conclusion" = "success" || { echo "Latest unified corpus build did not succeed"; exit 1; }
+              completed=true
+              break
+            fi
+            sleep 60
+          done
+          test "$completed" = true || { echo "Timed out waiting for unified corpus build"; exit 1; }
+
+      - name: Descargar exactamente el artefacto del corpus recién construido
+        uses: actions/download-artifact@v4
+        with:
+          name: minironin-unified-train-corpus-42682285299
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 42682285299
+          path: unified-train
+
+      - name: Verificar integridad, volumen y fuentes admitidas
+        run: |
+          set -euo pipefail
+          test -s unified-train/train.jsonl.gz
+          test -s unified-train/sources.json
+          test -s unified-train/quality-report.json
+          test -s unified-train/SHA256SUMS
+          (cd unified-train && sha256sum -c SHA256SUMS)
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path("unified-train/quality-report.json").read_text())
+          sources=json.loads(Path("unified-train/sources.json").read_text())
+          rows=int(report["record_count"])
+          counts=report.get("synthetic_and_source_counts",{})
+          synthetic=int(counts.get("synthetic",0))
+          datasets=report.get("datasets",{})
+          assert rows >= 2_900_000, f"Unified corpus unexpectedly small: {rows:,}"
+          assert synthetic >= 2_900_000, f"Expected admitted synthetic curriculum rows, got {synthetic:,}"
+          assert len(datasets) >= 64, f"Expected at least 64 datasets, found {len(datasets)}"
+          assert sources.get("record_count",rows) == rows
+          print(json.dumps({
+            "corpus_run_id":42682285299,
+            "source_commit":"68c1221be2497fb24b274363356258bbce91fa67",
+            "records":rows,
+            "synthetic_records":synthetic,
+            "datasets":len(datasets),
+            "unique_normalized_texts":report.get("unique_normalized_texts"),
+            "duplicates_reported_not_removed":report.get("exact_or_normalized_duplicates_reported_not_removed"),
+            "source_files":len(sources.get("sources",[])),
+            "corpus_sha256":sources.get("train_jsonl_gz_sha256")
+          },ensure_ascii=False,indent=2))
+          PY
+
+      - name: Descargar y verificar checkpoint padre de 810k
+        id: parent
+        run: |
+          set -euo pipefail
+          mkdir -p train-150k/parent train-150k/checkpoints train-150k/reports
+          gh release download "$PARENT_TAG" --repo "$GITHUB_REPOSITORY" --pattern "checkpoint-810000.pt" --pattern "SHA256SUMS-810000" --dir train-150k/parent
+          echo "$PARENT_SHA256  train-150k/parent/checkpoint-810000.pt" | sha256sum -c -
+          python - <<'PY'
+          import json, os, torch
+          path="train-150k/parent/checkpoint-810000.pt"
+          cp=torch.load(path,map_location="cpu",weights_only=False)
+          assert cp.get("completed_steps")==810000, cp.get("completed_steps")
+          assert cp.get("parameter_count")==9970176, cp.get("parameter_count")
+          assert cp.get("active_vocabulary")==257, cp.get("active_vocabulary")
+          assert "optimizer_state_dict" in cp
+          tokenization=cp.get("tokenization","UTF-8 bytes + EOS")
+          assert "byte" in tokenization.lower() or "utf-8" in tokenization.lower(), tokenization
+          groups=cp["optimizer_state_dict"].get("param_groups",[])
+          assert groups and 0<float(groups[0]["lr"])<=3e-4, groups
+          lr=float(groups[0]["lr"])
+          with open(os.environ["GITHUB_OUTPUT"],"a") as out:
+              out.write(f"parent_lr={lr:.12g}\n")
+          print(json.dumps({"step":cp["completed_steps"],"parameters":cp["parameter_count"],
+              "active_vocabulary":cp["active_vocabulary"],"tokenization":tokenization,
+              "optimizer_lr":lr},ensure_ascii=False,indent=2))
+          PY
+
+      - name: Instalar PyTorch CPU y comprobar recursos
+        run: |
+          set -euo pipefail
+          df -h .
+          test "$(df --output=avail -k . | tail -1 | tr -d ' ')" -gt 8000000
+          python -m pip install --upgrade pip
+          python -m pip install numpy
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Entrenar 150k pasos; guardar checkpoint verificable cada 10k
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/train_long_run.py scripts/train_seed_tournament.py
+          input="train-150k/parent/checkpoint-810000.pt"
+          for start in $(seq 810000 10000 950000); do
+            end=$((start + 10000))
+            echo "::group::MINIRONIN full admitted corpus — steps $((start + 1))-$end"
+            python scripts/train_long_run.py \
+              --unified-corpus unified-train/train.jsonl.gz \
+              --input-checkpoint "$input" \
+              --output-dir train-150k/current \
+              --start-step "$start" \
+              --steps 10000 \
+              --batch-size 4 \
+              --sequence-length 128 \
+              --threads 2 \
+              --dataset-cache "$RUNNER_TEMP/minironin-810k-full-corpus-cache.pt" \
+              --total-steps 960000 \
+              --schedule-start-step 810000 \
+              --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
+            printf -v padded "%06d" "$end"
+            checkpoint="train-150k/current/checkpoint-$padded.pt"
+            report="train-150k/current/report-$padded.json"
+            test -s "$checkpoint" && test -s "$report"
+            cp "$checkpoint" "train-150k/checkpoints/checkpoint-$end.pt"
+            cp "$report" "train-150k/reports/report-$end.json"
+            sha256sum "train-150k/checkpoints/checkpoint-$end.pt" "train-150k/reports/report-$end.json" > "train-150k/checkpoints/SHA256SUMS-$end"
+            python - "$checkpoint" "$report" "$end" <<'PY'
+          import json,sys,torch
+          cp=torch.load(sys.argv[1],map_location="cpu",weights_only=False)
+          report=json.load(open(sys.argv[2],encoding="utf-8"))
+          expected=int(sys.argv[3])
+          assert cp.get("completed_steps")==expected, cp.get("completed_steps")
+          assert report.get("completed_steps")==expected, report.get("completed_steps")
+          assert cp.get("parameter_count")==9970176
+          assert cp.get("active_vocabulary")==257
+          assert report.get("dataset_manifest"), "Missing dataset manifest"
+          print(json.dumps({"checkpoint_step":expected,"parameters":cp["parameter_count"],
+              "active_vocabulary":cp["active_vocabulary"],"validation_loss":report.get("validation_loss"),
+              "validation_by_domain":report.get("validation_loss_by_domain"),
+              "dataset_manifest":report.get("dataset_manifest")},ensure_ascii=False))
+          PY
+            gh release create "minironin-full-corpus-150k-from-810k-step-$end" \
+              "train-150k/checkpoints/checkpoint-$end.pt" \
+              "train-150k/reports/report-$end.json" \
+              "train-150k/checkpoints/SHA256SUMS-$end" \
+              --title "MINIRONIN full admitted corpus — step $end" \
+              --notes "10,000-step continuation segment from verified 810,000 checkpoint. Parent SHA-256: $PARENT_SHA256. Unified corpus artifact: minironin-unified-train-corpus-42682285299 (source commit 68c1221be2497fb24b274363356258bbce91fa67). UTF-8 byte tokenizer + EOS, active vocabulary 257. Candidate only; no automatic promotion. Matched independent holdout required."
+            input="$checkpoint"
+            echo "::endgroup::"
+          done
+
+      - name: Publicar resumen y auditoría del corpus consumido
+        run: |
+          set -euo pipefail
+          cp unified-train/quality-report.json train-150k/reports/corpus-quality-report.json
+          cp unified-train/sources.json train-150k/reports/corpus-sources.json
+          cp unified-train/SHA256SUMS train-150k/reports/corpus-SHA256SUMS
+          cp train-150k/current/checkpoint-960000.pt train-150k/checkpoint-960000.pt
+          cp train-150k/current/report-960000.json train-150k/report-960000.json
+          sha256sum train-150k/checkpoint-960000.pt train-150k/report-960000.json > train-150k/SHA256SUMS-960000
+          gh release create "minironin-full-corpus-150k-from-810k-step-960000-candidate" \
+            train-150k/checkpoint-960000.pt train-150k/report-960000.json train-150k/SHA256SUMS-960000 \
+            train-150k/reports/corpus-quality-report.json train-150k/reports/corpus-sources.json train-150k/reports/corpus-SHA256SUMS \
+            --title "MINIRONIN — 150k full-corpus continuation / step 960000 candidate" \
+            --notes "150,000 training steps from the verified 810k checkpoint, using the complete admitted unified corpus artifact from run 42682285299 (source commit 68c1221be2497fb24b274363356258bbce91fa67). Checkpoints and reports were published every 10,000 steps. Candidate only; independent matched holdout required before promotion."
+
+      - name: Publicar informes de los 15 tramos como artefacto de auditoría
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-full-corpus-150k-from-810k-audit-${{ github.run_id }}
+          path: |
+            train-150k/reports/
+            train-150k/checkpoints/SHA256SUMS-*
+            train-150k/parent/
+            train-150k/SHA256SUMS-960000
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
