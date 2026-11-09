@@ -172,7 +172,7 @@ def source_tree_signature(root: Path) -> str:
 
 
 
-def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_only: bool = False, allow_sparse_domains: bool = False):
+def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_only: bool = False, exclude_synthetic: bool = False, allow_sparse_domains: bool = False):
     """Load every admitted record from the unified bundle, grouping short QA rows."""
     import gzip
     stat=corpus_path.stat()
@@ -186,6 +186,7 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
     store={"docs":[],"seen":set()}
     digest=hashlib.sha256()
     records=0
+    excluded_synthetic_records=0
     domains={}
     pending={}
     def map_domain(row):
@@ -240,6 +241,9 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
             except (UnicodeDecodeError,json.JSONDecodeError): continue
             if synthetic_only and row.get("synthetic") is not True:
                 raise SystemExit(f"Synthetic-only mode rejected non-synthetic row: {row.get('source_id')}")
+            if exclude_synthetic and row.get("synthetic") is True:
+                excluded_synthetic_records += 1
+                continue
             records+=1
             body=str(row.get("text","")).strip()
             if not body: continue
@@ -286,7 +290,7 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
       "unified_documents_after_chunking_and_dedup":len(store["docs"]),
       "unified_records_by_domain":domains,"documents_by_domain":{k:len(v) for k,v in train_docs.items()},
       "validation_documents_by_domain":{k:len(v) for k,v in val_docs.items()},
-      "source_policy":("Synthetic-only: every row must be marked synthetic; no inherited libraries or external corpus roots" if synthetic_only else "All admitted unified-bundle rows ingested; RONIN-IA excluded; no 505k/BPE artifacts"),
+      "source_policy":("Synthetic-only: every row must be marked synthetic; no inherited libraries or external corpus roots" if synthetic_only else ("All admitted non-synthetic unified-bundle rows ingested; every row explicitly marked synthetic excluded; RONIN-IA excluded; byte tokenizer retained" if exclude_synthetic else "All admitted unified-bundle rows ingested; RONIN-IA excluded; no 505k/BPE artifacts")),
       "split_policy":"Deterministic SHA-256 document split; 10% validation per mapped domain"}
     cache_path.parent.mkdir(parents=True,exist_ok=True)
     torch.save({"train_docs":train_docs,"names":names,"probs":probs,"validation":validation,"manifest":manifest},cache_path)
@@ -498,6 +502,8 @@ def main():
     parser.add_argument("--unified-corpus")
     parser.add_argument("--synthetic-only", action="store_true",
                         help="Reject every non-synthetic row and require only core synthetic domains")
+    parser.add_argument("--exclude-synthetic", action="store_true",
+                        help="Exclude every unified-corpus row explicitly marked synthetic")
     parser.add_argument("--allow-sparse-domains", action="store_true",
                         help="For audited integrated-library projections, accept the actual available domain mix (minimum two domains)")
     parser.add_argument("--input-checkpoint", required=True)
@@ -533,7 +539,7 @@ def main():
     if args.unified_corpus:
         train_docs, names, probs, validation, manifest = load_unified_training_data(
             Path(args.unified_corpus), Path(args.dataset_cache), synthetic_only=args.synthetic_only,
-            allow_sparse_domains=args.allow_sparse_domains
+            exclude_synthetic=args.exclude_synthetic, allow_sparse_domains=args.allow_sparse_domains
         )
     else:
         required_roots=(args.heretic_root,args.books_root,args.anarchist_root,args.classics_root)
