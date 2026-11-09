@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "artifact_id": "minironin-library-v1",
+  "title": "MINIRONIN — biblioteca unificada admitida para entrenamiento",
+  "updated_at": "2026-11-09",
+  "purpose": "Fuente única de verdad para construir el corpus en GitHub Actions. Los payloads grandes se recuperan de releases verificadas y de bibliotecas adquiridas durante el workflow.",
+  "defaults": {
+    "include_synthetic": true,
+    "include_external_admitted": true,
+    "preserve_provenance": true,
+    "report_duplicates_without_silently_dropping_rows": true,
+    "exclude_holdout_and_evaluation_sets": true
+  },
+  "roots": [
+    {
+      "path": "data/inherited/heretic-corpus",
+      "kind": "external_library"
+    },
+    {
+      "path": "data/inherited/prodatphil-en-v0.3",
+      "kind": "external_library"
+    },
+    {
+      "path": "data/inherited/anarchist-library",
+      "kind": "external_library"
+    },
+    {
+      "path": "data/inherited/classics-library",
+      "kind": "external_library"
+    },
+    {
+      "path": "data/inherited/japanese-library",
+      "kind": "external_library"
+    },
+    {
+      "path": "data/inherited/papers",
+      "kind": "external_library"
+    },
+    {
+      "path": "data/inherited/wikimedia-es",
+      "kind": "external_library"
+    },
+    {
+      "path": "data/inherited/pleias-spanish-pd-books",
+      "kind": "external_library"
+    },
+    {
+      "path": "data/inherited/common-corpus-es",
+      "kind": "external_library"
+    },
+    {
+      "path": "data/inherited/boe-legislation-es",
+      "kind": "external_library"
+    },
+    {
+      "path": "data/inherited/bne-hemeroteca-ocr-es",
+      "kind": "external_library"
+    },
+    {
+      "path": "data/curated",
+      "kind": "curated_and_synthetic"
+    }
+  ],
+  "admission_rules": [
+    "Fuentes externas conservan licencia, atribución, revisión y SHA-256.",
+    "No se admiten datasets pendientes, fallidos ni meramente anunciados; solo assets publicados.",
+    "Los ejemplos sintéticos pueden entrar, siempre etiquetados y separados estadísticamente del volumen externo.",
+    "Los duplicados normalizados se contabilizan; no se eliminan silenciosamente.",
+    "Holdout y evaluación reservada quedan fuera de las raíces de entrenamiento.",
+    "La inclusión no implica consumo por un checkpoint; cada build publica recuentos, bytes y hashes."
+  ],
+  "synthetic_policy": {
+    "enabled": true,
+    "label_required_when_present": true,
+    "reporting_required": true,
+    "interpretation": "Supervisión sintética auxiliar, no conocimiento externo ni evidencia factual independiente."
+  },
+  "output_contract": {
+    "directory": "unified-train/",
+    "files": [
+      "train.jsonl.gz",
+      "sources.json",
+      "quality-report.json",
+      "provenance/",
+      "SHA256SUMS"
+    ],
+    "artifact_name": "minironin-unified-train-corpus-RUN_ID"
+  }
+}
