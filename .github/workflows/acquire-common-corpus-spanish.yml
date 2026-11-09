@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
   actions: write
+  actions: write
 concurrency:
   group: minironin-common-corpus-spanish-batch1
   cancel-in-progress: false
