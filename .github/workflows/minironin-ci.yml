@@ -28,6 +28,10 @@ jobs:
           python -m pip install pytest
       - name: Run architecture tests
         run: python -m pytest -q
+      - name: Validate canonical library builder and manifest
+        run: |
+          python -m py_compile scripts/build_unified_train.py scripts/audit_library_composition.py
+          python -m json.tool data/curated/library-artifact-v2.json >/dev/null
       - name: Smoke-test independent training benchmark
         run: >-
           python scripts/benchmark_training.py
