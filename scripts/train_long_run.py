@@ -179,7 +179,7 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
     if cache_path.exists():
         cached=torch.load(cache_path,map_location="cpu",weights_only=False)
         cm=cached.get("manifest",{})
-        if cm.get("cache_schema_version")==4 and cm.get("unified_corpus_path")==str(corpus_path) and cm.get("unified_corpus_size")==stat.st_size and cm.get("unified_corpus_mtime_ns")==stat.st_mtime_ns:
+        if cm.get("cache_schema_version")==5 and cm.get("unified_corpus_path")==str(corpus_path) and cm.get("unified_corpus_size")==stat.st_size and cm.get("unified_corpus_mtime_ns")==stat.st_mtime_ns and cm.get("exclude_synthetic") is bool(exclude_synthetic) and cm.get("synthetic_only") is bool(synthetic_only) and cm.get("allow_sparse_domains") is bool(allow_sparse_domains):
             print(json.dumps({"dataset_cache":"reused",**cm},ensure_ascii=False),flush=True)
             return cached["train_docs"],cached["names"],cached["probs"],cached["validation"],cm
         cache_path.unlink()
@@ -284,7 +284,7 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
         if batches: validation[domain]=batches
     missing_val=[name for name in required if not validation.get(name)]
     if missing_val: raise SystemExit("Unified corpus has no validation windows for: "+", ".join(missing_val))
-    manifest={"cache_schema_version":4,"corpus_mode":"single unified corpus","unified_corpus":str(corpus_path),
+    manifest={"cache_schema_version":5,"corpus_mode":"single unified corpus","exclude_synthetic":bool(exclude_synthetic),"synthetic_only":bool(synthetic_only),"allow_sparse_domains":bool(allow_sparse_domains),"unified_records_excluded_synthetic":excluded_synthetic_records,"unified_corpus":str(corpus_path),
       "unified_corpus_path":str(corpus_path),"unified_corpus_size":stat.st_size,"unified_corpus_mtime_ns":stat.st_mtime_ns,
       "unified_corpus_sha256":digest.hexdigest(),"unified_records_read":records,
       "unified_documents_after_chunking_and_dedup":len(store["docs"]),

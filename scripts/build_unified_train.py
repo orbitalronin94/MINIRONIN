@@ -21,6 +21,9 @@ def sha_file(path:Path)->str:
     return h.hexdigest()
 def norm(text:str)->str: return re.sub(r"\W+"," ",text.casefold(),flags=re.UNICODE).strip()
 
+def is_synthetic_path(path:Path)->bool:
+    return bool(re.search(r"(generated-curricula|generated-basic-curricula|generated-math-es|behavioral-datasets|minironin-(?:abstention-50k|abstain-(?:plain|literary|koan)|aristocrat-trivial|casuist-cynic|scientist-exhausted|oracle-doom|error404-indifference|lexicon-diagnostic))",str(path),re.I))
+
 def strings(value):
     if isinstance(value,str):
         if value.strip(): yield value.strip()
@@ -52,8 +55,7 @@ def as_record(obj, path, line_no):
         body="\n".join(strings(obj)); metadata={"raw_type":type(obj).__name__}
     if not body.strip(): body=json.dumps(obj,ensure_ascii=False,sort_keys=True,default=str)
     synthetic_flag = isinstance(obj,dict) and str(obj.get("synthetic","")).strip().lower() in {"true","1","yes"}
-    synthetic_path = re.search(r"(generated-curricula|generated-basic-curricula|generated-math-es|behavioral-datasets|minironin-(?:abstention-50k|abstain-(?:plain|literary|koan)|aristocrat-trivial|casuist-cynic|scientist-exhausted|oracle-doom|error404-indifference|lexicon-diagnostic))", str(path), re.I)
-    synthetic=bool(synthetic_flag or synthetic_path)
+    synthetic=bool(synthetic_flag or is_synthetic_path(path))
     return {"id":str(metadata.get("id",f"{path.name}:{line_no}")) if isinstance(metadata,dict) else f"{path.name}:{line_no}",
       "source_id":str(path),"domain":str(metadata.get("domain") or metadata.get("subject") or path.parent.name) if isinstance(metadata,dict) else path.parent.name,
       "source":str(metadata.get("source") or path.name) if isinstance(metadata,dict) else path.name,
@@ -94,12 +96,13 @@ def read_source(path):
         yield from read_delimited(path)
     elif suffix in TEXT_EXT:
         text=path.read_text(encoding="utf-8",errors="replace").strip()
-        if text: yield {"id":path.name,"source_id":str(path),"domain":path.parent.name,"source":str(path),"license":"See source catalogue; provenance retained","synthetic":False,"dataset":path.name,"text":text,"metadata":{"file_name":path.name}}
+        if text: yield {"id":path.name,"source_id":str(path),"domain":path.parent.name,"source":str(path),"license":"See source catalogue; provenance retained","synthetic":is_synthetic_path(path),"dataset":path.name,"text":text,"metadata":{"file_name":path.name}}
 
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--output-dir",default="unified-train")
     ap.add_argument("--roots",nargs="+",required=True)
+    ap.add_argument("--exclude-synthetic",action="store_true",help="Do not write records explicitly marked synthetic or originating from generated curricula")
     args=ap.parse_args()
     out=Path(args.output_dir); out.mkdir(parents=True,exist_ok=True)
     roots=[Path(x) for x in args.roots]
@@ -110,14 +113,19 @@ def main():
                      and (p.suffix.lower() in TEXT_EXT|{".json",".jsonl",".ndjson",".parquet",".csv",".tsv"} or p.name.endswith((".jsonl.gz",".ndjson.gz"))))
     files=sorted(set(files))
     if not files: raise SystemExit("No source files found")
-    source_manifest=[]; rows=0; duplicates=0; empty=0; tiny=0
+    source_manifest=[]; rows=0; records_seen=0; excluded_synthetic=0; duplicates=0; empty=0; tiny=0
     seen=set(); domains=Counter(); datasets=Counter(); synthetic=Counter(); unique_by_dataset=Counter(); duplicates_by_dataset=Counter()
     output_path=out/"train.jsonl.gz"
     with output_path.open("wb") as raw:
       with gzip.GzipFile(fileobj=raw,mode="wb",mtime=0,compresslevel=6) as gz:
         for path in files:
           before=rows; input_hash=sha_file(path)
+          excluded_before=excluded_synthetic
           for record in read_source(path):
+            records_seen+=1
+            if args.exclude_synthetic and record.get("synthetic") is True:
+                excluded_synthetic+=1
+                continue
             body=record["text"].strip()
             if not body: empty+=1
             if len(body)<24: tiny+=1
@@ -130,17 +138,17 @@ def main():
             synthetic["synthetic" if record["synthetic"] else "source_text"]+=1
             line=(json.dumps(record,ensure_ascii=False,separators=(",",":"),default=str)+"\n").encode("utf-8")
             gz.write(line); rows+=1
-          source_manifest.append({"path":str(path),"sha256":input_hash,"records":rows-before,"bytes":path.stat().st_size})
+          source_manifest.append({"path":str(path),"sha256":input_hash,"records":rows-before,"records_written":rows-before,"synthetic_records_excluded":excluded_synthetic-excluded_before,"bytes":path.stat().st_size})
     if rows==0: raise SystemExit("Unified corpus is empty")
-    summary={"schema":"minironin-unified-train-v1","record_count":rows,"unique_normalized_texts":len(seen),
+    summary={"schema":"minironin-unified-train-v2","record_count":rows,"records_seen":records_seen,"synthetic_records_excluded":excluded_synthetic,"exclude_synthetic":bool(args.exclude_synthetic),"unique_normalized_texts":len(seen),
       "exact_or_normalized_duplicates_reported_not_removed":duplicates,"unique_by_dataset":dict(unique_by_dataset),"duplicates_by_dataset":dict(duplicates_by_dataset),"empty_records":empty,"short_records_under_24_chars":tiny,
       "synthetic_and_source_counts":dict(synthetic),"domains":dict(domains),"datasets":dict(datasets),
-      "volume_policy":"No input records are discarded. Duplicate and short records are reported for review; source row counts remain intact.",
+      "volume_policy":("Explicitly synthetic rows are excluded before training-corpus publication; duplicates and short records among retained source rows are reported, not discarded." if args.exclude_synthetic else "No input records are discarded. Duplicate and short records are reported for review; source row counts remain intact."),
       "quality_policy":"Synthetic templates are explicitly marked. Ten-seed factual curricula are not counted as independent facts. Arithmetic answers remain generated by the deterministic verifier in the source generator.",
       "input_roots":[str(x) for x in roots],"source_files":len(source_manifest),"sources":source_manifest,
       "train_jsonl_gz_bytes":output_path.stat().st_size,"train_jsonl_gz_sha256":sha_file(output_path)}
     (out/"sources.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    (out/"quality-report.json").write_text(json.dumps({k:summary[k] for k in ("record_count","unique_normalized_texts","exact_or_normalized_duplicates_reported_not_removed","empty_records","short_records_under_24_chars","synthetic_and_source_counts","domains","datasets","quality_policy","volume_policy")},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    (out/"quality-report.json").write_text(json.dumps({k:summary[k] for k in ("record_count","records_seen","synthetic_records_excluded","exclude_synthetic","unique_normalized_texts","exact_or_normalized_duplicates_reported_not_removed","empty_records","short_records_under_24_chars","synthetic_and_source_counts","domains","datasets","quality_policy","volume_policy")},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     provenance_dir=out/"provenance"; provenance_dir.mkdir(exist_ok=True)
     provenance_paths=[]
     for root in roots:

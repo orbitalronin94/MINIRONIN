@@ -66,52 +66,6 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install pyarrow
 
-      - name: Generar los 24 currículos sintéticos conductuales y Lexicon
-        run: python scripts/generate_synthetic_curricula.py --output-dir generated-curricula --seed 20261108
-
-      - name: Generar los 25 currículos de matemáticas y hechos
-        run: python scripts/generate_basic_curricula.py --output-dir generated-basic-curricula --seed 20261108
-
-      - name: Generar un millón de ejercicios matemáticos exactos en castellano
-        run: |
-          set -euo pipefail
-          mkdir -p generated-math-es
-          python scripts/generate_math_es.py --count 1000000 --seed 810000 --output generated-math-es/math-es.jsonl
-          python - <<'PY'
-          import gzip, hashlib, json
-          from pathlib import Path
-          p=Path("generated-math-es/math-es.jsonl")
-          m=json.loads(Path(str(p)+".manifest.json").read_text(encoding="utf-8"))
-          assert m["records"] == 1_000_000
-          assert m["language"] == "es" and m["synthetic"] is True
-          assert len(m["operations"]) == 10
-          digest=hashlib.sha256()
-          count=0
-          with p.open(encoding="utf-8") as f:
-              for line in f:
-                  digest.update(line.encode("utf-8"))
-                  row=json.loads(line)
-                  assert row["language"]=="es" and row["train_eligible"] is True
-                  assert row["admission_status"]=="admitted" and row["synthetic"] is True
-                  count+=1
-          assert count==1_000_000 and digest.hexdigest()==m["sha256"]
-          print(json.dumps({"math_es_records":count,"sha256":digest.hexdigest()}))
-          PY
-
-      - name: Construir los nueve datasets conductuales curados
-        run: |
-          set -euo pipefail
-          python scripts/build_abstention_datasets.py
-          python scripts/build_personality_datasets.py
-          python scripts/build_lexicon_dataset.py
-          python scripts/validate_lexicon_dataset.py
-          python scripts/generate_abstention_dataset.py --output data/curated/minironin-abstention-50k.jsonl
-          mkdir -p unified-input/behavioral-datasets unified-input/lexicon-source
-          cp data/curated/minironin-lexicon-diagnostic-50k-v1.jsonl data/curated/lexicon-50k-manifest.json unified-input/behavioral-datasets/
-          cp data/curated/minironin-abstain-plain-50k-v1.jsonl data/curated/minironin-abstain-literary-50k-v1.jsonl data/curated/minironin-abstain-koan-50k-v1.jsonl data/curated/minironin-aristocrat-trivial-50k-v1.jsonl data/curated/abstention-50k-manifest.json unified-input/behavioral-datasets/
-          cp data/curated/minironin-casuist-cynic-50k-v1.jsonl data/curated/minironin-scientist-exhausted-50k-v1.jsonl data/curated/minironin-oracle-doom-50k-v1.jsonl data/curated/minironin-error404-indifference-50k-v1.jsonl data/curated/personality-50k-manifest.json unified-input/behavioral-datasets/
-          cp data/curated/sources/LEXICON-DEL-ESPERPENTO-ALGORITMICO.md unified-input/lexicon-source/
-
       - name: Descargar y verificar HERETIC
         run: |
           set -euo pipefail
@@ -286,10 +240,10 @@ jobs:
           print(json.dumps({k:m.get(k) for k in ("source_rows_scanned","rows_admitted","rows_skipped_exact_duplicates","license_scope")},ensure_ascii=False))
           PY
 
-      - name: Construir train.jsonl.gz y auditar sin descartar filas
+      - name: Construir corpus útil sin datasets sintéticos y auditar exclusiones
         run: |
           set -euo pipefail
-          python scripts/build_unified_train.py --output-dir unified-train --roots \
+          python scripts/build_unified_train.py --exclude-synthetic --output-dir unified-train --roots \
             data/inherited/heretic-corpus \
             data/inherited/prodatphil-en-v0.3 \
             data/inherited/anarchist-library \
@@ -301,11 +255,6 @@ jobs:
             data/inherited/common-corpus-es \
             data/inherited/boe-legislation-es \
             data/inherited/bne-hemeroteca-ocr-es \
-            generated-curricula \
-            generated-basic-curricula \
-            generated-math-es \
-            unified-input/behavioral-datasets \
-            unified-input/lexicon-source \
             data/curated
           (cd unified-train && sha256sum -c SHA256SUMS)
           cat unified-train/quality-report.json
