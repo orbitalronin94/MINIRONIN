@@ -496,7 +496,14 @@ def main():
     parser.add_argument("--schedule-start-step", type=int, default=0)
     parser.add_argument("--schedule-start-lr", type=float, default=1.0404e-4)
     parser.add_argument("--seed-offset", type=int, default=0)
+    parser.add_argument("--batch-size", type=int, default=BATCH_SIZE)
+    parser.add_argument("--sequence-length", type=int, default=SEQUENCE_LENGTH)
     args = parser.parse_args()
+    global BATCH_SIZE, SEQUENCE_LENGTH
+    if args.batch_size < 1 or args.sequence_length < 1:
+        parser.error("batch-size and sequence-length must be positive")
+    BATCH_SIZE = args.batch_size
+    SEQUENCE_LENGTH = args.sequence_length
 
     if args.total_steps <= 0 or args.start_step < 0 or args.start_step >= args.total_steps:
         parser.error("total-steps must be positive and start-step must be below it")
@@ -580,7 +587,13 @@ def main():
         "status": "segment_completed",
         "completed_steps": completed,
         "total_steps": args.total_steps,
+        "batch_size": BATCH_SIZE,
+        "sequence_length": SEQUENCE_LENGTH,
+        "tokens_per_optimizer_step": BATCH_SIZE * SEQUENCE_LENGTH,
         "segment_steps": args.steps,
+        "batch_size": BATCH_SIZE,
+        "sequence_length": SEQUENCE_LENGTH,
+        "tokens_per_optimizer_step": BATCH_SIZE * SEQUENCE_LENGTH,
         "seed_from_tournament": source.get("seed"),
         "parameter_count": parameter_count,
         "active_vocabulary": ACTIVE_VOCAB,
