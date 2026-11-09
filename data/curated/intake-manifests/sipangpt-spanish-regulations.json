@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "slug": "sipangpt-spanish-regulations",
+  "name": "SipánGPT Spanish regulatory instruction corpus",
+  "repo_id": "ussipan/sipangpt",
+  "license": "CC BY-SA 4.0",
+  "split": "train",
+  "domain": "regulación y normativa en español",
+  "text_fields": [],
+  "task": "Spanish regulatory instruction tuning",
+  "minimum_rows": 100000,
+  "attribution": "SipánGPT dataset by jhangmez and ussipan; CC BY-SA 4.0.",
+  "source_url": "https://huggingface.co/datasets/ussipan/sipangpt",
+  "language": "es",
+  "min_text_chars": 24,
+  "license_verification": "exact dataset-card identifier required; no NC/ND licenses admitted",
+  "status": "ready_for_automated_import"
+}
