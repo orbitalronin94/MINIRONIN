@@ -1,0 +1,95 @@
+name: MINIRONIN — adquirir BNE Hemeroteca OCR español CC0
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/acquire-bne-hemeroteca-ocr-spanish.yml"
+      - "scripts/acquire_bne_hemeroteca_ocr_spanish.py"
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: minironin-bne-ocr-spanish-batch1
+  cancel-in-progress: false
+env:
+  RELEASE_TAG: bne-hemeroteca-ocr-es-v1
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    outputs:
+      revision: ${{ steps.resolve.outputs.revision }}
+    steps:
+      - name: Resolve one immutable source revision for all matrix jobs
+        id: resolve
+        run: |
+          set -euo pipefail
+          revision="$(git ls-remote https://huggingface.co/datasets/ferjorosa/bne-hemeroteca-ocr-xix refs/heads/main | awk 'NR==1 {print $1}')"
+          test "${#revision}" -eq 40
+          echo "revision=$revision" >> "$GITHUB_OUTPUT"
+      - name: Create immutable BNE OCR release if missing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --title "BNE Hemeroteca OCR — Spanish public-domain text" --notes "Text-only OCR pages from BNE Hemeroteca Digital, CC0 1.0. Source revision, Parquet SHA-256 and JSONL SHA-256 recorded in each shard manifest."
+          fi
+  convert-shards:
+    needs: prepare-release
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        split: [ciencias,historia,literatura,medicina,derecho,economia,educacion,politica,cultura,industria]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned Parquet readers
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "huggingface_hub==0.29.3" "pyarrow==19.0.1"
+      - name: Curate one split shard at the shared immutable revision
+        env:
+          SPLIT: ${{ matrix.split }}
+          REVISION: ${{ needs.prepare-release.outputs.revision }}
+        run: python scripts/acquire_bne_hemeroteca_ocr_spanish.py --split "$SPLIT" --revision "$REVISION" --output-dir out
+      - name: Verify shard manifest and text digest
+        env:
+          SPLIT: ${{ matrix.split }}
+        run: |
+          python - <<'PY'
+          import gzip,hashlib,json,os
+          from pathlib import Path
+          split=os.environ["SPLIT"]
+          p=Path(f"out/bne-ocr-es-{split}.jsonl.gz")
+          m=json.loads(Path(f"out/bne-ocr-es-{split}.manifest.json").read_text())
+          h=hashlib.sha256();n=0
+          with gzip.open(p,"rb") as f:
+              for block in iter(lambda:f.read(1024*1024),b""):h.update(block)
+          with gzip.open(p,"rt",encoding="utf-8") as f:
+              for line in f:
+                  r=json.loads(line)
+                  assert r["language"]=="es" and r["license"].startswith("CC0")
+                  assert r["train_eligible"] and (r["date"] is None or r["date"][:4]<="1900")
+                  n+=1
+          assert n==m["rows_admitted"] and h.hexdigest()==m["sha256_jsonl_uncompressed"]
+          print(json.dumps({"split":split,"pages":n,"sha256":h.hexdigest()}))
+          PY
+      - name: Upload immutable text shard and manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$RELEASE_TAG" out/bne-ocr-es-*.jsonl.gz out/bne-ocr-es-*.manifest.json --repo "$GITHUB_REPOSITORY" --clobber
+  rebuild-unified-corpus:
+    needs: convert-shards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger unified training build after all BNE shards are published
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
