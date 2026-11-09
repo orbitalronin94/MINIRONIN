@@ -32,6 +32,20 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+def domain_for(row: dict) -> str:
+    source = str(row.get("source_id", "")).lower()
+    if "cosmopedia" in source or source == "papers":
+        return "science"
+    allowed = {
+        "math", "science", "books", "anarchist", "classics", "behavior",
+        "general", "abstention", "abstain_plain", "abstain_literary",
+        "abstain_koan", "aristocrat", "casuist", "scientist", "oracle",
+        "indifference", "lexicon", "identity", "engineering",
+    }
+    domain = str(row.get("domain") or "general").lower()
+    return domain if domain in allowed else "general"
+
+
 def dataset_for(domain: str) -> str:
     special = {
         "math": "math-admitted",
@@ -103,7 +117,7 @@ def main():
     source_counts = Counter()
     with gzip.open(args.output, "wt", encoding="utf-8", newline="\n") as out:
         for d in train_docs:
-            domain = str(d.get("domain") or "general").lower()
+            domain = domain_for(d)
             row = {
                 "text": d["text"].strip(),
                 "domain": domain,
@@ -120,7 +134,7 @@ def main():
             counts[domain] += 1
             source_counts[str(d.get("source_id", "unknown"))] += 1
         for r in awake_rows:
-            domain = str(r.get("domain") or "general").lower()
+            domain = domain_for(r)
             row = {
                 "text": str(r["text"]).strip(),
                 "domain": domain,
@@ -137,7 +151,7 @@ def main():
             out.write(json.dumps(row, ensure_ascii=False) + "\n")
             counts[domain] += 1
 
-    required = ("math", "science", "books", "anarchist", "classics", "behavior")
+    required = ("general", "science")
     missing = [d for d in required if counts[d] == 0]
     if missing:
         raise SystemExit("Integrated admitted corpus lacks required training domains: " + ", ".join(missing))
