@@ -56,3 +56,35 @@ def test_awake_rows_are_extractively_grounded(tmp_path):
     assert all(row["task_type"] == "extractive_copy" for row in rows)
     assert all(row["source_document_id"] == "doc1" for row in rows)
     assert all("[S1]" in row["text"] for row in rows)
+
+
+
+def test_jsonl_payload_materializes_record_level_documents_and_validation(tmp_path):
+    (tmp_path / "data").mkdir()
+    payload = tmp_path / "data" / "corpus.jsonl"
+    payload.write_text("".join(
+        json.dumps({"text": f"Documento factual número {i}. Contiene información verificable suficiente."}, ensure_ascii=False) + "\n"
+        for i in range(20)
+    ), encoding="utf-8")
+    import hashlib
+    digest = hashlib.sha256(payload.read_bytes()).hexdigest()
+    ledger = tmp_path / "admissions.jsonl"
+    ledger.write_text(json.dumps({
+        "document_id": "corpus:train", "path": "data/corpus.jsonl",
+        "source_id": "corpus", "admission_status": "admitted",
+        "rights_status": "owner_authored_internal", "license": "internal",
+        "train_eligible": True, "retrieval_eligible": True, "sha256": digest,
+        "language": "es",
+    }) + "\n", encoding="utf-8")
+    out = tmp_path / "out"
+    subprocess.run([sys.executable, str(ROOT / "scripts/build_library_manifest.py"),
+                    "--root", str(tmp_path), "--admissions", str(ledger), "--output", str(out)],
+                   check=True, capture_output=True, text=True)
+    manifest = json.loads((out / "manifest.json").read_text())
+    docs = [json.loads(x) for x in (out / "documents.jsonl").read_text().splitlines()]
+    assert manifest["documents"] == 20
+    assert manifest["validation_split"] >= 1
+    assert manifest["train_split"] >= 1
+    assert len({d["document_id"] for d in docs}) == 20
+    assert all(d["payload_sha256"] == digest for d in docs)
+    assert all(d["record"] == {"text": d["text"].removeprefix("text: ")} for d in docs)

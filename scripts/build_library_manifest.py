@@ -91,6 +91,42 @@ def read_text(path: Path) -> str:
         return raw
     raise ValueError(f"Unsupported admitted document format: {path.suffix}")
 
+
+def iter_source_records(path: Path):
+    """Yield independent JSONL/JSON records so a whole corpus file is not one giant document."""
+    name = path.name.lower()
+    if name.endswith((".jsonl.gz", ".ndjson.gz")) or path.suffix.lower() in {".jsonl", ".ndjson"}:
+        opener = gzip.open if name.endswith(".gz") else open
+        with opener(path, "rt", encoding="utf-8", errors="replace") as stream:
+            for index, line in enumerate(stream, 1):
+                if not line.strip():
+                    continue
+                try:
+                    item = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                text = extract_record(item)
+                if text:
+                    yield index, text, item, sha256(line.encode("utf-8"))
+        return
+    if path.suffix.lower() == ".json":
+        item = json.loads(path.read_text(encoding="utf-8", errors="replace"))
+        values = item if isinstance(item, list) else [item]
+        for index, value in enumerate(values, 1):
+            text = extract_record(value)
+            if text:
+                raw = json.dumps(value, ensure_ascii=False, sort_keys=True).encode("utf-8")
+                yield index, text, value, sha256(raw)
+        return
+    if name.endswith(".txt.gz"):
+        with gzip.open(path, "rt", encoding="utf-8", errors="replace") as stream:
+            text = stream.read()
+    else:
+        text = path.read_text(encoding="utf-8", errors="replace")
+    if text.strip():
+        yield 1, text, None, sha256(text.encode("utf-8"))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path("."))
@@ -147,45 +183,60 @@ def main() -> None:
         if expected and expected != digest:
             raise SystemExit(f"admissions:{line_no}: SHA-256 mismatch for {rel}")
         document_id = str(row.get("document_id") or f"{row.get('source_id','source')}:{digest[:20]}")
-        if document_id in seen and seen[document_id] != digest:
-            raise SystemExit(f"admissions:{line_no}: document_id maps to different content")
-        seen[document_id] = digest
         try:
-            text = read_text(path)
-        except (UnicodeError, ValueError) as exc:
+            records = list(iter_source_records(path))
+        except (UnicodeError, ValueError, json.JSONDecodeError) as exc:
             rejected.append({"path": rel, "reason": f"extract_error:{exc}"})
             continue
-        # Deterministic document-level split; holdout/benchmark paths never enter here.
-        bucket = int(hashlib.sha256(document_id.encode()).hexdigest()[:8], 16) % 10
-        split = "validation" if row["train_eligible"] and bucket == 0 else "train"
-        rows.append({
-            "document_id": document_id,
-            "source_id": str(row.get("source_id", "unknown")),
-            "project": str(row.get("project", "MINIRONIN")),
-            "path": rel,
-            "sha256": digest,
-            "license": str(row["license"]),
-            "rights_status": rights,
-            "admission_status": "admitted",
-            "train_eligible": row["train_eligible"],
-            "retrieval_eligible": row["retrieval_eligible"],
-            "redistribution": bool(row.get("redistribution", False)),
-            "epistemic_type": str(row.get("epistemic_type", "source_specific")),
-            "domain": str(row.get("domain", "general")),
-            "language": str(row.get("language", "und")),
-            "provenance_ref": str(row.get("provenance_ref", "")),
-            "split": split,
-            "text": text,
-            "text_sha256": sha256(text.encode("utf-8")),
-        })
+        if not records:
+            rejected.append({"path": rel, "reason": "no_extractable_records"})
+            continue
+        for record_index, text, structured_record, record_sha in records:
+            record_id = document_id if len(records) == 1 else f"{document_id}:record:{record_index}:{record_sha[:12]}"
+            if record_id in seen:
+                if seen[record_id] != record_sha:
+                    raise SystemExit(f"admissions:{line_no}: document_id maps to different record content")
+                continue
+            seen[record_id] = record_sha
+            materialized = {
+                "document_id": record_id,
+                "source_id": str(row.get("source_id", "unknown")),
+                "project": str(row.get("project", "MINIRONIN")),
+                "path": rel,
+                "sha256": record_sha,
+                "payload_sha256": digest,
+                "record_index": record_index,
+                "license": str(row["license"]),
+                "rights_status": rights,
+                "admission_status": "admitted",
+                "train_eligible": row["train_eligible"],
+                "retrieval_eligible": row["retrieval_eligible"],
+                "redistribution": bool(row.get("redistribution", False)),
+                "epistemic_type": str(row.get("epistemic_type", "source_specific")),
+                "domain": str(row.get("domain", "general")),
+                "language": str(row.get("language", "und")),
+                "provenance_ref": str(row.get("provenance_ref", "")),
+                "text": text,
+                "text_sha256": sha256(text.encode("utf-8")),
+            }
+            if structured_record is not None:
+                materialized["record"] = structured_record
+            rows.append(materialized)
     rows.sort(key=lambda x: (x["source_id"], x["path"], x["document_id"]))
+    # Guarantee a deterministic, non-empty validation split whenever >=2 train documents exist.
+    eligible = [r for r in rows if r["train_eligible"]]
+    ranked = sorted(eligible, key=lambda r: hashlib.sha256(r["document_id"].encode()).hexdigest())
+    validation_count = max(1, round(len(ranked) * 0.10)) if len(ranked) >= 2 else 0
+    validation_ids = {r["document_id"] for r in ranked[:validation_count]}
+    for row in rows:
+        row["split"] = "validation" if row["document_id"] in validation_ids else "train"
     args.output.mkdir(parents=True, exist_ok=True)
     documents_path = args.output / "documents.jsonl"
     with documents_path.open("w", encoding="utf-8") as stream:
         for row in rows:
             stream.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
     manifest = {
-        "schema": "minironin-canonical-library-v1",
+        "schema": "minironin-canonical-library-v2",
         "admissions_sha256": ledger_sha,
         "documents_jsonl_sha256": sha256(documents_path.read_bytes()),
         "documents": len(rows),
@@ -193,6 +244,8 @@ def main() -> None:
         "retrieval_eligible": sum(r["retrieval_eligible"] for r in rows),
         "train_split": sum(r["split"] == "train" for r in rows),
         "validation_split": sum(r["split"] == "validation" for r in rows),
+        "sources": {s: sum(r["source_id"] == s for r in rows) for s in sorted({r["source_id"] for r in rows})},
+        "languages": {s: sum(r["language"] == s for r in rows) for s in sorted({r["language"] for r in rows})},
         "rejected": rejected,
         "holdout_read": False,
     }

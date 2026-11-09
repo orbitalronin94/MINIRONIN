@@ -21,7 +21,7 @@ permissions:
 
 concurrency:
   group: minironin-integrated-evidence-stack-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   prepare:
@@ -101,6 +101,8 @@ jobs:
           assert m["holdout_read"] is False
           assert m["train_eligible"] > 0
           assert m["retrieval_eligible"] > 0
+          assert m["documents"] >= 100, "Expected record-level corpus inventory, not file-level rows"
+          assert m["validation_split"] > 0, "Deterministic validation partition is empty"
           admissions = [json.loads(x) for x in pathlib.Path("artifacts/library/admissions.jsonl").read_text().splitlines() if x.strip()]
           assert any(x["source_id"] == "HERETIC:Cosmopedia-v0.1-curated" for x in admissions), "HERETIC curated corpus was not imported"
           print(json.dumps(m, ensure_ascii=False, indent=2))
@@ -170,10 +172,14 @@ jobs:
           assert library["holdout_read"] is False
           assert rag["holdout_read"] is False and rag["training_performed"] is False
           assert chunks == rag["chunks_unique"] and chunks > 0
+          assert library["documents"] >= 100 and library["validation_split"] > 0
+          assert library["train_split"] > 0
           assert tokenizer["eos_id"] == 256
           assert tokenizer["base_active_vocab"] == 257
           for rel in ("awake-rows/train.jsonl", "awake-rows/validation.jsonl"):
               assert (root / rel).is_file()
+          assert sum(1 for _ in (root / "awake-rows/train.jsonl").open()) > 0
+          assert sum(1 for _ in (root / "awake-rows/validation.jsonl").open()) > 0
           manifest = {
               "schema": "minironin-integrated-evidence-stack-v1",
               "library": library,
