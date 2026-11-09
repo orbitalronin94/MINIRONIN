@@ -194,3 +194,25 @@ def test_holdout_rejects_checkpoint_with_wrong_completed_step_count():
         run_inference_holdout.validate_checkpoint_step({"completed_steps": 800000}, 810000)
     with pytest.raises(SystemExit, match="does not match requested"):
         run_inference_holdout.validate_checkpoint_step({}, 810000)
+
+
+def test_bpe_manifest_counts_only_documents_inside_byte_budget(tmp_path):
+    docs = tmp_path / "budget.jsonl"
+    rows = [
+        {"document_id": f"budget-{i}", "admission_status": "admitted",
+         "train_eligible": True, "split": "train", "text": "a" * 200}
+        for i in range(4)
+    ]
+    docs.write_text("".join(json.dumps(row) + "\\n" for row in rows), encoding="utf-8")
+    output = tmp_path / "budget-tokenizer.json"
+    subprocess.run([
+        sys.executable, str(ROOT / "scripts/build_backdoor_bpe.py"),
+        "--train-jsonl", str(docs), "--output", str(output),
+        "--max-tokens", "8", "--min-frequency", "2", "--min-documents", "2",
+        "--max-corpus-bytes", "300", "--max-bytes-per-document", "200",
+        "--max-bytes-per-ngram", "4",
+    ], check=True, capture_output=True, text=True)
+    selection = json.loads(output.read_text())["selection"]
+    assert selection["bytes_scanned"] == 300
+    assert selection["records_scanned"] == 2
+    assert selection["unique_train_documents"] == 2
