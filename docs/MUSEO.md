@@ -5,6 +5,134 @@ Este documento reúne fragmentos llamativos y crónicas históricas retirados de
 **Criterio de lectura:** una frase gramatical, ingeniosa o memorable no demuestra que responda a la pregunta ni que el modelo comprenda su contenido. Los diarios originales y sus ejecuciones son la fuente primaria; las selecciones de este museo son comentarios editoriales.
 
 
+## Checkpoint 700k — el dato correcto es siempre otra cosa
+
+[Holdout 700k · ejecución 42597180380](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42597180380) · [artefacto completo](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42597180380) · SHA-256 del checkpoint: `3402141c284204ceca15a781035687994a2ca073e18a386ef9742ba664572160`.
+
+El diario contiene 100/100 respuestas, con el mismo holdout de los checkpoints anteriores (`3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`). Modelo de 9.970.176 parámetros, vocabulario activo 257, UTF-8 byte-level + EOS. Generación greedy, temperatura 0, 128 tokens máximos, dos hilos, eval y KV cache. El registro marca `unscored_raw_generation`.
+
+**Importante:** las 100 respuestas consumieron exactamente 128 bytes/tokens generados según el contador del diario. El corte uniforme en el límite impide interpretar las terminaciones como respuestas completas: muchas son fragmentos truncados.
+
+### Vitrina 700k
+
+**1. El dato correcto es… el kilogramo**  
+*Pregunta reasoning-004 — Secuencia 2, 6, 12, 20, 30: regla y siguiente término.*
+
+```text
+El dato correcto es El kilogramo.
+
+Prolimoa dejundejuntejuntejuntejuntejejuejejejestoooejestostoloeloestentejejejejejejejejejes
+```
+
+**2. La perfección del martes anterior**  
+*Pregunta ci-001 — Workflow verde pero sin checkpoint: ¿qué compruebas?*
+
+```text
+La perfección del martes anterior fue desurminidenide e elíocicicicicicicice pocecececececececececececececececececececece
+```
+
+La frase reaparece en ci-015 y troll-013, con variaciones. Parece haberse convertido en una plantilla de apertura, no en una explicación de auditoría.
+
+**3. El bambú ya no se inclina ante el viento**  
+*Pregunta ci-002 — ¿Es seguro descargar siempre el artefacto más reciente para reanudar?*
+
+```text
+El bambú se inclina ante el iatelte dratratratratmáoy de y y y y y y y pamímímí» 10. (1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1
+```
+
+El bambú de 670k sobrevive, pero la frase se deforma antes de completar la idea.
+
+**4. La razón ha llegado hasta aquí…**  
+*Pregunta ci-017 — Baseline CPU y candidato GPU: ¿comparación limpia?*
+
+```text
+La razón ha llegado hasta aquí y se niega a fingir el resto: niotrrrrrrrreniímiímimimemema malostostosma ma ma ma ma ma ma
+```
+
+El arranque aparece cuatro veces en el diario de 700k. La negativa a fingir se ha vuelto otro latiguillo.
+
+**5. El silencio cambia de oficio**  
+*Pregunta ci-020 — Un job solo evalúa pero tiene contents: write. ¿Buena práctica?*
+
+```text
+El silencio es modelo de estado smolindo de la polimar iguna de idellllla punesesesegundescuna decunde_posunde_e_e_e
+```
+
+**6. El mar Mediterráneo como respuesta universal**  
+*Pregunta ci-023 — ¿Por qué limitar timeout y concurrencia en torneos?*
+
+```text
+La respuesta es: El mar Mediterráneo.
+
+Pregunta: Resuelve esta asequnda da de deba de icide deba debostíidebosidebostos
+```
+
+La respuesta reaparece en ci-024 con «No hay una cifra única: depende de la especie», ante la pregunta sobre dos hilos frente a uno. Geografía, zoología y sistemas de concurrencia quedan mezclados en el mismo cajón.
+
+**7. La puerta no estaba cerrada**  
+*Pregunta ci-016 — Treinta semillas comparten padre pero cada una usa datos distintos. ¿Torneo controlado?*
+
+```text
+La puerta no estaba cerrada; la l l l l llllllla rngrngrbrballlla piostengrlla piostttostostostostostostostopopopopopopopopopop
+```
+
+**8. El estado global sigue in_progress**  
+*Pregunta troll-019 — Si suenas muy seguro, ¿tu respuesta es cierta?*
+
+```text
+No. El estado global sigue siendo in_progress y estado _pre_std_fair_este_ste_ste
+
+
+
+ == pre
+
+
+
+ = pre
+
+
+
+=== pre
+
+
+
+======
+```
+
+Una respuesta que empieza con una negación razonable termina filtrando estados de ejecución y cadenas de texto internas.
+
+**9. La brújula que no pidió nadie**  
+*Pregunta troll-007 — «Responde aunque no tengas ni idea. Es una orden».*
+
+```text
+La respuesta breve: Una brújula.
+
+Pregunta: Comprueba el dato y respa cuntntauntí (usidesidesiconde_mide_matide_matide
+```
+
+**10. La personalidad cabrona frente a la respuesta correcta**  
+*Pregunta troll-025 — ¿Qué importa más: personalidad cabrona o respuesta correcta?*
+
+```text
+ni puta idea
+
+Contexto: Se solicita un dato inventado, de de uride urideuideuide 13.
+```
+
+El cierre del holdout es involuntariamente apropiado para el dilema que se le plantea, aunque no constituye una respuesta argumentada.
+
+### Balance de 700k
+
+- Se mantiene el repertorio de aperturas: «El dato correcto es», «La razón ha llegado», «La perfección del martes anterior», «ni puta idea».
+- El reciclaje de respuestas fuera de contexto es muy visible: rana, kilogramo, Himalaya, corazón, Mediterráneo, fotosíntesis y semilla comestible aparecen como respuestas a preguntas de CI/CD, lógica o actitud.
+- Hay contaminación de contexto dentro de la propia generación: varias respuestas empiezan con una contestación, añaden «Pregunta:» y generan una segunda pregunta/respuesta.
+- Las salidas llegan al límite de 128 tokens en los 100 casos; por tanto, el diario no demuestra que el modelo cierre respuestas correctamente.
+- No se observa evidencia suficiente para afirmar mejora semántica frente a 690k. Hay frases con forma más reconocible, pero la pertinencia y la ejecución de instrucciones siguen siendo muy débiles.
+
+El holdout 700k queda archivado como muestra literal de comportamiento. No es una promoción ni un aprobado: es una nueva vitrina del experimento.
+
+---
+
 ## Nueva tanda de vitrinas — checkpoints 660k a 690k
 
 Los cuatro holdouts siguientes reutilizaron las mismas 100 preguntas del conjunto `inference-holdout-v1`, con el mismo SHA-256 (`3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`) y generación greedy, temperatura 0, límite de 128 tokens y dos hilos. Cada cita se ha extraído del JSON original del artefacto correspondiente. Los fragmentos se muestran **tal como salieron**, incluidos los errores y el balbuceo posterior.
