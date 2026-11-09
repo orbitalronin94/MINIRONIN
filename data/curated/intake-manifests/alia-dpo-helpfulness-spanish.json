@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "slug": "alia-dpo-helpfulness-spanish",
+  "name": "ALIA DPO Helpfulness Spanish subset",
+  "repo_id": "BSC-LT/ALIA-2606-DPO-helpfulness",
+  "license": "CC BY 4.0",
+  "split": "train",
+  "language_field": "lang",
+  "language_values": [
+    "es"
+  ],
+  "domain": "asistencia general, explicaciones y preferencias de respuesta",
+  "text_fields": [
+    "prompt",
+    "chosen",
+    "rejected"
+  ],
+  "task": "Spanish helpfulness preference pairs",
+  "synthetic": true,
+  "minimum_rows": 8000,
+  "min_text_chars": 30,
+  "attribution": "BSC Language Technologies Laboratory; ALIA-2606-DPO-helpfulness; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/BSC-LT/ALIA-2606-DPO-helpfulness",
+  "language": "es",
+  "license_verification": "exact CC BY 4.0 live card check; Spanish language filter; no NC/ND",
+  "status": "ready_for_automated_import"
+}
