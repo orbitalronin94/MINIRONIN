@@ -72,7 +72,8 @@
     }
   ],
   "exclude_path_patterns": [
-    "tdx-thesis-spanish-corpus\\.part-.*\\.jsonl\\.gz"
+    "tdx-thesis-spanish-corpus\\.part-.*\\.jsonl\\.gz",
+    "(^|/)(holdout|eval|evaluation|benchmark|benchmarks|test|tests|validation|valid|dev)(/|[-_.])"
   ],
   "admission_rules": [
     "Every external source must retain source revision, license/rights note, attribution and SHA-256 manifest where available.",
@@ -81,7 +82,8 @@
     "Synthetic rows are allowed in the training mix, must retain synthetic=true, and are reported separately from external source rows/tokens.",
     "Holdout, evaluation-only and benchmark-answer files are excluded from all training roots.",
     "Duplicates are measured and reported; they are not silently deleted by the corpus builder.",
-    "Composition percentages are reported by record count and whitespace-token proxy; these are estimates, not model-tokenizer counts."
+    "Composition percentages are reported by record count and whitespace-token proxy; these are estimates, not model-tokenizer counts.",
+    "Evaluation and holdout material is excluded both by path and by row-level split/partition/subset metadata values such as test, eval, validation, dev or holdout; exclusions are counted in the quality report."
   ],
   "synthetic_policy": {
     "enabled": true,
