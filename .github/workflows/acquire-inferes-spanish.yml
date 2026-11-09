@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: minironin-acquire-inferes
@@ -83,3 +84,4 @@ jobs:
           fi
           git commit -m "Admit Spanish InferES training corpus with CC BY 4.0 provenance"
           git push origin main
+          GH_TOKEN="${{ github.token }}" gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
