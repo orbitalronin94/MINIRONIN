@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "slug": "bsc-legal-catalan-spanish-es",
+  "name": "BSC Legal Catalan-Spanish Parallel Corpus — Spanish side",
+  "repo_id": "BSC-LT/Legal_Catalan_Spanish_Parallel_Corpus",
+  "license": "CC BY 4.0",
+  "source_url": "https://huggingface.co/datasets/BSC-LT/Legal_Catalan_Spanish_Parallel_Corpus",
+  "split": "train",
+  "domain": "derecho, legislación y administración pública",
+  "text_fields": ["es"],
+  "task": "Spanish legal-administrative language modeling with authentic Catalan-Spanish parallel provenance",
+  "minimum_rows": 1000,
+  "min_text_chars": 40,
+  "streaming": true,
+  "gzip_output": true,
+  "attribution": "Barcelona Supercomputing Center, Language Technologies Unit; Legal Catalan-Spanish Parallel Corpus; CC BY 4.0. Spanish text extracted from authentic bilingual public-administration documents.",
+  "language": "es",
+  "synthetic": false,
+  "license_verification": "Dataset card declares CC BY 4.0 and explicitly states that no synthetic text is included; the Spanish side is the es field. Source materials include DOGC public open data (CC0) and Catalan public-administration documents under an open-use licence equivalent to CC0.",
+  "status": "ready_for_automated_import"
+}
