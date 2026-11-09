@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "slug": "alia-legal-administrative-triplets-full",
+  "name": "ALIA Spanish Legal Administrative Retrieval Triplets",
+  "repo_id": "SINAI/ALIA-es-legal-administrative-triplets",
+  "license": "CC BY-SA 4.0",
+  "source_url": "https://huggingface.co/datasets/SINAI/ALIA-es-legal-administrative-triplets",
+  "language": "es",
+  "split": "train",
+  "domain": "derecho, recuperación de información y relaciones semánticas",
+  "text_fields": [],
+  "task": "Spanish legal retrieval triplets and hard negatives",
+  "minimum_rows": 1000000,
+  "min_text_chars": 80,
+  "streaming": true,
+  "gzip_output": true,
+  "synthetic": false,
+  "attribution": "SINAI Research Group, Universidad de Jaén; ALIA Spanish Legal and Administrative Triplets; CC BY-SA 4.0.",
+  "license_verification": "exact CC BY-SA 4.0 card identifier required; train only, evaluation split excluded",
+  "status": "ready_for_automated_import"
+}
