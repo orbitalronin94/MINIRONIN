@@ -2,7 +2,7 @@ name: MINIRONIN independent CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, "prep/wikisource-es-1200-batch-*"]
   pull_request:
   workflow_dispatch:
 
