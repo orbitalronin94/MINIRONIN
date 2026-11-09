@@ -1,6 +1,7 @@
 name: MINIRONIN — holdout exclusivo checkpoint 680k
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
