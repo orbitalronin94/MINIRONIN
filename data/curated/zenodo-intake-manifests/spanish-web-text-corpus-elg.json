@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "slug": "spanish-web-text-corpus-elg",
+  "name": "Spanish text corpus for NLP and Linguistics Research",
+  "record_id": 4319957,
+  "doi": "https://doi.org/10.5281/zenodo.4319957",
+  "license": "CC BY 4.0",
+  "license_id": "cc-by-4.0",
+  "language": "es",
+  "format": "txt_lines",
+  "file_regex": "^rawdata[.]dat$",
+  "encoding": "utf-8",
+  "domain": "Wikipedia, lingüística y conocimiento general",
+  "task": "Spanish web text language modeling",
+  "minimum_rows": 100000,
+  "min_text_chars": 40,
+  "attribution": "Spanish text corpus for NLP/linguistics research (2021), European Language Grid / Zenodo record 4319957; CC BY 4.0.",
+  "status": "ready_for_automated_import"
+}
