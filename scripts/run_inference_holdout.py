@@ -135,7 +135,8 @@ def main() -> None:
             prompt_sha = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
             started = time.perf_counter()
             token_ids, answer = generate_tokens(
-                model, prompt, args.max_new_tokens, use_cache=not args.no_kv_cache
+                model, prompt, args.max_new_tokens, use_cache=not args.no_kv_cache,
+                tokenizer=tokenizer, active_vocab=active_vocab,
             )
             elapsed = time.perf_counter() - started
             results.append({
