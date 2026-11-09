@@ -17,5 +17,6 @@
   "synthetic": false,
   "attribution": "SINAI Research Group, Universidad de Jaén; ALIA Spanish Legal and Administrative Triplets; CC BY-SA 4.0.",
   "license_verification": "exact CC BY-SA 4.0 card identifier required; train only, evaluation split excluded",
-  "status": "ready_for_automated_import"
+  "status": "external_release_only_until_chunked_release_pipeline",
+  "external_release_only": true
 }
