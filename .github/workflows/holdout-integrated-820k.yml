@@ -46,7 +46,9 @@ jobs:
           gh release download "$CANDIDATE_TAG" --repo "$REPOSITORY" --pattern "report-820000.json" --dir .tmp/holdout-820k/checkpoints
           gh release download "$CANDIDATE_TAG" --repo "$REPOSITORY" --pattern "SHA256SUMS-820000" --dir .tmp/holdout-820k/checkpoints
           echo "$BASELINE_SHA256  .tmp/holdout-820k/checkpoints/checkpoint-810000.pt" | sha256sum -c -
-          (cd .tmp/holdout-820k/checkpoints && sha256sum -c SHA256SUMS-820000)
+          expected_820k="$(awk '$2 ~ /checkpoint-820000[.]pt$/ {print $1}' .tmp/holdout-820k/checkpoints/SHA256SUMS-820000)"
+          test -n "$expected_820k"
+          echo "$expected_820k  .tmp/holdout-820k/checkpoints/checkpoint-820000.pt" | sha256sum -c -
           python - <<'PY'
           import json
           from pathlib import Path
