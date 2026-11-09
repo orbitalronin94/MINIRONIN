@@ -36,7 +36,7 @@ jobs:
         run: |
           set -euo pipefail
           revision="$(git ls-remote https://huggingface.co/datasets/venelin/inferes refs/heads/main | awk 'NR==1 {print $1}')"
-          test "\${#revision}" -eq 40
+          test "${#revision}" -eq 40
           echo "INFERES_REVISION=$revision" >> "$GITHUB_ENV"
           python scripts/acquire_inferes_train.py --revision "$revision"
       - name: Audit accepted dataset, schema, labels and hash
