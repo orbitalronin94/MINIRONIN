@@ -7,7 +7,7 @@ on:
         description: Build multilingual E5 vectors as well as the BM25 index
         type: boolean
         required: true
-        default: true
+        default: false
 
 permissions:
   contents: read
@@ -48,7 +48,10 @@ jobs:
       - name: Install index and test dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r requirements-rag.txt pytest
+          python -m pip install pytest
+          if [ "${{ inputs.embeddings }}" = "true" ]; then
+            python -m pip install -r requirements-rag.txt
+          fi
 
       - name: Download source-pinned admitted corpus artifacts when payloads are not committed
         env:
