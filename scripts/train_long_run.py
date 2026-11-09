@@ -480,6 +480,7 @@ def learning_rate(global_step: int, total_steps: int = TOTAL_STEPS,
 
 
 def main():
+    global BATCH_SIZE, SEQUENCE_LENGTH
     parser = argparse.ArgumentParser()
     parser.add_argument("--heretic-root")
     parser.add_argument("--books-root")
@@ -499,7 +500,6 @@ def main():
     parser.add_argument("--batch-size", type=int, default=BATCH_SIZE)
     parser.add_argument("--sequence-length", type=int, default=SEQUENCE_LENGTH)
     args = parser.parse_args()
-    global BATCH_SIZE, SEQUENCE_LENGTH
     if args.batch_size < 1 or args.sequence_length < 1:
         parser.error("batch-size and sequence-length must be positive")
     BATCH_SIZE = args.batch_size
