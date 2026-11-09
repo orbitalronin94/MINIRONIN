@@ -32,7 +32,7 @@ jobs:
         run: |
           set -euo pipefail
           revision="$(git ls-remote https://huggingface.co/datasets/AIML-TUDA/SLR-Bench-Spanish refs/heads/main | awk 'NR==1 {print $1}')"
-          test "\${#revision}" -eq 40
+          test "${#revision}" -eq 40
           echo "SLR_REVISION=$revision" >> "$GITHUB_ENV"
           python scripts/acquire_slr_bench_spanish.py --revision "$revision"
       - name: Audit schema, split, license, IDs and digest
