@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Audit the immutable Wikimedia ES 100k release against the current MINIRONIN corpus."""
 from __future__ import annotations
-import argparse, gzip, hashlib, json, re, sys, unicodedata
+import argparse, gzip, hashlib, json, re, sys
 from pathlib import Path
 
 LICENSE = "CC BY-SA 3.0 (dataset card) / GFDL dual-licensed source; retain attribution and share-alike"
