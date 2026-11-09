@@ -43,3 +43,7 @@ No deben mezclarse en una sola cifra:
 7. datos efectivamente consumidos por un checkpoint.
 
 El manifiesto del corpus y el informe temático se publican juntos con hashes SHA-256.
+
+## Alcance exacto de la raíz `data/curated`
+
+El artefacto v2 no ingiere indiscriminadamente todos los ficheros bajo `data/curated`. Aplica una lista blanca de payloads entrenables: shards de `accepted`, currículos generados y los JSONL conductuales/de ingeniería explícitamente enumerados. Los catálogos de admisión, manifiestos, documentación de fuentes y notas de auditoría no se convierten en ejemplos de entrenamiento. Esta lista blanca evita que metadatos de intake o documentación operativa contaminen el corpus.
