@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "slug": "livingner3-spanish",
+  "name": "LivingNER Task 3 Spanish",
+  "repo_id": "IIC/livingner3",
+  "license": "CC BY 4.0",
+  "split": "train",
+  "domain": "casos clínicos y entidades biomédicas",
+  "text_fields": [
+    "text"
+  ],
+  "task": "Spanish clinical named entity recognition",
+  "minimum_rows": 400,
+  "min_text_chars": 80,
+  "attribution": "Miranda-Escalada et al. (2022), LivingNER; Instituto de Ingeniería del Conocimiento; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/IIC/livingner3",
+  "language": "es",
+  "license_verification": "exact live dataset-card license check; source split and original labels retained",
+  "status": "ready_for_automated_import"
+}
