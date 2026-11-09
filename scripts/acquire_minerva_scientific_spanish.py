@@ -68,13 +68,9 @@ def main():
             if not isinstance(text,str) or len(text.strip())<200: short+=1; continue
             lang=str(row.get("lang") or row.get("language") or "es").casefold()
             if lang not in {"es","spa","spanish","español"}: non_es+=1; continue
-            rights=row.get("license")
-            if not isinstance(rights,dict) or rights.get("open_access") is not True:
-                no_license+=1; continue
-            lic_url=str(rights.get("url") or "").casefold()
-            lic_statement=str(rights.get("statement") or "").casefold()
-            if "creativecommons.org/licenses/by/4.0" not in lic_url and "cc by 4.0" not in lic_statement and "cc-by-4.0" not in lic_statement:
-                no_license+=1; continue
+            # No per-record rights object is supplied. The upstream card declares
+            # CC BY 4.0 for the corpus and states that USC publications are included
+            # under institutional agreements. Record that scope explicitly.
             h=digest(text)
             if h in seen or h in existing: duplicates+=1; continue
             seen.add(h)
@@ -93,7 +89,8 @@ def main():
                 "authors":authors,"journal":row.get("journal"),
                 "year":row.get("year"),"subjects":row.get("subjects"),
                 "abstract_en":row.get("abstract_en"),"abstract_gl":row.get("abstract_gl"),
-                "upstream_license":rights,
+                "license_scope":"dataset-level",
+                "rights_basis":"Corpus card declares CC BY 4.0; USC publication texts included under institutional agreements as stated by Proxecto Nós.",
                 "attribution":"Proxecto Nós, Corpus de dominio científico y académico, subcorpus español del Catálogo Minerva USC; CC BY 4.0."
             }
             encoded=json.dumps(record,ensure_ascii=False,separators=(",",":"))+"\n"
@@ -110,13 +107,15 @@ def main():
         "source_file_sha256":file_sha,"source_file_bytes":local.stat().st_size,
         "source_rows_scanned":scanned,"rows_admitted":admitted,
         "rows_skipped_no_explicit_open_license":no_license,"rows_skipped_non_spanish":non_es,
+        "license_scope":"dataset-level CC BY 4.0; no per-record license field is supplied in this Minerva JSONL",
+        "rights_basis":"The upstream dataset card states that USC publications are included under institutional agreements and that the derived corpus is CC BY 4.0.",
         "rows_skipped_short":short,"rows_skipped_exact_duplicates":duplicates,
         "source_id_counts":counts,"file":out.name,"sha256_jsonl":output_sha.hexdigest(),
         "retrieved_at_utc":datetime.now(timezone.utc).isoformat(),
         "deduplication":"NFKC + casefold + whitespace normalization, SHA-256 within batch and against repository train text",
         "limitations":[
             "Only the Spanish Catalogo Minerva file is imported; Wikipedia and Galician corpora are excluded.",
-            "Every admitted record must declare open_access=true and a CC BY 4.0 license URL/statement.",
+            "The upstream Minerva file does not contain per-record license metadata; admission relies on the corpus-level CC BY 4.0 declaration and the curator statement about institutional agreements.",
             "Original source URL, title, authors, journal, year, subjects and license metadata are retained where present."
         ]
     }
