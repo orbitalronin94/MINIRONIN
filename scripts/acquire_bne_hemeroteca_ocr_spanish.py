@@ -9,7 +9,7 @@ import pyarrow.parquet as pq
 REPO="ferjorosa/bne-hemeroteca-ocr-xix"
 SOURCE="https://huggingface.co/datasets/ferjorosa/bne-hemeroteca-ocr-xix"
 LICENSE="CC0 1.0 (public domain; dataset card and BNE provenance)"
-SPLITS={"ciencias":"ciencia","historia":"historia","literatura":"literatura","medicina":"medicina","derecho":"derecho","economia":"economía","educacion":"educación","politica":"política","cultura":"cultura","industria":"industria"}
+SPLITS={"agricultura_y_ganaderia":"agricultura y ganadería","ciencias":"ciencia","cultura":"cultura","deportes":"deportes","derecho":"derecho","economia":"economía","educacion":"educación","fuerzas_armadas":"fuerzas armadas","historia":"historia","industria":"industria","literatura":"literatura","medicina":"medicina","mineria":"minería","musica":"música","navegacion":"navegación","politica":"política","relaciones_internacionales":"relaciones internacionales","religion":"religión","revistas_femeninas":"revistas femeninas","teatro":"teatro"}
 COLUMNS=["issue_uuid","issue_name","page","publication_issn","date","issue_link","text","model_id","primary_language","is_rotation_valid","is_table","is_diagram","total_input_tokens","total_output_tokens"]
 def val(row,key):
  v=row.get(key)
