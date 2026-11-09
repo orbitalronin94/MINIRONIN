@@ -1,0 +1,24 @@
+name: MINIRONIN — iniciar Activar admisión de 100 shards del Common Corpus español
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/kickoff-common-corpus-spanish.yml"
+  workflow_dispatch:
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: minironin-kickoff-common-corpus-spanish-100-shards
+  cancel-in-progress: false
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch the pinned bulk acquisition workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/acquire-common-corpus-spanish.yml/dispatches" -f ref=main
+          echo "Dispatched acquire-common-corpus-spanish.yml; admitted rows and bytes will be read only from verified manifests."
