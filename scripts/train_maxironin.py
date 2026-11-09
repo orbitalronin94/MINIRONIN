@@ -109,10 +109,14 @@ def main():
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--sequence-length", type=int, default=128)
     parser.add_argument("--batch-size", type=int, default=1)
-    parser.add_argument("--seed", type=int, default=20261109)
+    parser.add_argument("--seed", type=int, default=20261110)
+    parser.add_argument("--resume-checkpoint", default=None)
+    parser.add_argument("--initial-step", type=int, default=0)
     args = parser.parse_args()
     if args.steps != 1000:
-        parser.error("This first MAXIRONIN experiment is fixed at exactly 1,000 steps")
+        parser.error("Each MAXIRONIN segment is fixed at exactly 1,000 steps")
+    if bool(args.resume_checkpoint) != bool(args.initial_step):
+        parser.error("--resume-checkpoint and --initial-step must be supplied together")
     if args.sequence_length > 512:
         parser.error("Sequence length exceeds model context")
     torch.set_num_threads(args.threads)
@@ -132,6 +136,14 @@ def main():
 
     config = MaxRoninConfig()
     model = MaxRoninLM(config).cpu()
+    if args.resume_checkpoint:
+        resumed = torch.load(args.resume_checkpoint, map_location="cpu", weights_only=False)
+        if resumed.get("completed_steps") != args.initial_step:
+            raise SystemExit("Resume checkpoint step mismatch")
+        if resumed.get("tokenizer_sha256") != sha256(data_dir / "tokenizer.json"):
+            raise SystemExit("Resume checkpoint tokenizer SHA-256 mismatch")
+        model.load_state_dict(resumed["model_state_dict"], strict=True)
+        print(json.dumps({"event":"resume_checkpoint_loaded","completed_steps":args.initial_step,"optimizer_state":"restarted; original optimizer state was not archived"}),flush=True)
     trainable = model.parameter_count(trainable_only=True)
     total = model.parameter_count(trainable_only=False)
     expected = 500_141_056
@@ -142,6 +154,8 @@ def main():
     config.save(out / "config.json")
     print(json.dumps({
         "event": "model_initialized",
+        "resume_from_step": args.initial_step,
+        "optimizer_state_policy": "Adafactor reset at continuation boundary",
         "architecture": "decoder-only Transformer",
         "layers": config.n_layers, "width": config.d_model,
         "heads": config.n_heads, "ffn_width": config.d_ff,
@@ -184,13 +198,16 @@ def main():
             }), flush=True)
 
     final = evaluate(model, val_data, args.seed + 1, 8, args.sequence_length)
-    checkpoint_path = out / "maxironin-500m-step-1000.pt"
+    global_step = args.initial_step + args.steps
+    checkpoint_path = out / f"maxironin-500m-step-{global_step}.pt"
     torch.save({
         "model_state_dict": model.state_dict(),
         "model_config": config.__dict__,
         "parameter_count": trainable,
         "trainable_parameter_count": trainable,
-        "completed_steps": args.steps,
+        "completed_steps": global_step,
+        "segment_steps": args.steps,
+        "resumed_from_step": args.initial_step,
         "tokenizer_vocab_size": config.vocab_size,
         "tokenizer_sha256": sha256(data_dir / "tokenizer.json"),
         "tokenization": "NFC + byte-level BPE, vocab 32768, isolated digits, <DOC>/<EOS>",
@@ -217,7 +234,7 @@ def main():
         "checkpoint": checkpoint_path.name,
         "checkpoint_sha256": sha256(checkpoint_path),
         "tokenizer_sha256": sha256(data_dir / "tokenizer.json"),
-        "interpretation": "1,000-step engineering smoke test only; not a capability or convergence claim.",
+        "interpretation": "1,000-step segment; optimizer state restarted because the initial inference artifact did not include optimizer state. Not a capability or convergence claim.",
     }
     (out / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False), flush=True)
