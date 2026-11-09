@@ -1,7 +1,7 @@
 # RFC: semantic activation of the reserved vocabulary and EOS-safe migration
 
 **Status:** draft; intentionally not enabled  
-**Activation gate:** the 500,000-step training run must finish, its checkpoint must be archived with SHA-256, and its paired holdout must be recorded.  
+**Baseline:** checkpoint 810,000 (9,970,176 nominal parameters; active vocabulary 257) is archived with SHA-256 and a fixed 100-question holdout. The RFC remains experimental; no tokenizer migration is activated on the parent checkpoint.  
 **Scope:** prepare a reversible migration from the current byte/EOS training path to a 23,000-ID vocabulary. This RFC does not alter the current training workflow or checkpoint format.
 
 ## 1. Verified current implementation
@@ -16,7 +16,7 @@ The current corpus encoder appends EOS to every document. The model shifts label
 
 There is also a hard-coded `[:257]` output slice in `MiniRoninLM.forward_cached()`. Any expanded vocabulary must remove that assumption or make the active vocabulary an explicit, validated argument. The regular `forward()` already accepts `vocab_limit`.
 
-Current batching samples windows from individual documents and does not introduce PAD tokens. Do not reserve a PAD ID or silently conflate padding with EOS. If padded batches are added later, PAD must have its own ID and be excluded from loss with `ignore_index` or an equivalent explicit mask.
+Current batching samples windows from individual documents and does not introduce PAD tokens. Long-document random windows make the terminal EOS target rare; a separate 5% EOS-tail-window experiment is available behind an explicit training parameter. It preserves all token IDs and keeps EOS in the ordinary next-token loss. Do not reserve a PAD ID or silently conflate padding with EOS. If padded batches are added later, PAD must have its own ID and be excluded from loss with `ignore_index` or an equivalent explicit mask.
 
 ## 2. Target vocabulary layout
 
@@ -56,7 +56,13 @@ Do not claim that compositional initialization supplies learned semantics. It on
 - Cached and uncached inference must produce matching logits for the same active vocabulary.
 - Replace the cached inference hard-coded 257-row head with an explicit active-vocabulary setting and test both legacy (257) and migrated (23,000) modes.
 
-## 5. Compute and performance risk
+## 5. Library activation rows (without inference-time RAG)
+
+The semantic library registry can produce extractive, concept-grounded training rows. Each row supplies a source paragraph, asks a question tied to a declared concept, and uses an exact sentence from that paragraph as its answer. It retains library ID, source path/locator, document SHA-256 and inherited license metadata. No model-generated paraphrase or cross-library equivalence is invented.
+
+These rows are appended to the training split only, after the source-level train/validation split, under a dedicated `awakened` domain with a bounded 10% sampling weight. They do not enter validation or the fixed inference holdout. The build manifest reports rows, source hashes, libraries and concepts. This is a training-time associative curriculum, not a literal RAG runtime and not a claim that the model has a queryable external memory.
+
+## 6. Compute and performance risk
 
 Expanding the output projection from 257 to 23,000 logits multiplies its per-position output width by approximately 89.5×. The embedding storage is already allocated, but the full output projection and softmax are not free. Measure:
 
@@ -68,7 +74,7 @@ Expanding the output projection from 257 to 23,000 logits multiplies its per-pos
 
 Do not assume the larger vocabulary is a speed optimization. Benchmark before choosing full softmax, sampled/adaptive alternatives, or a staged activation schedule. Any alternative objective must be evaluated for bias and exactness.
 
-## 6. Required implementation sequence
+## 7. Required implementation sequence
 
 1. **Freeze parent:** after the 500k run completes, download its checkpoint/report, verify SHA-256, and run the fixed holdout. Keep the parent immutable.
 2. **Build tokenizer artifact:** deterministic BPE training from training-only corpus; produce vocabulary, merges, manifest, coverage and frequency reports.
@@ -77,7 +83,7 @@ Do not assume the larger vocabulary is a speed optimization. Benchmark before ch
 5. **Tests:** deterministic tokenizer round-trip; UTF-8 byte fallback; stable legacy IDs; EOS target included in shifted loss; PAD/EOS distinction if PAD is ever added; tied-weight identity; migration preserves first 257 rows exactly; all token IDs in range; cached/uncached parity; generation stops at EOS.
 6. **Paired evaluation:** same fixed holdout IDs, prompt formatting, generation settings and hardware. Report legacy-vs-migrated responses, per-domain results, EOS termination rate, cap-hit rate, token throughput and hashes. Do not promote on training loss alone.
 
-## 7. Acceptance gates
+## 8. Acceptance gates
 
 - 500k parent checkpoint and holdout archived and hashed.
 - Tokenizer build is deterministic and its training split is demonstrably disjoint from validation/holdout.
@@ -88,6 +94,6 @@ Do not assume the larger vocabulary is a speed optimization. Benchmark before ch
 - CPU runtime and memory fit the free GitHub Actions runner with adequate margin.
 - Paired holdout shows no unacceptable regression; any quality gain is reported with uncertainty and domain breakdown.
 
-## 8. Safety and activation
+## 9. Safety and activation
 
-This branch is deliberately a draft. It must not be merged into `main`, added to the current 500k workflow's trigger paths, or used to launch training until the 500k checkpoint and holdout gate is satisfied and the migration implementation has passed its tests. The first migrated checkpoint is a candidate, never an automatic promotion.
+The BPE migration remains separate from the 810k parent. Do not replace byte IDs or alter existing checkpoints. First compare EOS sampling at 0%, 5% and 10%, run the fixed holdout, inspect awake-row quality/provenance, and benchmark throughput. The first combined checkpoint remains a candidate, never an automatic promotion. The first migrated checkpoint is a candidate, never an automatic promotion.
