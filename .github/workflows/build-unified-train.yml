@@ -28,6 +28,7 @@ on:
       - "data/inherited/wikimedia-es/**"
       - "data/curated/accepted/**"
       - "scripts/acquire_minerva_scientific_spanish.py"
+      - "scripts/acquire_common_corpus_spanish.py"
       - "scripts/acquire_slr_bench_spanish.py"
       - "scripts/acquire_alia_cultural_heritage.py"
       - "scripts/acquire_minerva_scientific_spanish.py"
@@ -189,6 +190,105 @@ jobs:
           mkdir -p data/inherited/pleias-spanish-pd-books
           if gh release view pleias-spanish-pd-books-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release download pleias-spanish-pd-books-v1 --repo "$GITHUB_REPOSITORY" --dir data/inherited/pleias-spanish-pd-books --pattern 'spanish-pd-*.jsonl.gz' --pattern 'spanish-pd-*.manifest.json'
+          fi
+
+      - name: Descargar shards españoles admitidos de PleIAs Common Corpus
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p data/inherited/common-corpus-es
+          if gh release view pleias-common-corpus-spanish-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            assets="$(gh release view pleias-common-corpus-spanish-v1 --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
+            if printf "%s\n" "$assets" | grep -Eq '^common-corpus-es-[0-9]{4}\.jsonl\.gz        run: |
+          set -euo pipefail
+          mkdir -p data/inherited/papers
+          python - <<'PY'
+          from pathlib import Path
+          from shutil import copy2
+          source = Path("papers-source")
+          if not source.is_dir():
+              raise SystemExit(f"Papers checkout missing: {source.resolve()}")
+          files = sorted(p for p in source.glob("*.md") if p.name.lower() != "readme.md")
+          print("Papers source Markdown:", [p.name for p in files])
+          if len(files) != 9:
+              raise SystemExit(f"Expected exactly 9 admitted Papers Markdown files, found {len(files)}")
+          for path in files:
+              copy2(path, Path("data/inherited/papers") / path.name)
+          print(f"Copied {len(files)} Papers Markdown documents")
+          PY
+
+      - name: Descargar y admitir bibliotecas españolas SLR, ALIA y Minerva sin meter payloads grandes en Git
+        run: |
+          set -euo pipefail
+          python -m pip install "datasets==3.3.2" "huggingface_hub==0.29.3"
+          mkdir -p data/curated/accepted
+          slr_revision="$(git ls-remote https://huggingface.co/datasets/AIML-TUDA/SLR-Bench-Spanish refs/heads/main | awk 'NR==1 {print $1}')"
+          test "${#slr_revision}" -eq 40
+          python scripts/acquire_slr_bench_spanish.py --revision "$slr_revision" --output-dir data/curated/accepted
+          alia_revision="$(git ls-remote https://huggingface.co/datasets/SINAI/ALIA-es-cultural-heritage refs/heads/main | awk 'NR==1 {print $1}')"
+          test "${#alia_revision}" -eq 40
+          python scripts/acquire_alia_cultural_heritage.py --revision "$alia_revision" --root . --output-dir data/curated/accepted
+          minerva_revision="$(git ls-remote https://huggingface.co/datasets/proxectonos/corpus_dominio_cientifico refs/heads/main | awk 'NR==1 {print $1}')"
+          test "${#minerva_revision}" -eq 40
+          python scripts/acquire_minerva_scientific_spanish.py --revision "$minerva_revision" --root . --output-dir data/curated/accepted
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("data/curated/accepted")
+          for name in ("slr-bench-spanish-v1-all-train.manifest.json","alia-es-cultural-heritage-train.manifest.json","minerva-scientific-es-train.manifest.json"):
+              m=json.loads((root/name).read_text())
+              print(name, {k:m.get(k) for k in ("record_count","rows_admitted","unique_source_ids","license","source_revision")})
+          PY
+          rm -rf "$HOME/.cache/huggingface/datasets" "$HOME/.cache/huggingface/hub"
+      - name: Descargar y admitir Minerva científico español con licencia por registro
+        run: |
+          set -euo pipefail
+          minerva_revision="$(git ls-remote https://huggingface.co/datasets/proxectonos/corpus_dominio_cientifico refs/heads/main | awk 'NR==1 {print $1}')"
+          test "${#minerva_revision}" -eq 40
+          python scripts/acquire_minerva_scientific_spanish.py --revision "$minerva_revision" --root . --output-dir data/curated/accepted
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path("data/curated/accepted/minerva-scientific-es-train.manifest.json").read_text())
+          print(json.dumps({k:m.get(k) for k in ("source_rows_scanned","rows_admitted","rows_skipped_no_explicit_open_license","rows_skipped_exact_duplicates","source_file_sha256")},ensure_ascii=False))
+          PY
+
+      - name: Construir train.jsonl.gz y auditar sin descartar filas
+        run: |
+          set -euo pipefail
+          python scripts/build_unified_train.py --output-dir unified-train --roots \
+            data/inherited/heretic-corpus \
+            data/inherited/prodatphil-en-v0.3 \
+            data/inherited/anarchist-library \
+            data/inherited/classics-library \
+            data/inherited/japanese-library \
+            data/inherited/papers \
+            data/inherited/wikimedia-es \
+            data/inherited/pleias-spanish-pd-books \
+            data/inherited/common-corpus-es \
+            generated-curricula \
+            generated-basic-curricula \
+            generated-math-es \
+            unified-input/behavioral-datasets \
+            unified-input/lexicon-source \
+            data/curated
+          (cd unified-train && sha256sum -c SHA256SUMS)
+          cat unified-train/quality-report.json
+
+      - name: Publicar el único artefacto unificado de entrenamiento
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-unified-train-corpus-${{ github.run_id }}
+          path: unified-train/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
+; then
+              gh release download pleias-common-corpus-spanish-v1 --repo "$GITHUB_REPOSITORY" --dir data/inherited/common-corpus-es --pattern 'common-corpus-es-*.jsonl.gz' --pattern 'common-corpus-es-*.manifest.json'
+            else
+              echo "No audited Common Corpus shards published yet; acquisition workflow will dispatch a later rebuild."
+            fi
           fi
 
       - name: Copiar exactamente los nueve artículos Markdown admitidos de Papers
