@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "slug": "cantemist-ner-spanish",
+  "name": "CANTEMIST-NER",
+  "repo_id": "PlanTL-GOB-ES/cantemist-ner",
+  "license": "CC BY 4.0",
+  "config": "CantemistNer",
+  "split": "train",
+  "domain": "oncología y terminología biomédica",
+  "text_fields": [
+    "tokens"
+  ],
+  "task": "Spanish oncology named entity recognition",
+  "minimum_rows": 10000,
+  "attribution": "Plan de Tecnologías del Lenguaje — Gobierno de España / BSC TeMU; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/PlanTL-GOB-ES/cantemist-ner",
+  "language": "es",
+  "min_text_chars": 24,
+  "license_verification": "exact dataset-card identifier required; no NC/ND licenses admitted",
+  "status": "ready_for_automated_import"
+}
