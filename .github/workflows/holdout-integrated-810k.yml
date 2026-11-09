@@ -31,14 +31,19 @@ jobs:
       REPOSITORY: orbitalronin94/MINIRONIN
       EVENT_NAME: ${{ github.event_name }}
       PREPARATION_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+      PREPARATION_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.preparation_run_id }}
     steps:
       - id: check
         shell: bash
         run: |
           set -euo pipefail
           if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
-            echo "is_latest=true" >> "$GITHUB_OUTPUT"
-            exit 0
+            [[ "$PREPARATION_RUN_ID" =~ ^[0-9]+$ ]] || { echo "Invalid preparation_run_id"; exit 1; }
+            run="$(gh api "repos/$REPOSITORY/actions/runs/$PREPARATION_RUN_ID")"
+            [[ "$(jq -r .name <<<"$run")" == "Prepare MINIRONIN integrated evidence stack" ]]
+            [[ "$(jq -r .status <<<"$run")" == "completed" && "$(jq -r .conclusion <<<"$run")" == "success" ]]
+            [[ "$(jq -r .head_branch <<<"$run")" == "main" ]]
+            PREPARATION_HEAD_SHA="$(jq -r .head_sha <<<"$run")"
           fi
           latest_main="$(gh api "repos/$REPOSITORY/commits/main" --jq .sha)"
           if [[ "$PREPARATION_HEAD_SHA" == "$latest_main" ]]; then
@@ -98,7 +103,9 @@ jobs:
           root = pathlib.Path(".tmp/holdout-810k/integrated")
           m = json.loads((root / "integrated-manifest.json").read_text())
           assert m["holdout_read"] is False and m["training_performed"] is False
-          assert m["library"]["documents"] > 0
+          assert m["library"]["documents"] >= 100, "Canonical inventory is still file-level/incomplete"
+          assert m["library"]["validation_split"] > 0, "Validation partition is empty"
+          assert m["awake_rows"]["validation"] > 0, "Awake validation rows are empty"
           docs = [json.loads(x) for x in (root / "library/canonical/documents.jsonl").read_text().splitlines() if x.strip()]
           assert any(d["source_id"] == "HERETIC:Cosmopedia-v0.1-curated" for d in docs), "HERETIC source missing from canonical inventory"
           db = sqlite3.connect(root / "rag/minironin-rag.sqlite")
@@ -111,6 +118,7 @@ jobs:
           assert tok["active_vocab"] >= 257
           awake = m["awake_rows"]
           assert awake["train"] > 0
+          assert awake["validation"] > 0
           print(json.dumps({"library_documents":m["library"]["documents"],"rag_chunks":rag["chunks_unique"],"bpe_active_vocab_candidate":tok["active_vocab"],"awake_rows":awake},ensure_ascii=False))
           PY
 
