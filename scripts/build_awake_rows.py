@@ -27,7 +27,12 @@ def qa_rows(text: str):
         question = row.get("question") or row.get("instruccion") or row.get("prompt")
         answer = row.get("answer") or row.get("respuesta") or row.get("target")
         context = row.get("context") or row.get("evidence") or row.get("evidencia")
-        verified = row.get("answer_verified") is True or row.get("curation_status") in {"verified", "manually_reviewed"}
+        verified = (
+            row.get("answer_verified") is True
+            or row.get("curation_status") in {"verified", "manually_reviewed"}
+            or row.get("curacion") in {"redactado_manual_desde_log", "revision_manual_aprobada"}
+            or row.get("tag") in {"answerable_grounded", "identity_grounded", "identity_boundary", "unknown_abstain"}
+        )
         if question and answer and context and verified:
             yield str(question).strip(), str(answer).strip(), str(context).strip()
 
