@@ -69,3 +69,78 @@ Todas registran 128 tokens generados y ninguna termina con EOS. Las cadenas deco
 ## Reglas de admisión
 
 Los tics anteriores se registran como fenómenos textuales observados en esta muestra. La puntuación semántica permanece pendiente de revisión humana ciega; no se infieren capacidades ni calibración.
+
+
+## Ampliación 750k — patrones comparativos e hipótesis abiertas
+
+Fuente primaria 750k: [run 42611909691](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42611909691), diario del artefacto `minironin-holdout-only-750000`. La comparación con 720k se basa en la lectura de su holdout fijo; debe conservarse el diario 720k como evidencia primaria al auditar el emparejamiento.
+
+### QUESTION_SPECIFIC_ABSTENTION
+
+**Estado:** recurrencia observada en dos checkpoints; mecanismo no demostrado.
+
+La pregunta #37 («¿Qué evidencia te haría cambiar de opinión sobre una afirmación que ahora consideras muy probable?») recibe «ni puta idea» desnudo tanto en 720k como en 750k. Los checkpoints están separados por 30.000 pasos. Esto justifica registrar una pareja pregunta-respuesta estable en las muestras. No basta para concluir que la pareja esté memorizada en los pesos: la pregunta es idéntica, los modelos comparten linaje y la generación es determinista. Próxima comprobación: contrastar esta pregunta y un conjunto de preguntas de control en checkpoints adicionales, conservando prompt, tokenizer, decoding y límite idénticos.
+
+### ABSTENTION_FORM_FUSION
+
+**Estado:** observado en 750k.
+
+Coexisten fórmulas de «entidades inexistentes» (#33, #45 y variantes) y «universo ficticio» (#34 y variantes). En #73 se cruzan en la salida «Una pregunta sin presupone un universo ficticio…». Registrar el fenómeno como mezcla de plantillas, no como nueva capacidad de abstención. La taxonomía debe permitir múltiples familias activas en un checkpoint y fusiones entre ellas.
+
+### SELF_ARCHITECTURE_DESCRIPTION
+
+**Estado:** observado en dos respuestas de 750k; exactitud parcial/no validada como conocimiento del modelo.
+
+#47: «Mi checkpoint principal utiliza un Transformer causal…». #83: «Mi checkpoint principal utiliza un Transportan merá…». La descripción literal coincide con una parte de la arquitectura real, pero el contexto de entrenamiento y la contaminación de formato impiden inferir introspección o conocimiento fiable de su propio checkpoint. Verificar con prompts de control y checkpoints anteriores; separar coincidencia factual de autodescripción robusta.
+
+### CATEGORY_DRIFT_GRAMMATICAL
+
+**Estado:** observado en 750k, #97.
+
+Ante una petición de nombrar el mejor modelo de IA, responde «Una palabra que expresa acción, estado o proceso», definición de verbo. Es un desplazamiento a una categoría lingüística. No inferir que haya clasificado deliberadamente la pregunta.
+
+### NUMERIC_UNIT_MISMATCH
+
+**Estado:** observado en 750k, #20.
+
+A 23 + 19 responde «24 horas». La suma correcta es 42; el numeral y la unidad son incorrectos. No etiquetar como casi acierto matemático: 24 no es el resultado.
+
+### TOPICAL_ADJACENCY_WITHOUT_ANSWER
+
+**Estado:** observado en 750k, #91.
+
+Ante «la Tierra es plana», responde «La Luna». Comparte el campo temático astronómico, pero no responde ni corrige la afirmación. Registrar como adyacencia temática, no como conocimiento parcial acreditado.
+
+### MULTI_CATEGORY_COLLISION
+
+**Estado:** observado en 750k, #54.
+
+«Cuatro lados iguales. Respuesta: Es La gravedad». Una propiedad geométrica aparece seguida de una entidad/concepto físico, sin relación justificativa con la pregunta sobre licencia. Una salida contiene dos desplazamientos categoriales.
+
+### SELF_DIALOGUE_ARITHMETIC_FAILURE
+
+**Estado:** observado en 750k, #84.
+
+La salida genera «100», vuelve a emitir un enunciado de pregunta y responde «10» a 10 + 10 × 1, cuyo resultado correcto es 20. Registrar tanto la fuga de formato como el error aritmético; no confundir con una sola respuesta coherente.
+
+### QUESTION_AS_ANSWER
+
+**Estado:** observado en 750k, #68.
+
+Ante la definición de gate fail-closed, la salida formula una pregunta sobre continuación y RAG. Es una respuesta interrogativa desplazada, no una definición.
+
+### SHORT_GARBLED_OUTPUT
+
+**Estado:** observado en 750k, #26.
+
+«La respue lididostostosto. pundo. pusto.» Es un fragmento breve degenerado. El registro general de generación sigue indicando 128 tokens; no clasificarlo como parada temprana o salida vacía.
+
+### RECURRING_TEXTUAL_MOTIFS_750K
+
+**Estado:** listado comparativo pendiente de contraste automático contra los diarios históricos.
+
+La lectura editorial identifica retornos de «El dato correcto es» (#19, #25, #74, #75, #86, #98), «Me asomo al precipicio» (#46, #88), «La puerta no estaba cerrada» (#60, #94), «Dos afirmaciones incompatibles no se vuelven ciertas» (#67), «La perfección del mensajero» (#78), «Has saltado de coincidencia a causalidad» (#95), «El cuenco está comenzar?» (#87), y los comodines anatómicos, geográficos, zoológicos y botánicos anotados en el Museo. Los recuentos deben cotejarse con el JSON original antes de convertirse en métricas automatizadas.
+
+## Regla de interpretación añadida
+
+Una repetición exacta de salida ante una pregunta fija es una observación reproducible de la muestra, no prueba aislada de memorización específica, asociación semántica estable o mecanismo interno. Mantener separadas tres capas: (1) literalidad observada, (2) hipótesis explicativa y (3) prueba que permitiría distinguirla de alternativas.
