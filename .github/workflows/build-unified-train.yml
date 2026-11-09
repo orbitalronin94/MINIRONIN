@@ -184,7 +184,7 @@ jobs:
           mkdir -p data/inherited/alia-biomedical-es
           if gh release view alia-biomedical-es-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             assets="$(gh release view alia-biomedical-es-v1 --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
-            if printf "%s\\n" "$assets" | grep -q '^alia-biomedical-es-part-'; then
+            if printf "%s\n" "$assets" | grep -q '^alia-biomedical-es-part-'; then
               gh release download alia-biomedical-es-v1 --repo "$GITHUB_REPOSITORY" --dir data/inherited/alia-biomedical-es --pattern "alia-biomedical-es-part-*.jsonl.gz" --pattern "alia-biomedical-es.manifest.json"
               python - <<'PY'
               import gzip,hashlib,json
