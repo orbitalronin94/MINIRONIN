@@ -10,6 +10,8 @@ on:
       - ".github/workflows/train-150k-from-650k-unified.yml"
       - "scripts/train_long_run.py"
       - "scripts/build_unified_train.py"
+      - "scripts/build_awakened_library_rows.py"
+      - "data/semantic/LIBRARY_REGISTRY.json"
       - "scripts/acquire_japanese_library.py"
       - "scripts/acquire_aozora_japanese_originals.py"
       - "data/japan/SOURCES.json"
@@ -168,6 +170,9 @@ jobs:
               copy2(path, Path("data/inherited/papers") / path.name)
           print(f"Copied {len(files)} Papers Markdown documents")
           PY
+
+      - name: Generar filas despiertas extractivas de las bibliotecas preaprobadas
+        run: python scripts/build_awakened_library_rows.py --output data/curated/awakened-library-rows.jsonl --manifest data/curated/awakened-library-manifest.json --max-rows 250000
 
       - name: Construir train.jsonl.gz y auditar sin descartar filas
         run: |
