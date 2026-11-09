@@ -1,0 +1,48 @@
+name: Admit inherited curated Spanish papers
+on:
+  workflow_dispatch:
+    inputs:
+      collection:
+        description: Curated source library to admit
+        required: true
+        type: choice
+        options: [nasa, nist, noaa-usgs, classics, anarchist]
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  prepare-dataset-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build accepted JSONL and manifest
+        run: python scripts/admit_inherited_papers.py --collection "${{ inputs.collection }}" --revision "${{ github.sha }}"
+      - name: Open one PR for this curated library
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: data/admit-${{ inputs.collection }}-papers-es
+          delete-branch: false
+          commit-message: "Admit curated ${{ inputs.collection }} Spanish papers"
+          title: "data: admit curated ${{ inputs.collection }} Spanish papers"
+          body: |
+            ## Curated dataset admission
+            - Existing curated Spanish summaries only; no new external download.
+            - One JSONL record per source document, retaining source URL, path, attribution and revision.
+            - Minimum 500-character gate and normalized-text deduplication.
+            - SHA-256 manifest; no model, training or evaluation workflow changes.
+          add-paths: |
+            data/curated/accepted/inherited-${{ inputs.collection }}-papers-es.jsonl
+            data/curated/accepted/inherited-${{ inputs.collection }}-papers-es.manifest.json
+      - name: Request auto-merge after required checks
+        if: steps.cpr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ steps.cpr.outputs.pull-request-url }}
+        run: gh pr merge --auto --squash "$PR_URL"
