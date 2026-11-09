@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "slug": "lenguaje-claro-es",
+  "name": "Lenguaje Claro Spanish administrative corpus",
+  "repo_id": "somosnlp/lenguaje-claro-dataset",
+  "license": "Apache 2.0",
+  "split": "train",
+  "domain": "administración pública y simplificación del lenguaje",
+  "text_fields": [
+    "question",
+    "answer"
+  ],
+  "task": "Spanish plain-language rewriting",
+  "minimum_rows": 4000,
+  "min_text_chars": 40,
+  "synthetic": true,
+  "attribution": "Rubén de la Fuente, Sergio Chicón and Marta F. Gómez; SomosNLP; Apache License 2.0.",
+  "source_url": "https://huggingface.co/datasets/somosnlp/lenguaje-claro-dataset",
+  "language": "es",
+  "license_verification": "exact live dataset-card license check; no NC/ND",
+  "status": "ready_for_automated_import"
+}
