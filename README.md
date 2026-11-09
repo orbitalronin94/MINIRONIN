@@ -403,6 +403,21 @@ El workflow `.github/workflows/build-unified-train.yml` construye un único arte
 
 ### Fuentes incluidas
 
+### Nuevas bibliotecas textuales en castellano — estado de admisión (9 de noviembre de 2026)
+
+La admisión se contabiliza por **salida curada verificada**, no por el tamaño anunciado por el dataset upstream ni por el número de shards planificados.
+
+| Fuente | Estado verificable | Registros nuevos | Payload comprimido |
+|---|---|---:|---:|
+| PleIAs Spanish Public Domain Books, shards 1–8 | Publicados en la release persistente; los ocho jobs validaron idioma, elegibilidad, dominio público y SHA-256 | **9.766** | **1.441.007.073 bytes (1,441 GB / 1,342 GiB)** |
+
+Los ocho shards se procesaron en [run 42701981364](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42701981364) y sus JSONL gzip y manifiestos están en [la release `pleias-spanish-pd-books-v1`](https://github.com/orbitalronin94/MINIRONIN/releases/tag/pleias-spanish-pd-books-v1). El recuento sale de los logs de verificación de cada shard: 1.230 + 1.209 + 1.215 + 1.226 + 1.218 + 1.213 + 1.204 + 1.251 = **9.766 registros**. El tamaño suma únicamente los ocho assets JSONL gzip, no los manifiestos.
+
+**No se suman todavía** los lotes PleIAs 89–129 que siguen pendientes o sin auditoría consolidada; tampoco los shards 9–88 ya existentes, las cifras globales anunciadas por la fuente, ni los disparadores de Wikisource/Common Corpus. La adquisición de ALIA patrimonio falló antes de publicar, y en BOE solo el lote 4 de la ampliación superó el job de adquisición; por tanto, esos intentos no se cuentan como crecimiento nuevo. BNE y Wikimedia ya tienen releases persistentes, pero no se atribuyen a esta tanda sin comparar sus manifiestos con el inventario previo.
+
+La biblioteca resultante es texto real de dominio público, no datos sintéticos. La incorporación al asset persistente y la validación de cada shard no equivalen por sí solas a una promoción de modelo: la reconstrucción del corpus unificado y la posterior evaluación/entrenamiento se registran por separado.
+
+
 - HERETIC, descargado desde sus assets publicados y verificado por tamaño y SHA-256.
 - PRODATPHIL v0.3, con SHA-256 fijado.
 - Bibliotecas anarquista y clásica, adquiridas únicamente desde sus registros de fuentes aprobadas para España.
