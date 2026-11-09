@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "slug": "csic-spanish-scientific-magazines",
+  "dataset": "CSIC Spanish Scientific Corpus",
+  "record_id": 7313126,
+  "doi": "https://doi.org/10.5281/zenodo.7313126",
+  "source_revision": "7313126:1.0.0",
+  "license": "CC BY 4.0",
+  "language": "es",
+  "split": "train",
+  "source_file": "csic_es.txt",
+  "source_file_size": 929127061,
+  "source_file_sha256": "d0ec0289ba00be05f0ff816729036daf31bd965510c535dd9dc0eda1cbfe1cb7",
+  "rows_scanned": 4426297,
+  "rows_admitted": 1862437,
+  "duplicates_skipped": 3816,
+  "short_skipped": 2560044,
+  "files": [
+    "csic-spanish-scientific-magazines.part-00001.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00002.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00003.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00004.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00005.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00006.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00007.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00008.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00009.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00010.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00011.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00012.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00013.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00014.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00015.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00016.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00017.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00018.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00019.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00020.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00021.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00022.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00023.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00024.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00025.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00026.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00027.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00028.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00029.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00030.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00031.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00032.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00033.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00034.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00035.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00036.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00037.jsonl.gz",
+    "csic-spanish-scientific-magazines.part-00038.jsonl.gz"
+  ],
+  "file_hashes": [
+    {
+      "file": "csic-spanish-scientific-magazines.part-00001.jsonl.gz",
+      "sha256": "48bd8b8a07c923089c52194feb3f1f384ab748db585eb2fcee6058119aa2d872",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00002.jsonl.gz",
+      "sha256": "02b5f13b6da05945aa30b5191a0792575dd5bd6cfbcf64d18b6c0465c25ba167",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00003.jsonl.gz",
+      "sha256": "02de26f0d1c2677bb51a6f4dd362f72a995dc7e3560d5232e95b66bf0d320198",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00004.jsonl.gz",
+      "sha256": "714a4e5239167fc692b376ec7615debfa1e995987fff67453b1cde871b3143f2",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00005.jsonl.gz",
+      "sha256": "adf07eec51c820f5a9d50bcd0a541d157b6ec6c5433437581be99e7c432ebcf6",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00006.jsonl.gz",
+      "sha256": "a120699cc1c2ed4a8cb0e0aa7b4dba89dba54d10232104c09c8c9911337e0396",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00007.jsonl.gz",
+      "sha256": "731ad47a7b87965e0501c1ad5b0de429b65c1703f264e88e7c46573d585a1c35",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00008.jsonl.gz",
+      "sha256": "3a2357e92a53f76f9b14c39ed11b6cd95464f6ddd69d5611cbc968292e770742",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00009.jsonl.gz",
+      "sha256": "29897775ad457d3288c31a46720bfd0a9f8a6d0de98933d380c9bb60e911c89a",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00010.jsonl.gz",
+      "sha256": "ead7620a71077d9e48cdb63a23c5e0a8edb1582f8679ee401372e1694f4da3bf",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00011.jsonl.gz",
+      "sha256": "c9644a7d1107b63acbc0d524e1e537efff1c5a4bf71309a999d92b5b90d77a92",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00012.jsonl.gz",
+      "sha256": "c9dad0e281d8da85e1b9f182da2cc2278ce01feebca3354ff81435cf25c46971",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00013.jsonl.gz",
+      "sha256": "75e8f82d8dc5c97950f66d9b49683281256661815c25ee2df578273f8d50d1d8",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00014.jsonl.gz",
+      "sha256": "71d80d37c9219a938a7fb0e0e75b74fc246cc1707ca5eacbd5fdd18e3bf2da1f",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00015.jsonl.gz",
+      "sha256": "085140016ea5a8e7c8dfb2a0c63381b465421db9a7ce724bda4380040aca5bca",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00016.jsonl.gz",
+      "sha256": "b9ed73c48ad1f1d191e0876a14f7d6d17225906b771ca3cec338b3fc272d11e9",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00017.jsonl.gz",
+      "sha256": "21569da5eea7b8e37a2c2bcc99d1aea0a59fff693a0317d978399f7a3d5905d2",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00018.jsonl.gz",
+      "sha256": "16285ac9401a5a178529acac8b814b2bc11c7e4b203e20048a5d8883dbdc0cb4",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00019.jsonl.gz",
+      "sha256": "b971dac2d5214076d16d4c0750e9bc6b99196356047e83ebb1eddb71c54f8df6",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00020.jsonl.gz",
+      "sha256": "cad1d85f59324872e9ff1f69765942a2bd3ddd4b321cb54041093fa1d9cf8e50",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00021.jsonl.gz",
+      "sha256": "b78d3174f52a4b94d981bf3fcd071bee8446988a34acbf951b2b02b204a068d0",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00022.jsonl.gz",
+      "sha256": "57eb039526b081a2c44407b5ebb5188a4358bc7c5f85e16b32364343780cca6d",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00023.jsonl.gz",
+      "sha256": "2e606648ea43fd26cbd81f6ac6ebec9f245a30ba0b8a896c290e03d4695497d4",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00024.jsonl.gz",
+      "sha256": "9140960d7627dd8ac633ace209c4f31ccd5c9137f64c83a05397d6c53c905502",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00025.jsonl.gz",
+      "sha256": "816ef8aee4c83e29afe327cc48002c8c0f0a56cef919b1578e9e0abfcbf2dc28",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00026.jsonl.gz",
+      "sha256": "33e0bc269d4faa7bcd222224eece07deeb927a20b02a06c629ee22a1ebae258b",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00027.jsonl.gz",
+      "sha256": "55b1d7f6f64dd6c458f5822e1b6126aa67e2469d2d99c671bd0bd77d370b1378",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00028.jsonl.gz",
+      "sha256": "1b14ca4e39175191802ce26d4e909eaf4b1fb279029172fac7eef0d221a98cc5",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00029.jsonl.gz",
+      "sha256": "a3145fc49c944d6c2f4cbb45f25c49f6fad3bc1b7ff22c990469550a9a68275d",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00030.jsonl.gz",
+      "sha256": "f387194a8ab77c10b59412d4f9b3296185f93327523861a0537250dbcda0ef23",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00031.jsonl.gz",
+      "sha256": "48b42c1682c1c236caf6cc7e0fa1265703a286760ccbcd1a340c5777eda0cbfb",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00032.jsonl.gz",
+      "sha256": "7b23f95ece73400c197fdd399f35af433aee21348f1d219385d4eb453d01cbdb",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00033.jsonl.gz",
+      "sha256": "519fb24afd46b18d6967478f23c40fe4612662a07d76a87280616137c5c1b1a6",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00034.jsonl.gz",
+      "sha256": "4ebf779505d3c63cbd9b18c9861deef1ea4ee0aff2b4ab0be476e4ffb7400abc",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00035.jsonl.gz",
+      "sha256": "a1ea8cec37950b338feec6c50537fcebe433e296b8372c00fdb8afd7c7e0ee49",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00036.jsonl.gz",
+      "sha256": "4a7e507180eaa84bee54136dfea0a3dc8aee25ded1dcdebe41325c18945827e2",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00037.jsonl.gz",
+      "sha256": "cc53d7c25a107870b990bc266c30a1368565ed6dd58cdd8a2596a9f12e218f71",
+      "rows": 50000
+    },
+    {
+      "file": "csic-spanish-scientific-magazines.part-00038.jsonl.gz",
+      "sha256": "44d715854433d5a9cd9184c08843d9cbf5f0b9b646096c4e5307a82a83ff1636",
+      "rows": 12437
+    }
+  ],
+  "file": "csic-spanish-scientific-magazines.part-00001.jsonl.gz",
+  "sha256_jsonl_uncompressed": "7b95df5c4f8c0fcd9ba1eaebbbb5385c2e1cde10488005bec4d1cb8904d36201",
+  "retrieved_at_utc": "2026-11-09T22:02:56.017991+00:00",
+  "attribution": "Petrea, Paul Andrei; De Gibert Bonet, Ona; Villegas, Marta. CSIC Spanish Corpus. Barcelona Supercomputing Center / SEDIA, 2022. DOI: 10.5281/zenodo.7313126. CC BY 4.0."
+}

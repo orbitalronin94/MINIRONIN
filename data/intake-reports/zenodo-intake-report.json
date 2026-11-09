@@ -1,15 +1,19 @@
 [
   {
-    "slug": "spaccc-clinical-cases-es",
+    "slug": "csic-spanish-scientific-magazines",
     "status": "accepted",
-    "rows": 4885,
-    "shards": 1
+    "rows": 1862437,
+    "shards": 38
+  },
+  {
+    "slug": "spaccc-clinical-cases-es",
+    "status": "already_imported",
+    "rows": 4885
   },
   {
     "slug": "spaccc-token-annotations-es",
-    "status": "accepted",
-    "rows": 373429,
-    "shards": 8
+    "status": "already_imported",
+    "rows": 373429
   },
   {
     "slug": "spanish-web-text-corpus-elg",
@@ -18,8 +22,7 @@
   },
   {
     "slug": "tdx-thesis-spanish-corpus",
-    "status": "accepted",
-    "rows": 8039826,
-    "shards": 161
+    "status": "already_imported",
+    "rows": 8039826
   }
 ]
