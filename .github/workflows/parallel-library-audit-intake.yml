@@ -36,7 +36,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh release download wikimedia-es-100k-v1 --repo "${GITHUB_REPOSITORY}" --pattern 'wikipedia-es-100k.jsonl.gz' --pattern 'WIKIMEDIA-ES-100K-MANIFEST.json'
+          gh release download wikimedia-es-100k-v1 --repo "${GITHUB_REPOSITORY}" --pattern 'wikipedia-es-100k.jsonl.gz' --pattern 'WIKIMEDIA-ES-100K-MANIFEST.json' --pattern 'README.md'
       - name: Verificar SHA-256 publicado
         env:
           GH_TOKEN: ${{ github.token }}
