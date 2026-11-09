@@ -25,7 +25,6 @@ on:
       - "data/classics/SOURCES.json"
       - "data/anarchist/SOURCES.jsonl"
       - "data/curated/sources/LEXICON-DEL-ESPERPENTO-ALGORITMICO.md"
-      - "data/inherited/wikimedia-es/**"
 
 permissions:
   contents: read
@@ -127,27 +126,6 @@ jobs:
               data=json.loads(Path(name).read_text())
               assert data[key] >= minimum, (name, data[key], minimum)
               print(name, data[key])
-          PY
-
-      - name: Recuperar la biblioteca Wikimedia ES de 100k con licencia y hashes
-        run: |
-          set -euo pipefail
-          mkdir -p data/inherited/wikimedia-es
-          base="https://github.com/orbitalronin94/MINIRONIN/releases/download/wikimedia-es-100k-v1"
-          for file in wikipedia-es-100k.jsonl.gz WIKIMEDIA-ES-100K-MANIFEST.json README.md SHA256SUMS; do
-            curl --fail --location --retry 4 --retry-all-errors "$base/$file" -o "data/inherited/wikimedia-es/$file"
-          done
-          (cd data/inherited/wikimedia-es && sha256sum -c SHA256SUMS)
-          python - <<'PY'
-          import gzip, json
-          from pathlib import Path
-          root=Path("data/inherited/wikimedia-es")
-          manifest=json.loads((root/"WIKIMEDIA-ES-100K-MANIFEST.json").read_text())
-          assert manifest["document_count"] == 100000
-          assert manifest["unique_normalized_texts"] == 100000
-          count=sum(1 for line in gzip.open(root/"wikipedia-es-100k.jsonl.gz","rt",encoding="utf-8") if line.strip())
-          assert count == 100000, count
-          print("WIKIMEDIA_ES_100K_VERIFIED", count)
           PY
 
       - name: Copiar exactamente los nueve artículos Markdown admitidos de Papers
