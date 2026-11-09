@@ -1,0 +1,112 @@
+{
+  "schema_version": 2,
+  "artifact_id": "minironin-library-v2",
+  "updated_at": "2026-11-09",
+  "title": "MINIRONIN — inventario canónico de bibliotecas y política de admisión",
+  "purpose": "Definir fuentes de entrenamiento, filtros de derechos, inclusión sintética y auditoría de composición temática. Este manifiesto es configuración; nunca se ingiere como texto.",
+  "defaults": {
+    "include_synthetic": true,
+    "preserve_provenance": true,
+    "report_duplicates_without_silently_dropping_rows": true,
+    "exclude_holdout_and_evaluation_sets": true,
+    "composition_report": true,
+    "token_measurement": "whitespace_proxy_until_model_tokenizer_is_available"
+  },
+  "roots": [
+    "data/inherited/heretic-corpus",
+    "data/inherited/prodatphil-en-v0.3",
+    "data/inherited/anarchist-library",
+    "data/inherited/classics-library",
+    "data/inherited/japanese-library",
+    "data/inherited/papers",
+    "data/inherited/wikimedia-es",
+    "data/inherited/pleias-spanish-pd-books",
+    "data/inherited/common-corpus-es",
+    "data/inherited/boe-legislation-es",
+    "data/inherited/bne-hemeroteca-ocr-es",
+    "data/curated"
+  ],
+  "source_rights": [
+    {
+      "source": "TDX Thesis Spanish Corpus",
+      "path_pattern": "data/curated/accepted/tdx-thesis-spanish-corpus.part-*.jsonl.gz",
+      "status": "quarantined_pending_document_level_rights",
+      "corpus_package_license": "CC BY 4.0",
+      "reason": "Zenodo record 7313149 licenses the dataset packaging CC BY 4.0; TDX states that individual thesis rights and conditions are specified in each thesis metadata record. The current flattened text shards do not prove rights per thesis.",
+      "action": "Exclude all TDX text shards from training until rights are mapped and filtered per thesis. Keep source manifest for provenance only.",
+      "references": [
+        "https://zenodo.org/records/7313149",
+        "https://www.tdx.cat/quees"
+      ],
+      "known_rows_not_admitted": 8039826
+    },
+    {
+      "source": "PleIAs Spanish Public Domain Books",
+      "status": "admitted_subject_to_source_manifest",
+      "rights": "Public domain as asserted by dataset curator; preserve author/title/date/source metadata and source revision"
+    },
+    {
+      "source": "BOE consolidated legislation",
+      "status": "admitted_subject_to_source_manifest",
+      "rights": "Official BOE reuse conditions with attribution; excludes CC BY-NC-ND Biblioteca Jurídica Digital, BORME and third-party material"
+    },
+    {
+      "source": "BNE Hemeroteca OCR",
+      "status": "admitted_subject_to_source_manifest",
+      "rights": "CC0 dataset extraction; original content limited to public-domain publications through 1900"
+    },
+    {
+      "source": "ALIA GVA communications and cultural heritage",
+      "status": "admitted_subject_to_source_manifest",
+      "rights": "Keep per-source CC BY 4.0 or CC BY-SA 4.0 terms and attribution; failed/unpublished acquisitions contribute zero rows"
+    },
+    {
+      "source": "BSC Legal Catalan-Spanish",
+      "status": "admitted_subject_to_source_manifest",
+      "rights": "CC BY 4.0; Spanish side only"
+    },
+    {
+      "source": "Synthetic curricula and behavioral datasets",
+      "status": "admitted_labeled_auxiliary",
+      "rights": "Original/generated material; synthetic=true required, reported separately from external knowledge"
+    }
+  ],
+  "exclude_path_patterns": [
+    "tdx-thesis-spanish-corpus\\.part-.*\\.jsonl\\.gz"
+  ],
+  "admission_rules": [
+    "Every external source must retain source revision, license/rights note, attribution and SHA-256 manifest where available.",
+    "Remote batches count only after assets are published and their output manifests and hashes verify.",
+    "TDX content shards are excluded until per-thesis rights are available and filtered; the package-level CC BY 4.0 is not treated as a blanket license for thesis contents.",
+    "Synthetic rows are allowed in the training mix, must retain synthetic=true, and are reported separately from external source rows/tokens.",
+    "Holdout, evaluation-only and benchmark-answer files are excluded from all training roots.",
+    "Duplicates are measured and reported; they are not silently deleted by the corpus builder.",
+    "Composition percentages are reported by record count and whitespace-token proxy; these are estimates, not model-tokenizer counts."
+  ],
+  "synthetic_policy": {
+    "enabled": true,
+    "label_required": true,
+    "report_separately": true,
+    "counts_as_external_knowledge": false
+  },
+  "composition_taxonomy": [
+    "literature_history_humanities",
+    "science_medicine",
+    "law_government",
+    "education_academia",
+    "technology_engineering",
+    "social_sciences_economics",
+    "language_translation",
+    "reference_general",
+    "synthetic_behavior",
+    "other_unclassified"
+  ],
+  "outputs": [
+    "train.jsonl.gz",
+    "sources.json",
+    "quality-report.json",
+    "composition-by-matter.json",
+    "provenance/",
+    "SHA256SUMS"
+  ]
+}
