@@ -60,16 +60,20 @@ def main():
     a.output_dir.mkdir(parents=True,exist_ok=True)
     out=a.output_dir/f"common-corpus-es-{a.shard:04d}.jsonl.gz"
     output_sha=hashlib.sha256()
-    counts={};rows_seen=admitted=skip_lang=skip_domain=skip_license=skip_short=skip_dup=0
+    counts={};language_counts={};open_type_counts={};license_counts={};rows_seen=admitted=skip_lang=skip_domain=skip_license=skip_short=skip_dup=0
     with gzip.open(out,"wt",encoding="utf-8",newline="\n",compresslevel=6) as f:
         for batch in parquet.iter_batches(batch_size=64):
             for row in batch.to_pylist():
                 rows_seen+=1
                 lang=norm(str(row.get("language") or ""))
-                if lang not in {"es","spa","spanish","español"}:skip_lang+=1;continue
-                open_type=norm(str(row.get("open type") or row.get("open_type") or ""))
+                language_counts[lang]=language_counts.get(lang,0)+1
+                if lang not in {"es","spa","spanish","español","spa-latn","es-es"}:skip_lang+=1;continue
+                open_type_raw=norm(str(row.get("open type") or row.get("open_type") or ""))
+                open_type=re.sub(r"[^a-z]","",open_type_raw)
+                open_type_counts[open_type_raw]=open_type_counts.get(open_type_raw,0)+1
                 if open_type not in OPEN_TYPES:skip_domain+=1;continue
                 license_value=str(row.get("license") or "")
+                license_counts[license_value]=license_counts.get(license_value,0)+1
                 if not allowed_license(license_value):skip_license+=1;continue
                 text=row.get("text")
                 if not isinstance(text,str) or len(text.strip())<500:skip_short+=1;continue
@@ -100,7 +104,7 @@ def main():
         "rows_skipped_other_open_type":skip_domain,"rows_skipped_unapproved_license":skip_license,
         "rows_skipped_short":skip_short,"rows_skipped_exact_duplicates":skip_dup,
         "allowed_open_types":sorted(OPEN_TYPES),"allowed_licenses":sorted(LICENSES),
-        "collection_counts":counts,"license_policy":"Only Public Domain, PDM, CC0 and CC BY attribution-only variants. Excludes NC, ND, SA and unknown licenses.",
+        "collection_counts":counts,"language_value_counts":language_counts,"open_type_value_counts":open_type_counts,"license_value_counts":license_counts,"license_policy":"Only Public Domain, PDM, CC0 and CC BY attribution-only variants. Excludes NC, ND, SA and unknown licenses.",
         "file":out.name,"sha256_jsonl_uncompressed":output_sha.hexdigest(),
         "retrieved_at_utc":datetime.now(timezone.utc).isoformat(),
         "limitations":[
@@ -110,5 +114,5 @@ def main():
         ]
     }
     (a.output_dir/f"common-corpus-es-{a.shard:04d}.manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    print(json.dumps({k:manifest[k] for k in ("source_file","source_rows_scanned","rows_admitted","rows_skipped_non_spanish","rows_skipped_other_open_type","rows_skipped_unapproved_license","rows_skipped_exact_duplicates","collection_counts")},ensure_ascii=False))
+    print(json.dumps({k:manifest[k] for k in ("source_file","source_rows_scanned","rows_admitted","rows_skipped_non_spanish","rows_skipped_other_open_type","rows_skipped_unapproved_license","rows_skipped_exact_duplicates","language_value_counts","open_type_value_counts","license_value_counts","collection_counts")},ensure_ascii=False))
 if __name__=="__main__":main()
