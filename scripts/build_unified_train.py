@@ -146,12 +146,22 @@ def main():
         exclude_synthetic=bool(args.exclude_synthetic)
     out=Path(args.output_dir); out.mkdir(parents=True,exist_ok=True)
     files=[]
+    excluded_files_by_pattern=Counter()
     for root in roots:
         if not root.exists(): raise SystemExit(f"Required source root missing: {root}")
-        files.extend(p for p in root.rglob("*") if p.is_file() and not SKIP.search(p.name)
-                     and (p.suffix.lower() in TEXT_EXT|{".json",".jsonl",".ndjson",".parquet",".csv",".tsv"} or p.name.endswith((".jsonl.gz",".ndjson.gz")))
-                     and not any(re.search(pattern,str(p),re.I) for pattern in exclude_patterns)
-                     and (not str(p).startswith("data/curated/") or not include_patterns or any(re.search(pattern,str(p),re.I) for pattern in include_patterns)))
+        for path in root.rglob("*"):
+            if not path.is_file() or SKIP.search(path.name):
+                continue
+            if not (path.suffix.lower() in TEXT_EXT|{".json",".jsonl",".ndjson",".parquet",".csv",".tsv"} or path.name.endswith((".jsonl.gz",".ndjson.gz"))):
+                continue
+            matched=[pattern for pattern in exclude_patterns if re.search(pattern,str(path),re.I)]
+            if matched:
+                for pattern in matched:
+                    excluded_files_by_pattern[pattern]+=1
+                continue
+            if str(path).startswith("data/curated/") and include_patterns and not any(re.search(pattern,str(path),re.I) for pattern in include_patterns):
+                continue
+            files.append(path)
     files=sorted(set(files))
     if not files: raise SystemExit("No source files found")
     source_manifest=[]; rows=0; records_seen=0; excluded_synthetic=0; excluded_evaluation=0; duplicates=0; empty=0; tiny=0
@@ -184,7 +194,7 @@ def main():
             gz.write(line); rows+=1
           source_manifest.append({"path":str(path),"sha256":input_hash,"records":rows-before,"records_written":rows-before,"synthetic_records_excluded":excluded_synthetic-excluded_before,"evaluation_records_excluded":excluded_evaluation-evaluation_before,"bytes":path.stat().st_size})
     if rows==0: raise SystemExit("Unified corpus is empty")
-    summary={"schema":"minironin-unified-train-v2","record_count":rows,"records_seen":records_seen,"synthetic_records_excluded":excluded_synthetic,"evaluation_records_excluded":excluded_evaluation,"exclude_synthetic":exclude_synthetic,"synthetic_included":not exclude_synthetic,"library_artifact_id":(library_manifest or {}).get("artifact_id"),"library_artifact_sha256":library_manifest_sha256,"rights_exclusion_patterns":exclude_patterns,"curated_include_patterns":include_patterns,"unique_normalized_texts":len(seen),
+    summary={"schema":"minironin-unified-train-v2","record_count":rows,"records_seen":records_seen,"synthetic_records_excluded":excluded_synthetic,"evaluation_records_excluded":excluded_evaluation,"excluded_files_by_pattern":dict(excluded_files_by_pattern),"exclude_synthetic":exclude_synthetic,"synthetic_included":not exclude_synthetic,"library_artifact_id":(library_manifest or {}).get("artifact_id"),"library_artifact_sha256":library_manifest_sha256,"rights_exclusion_patterns":exclude_patterns,"curated_include_patterns":include_patterns,"unique_normalized_texts":len(seen),
       "exact_or_normalized_duplicates_reported_not_removed":duplicates,"unique_by_dataset":dict(unique_by_dataset),"duplicates_by_dataset":dict(duplicates_by_dataset),"empty_records":empty,"short_records_under_24_chars":tiny,
       "synthetic_and_source_counts":dict(synthetic),"domains":dict(domains),"datasets":dict(datasets),
       "volume_policy":("Explicitly synthetic rows are excluded before training-corpus publication; duplicates and short records among retained source rows are reported, not discarded." if exclude_synthetic else "No input records are discarded except source paths explicitly quarantined by the library artifact. Duplicate and short records are reported for review; source row counts remain intact."),
@@ -192,7 +202,7 @@ def main():
       "input_roots":[str(x) for x in roots],"source_files":len(source_manifest),"sources":source_manifest,
       "train_jsonl_gz_bytes":output_path.stat().st_size,"train_jsonl_gz_sha256":sha_file(output_path)}
     (out/"sources.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    (out/"quality-report.json").write_text(json.dumps({k:summary[k] for k in ("record_count","records_seen","synthetic_records_excluded","evaluation_records_excluded","exclude_synthetic","synthetic_included","library_artifact_id","library_artifact_sha256","rights_exclusion_patterns","curated_include_patterns","unique_normalized_texts","exact_or_normalized_duplicates_reported_not_removed","empty_records","short_records_under_24_chars","synthetic_and_source_counts","domains","datasets","quality_policy","volume_policy")},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    (out/"quality-report.json").write_text(json.dumps({k:summary[k] for k in ("record_count","records_seen","synthetic_records_excluded","evaluation_records_excluded","excluded_files_by_pattern","exclude_synthetic","synthetic_included","library_artifact_id","library_artifact_sha256","rights_exclusion_patterns","curated_include_patterns","unique_normalized_texts","exact_or_normalized_duplicates_reported_not_removed","empty_records","short_records_under_24_chars","synthetic_and_source_counts","domains","datasets","quality_policy","volume_policy")},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     provenance_dir=out/"provenance"; provenance_dir.mkdir(exist_ok=True)
     provenance_paths=[]
     for root in roots:
