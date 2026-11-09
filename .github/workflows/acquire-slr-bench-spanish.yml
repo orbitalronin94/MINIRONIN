@@ -73,4 +73,4 @@ jobs:
           git add data/curated/accepted/slr-bench-spanish-v1-all-train.jsonl data/curated/accepted/slr-bench-spanish-v1-all-train.manifest.json
           git commit -m "Admit Spanish SLR-Bench inductive reasoning train corpus"
           git push origin main
-          GH_TOKEN="\${{ github.token }}" gh api --method POST "repos/\${GITHUB_REPOSITORY}/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
+          GH_TOKEN="${{ github.token }}" gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
