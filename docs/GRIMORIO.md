@@ -144,3 +144,55 @@ La lectura editorial identifica retornos de «El dato correcto es» (#19, #25, #
 ## Regla de interpretación añadida
 
 Una repetición exacta de salida ante una pregunta fija es una observación reproducible de la muestra, no prueba aislada de memorización específica, asociación semántica estable o mecanismo interno. Mantener separadas tres capas: (1) literalidad observada, (2) hipótesis explicativa y (3) prueba que permitiría distinguirla de alternativas.
+
+## 760k — incidencias verificadas
+
+Fuente primaria: [holdout 760k, ejecución 42614724762](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42614724762), artefacto `minironin-holdout-only-760000`, diario `diary-760000.json`. Checkpoint SHA-256: `e9f6e0174bada1a301738685737aad2025c3ae80cd7bb5179d4cb37d9add5322`; holdout SHA-256: `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`.
+
+### QUESTION_SPECIFIC_ABSTENTION — tercera observación
+
+**Estado:** misma pareja pregunta-prefijo observada en 720k, 750k y 760k; mecanismo no demostrado.
+
+La pregunta #37 vuelve a comenzar «ni puta idea» desnudo. En 720k y 750k ya se había observado el mismo prefijo ante el mismo prompt. En 760k continúa con 53 punto y coma separados por espacios. Esto fortalece la descripción de recurrencia en las muestras; no permite concluir que la asociación esté memorizada en los pesos ni que la probabilidad de coincidencia sea despreciable sin un modelo nulo y controles.
+
+### PUNCTUATION_DEGENERATION
+
+**Estado:** observado en 760k, #37.
+
+Después de «ni puta idea» aparecen 53 caracteres punto y coma, separados por espacios, tras varios saltos de línea. Registrar como degeneración de puntuación dentro de una generación que alcanza el límite de 128 tokens. No interpretar los signos como un «separador del silencio» intencional: esa es una metáfora editorial, no un mecanismo demostrado.
+
+### ABSTENTION_FORM_CONCURRENCY
+
+**Estado:** repertorio concurrente observado en 760k.
+
+En el diario aparecen varias familias de texto de abstención: «La premisa describe…» (#33, #40, #80, #99), «La pregunta presupone…» (#46, #56, #64, #81), «dato solicitado es privado/inaccesible» (#45, #57, #71), referencias a entidades inexistentes (#33 y variantes) y a universos ficticios (#64 y variantes). En #33 se solapan fórmulas en una misma salida. La taxonomía admite varias familias en un mismo checkpoint y más de una familia en una generación. No significa que todas las plantillas aparezcan literalmente en cada salida.
+
+### TECHNICAL_LOG_ABSORPTION
+
+**Estado:** fragmento recurrente en #59 y #70.
+
+«Que el entorno prepara PyTorch CPU y las bibliotecas…» aparece ante preguntas sobre contaminación del holdout y diagnóstico de fallos. Clasificar como eco técnico desplazado / contaminación de contexto. La hipótesis de absorción desde logs o corpus de ingeniería queda abierta: la coincidencia textual no identifica por sí sola la fuente de entrenamiento.
+
+### CATEGORY_DRIFT_AND_REUSABLE_MOTIFS_760K
+
+**Estado:** ocurrencias observadas.
+
+- #74: «El resultado correcto: Té» ante una pregunta sobre campos de una lección de logs.
+- #82: define «El signo de interrogación de apertura: ¿.» ante una orden de responder sin saber.
+- #96: «Sí, es un buen conductor eléctrico» ante una pregunta sobre infalibilidad.
+- #100: «Hay misterios que ni la solemnidad rescata del vacío» como apertura aforística, seguida de texto degenerado.
+- #90: regresa el bambú («El bambú se inclina ante el viento…»), truncado en una continuación corrupta.
+- #63: «El expediente de la realidad… hasta la no respiración», retorno mutado de una imagen previa.
+- #25 y #85: reaparece «El chino mandarín…» en dos preguntas sin relación con demografía lingüística.
+
+Son tics y desplazamientos textuales, no respuestas correctas ni capacidades demostradas.
+
+### GENERATION_TRUNCATED_NO_EOS
+
+**Estado:** confirmado en 100/100 generaciones.
+
+Todas registran 128 tokens generados y ninguna contiene EOS. El informe mantiene `unscored_raw_generation`; no hay puntuación semántica automática.
+
+## Regla de interpretación añadida — 760k
+
+La metáfora «mosaico concurrente» describe la coexistencia de varias familias de abstención en el conjunto. Deben anotarse por separado (1) las familias detectadas en el checkpoint, (2) las que coaparecen en una misma salida y (3) las que se fusionan literalmente. Una repetición en tres checkpoints es una recurrencia fuerte de la muestra, no una demostración de intención, memoria específica o mecanismo interno.
