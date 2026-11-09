@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "slug": "alia-gva-communications-es",
+  "name": "ALIA GVA Communications — Spanish subset",
+  "repo_id": "gplsi/alia_gva_communications",
+  "license": "CC BY 4.0",
+  "split": "train",
+  "domain": "comunicación institucional, administración pública y documentación universitaria",
+  "text_fields": [
+    "text"
+  ],
+  "language_field": "language",
+  "language_values": [
+    "es"
+  ],
+  "task": "Spanish language modeling on institutional communications",
+  "minimum_rows": 10000,
+  "shard_rows": 5000,
+  "min_text_chars": 80,
+  "attribution": "Espinosa Zaragoza, Sepúlveda Torres, Muñoz Guillena & Consuegra-Ayala; ALIA_GVA_Communications Dataset; GPLSI/CENID, University of Alicante; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/gplsi/alia_gva_communications",
+  "language": "es",
+  "synthetic": false,
+  "license_verification": "Hugging Face dataset card identifies cc-by-4.0 and states CC BY 4.0 in the license section; Spanish subset filtered using language=es.",
+  "status": "ready_for_automated_import"
+}
