@@ -32,8 +32,10 @@ jobs:
       BATCH_INDEX: ${{ github.event_name == 'workflow_dispatch' && inputs.batch_index || '1' }}
       REPOSITORY: ${{ github.repository }}
     steps:
-      - name: Checkout MINIRONIN
+      - name: Checkout latest main before preparing the batch
         uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
