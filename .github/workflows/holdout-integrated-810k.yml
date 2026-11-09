@@ -21,8 +21,36 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  holdout:
+  check-freshness:
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    outputs:
+      is_latest: ${{ steps.check.outputs.is_latest }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: orbitalronin94/MINIRONIN
+      EVENT_NAME: ${{ github.event_name }}
+      PREPARATION_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - id: check
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            echo "is_latest=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          latest_main="$(gh api "repos/$REPOSITORY/commits/main" --jq .sha)"
+          if [[ "$PREPARATION_HEAD_SHA" == "$latest_main" ]]; then
+            echo "is_latest=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_latest=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping stale preparation $PREPARATION_HEAD_SHA; main is now $latest_main"
+          fi
+
+  holdout:
+    needs: check-freshness
+    if: needs.check-freshness.outputs.is_latest == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
