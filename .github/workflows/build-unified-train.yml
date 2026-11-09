@@ -179,6 +179,7 @@ jobs:
             data/inherited/classics-library \
             data/inherited/japanese-library \
             data/inherited/papers \
+            data/inherited/wikimedia-es \
             generated-curricula \
             generated-basic-curricula \
             unified-input/behavioral-datasets \
