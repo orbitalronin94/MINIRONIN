@@ -53,3 +53,22 @@ def test_awakened_builder_emits_only_extractive_grounded_rows(tmp_path, monkeypa
     assert all(row["answer"] in row["context"] for row in rows)
     assert all(row["document_sha256"] for row in rows)
     assert manifest["training_authorized"] is True
+
+def test_unified_builder_preserves_awake_row_provenance_and_synthetic_flag(tmp_path):
+    from scripts.build_unified_train import as_record
+
+    row = {
+        "question": "What does the passage say about natural selection?",
+        "context": "Natural selection changes populations over generations.",
+        "answer": "Natural selection changes populations over generations.",
+        "source_id": "data/inherited/classics-library/darwin.md",
+        "domain": "classics",
+        "dataset": "awakened-library-rows.jsonl",
+        "synthetic": True,
+        "row_sha256": "abc123",
+    }
+    record = as_record(row, tmp_path / "awakened-library-rows.jsonl", 1)
+    assert record["source_id"] == row["source_id"]
+    assert record["dataset"] == row["dataset"]
+    assert record["synthetic"] is True
+    assert record["id"] == "abc123"
