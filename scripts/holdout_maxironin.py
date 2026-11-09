@@ -44,7 +44,7 @@ def run(model, tokenizer, holdout, output, label, ckpt_sha, tok_sha, seed):
   answer,n=generate(model,tokenizer,row["question"],eos)
   results.append({"id":row["id"],"domain":row["domain"],"question":row["question"],"rubric":row["rubric"],"answer":answer,"generated_tokens":n})
   if i%10==0: print(json.dumps({"event":"holdout_progress","state":label,"completed":i,"total":len(holdout)}),flush=True)
- payload={"schema_version":1,"benchmark":"MINIRONIN inference holdout v1 (unmodified questions/rubrics)","experiment":"MAXIRONIN-500M","state":label,"seed":seed,"checkpoint_sha256":ckpt_sha,"tokenizer_sha256":tok_sha,"holdout_sha256":sha(Path("benchmarks/inference-holdout-v1.jsonl")),"holdout_count":len(results),"generation":{"strategy":"greedy argmax","temperature":0,"max_new_tokens":128,"prompt_suffix":"\\nRespuesta:","context_limit":512,"dtype":"float32","threads":4,"kv_cache":true,"decode":"single-token-incremental"},"scoring_status":"unscored_raw_generation","human_blind_review_required":True,"results":results}
+ payload={"schema_version":1,"benchmark":"MINIRONIN inference holdout v1 (unmodified questions/rubrics)","experiment":"MAXIRONIN-500M","state":label,"seed":seed,"checkpoint_sha256":ckpt_sha,"tokenizer_sha256":tok_sha,"holdout_sha256":sha(Path("benchmarks/inference-holdout-v1.jsonl")),"holdout_count":len(results),"generation":{"strategy":"greedy argmax","temperature":0,"max_new_tokens":128,"prompt_suffix":"\\nRespuesta:","context_limit":512,"dtype":"float32","threads":4,"kv_cache":True,"decode":"single-token-incremental"},"scoring_status":"unscored_raw_generation","human_blind_review_required":True,"results":results}
  output.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
  print(json.dumps({"event":"holdout_complete","state":label,"count":len(results),"file":str(output),"checkpoint_sha256":ckpt_sha}),flush=True)
 
@@ -60,11 +60,6 @@ def main():
  if len(rows)!=100: raise RuntimeError(f"Expected fixed 100-question holdout, got {len(rows)}")
  out=Path(a.output_dir);out.mkdir(parents=True,exist_ok=True)
  config=MaxRoninConfig()
- # Exact deterministic reconstruction of the initialization used by train_maxironin.py.
- initial=MaxRoninLM(config).cpu()
- initsha="reconstructed-from-seed-20261109; no standalone initial checkpoint was saved"
- run(initial,tokenizer,rows,out/"holdout-before-step-1000.json", "before_step_0_reconstructed",initsha,toksha,seed)
- del initial;gc.collect()
  checkpoint=Path(a.checkpoint)
  state=torch.load(checkpoint,map_location="cpu",weights_only=False)
  model=MaxRoninLM(config).cpu()
@@ -73,6 +68,6 @@ def main():
  expected="1976762ef0de1b0c30a0f286204d4c5f81b4c4f283271d313099fe4092bc7764"
  if actual!=expected: raise RuntimeError(f"Checkpoint SHA mismatch: {actual}")
  if state.get("completed_steps")!=1000: raise RuntimeError("Checkpoint is not step 1000")
- run(model,tokenizer,rows,out/"holdout-after-step-1000.json","after_step_1000",actual,toksha,seed)
- print(json.dumps({"event":"paired_holdout_complete","before":"reconstructed initialization","after_checkpoint_sha256":actual,"tokenizer_sha256":toksha,"kv_cache":True}),flush=True)
+ run(model,tokenizer,rows,out/"holdout-step-1000.json","step_1000",actual,toksha,seed)
+ print(json.dumps({"event":"single_checkpoint_holdout_complete","checkpoint_step":1000,"checkpoint_sha256":actual,"tokenizer_sha256":toksha,"kv_cache":True}),flush=True)
 if __name__=="__main__": main()
