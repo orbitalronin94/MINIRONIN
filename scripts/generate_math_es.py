@@ -10,11 +10,12 @@ import argparse
 import hashlib
 import json
 import random
+import math
 from fractions import Fraction
 from pathlib import Path
 
 VERSION = "minironin-math-es-v1"
-OPERATIONS = (
+DIVISORS = tuple(i for i in range(-200, 201) if i not in (-1, 0, 1))\n\nOPERATIONS = (
     "suma", "resta", "multiplicacion", "division_exacta", "resto",
     "potencia", "maximo_comun_divisor", "minimo_comun_multiplo",
     "porcentaje", "fraccion_reducida",
@@ -28,14 +29,14 @@ def make_example(rng: random.Random, index: int) -> dict:
         explanation = f"Sumamos los dos enteros: {a} + ({b}) = {a+b}."
     elif op == "resta":
         a, b = rng.randint(-100_000, 100_000), rng.randint(-100_000, 100_000)
-        q, answer = f"¿Cuál es la diferencia entre {a} y {b}?", str(a - b)
+        q, answer = f"¿Cuánto es {a} menos {b}?", str(a - b)
         explanation = f"Restamos el segundo número al primero: {a} - ({b}) = {a-b}."
     elif op == "multiplicacion":
         a, b = rng.randint(-10_000, 10_000), rng.randint(-10_000, 10_000)
         q, answer = f"Calcula el producto de {a} por {b}.", str(a * b)
         explanation = f"Multiplicamos: {a} × ({b}) = {a*b}."
     elif op == "division_exacta":
-        divisor = rng.choice([i for i in range(-200, 201) if i not in (-1, 0, 1)])
+        divisor = rng.choice(DIVISORS)
         quotient = rng.randint(-10_000, 10_000)
         dividend = divisor * quotient
         q, answer = f"¿Cuánto es {dividend} dividido entre {divisor}?", str(quotient)
