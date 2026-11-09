@@ -1,33 +1,40 @@
 {
   "schema_version": 1,
   "status": "main",
-  "model_id": "minironin-transformer-10m-step-740000",
+  "model_id": "minironin-transformer-10m-step-750000",
   "architecture": "transformer-decoder-only",
   "parameter_count": 9970176,
-  "completed_steps": 740000,
+  "completed_steps": 750000,
   "tokenization": "UTF-8 bytes + EOS (257 active symbols)",
   "checkpoint": {
-    "filename": "checkpoint-740000.pt",
-    "sha256": "f3e651914c0250140750c3b9e2b88df255e62ad496c843d62752813cad4ba74b",
+    "filename": "checkpoint-750000.pt",
+    "sha256": "8e1179d43383dbf9035ea2faa1ee3ea842351a7f276a1815b7df41400422ae8d",
     "source": "github-release-asset",
-    "release_tag": "minironin-legacy-150k-from-650k-step-740000",
-    "release_id": 439044872,
-    "asset_id": 727222658,
-    "asset_url": "https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-legacy-150k-from-650k-step-740000/checkpoint-740000.pt",
-    "report_asset_id": 727222656,
-    "report_sha256": "56e9bf510ddb6d579c4104fdb875a9460f6ebfbcc9ead67bf8dabeef6a111905",
-    "sha256_manifest_asset_id": 727222660
+    "release_tag": "minironin-legacy-150k-from-650k-step-750000",
+    "release_id": 439067934,
+    "asset_id": 727289946,
+    "asset_url": "https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-legacy-150k-from-650k-step-750000/checkpoint-750000.pt",
+    "report_asset_id": 727289944,
+    "report_sha256": "811ab73a3d541e0fdd8a35f82c58a1ad38dc2b7cf7743e8aee33ced5899169e5",
+    "sha256_manifest_asset_id": 727289945
   },
   "previous_main": {
-    "model_id": "minironin-transformer-10m-step-730000",
+    "model_id": "minironin-transformer-10m-step-740000",
     "architecture": "transformer-decoder-only",
     "parameter_count": 9970176,
-    "completed_steps": 730000,
-    "checkpoint_sha256": "e026de6ba5e19b398dfcce397722053e9533d9f106d56846fef65e1bea2da864",
-    "release_tag": "minironin-legacy-150k-from-650k-step-730000",
+    "completed_steps": 740000,
+    "checkpoint_sha256": "f3e651914c0250140750c3b9e2b88df255e62ad496c843d62752813cad4ba74b",
+    "release_tag": "minironin-legacy-150k-from-650k-step-740000",
     "status": "previous_main_historical_reference"
   },
   "promotion_history": [
+    {
+      "model_id": "minironin-transformer-10m-step-740000",
+      "completed_steps": 740000,
+      "checkpoint_sha256": "f3e651914c0250140750c3b9e2b88df255e62ad496c843d62752813cad4ba74b",
+      "release_tag": "minironin-legacy-150k-from-650k-step-740000",
+      "status": "previous_main"
+    },
     {
       "model_id": "minironin-transformer-10m-step-730000",
       "completed_steps": 730000,
@@ -59,24 +66,23 @@
   ],
   "holdout": {
     "status": "completed_unscored_raw_generation",
-    "run_id": 42608813221,
-    "job_id": 129131548523,
-    "artifact_id": 13667884963,
-    "artifact_name": "minironin-holdout-only-740000",
-    "artifact_sha256": "e77816681ad4373ecb17c511c0d4385508af5bb9e96f12f052fb9c869597d3f5",
-    "checkpoint_sha256": "f3e651914c0250140750c3b9e2b88df255e62ad496c843d62752813cad4ba74b",
+    "run_id": 42611909691,
+    "job_id": 129142176876,
+    "artifact_id": 13670333883,
+    "artifact_name": "minironin-holdout-only-750000",
+    "artifact_sha256": "83e8dda38d3ee906e38a954f061aeb1948022ca955d1e13913f40a925e7fc410",
+    "checkpoint_sha256": "8e1179d43383dbf9035ea2faa1ee3ea842351a7f276a1815b7df41400422ae8d",
     "holdout_sha256": "3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535",
     "holdout_count": 100,
     "scoring": "unscored_raw_generation",
     "generation": "greedy argmax; temperature 0; max_new_tokens 128; 2 threads; eval mode; KV cache",
     "observations": [
       "Las 100 generaciones alcanzaron el límite de 128 tokens; 0/100 emitieron EOS.",
-      "Se observan 8 apariciones de «El corazón» y 7 de «ni puta idea», todas estas últimas con formulario o explicación contextual.",
-      "La familia «La puerta» aparece 5 veces; «La razón» persiste como motivo recurrente.",
-      "Hay 20 salidas con fuga del marcador interno «Pregunta:».",
-      "No aparecen «El ecuador», «cereal» ni «sustantivo» en esta muestra."
+      "«Ni puta idea» aparece 15 veces; «El corazón» 6; «La razón ha llegado» 4.",
+      "El marcador «Pregunta:» aparece dentro de 20/100 salidas.",
+      "Se observan comodines desplazados: cráneo (2), rana (3), metro (3), fotosíntesis (2) y ecuador (2)."
     ],
-    "interpretation": "Holdout descriptivo de generaciones brutas. No acredita mejora de exactitud, razonamiento ni calidad conversacional. Las 100 salidas están truncadas a 128 tokens y deben interpretarse con cautela."
+    "interpretation": "Holdout descriptivo de generaciones brutas, sin puntuación semántica. No acredita mejora de exactitud, razonamiento ni calidad conversacional. Las 100 salidas alcanzan 128 tokens y no emiten EOS."
   },
-  "promotion_policy": "Promoción manual por decisión explícita del proyecto: 740000 pasa a MAIN como referencia experimental y nueva edición de la serie. La promoción no certifica mejora de calidad. Se conserva 730000 como MAIN anterior y referencia histórica. El holdout 740000 queda como evidencia descriptiva sin puntuación semántica."
+  "promotion_policy": "Promoción manual por decisión explícita del proyecto: 750000 pasa a MAIN como referencia experimental y nueva edición de la serie. La promoción no certifica mejora de calidad. Se conserva 740000 como MAIN anterior y referencia histórica. El holdout 750000 queda como evidencia descriptiva sin puntuación semántica."
 }
