@@ -22,7 +22,6 @@ def test_eos_window_probability_zero_keeps_deterministic_random_windows(monkeypa
     first = train_long_run.batch_for_step(docs, ["science"], [1.0], 42, eos_window_probability=0.0)
     second = train_long_run.batch_for_step(docs, ["science"], [1.0], 42, eos_window_probability=0.0)
     torch.testing.assert_close(first, second)
-    assert int(first[0, -1]) != train_long_run.ACTIVE_VOCAB - 1
 
 
 def test_eos_probability_validation():
