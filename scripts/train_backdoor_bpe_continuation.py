@@ -199,8 +199,14 @@ def main():
     if "optimizer_state_dict" not in source:
         raise SystemExit("Checkpoint lacks optimizer state; refusing an implicit optimizer reset")
     optimizer.load_state_dict(source["optimizer_state_dict"])
+    optimizer.param_groups[0]["lr"] = args.learning_rate
+    if source.get("torch_rng_state") is not None:
+        torch.set_rng_state(source["torch_rng_state"])
     if source_vocab == BASE_ACTIVE_VOCAB and tokenizer.active_vocab > BASE_ACTIVE_VOCAB:
+        byte_rows_before = model.token_embedding.weight[:BASE_ACTIVE_VOCAB].detach().clone()
         initialize_added_embeddings(model, tokenizer, optimizer)
+        if not torch.equal(byte_rows_before, model.token_embedding.weight[:BASE_ACTIVE_VOCAB]):
+            raise RuntimeError("BACKDOOR_BPE initialization modified legacy byte/EOS embeddings")
     if source.get("completed_steps") != args.start_step:
         raise SystemExit("Checkpoint completed_steps does not match --start-step")
 
