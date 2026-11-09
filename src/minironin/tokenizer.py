@@ -41,6 +41,8 @@ class ByteNgramTokenizer:
             node[None] = token_id
             expected += 1
         self.active_vocab = expected
+        if manifest.get("active_vocab", self.active_vocab) != self.active_vocab:
+            raise ValueError("Manifest active_vocab does not match token table")
         canonical = json.dumps(manifest, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
         self.sha256 = hashlib.sha256(canonical).hexdigest()
         self.manifest = manifest
@@ -76,20 +78,26 @@ class ByteNgramTokenizer:
     def encode(self, text: str, *, add_eos: bool = False) -> list[int]:
         return self.encode_bytes(text.encode("utf-8", errors="strict"), add_eos=add_eos)
 
+    def token_bytes(self, token_id: int) -> bytes:
+        token_id = int(token_id)
+        if 0 <= token_id <= 255:
+            return bytes([token_id])
+        if token_id == EOS_ID:
+            return b""
+        if token_id in self.tokens:
+            return self.tokens[token_id]
+        raise ValueError(f"Token ID {token_id} is outside active vocabulary {self.active_vocab}")
+
+    def byte_length(self, token_id: int) -> int:
+        return len(self.token_bytes(token_id))
+
     def decode_bytes(self, token_ids: Iterable[int], *, stop_at_eos: bool = True) -> bytes:
         out = bytearray()
         for raw_id in token_ids:
             token_id = int(raw_id)
             if token_id == EOS_ID and stop_at_eos:
                 break
-            if 0 <= token_id <= 255:
-                out.append(token_id)
-            elif token_id in self.tokens:
-                out.extend(self.tokens[token_id])
-            elif token_id == EOS_ID:
-                continue
-            else:
-                raise ValueError(f"Token ID {token_id} is outside active vocabulary {self.active_vocab}")
+            out.extend(self.token_bytes(token_id))
         return bytes(out)
 
     def decode(self, token_ids: Iterable[int], *, stop_at_eos: bool = True) -> str:
