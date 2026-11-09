@@ -86,7 +86,7 @@ def main():
                 continue
             counts["documents_seen"] += 1
             target = validation_rows if doc.get("split") == "validation" else train_rows
-            source_path = (args.root / doc.get("path", "")).resolve()
+            source_path = (args.root / doc["path"]).resolve()
             qa_items = list(qa_rows(source_path)) if source_path.is_file() else []
             for idx, (question, answer, context) in enumerate(qa_items):
                 prompt = f"### Contexto:\n[S1] {context}\n### Pregunta:\n{question}\n### Respuesta:"
