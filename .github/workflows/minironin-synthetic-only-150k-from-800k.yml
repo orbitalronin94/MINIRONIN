@@ -50,6 +50,9 @@ jobs:
           set -euo pipefail
           [[ "$START_STEP" =~ ^[0-9]+$ ]]
           [[ "$PREVIOUS_RUN_ID" =~ ^[0-9]+$ ]]
+          if [ "$START_STEP" != "800000" ]; then
+            test "$PREVIOUS_RUN_ID" -gt 0
+          fi
           test "$START_STEP" -ge 800000
           test "$START_STEP" -lt 950000
           test "$((START_STEP % 10000))" -eq 0
@@ -110,7 +113,6 @@ jobs:
             "corpus_sha256":sources.get("train_jsonl_gz_sha256")
           },ensure_ascii=False,indent=2))
           PY
-          echo "$CORPUS_ARTIFACT_SHA256  $RUNNER_TEMP/corpus-artifact.zip" > /dev/null
 
       - name: Verificar checkpoint padre 800k
         if: env.START_STEP == '800000'
@@ -136,7 +138,7 @@ jobs:
           name: minironin-full-corpus-150k-${{ env.PREVIOUS_RUN_ID }}
           github-token: ${{ github.token }}
           repository: ${{ github.repository }}
-          run-id: ${{ fromJSON(env.PREVIOUS_RUN_ID) }}
+          run-id: ${{ env.PREVIOUS_RUN_ID }}
           path: train-150k/state
 
       - name: Descargar checkpoint del release anterior
@@ -169,7 +171,7 @@ jobs:
           groups=c["optimizer_state_dict"].get("param_groups",[])
           assert groups and 0<float(groups[0]["lr"])<=3e-4
           lr=float(groups[0]["lr"])
-          with open(out,"a") as f:f.write(f"parent_lr={lr:.12g}\\n")
+          with open(out,"a") as f:f.write("parent_lr={:.12g}\n".format(lr))
           print({"step":expected,"parameters":c["parameter_count"],"lr":lr})
           PY
           if [ "$START_STEP" != "800000" ]; then
