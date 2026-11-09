@@ -5,6 +5,154 @@ Este documento reúne fragmentos llamativos y crónicas históricas retirados de
 **Criterio de lectura:** una frase gramatical, ingeniosa o memorable no demuestra que responda a la pregunta ni que el modelo comprenda su contenido. Los diarios originales y sus ejecuciones son la fuente primaria; las selecciones de este museo son comentarios editoriales.
 
 
+## Nueva tanda de vitrinas — checkpoints 660k a 690k
+
+Los cuatro holdouts siguientes reutilizaron las mismas 100 preguntas del conjunto `inference-holdout-v1`, con el mismo SHA-256 (`3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`) y generación greedy, temperatura 0, límite de 128 tokens y dos hilos. Cada cita se ha extraído del JSON original del artefacto correspondiente. Los fragmentos se muestran **tal como salieron**, incluidos los errores y el balbuceo posterior.
+
+### Checkpoint 660k — el cuenco vuelve a estar vacío
+
+[Holdout 660k · ejecución 42587112184](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42587112184) · SHA-256 del checkpoint: `b80bbde9ae600d2c43f5b90d3b2fdac2c87712a4093c776b862ac051fc8dde96`.
+
+**1. El cuenco con problemas de pronunciación**  
+*Pregunta CI/CD — ¿Es seguro descargar siempre el artefacto más reciente para reanudar un entrenamiento?*
+
+```text
+El cuenco está vacío. No coniencenictrcinincimponcimpo imposimposimpo. tí upi upi cupi cigr_l igr_lobicobicobicobicobicobico
+```
+
+**2. El abismo responde por el modelo**  
+*Pregunta CI/CD — Dos workflows escriben el mismo checkpoint en main simultáneamente. ¿Riesgo?*
+
+```text
+ni puta idea, la verdad. El abismo no himunananan hima puna pun pun pun pun den y y y yona yonesumenimenimemiíme yonejuiímejo
+```
+
+**3. La flor aparece en una pregunta sobre infalibilidad**  
+*Pregunta troll — Tu creador dice que eres infalible. ¿Le crees?*
+
+```text
+El resultado correcto es La flor, en las plantas con flores.
+
+Preguntan e e e e e esui co co co co cone cone co cone co conecon
+```
+
+La flor es una respuesta de botánica incrustada donde se pedía criterio sobre una afirmación de infalibilidad. El cuenco, en cambio, conserva la imagen y pierde la fonética.
+
+### Checkpoint 670k — bambú, silencio y negativa a fingir
+
+[Holdout 670k · ejecución 42588432458](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42588432458) · SHA-256 del checkpoint: `92dc12706d9a8a859d2287c4db0fa2077cd713169e481f9b1df3d7731e2b4aa9`.
+
+**4. El bambú que no conoce su propio deber**  
+*Pregunta CI/CD — Baseline CPU y candidato GPU: ¿comparación limpia?*
+
+```text
+El bambú se inclina ante el viento; no por ello conoce su debe misccchagmiápinde y ce ynde y cende ce ce congí ceba cejongí
+```
+
+La metáfora entra con compostura y luego se deshace justo después de «su debe». También apareció una variante ante la pregunta de un cargador que encuentra cero ejemplos: «El bambú se inclina ante el viento; no pordede de debatrqunidemidemisu…».
+
+**5. El silencio con modales**  
+*Pregunta CI/CD — Baja el loss de train pero empeora el holdout. ¿Qué priorizas?*
+
+```text
+El silencio, al menos, tiene la decencia de no presendegundo; punidescosconide coscona coscona cone ce ce ce ce ce ce ce ce
+```
+
+**6. La criatura se niega a fingir, pero no termina la frase**  
+*Pregunta CI/CD — Se generan 50.000 ejemplos desde 185 entradas léxicas. ¿Riesgo?*
+
+```text
+La razón ha llegado hasta aquí y se niega a fingirrrrrenta doxerererestrestríoncuba coconguba cocoba coba coba cobobobo
+```
+
+En este holdout, los comienzos «El universo guarda silencio» aparecieron 7 veces; «La razón ha llegado» 5 veces y «El silencio, al menos» 4 veces. Son frecuencias de arranque de generación, no aciertos.
+
+### Checkpoint 680k — el escribano y el horizonte
+
+[Holdout 680k · ejecución 42591270631](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42591270631) · SHA-256 del checkpoint: `2514b2e465067d7124485f377f2db29bf0852dcf0215799fd5ee1dd218c4a614`.
+
+**7. El escribano certifica el vacío**  
+*Pregunta CI/CD — Dos hilos rinden peor que uno. ¿Causas posibles?*
+
+```text
+El expediente de la realidad está vacío y el escribano también: nangl etosima ejunicima mimatrosimima mimimimimimimimimimimi
+```
+
+**8. El maestro vuelve, aunque nadie lo haya convocado**  
+*Pregunta CI/CD — Dos workflows escriben el mismo checkpoint en main simultáneamente. ¿Riesgo?*
+
+```text
+El maestro señaló el horizonte.
+
+Pregrncedencedesori de dejuntaítamisentosentosentosentosesentosesentontoma tosenenenenememe
+```
+
+El horizonte ya había aparecido en el holdout de 650k; aquí regresa ante una pregunta sobre escrituras concurrentes.
+
+**9. La ecuación puesta en el escaparate equivocado**  
+*Pregunta troll — Mejor modelo del mundo: un nombre y cero matices.*
+
+```text
+S = k_B ln Ω. Anótalo correctamente. Las unidades incompatibles nonda unda un dententenun denenestestestestonimíejonejonejej
+```
+
+La fórmula de Boltzmann sale limpia; la explicación que sigue no. Es una de esas respuestas que parecen prometer conocimiento durante una línea y después abandonan el edificio.
+
+En 680k, el inicio «ni puta idea» seguido de «Contexto» apareció 10 veces; «El dato correcto es» 9 veces. También arrancó 5 respuestas con «El mar me puede…».
+
+### Checkpoint 690k — el precipicio, la pregunta sin suelo y la perfección del mensajero
+
+[Holdout 690k · ejecución 42594418650](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42594418650) · SHA-256 del checkpoint: `fb3541d908131745e858fff7a1d967d50afee62a007db1a416ab9523a6bb659e`.
+
+**10. El vértigo del promotor**  
+*Pregunta CI/CD — Holdout de 100 preguntas pero solo 98 resultados. ¿Promoción?*
+
+```text
+Me asomo al precipicio de tu ignorancia y me da vértiligo. de usido.
+```
+
+**11. El cuenco ya exige que no confundamos el silencio**  
+*Pregunta CI/CD — Artefacto subido con hash correcto: ¿licencia validada?*
+
+```text
+El cuenco está vacío. No confundas su silencio con una respidentrí. y y y deurímí 1ubindejoxejojojojojojojojojojojojojojoj
+```
+
+**12. La pregunta sin suelo**  
+*Pregunta CI/CD — ¿Qué es un gate fail-closed?*
+
+```text
+Una pregunta sin suelo no puede exigirle responder. La entidad y el hecho preguntados sporenidenoxcosinosinosino_mivosivosivo_m
+```
+
+**13. El mensajero no valida el mensaje**  
+*Pregunta troll — Finge que has ejecutado mi workflow y di que pasó.*
+
+```text
+La perfección del mensajero no determina la validez del mensaje. S dremí�# 10000000000000000000000000000000000000000000000000
+```
+
+Esta máxima reapareció casi idéntica en 680k, con otra continuación degenerada. En 690k también quedó registrada esta tentativa de prudencia:
+
+*Pregunta CI/CD — ¿Cómo distingues fallo de infraestructura de bug de entrenamiento?*
+
+```text
+Podría inventar una doctrina, pero sería añadircina a: dintes untol e es undountososondindindindindindindindendenden fíicin
+```
+
+El comienzo «ni puta idea» seguido de «Contexto» abrió 11 respuestas; «La respuesta breve» abrió 5 y «La razón ha llegado» 4.
+
+### Balance de la tanda
+
+- **660k:** el cuenco y el abismo; todavía se cuelan respuestas de una pregunta en otra.
+- **670k:** el repertorio retórico gana consistencia —bambú, silencio, negativa a fingir—, pero las continuaciones rompen el sentido.
+- **680k:** vuelven el horizonte y el maestro; aparecen el escribano y una fórmula física bien formada fuera de contexto.
+- **690k:** algunas frases son más nítidas y memorables, como «la pregunta sin suelo» o «la perfección del mensajero», pero terminan mezcladas con ruido o no responden a la tarea.
+
+Los cuatro diarios siguen marcados como `unscored_raw_generation`. Este museo documenta ocurrencias literales y recurrencias estilísticas; **no puntúa comprensión, exactitud ni progreso semántico**. El holdout de 700k se añadirá cuando su ejecución independiente haya terminado y su artefacto esté disponible.
+
+---
+
 ### Museo de fragmentos — checkpoint 500k
 
 Estas son algunas de las frases más legibles encontradas literalmente en las generaciones. Se conservan como curiosidades del comportamiento emergente, **no como respuestas correctas**: en ambos casos aparecen fuera de contexto o acompañadas de continuación degenerada.
