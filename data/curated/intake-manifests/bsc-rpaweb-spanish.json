@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "slug": "bsc-rpaweb-spanish",
+  "name": "BSC RPAWeb Spanish browser automation corpus",
+  "repo_id": "BSC-LT/rpaweb",
+  "license": "CC BY 4.0",
+  "split": "es",
+  "domain": "automatización web, trámites, bibliotecas y herramientas",
+  "text_fields": [
+    "input",
+    "requirements",
+    "outputs",
+    "anonymized_data",
+    "json_data",
+    "html_data"
+  ],
+  "drop_columns": [
+    "png_file"
+  ],
+  "task": "Spanish browser automation action traces",
+  "minimum_rows": 2500,
+  "min_text_chars": 20,
+  "attribution": "Barcelona Supercomputing Center, RPAWeb; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/BSC-LT/rpaweb",
+  "language": "es",
+  "license_verification": "exact live dataset-card license check; source split and language filter enforced",
+  "status": "ready_for_automated_import"
+}
