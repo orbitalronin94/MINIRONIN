@@ -4,13 +4,16 @@ on:
   workflow_dispatch:
   release:
     types: [published]
+  push:
+    paths:
+      - ".github/workflows/holdout-only-700k.yml"
 
 permissions:
   contents: read
 
 jobs:
   holdout-700k:
-    if: github.event_name == 'workflow_dispatch' || github.event.release.tag_name == 'minironin-legacy-150k-from-650k-step-700000'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.release.tag_name == 'minironin-legacy-150k-from-650k-step-700000'
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
