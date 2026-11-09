@@ -20,6 +20,12 @@ def visible(s):
     s=re.sub(r"(?m)^\s{0,3}#{1,6}\s*", "", s)
     return re.sub(r"\n{3,}", "\n\n", re.sub(r"[ \t\r\f\v]+", " ", s)).strip()
 
+def sha256_file(path):
+    digest=hashlib.sha256()
+    with path.open('rb') as stream:
+        for block in iter(lambda:stream.read(1024*1024),b''): digest.update(block)
+    return digest.hexdigest()
+
 def iter_documents(path):
     if path.name.endswith((".jsonl",".jsonl.gz",".ndjson",".ndjson.gz")):
         opener=gzip.open if path.name.endswith(".gz") else open
@@ -80,7 +86,7 @@ def main():
                     for raw,body,title,locator in docs:
                         if len(body)<200: continue
                         docsha=hashlib.sha256(raw).hexdigest()
-                        source_files.setdefault(str(path.relative_to(ROOT)),{"sha256":hashlib.sha256(path.read_bytes()).hexdigest(),"bytes":path.stat().st_size,"library_id":lid})
+                        source_files.setdefault(str(path.relative_to(ROOT)),{"sha256":sha256_file(path),"bytes":path.stat().st_size,"library_id":lid})
                         made=0
                         for para in paragraphs(body):
                             ss=sentences(para)
