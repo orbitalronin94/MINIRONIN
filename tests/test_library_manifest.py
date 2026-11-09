@@ -63,7 +63,7 @@ def test_jsonl_payload_materializes_record_level_documents_and_validation(tmp_pa
     (tmp_path / "data").mkdir()
     payload = tmp_path / "data" / "corpus.jsonl"
     payload.write_text("".join(
-        json.dumps({"text": f"Documento factual número {i}. Contiene información verificable suficiente."}, ensure_ascii=False) + "\\n"
+        json.dumps({"text": f"Documento factual número {i}. Contiene información verificable suficiente."}, ensure_ascii=False) + "\n"
         for i in range(20)
     ), encoding="utf-8")
     import hashlib
@@ -75,7 +75,7 @@ def test_jsonl_payload_materializes_record_level_documents_and_validation(tmp_pa
         "rights_status": "owner_authored_internal", "license": "internal",
         "train_eligible": True, "retrieval_eligible": True, "sha256": digest,
         "language": "es",
-    }) + "\\n", encoding="utf-8")
+    }) + "\n", encoding="utf-8")
     out = tmp_path / "out"
     subprocess.run([sys.executable, str(ROOT / "scripts/build_library_manifest.py"),
                     "--root", str(tmp_path), "--admissions", str(ledger), "--output", str(out)],
