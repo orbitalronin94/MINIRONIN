@@ -20,7 +20,7 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: minironin-wikisource-es-batch-\${{ inputs.batch_index || '1' }}
+  group: minironin-wikisource-es-batch-${{ inputs.batch_index || '1' }}
   cancel-in-progress: false
 
 jobs:
@@ -28,8 +28,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 180
     env:
-      BATCH_INDEX: \${{ github.event_name == 'workflow_dispatch' && inputs.batch_index || '1' }}
-      REPOSITORY: \${{ github.repository }}
+      BATCH_INDEX: ${{ github.event_name == 'workflow_dispatch' && inputs.batch_index || '1' }}
+      REPOSITORY: ${{ github.repository }}
     steps:
       - name: Checkout MINIRONIN
         uses: actions/checkout@v4
@@ -57,11 +57,11 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
-          token: \${{ github.token }}
-          branch: prep/wikisource-es-1200-batch-\${{ env.BATCH_INDEX }}
+          token: ${{ github.token }}
+          branch: prep/wikisource-es-1200-batch-${{ env.BATCH_INDEX }}
           delete-branch: true
           commit-message: "Add 1200 attributed Spanish Wikisource texts"
-          title: "Add 1200 Spanish Wikisource source documents — batch \${{ env.BATCH_INDEX }}"
+          title: "Add 1200 Spanish Wikisource source documents — batch ${{ env.BATCH_INDEX }}"
           body: |
             Scope: exactly 1,200 complete source texts from the Spanish Wikisource snapshot.
 
@@ -72,12 +72,12 @@ jobs:
             The audit checks UTF-8, minimum text length, provenance fields, duplicate payloads, and SHA-256 manifest.
 
             Auto-merge requires exactly 1,200 new Markdown documents under data/inherited/papers/curated/ and successful model tests plus inherited-data audit.
-          add-paths: data/inherited/papers/curated/wikimedia-wikisource/batch-\${{ env.BATCH_INDEX }}/
+          add-paths: data/inherited/papers/curated/wikimedia-wikisource/batch-${{ env.BATCH_INDEX }}/
       - name: Dispatch CI and provenance audit for the PR head
         if: steps.cpr.outputs.pull-request-number != ''
         env:
-          GH_TOKEN: \${{ github.token }}
-          PR_BRANCH: prep/wikisource-es-1200-batch-\${{ env.BATCH_INDEX }}
+          GH_TOKEN: ${{ github.token }}
+          PR_BRANCH: prep/wikisource-es-1200-batch-${{ env.BATCH_INDEX }}
         run: |
           set -euo pipefail
           gh api --method POST "repos/$REPOSITORY/actions/workflows/minironin-ci.yml/dispatches" -f ref="$PR_BRANCH"
@@ -85,4 +85,4 @@ jobs:
           echo "Dispatched independent CI and inherited-data audit for $PR_BRANCH."
       - name: Report generated PR
         if: steps.cpr.outputs.pull-request-number != ''
-        run: echo "Created \${{ steps.cpr.outputs.pull-request-url }} with 1200 new documents."
+        run: echo "Created ${{ steps.cpr.outputs.pull-request-url }} with 1200 new documents."
