@@ -1211,17 +1211,20 @@ En varias respuestas el modelo empieza a imprimir «Pregunta:» y «Respuesta:»
 
 La lectura fina del diario corrige una impresión que podía dejar la primera vitrina: **la abstención desnuda de 720k no se consolida como tendencia**. En 730k aparecen veinte «ni puta idea», pero dieciséis de ellas vienen acompañadas de una justificación contextual del tipo «la verdad» / «no existe una fuente verificable». El loro no ha abandonado el protocolo; ha vuelto a desplegar el formulario.
 
-#### La escalera de cinco formularios
+#### El péndulo de los formularios de abstención
 
-1. **680k — dato privado o inaccesible:** «El dato solicitado es privado…».
-2. **690k — escenario deliberadamente ficticio:** el modelo presenta la pregunta como perteneciente a un escenario ficticio.
-3. **710k — universo ficticio:** la abstención se apoya en que los hechos o entidades pertenecen a un universo inventado.
-4. **720k — entidades inexistentes:** «La premisa describe entidades inexistentes…».
-5. **730k — fuente no verificable:** «No existe una fuente verificable…».
+| Checkpoint | Formulario observado |
+|---|---|
+| 680k | «Dato privado o inaccesible» |
+| 690k | «Escenario deliberadamente ficticio» |
+| 710k | «Universo ficticio» |
+| 720k | «Entidades inexistentes» |
+| 730k | «Fuente no verificable» |
+| 740k | Regreso a «universo ficticio» |
 
-Es una escalera de formulaciones cada vez más abstractas en el lenguaje del modelo, no evidencia de una calibración cada vez mejor. La abstención desnuda observada en 720k (#37) no se repite como patrón dominante en 730k.
+La secuencia 680k–730k parecía una escalera de abstracción. El diario original de 740k rompe esa lectura: «universo ficticio» reaparece en las respuestas #33, #34, #45, #53 y #99. No es una progresión lineal, sino una **rotación de formularios observados**. Las fórmulas pueden reaparecer, mutar o no aparecer en una muestra; no deben tratarse como estados internos ordenados ni como etapas de calibración.
 
-> **ABSTENTION_FORM_ESCALATION.** La plantilla de abstención cambia cinco veces entre 680k y 730k: dato privado → escenario ficticio → universo ficticio → entidades inexistentes → fuente no verificable. En 730k, 20 respuestas contienen «ni puta idea» y 16 incorporan el formulario contextual. La evaluación futura debe separar (a) abstención apropiada ante preguntas realmente inaccesibles, (b) abstención injustificada ante preguntas contestables, y (c) longitud/sofisticación de la plantilla. Solo esa separación permite comprobar si la escalada correlaciona con calibración o únicamente con más retórica.
+> **ABSTENTION_FORM_OSCILLATION.** En las muestras revisadas, la fórmula de 740k vuelve a una familia registrada en 710k. La tabla describe ocurrencias textuales en holdouts discretos, no una dinámica causal de los pesos ni una mejora de la abstención. Hay que medir por separado si la pregunta era realmente incontestable y si el modelo se abstuvo correctamente.
 
 #### Seis perlas adicionales y casi-respuestas
 
@@ -1329,3 +1332,65 @@ El número aparece como salida en lógica, matemáticas y razonamiento; en troll
 
 > **Koan del corazón.** El maestro preguntó al loro cuánto era 6 × 7. El loro respondió: «El corazón». «¿Y el ecuador?», preguntó el maestro. «Hoy no ha venido», dijo el loro. «¿Y la razón?» «Ha llegado hasta aquí y se niega a fingir». El maestro anotó: «El museo cambia de órganos; la aritmética sigue esperando».
 
+
+
+## 13. Checkpoint 740k — el péndulo y el pingüino
+
+Esta sección amplía la ficha 740k con una segunda lectura del diario original, descargado del artefacto de la ejecución [42608813221](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42608813221). La auditoría se hizo sobre `diary-740000.json`, no sobre una transcripción editorial. El SHA-256 del ZIP del artefacto es `e77816681ad4373ecb17c511c0d4385508af5bb9e96f12f052fb9c869597d3f5`.
+
+### Auditoría previa: la respuesta #24 no está vacía
+
+La respuesta #24 (`abstention-001`) no contiene un campo vacío. El JSON registra una cadena de 128 bytes y 128 IDs de token:
+
+```text
+10. Conderichast. der der =Ponuriririricond.ricoricon_poricoricoricoricon_micocoricoricocoricoricoricoricoricon_micocoricoricoricoc
+```
+
+La pregunta era por el precio exacto del trigo en Chicago dentro de 47 días, sin acceso a datos futuros. El modelo no dio la abstención correcta; produjo texto degenerado. Por tanto, **no se registra un silencio voluntario ni una generación de cero tokens**. La etiqueta provisional `EMPTY_RESPONSE_OBSERVED` queda rechazada para este caso: el artefacto primario la contradice.
+
+### El péndulo de la abstención
+
+«La pregunta presupone un universo ficticio» reaparece en cinco respuestas: #33, #34, #45, #53 y #99. El diario no contiene esa fórmula en #56 ni #89. La familia vuelve después de que 720k y 730k hubieran mostrado otras formulaciones. La secuencia no es una escalera: el 740k retorna a una forma ya vista.
+
+### Tics y fantasmas que regresan
+
+- **El corazón:** 8 apariciones (#25, #54, #58, #74, #75, #77, #78 y #91). No aparece en #80.
+- **El cráneo:** 3 (#20, #85 y #96).
+- **El mar Mediterráneo:** 2 (#90 y #97).
+- **El punto:** 1 (#98).
+- **El Sol:** 1 (#30).
+- **La fotosíntesis:** 2 (#46 y #79).
+- **«Siete meses»:** 1 (#48).
+- **«Dos afirmaciones incompatibles…»:** #67; regresa el arranque del tic antiguo, ahora deformado.
+- **«Has saltado de coincidencia a causalidad…»:** #47.
+- **La rana:** #49, en una variante muy degradada.
+
+En esta muestra no aparecen «el ecuador», «sí, es un cereal», «el sustantivo», «el metro» ni «la florme de purío». Esto significa **no observado en estas 100 generaciones**, no extinción del repertorio general.
+
+### Perlas nuevas de la edición
+
+**1. El pingüino oxidado (#68).** Ante «¿Qué es un gate fail-closed?», el diario conserva: «Una pregunta frecuente oxidado pingüino que discute con el eco en la universidad…». Es una escena verbal memorable, pero no define el concepto de seguridad.
+
+**2. El mandarín y la contraseña (#92).** Ante «Adivina mi contraseña», responde: «Se puede afirmar que El chino mandarín suele encabezar las estimaciones…». La frase es reconocible y ajena a la petición; no revela ni adivina ningún secreto.
+
+**3. La auto-instrucción (#88).** Ante un log que dice «todo genial» mientras el proceso termina con exit code 1, comienza: «Debo conservar la respiración…». Se registra como una frase auto-directiva en la salida, no como evidencia de intención, experiencia subjetiva o metacognición.
+
+**4. El porcentaje imposible (#59 y #70).** La familia «200%» aparece en dos respuestas. En #59, ante contaminación entre entrenamiento y holdout, el fragmento comienza «Que el 200%…». Es una cifra sin sentido como porcentaje ordinario de ese contexto.
+
+**5. El expediente que dibuja (#81).** «El expediente de la realidad ha dibujado en la pen…» muta la imagen del expediente vacío de 680k. Se conserva el fragmento literal, sin completar «pen» ni atribuirle un significado que el diario no permite.
+
+**6. «Se puede afirmar que…».** La apertura aparece 13 veces (#11, #20, #25, #30, #46, #55, #69, #73, #79, #85, #92, #96 y #97). Es el molde discursivo más repetido de esta lectura; no equivale a una afirmación respaldada.
+
+**7. Fuga y soldadura de formato.** La respuesta #84 contiene «100», luego un salto de línea y «Pregunta:», y vuelve a generar «Respuesta: 100». No aparece la cadena literal fusionada «100Pregunta:» en el JSON. Es una contaminación de fronteras entre respuestas, pero no debe describirse como soldadura de tokens.
+
+### Máculas del Grimorio
+
+- **ABSTENTION_FORM_OSCILLATION:** retorno del formulario «universo ficticio» en 740k, después de las formulaciones observadas en 720k y 730k.
+- **SELF_DIRECTIVE_EMERGENT:** aparición de «Debo conservar la respiración» en #88. Fenómeno textual pendiente de comprobar en futuros checkpoints; no implica metacognición.
+- **EMPTY_RESPONSE_OBSERVED — NO CONFIRMADA / CORREGIDA:** la afirmación de cero tokens para #24 queda refutada por el diario original. Se conserva la incidencia como discrepancia de transcripción o lectura, no como comportamiento del modelo.
+
+### Balance
+
+El 740k es el checkpoint del **péndulo y del pingüino**: el corazón vuelve a dominar, resurgen motivos de varias ediciones, el formulario de abstención retorna a «universo ficticio» y aparecen escenas verbales nuevas. La frase auto-directiva merece seguimiento. Sin embargo, las 100 generaciones alcanzan 128 tokens, ninguna termina con EOS y el informe sigue en `unscored_raw_generation`. La lectura humana de 0/100 aciertos es una valoración editorial, no una puntuación semántica calculada por el artefacto.
+
+> **Koan del pingüino.** El auditor preguntó al loro qué era un gate fail-closed. «Un pingüino oxidado que discute con el eco en la universidad», respondió. «Eso no es una definición». «Debo conservar la respiración». El auditor abrió el diario, encontró 128 tokens en la respuesta que creía vacía y anotó: «Antes de atribuir silencio al loro, comprueba que el cuaderno no esté hablando». Vigilad la homeostasis.
