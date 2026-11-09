@@ -82,11 +82,15 @@ def main():
             if admitted < int(m.get("minimum_rows",1)):
                 out.unlink(missing_ok=True)
                 raise ValueError(f"too few admissible rows: {admitted}")
+            file_digest=hashlib.sha256()
+            with out.open("rb") as raw_file:
+                for block in iter(lambda:raw_file.read(1024*1024),b""): file_digest.update(block)
             result={"schema_version":1,"slug":slug,"dataset":m["name"],"repo_id":repo,
               "source_url":m["source_url"],"source_revision":revision,"license":m["license"],
               "language":"es","split":m.get("split","train"),"rows_scanned":scanned,
               "rows_admitted":admitted,"duplicates_skipped":duplicates,"short_skipped":short,
-              "wrong_language_skipped":wrong_language,"file":out.name,"sha256_jsonl":digest.hexdigest(),
+              "wrong_language_skipped":wrong_language,"file":out.name,"sha256_jsonl":file_digest.hexdigest(),
+              "sha256_uncompressed_content":digest.hexdigest(),
               "retrieved_at_utc":datetime.now(timezone.utc).isoformat(),
               "admission_policy":"Complete configured upstream split; exact upstream license match, Spanish source metadata, minimum text length, exact deduplication; provenance and source row preserved."}
             manifest_out.write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
@@ -94,7 +98,7 @@ def main():
         except Exception as exc:
             results.append({"slug":slug,"status":"rejected_or_retry","reason":str(exc)[:1000]})
             print(f"INTAKE_REJECTED {slug}: {exc}",file=sys.stderr)
-    report_dir=Path("data/curated/intake-reports"); report_dir.mkdir(parents=True,exist_ok=True)
+    report_dir=Path("data/intake-reports"); report_dir.mkdir(parents=True,exist_ok=True)
     report=report_dir/"open-dataset-intake-report.json"
     report.write_text(json.dumps({"generated_at_utc":datetime.now(timezone.utc).isoformat(),"results":results},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"accepted":sum(x["status"]=="accepted" for x in results),"already_imported":sum(x["status"]=="already_imported" for x in results),"not_admitted":sum(x["status"]=="rejected_or_retry" for x in results),"results":results},ensure_ascii=False))
