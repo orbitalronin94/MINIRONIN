@@ -1,0 +1,52 @@
+# Biblia Reina-Valera 1909/Éxodo/10
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Biblia%20Reina-Valera%201909/%C3%89xodo/10
+
+**Page ID:** 13340
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Biblia%20Reina-Valera%201909/%C3%89xodo/10?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+<div style='text-align:justify'>
+ Y Jehová dijo á Moisés: Entra á Faraón; porque yo he agravado su corazón, y el corazón de sus siervos, para dar entre ellos estas mis señales;
+ Y para que cuentes á tus hijos y á tus nietos las cosas que yo hice en Egipto, y mis señales que dí entre ellos; y para que sepáis que yo soy Jehová.
+ Entonces vinieron Moisés y Aarón á Faraón, y le dijeron: Jehová, el Dios de los Hebreos, ha dicho así: ¿Hasta cuándo no querrás humillarte delante de mí? Deja ir á mi pueblo para que me sirvan.
+ Y si aún rehusas dejarlo ir, he aquí que yo traeré mañana langosta en tus términos,
+ La cual cubrirá la faz de la tierra, de modo que no pueda verse la tierra; y ella comerá lo que quedó salvo, lo que os ha quedado del granizo; comerá asimismo todo árbol que os produce fruto en el campo:
+ Y llenarse han tus casas, y las casas de todos tus siervos, y las casas de todos los Egipcios, cual nunca vieron tus padres ni tus abuelos, desde que ellos fueron sobre la tierra hasta hoy. Y volvióse, y salió de con Faraón.
+ Entonces los siervos de Faraón le dijeron: ¿Hasta cuándo nos ha de ser éste por lazo? Deja ir á estos hombres, para que sirvan á Jehová su Dios; ¿aun no sabes que Egipto está destruido?
+ Y Moisés y Aarón volvieron á ser llamados á Faraón, el cual les dijo: Andad, servid á Jehová vuestro Dios. ¿Quién y quién son los que han de ir?
+ Y Moisés respondió: Hemos de ir con nuestros niños y con nuestros viejos, con nuestros hijos y con nuestras hijas: con nuestras ovejas y con nuestras vacas hemos de ir; porque tenemos solemnidad de Jehová.
+ Y él les dijo: Así sea Jehová con vosotros como yo os dejaré ir á vosotros y á vuestros niños: mirad como el mal está delante de vuestro rostro.
+ No será así: id ahora vosotros los varones, y servid á Jehová: pues esto es lo que vosotros demandasteis. Y echáronlos de delante de Faraón.
+ Entonces Jehová dijo á Moisés: Extiende tu mano sobre la tierra de Egipto para langosta, á fin de que suba sobre el país de Egipto, y consuma todo lo que el granizo dejó.
+ Y extendió Moisés su vara sobre la tierra de Egipto, y Jehová trajo un viento oriental sobre el país todo aquel día y toda aquella noche; y á la mañana el viento oriental trajo la langosta:
+ Y subió la langosta sobre toda la tierra de Egipto, y asentóse en todos los términos de Egipto, en gran manera grave: antes de ella no hubo langosta semejante, ni después de ella vendrá otra tal;
+ Y cubrió la faz de todo el país, y oscurecióse la tierra; y consumió toda la hierba de la tierra, y todo el fruto de los árboles que había dejado el granizo; que no quedó cosa verde en árboles ni en hierba del campo, por toda la tierra de Egipto.
+ Entonces Faraón hizo llamar apriesa á Moisés y á Aarón, y dijo: He pecado contra Jehová vuestro Dios, y contra vosotros.
+ Mas ruego ahora que perdones mi pecado solamente esta vez, y que oréis á Jehová vuestro Dios que quite de mí solamente esta muerte.
+ Y salió de con Faraón, y oró á Jehová.
+ Y Jehová volvió un viento occidental fortísimo, y quitó la langosta, y arrojóla en el mar Bermejo: ni una langosta quedó en todo el término de Egipto.
+ Mas Jehová endureció el corazón de Faraón; y no envió los hijos de Israel.
+ Y Jehová dijo á Moisés: Extiende tu mano hacia el cielo, para que haya tinieblas sobre la tierra de Egipto, tales que cualquiera las palpe.
+ Y extendió Moisés su mano hacia el cielo, y hubo densas tinieblas tres días por toda la tierra de Egipto.
+ Ninguno vió á su prójimo, ni nadie se levantó de su lugar en tres días; mas todos los hijos de Israel tenían luz en sus habitaciones.
+ Entonces Faraón hizo llamar á Moisés, y dijo: Id, servid á Jehová; solamente queden vuestras ovejas y vuestras vacas: vayan también vuestros niños con vosotros.
+ Y Moisés respondió: Tú también nos entregarás sacrificios y holocaustos que sacrifiquemos á Jehová nuestro Dios.
+ Nuestros ganados irán también con nosotros; no quedará ni una uña; porque de ellos hemos de tomar para servir á Jehová nuestro Dios; y no sabemos con qué hemos de servir á Jehová, hasta que lleguemos allá.
+ Mas Jehová endureció el corazón de Faraón, y no quiso dejarlos ir.
+ Y díjole Faraón: Retírate de mí: guárdate que no veas más mi rostro, porque en cualquier día que vieres mi rostro, morirás.
+ Y Moisés respondió: Bien has dicho; no veré más tu rostro.
+
+ Éxodo (Reina-Valera 1909)
