@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "slug": "sft-general-spanish-50k",
+  "name": "SFT General Spanish 50K",
+  "repo_id": "OysterCoreAI/SFT-General-Spanish-50K",
+  "license": "CC BY 4.0",
+  "split": "train",
+  "domain": "asistencia general, explicación, matemáticas y programación",
+  "text_fields": [
+    "messages"
+  ],
+  "task": "Spanish instruction tuning",
+  "synthetic": true,
+  "minimum_rows": 40000,
+  "attribution": "SFT-General-Spanish-50K v1.0.0, authors/compilers; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/OysterCoreAI/SFT-General-Spanish-50K",
+  "language": "es",
+  "min_text_chars": 24,
+  "license_verification": "exact dataset-card identifier required; no NC/ND licenses admitted",
+  "status": "ready_for_automated_import"
+}
