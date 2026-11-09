@@ -72,7 +72,7 @@ def main():
                     seen.add(key)
                     record={"id":f"{slug}:{i}:{key[:12]}","text":body,"domain":m.get("domain","español general"),
                       "language":"es","split":m.get("split","train"),"train_eligible":True,
-                      "admission_status":"accepted","synthetic":bool(m.get("synthetic",False)),
+                      "admission_status":"accepted","synthetic":bool(m.get("synthetic",False)),"synthetic_status":m.get("synthetic_status","synthetic" if m.get("synthetic",False) else "not_declared"),
                       "license":m["license"],"source_dataset":repo,
                       "source":m["source_url"],"source_revision":revision,"source_row":i,
                       "attribution":m["attribution"],"task":m.get("task","language modeling"),
