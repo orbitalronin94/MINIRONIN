@@ -1,3 +1,4 @@
+import importlib.util
 import json
 import pytest
 import sqlite3
@@ -6,8 +7,21 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
-import rag_retrieve
+
+
+def _load_script_module(name: str, relative_path: str):
+    spec = importlib.util.spec_from_file_location(name, ROOT / relative_path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+rag_retrieve = _load_script_module("rag_retrieve", "scripts/rag_retrieve.py")
+
+
+def load_run_inference_holdout():
+    return _load_script_module("run_inference_holdout", "scripts/run_inference_holdout.py")
 
 
 def test_rag_builder_and_citation_context(tmp_path):
@@ -133,7 +147,7 @@ def test_heretic_import_keeps_admission_audit_list(tmp_path):
 
 
 def test_rag_context_respects_byte_tokenizer_window():
-    import run_inference_holdout
+    run_inference_holdout = load_run_inference_holdout()
 
     result = {
         "hits": [
@@ -187,7 +201,7 @@ def test_bpe_builder_caps_each_document_without_losing_corpus_diversity(tmp_path
 
 
 def test_holdout_rejects_checkpoint_with_wrong_completed_step_count():
-    import run_inference_holdout
+    run_inference_holdout = load_run_inference_holdout()
 
     run_inference_holdout.validate_checkpoint_step({"completed_steps": 810000}, 810000)
     with pytest.raises(SystemExit, match="does not match requested"):
