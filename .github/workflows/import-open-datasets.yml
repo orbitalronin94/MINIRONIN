@@ -37,16 +37,18 @@ jobs:
           import hashlib,json
           from pathlib import Path
           root=Path("data/curated/accepted")
+          import gzip
           for p in root.glob("*.manifest.json"):
-              if p.name=="open-dataset-intake-report.json": continue
               m=json.loads(p.read_text())
               f=root/m["file"]
               assert hashlib.sha256(f.read_bytes()).hexdigest()==m["sha256_jsonl"],p
               assert m["rows_admitted"]>0 and m["source_revision"]
-              for line in f.open(encoding="utf-8"):
-                  r=json.loads(line)
-                  assert r["language"]=="es" and r["train_eligible"] and r["admission_status"]=="accepted"
-                  assert r["license"]==m["license"] and r["source_revision"]==m["source_revision"]
+              opener=gzip.open if f.name.endswith(".gz") else open
+              with opener(f,"rt",encoding="utf-8") as stream:
+                  for line in stream:
+                      r=json.loads(line)
+                      assert r["language"]=="es" and r["train_eligible"] and r["admission_status"]=="accepted"
+                      assert r["license"]==m["license"] and r["source_revision"]==m["source_revision"]
           print("ACCEPTED_MANIFESTS_HASH_VERIFIED")
           PY
       - name: Commit admitted datasets and dispatch unified corpus build
@@ -56,7 +58,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/curated/accepted/
+          git add data/curated/accepted/ data/curated/intake-reports/
           if git diff --cached --quiet; then echo "No new dataset rows to commit"; exit 0; fi
           git commit -m "Admit licensed open Spanish datasets"
           git push origin main
