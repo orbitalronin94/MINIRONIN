@@ -10,7 +10,7 @@ permissions:
   contents: write
   actions: write
 concurrency:
-  group: minironin-common-corpus-spanish-batch1-100shards
+  group: minironin-common-corpus-spanish-batch1
   cancel-in-progress: false
 env:
   RELEASE_TAG: pleias-common-corpus-spanish-v1
@@ -33,7 +33,7 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        shard: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100]
+        shard: [1,2,3,4,5,6,7,8,9,10]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -71,9 +71,13 @@ jobs:
                   r=json.loads(line)
                   assert r["language"]=="es" and r["train_eligible"]
                   assert r["domain"] in {"openscience","opengovernment","opensemantic"}
-                  assert r["license"].casefold().replace("_","-") in {"public domain","public-domain","pd","pdm","cc0","cc0 1.0","cc0-1.0","cc by 4.0","cc-by-4.0","cc-by","creative commons attribution 4.0"}
+                  lic=r["license"].casefold().replace("_","-")
+                  compact=lic.replace(" ","").replace("-","")
+                  denied=("noncommercial","noderivatives","sharealike","ccbync","ccbynd","ccbysa")
+                  assert not any(term in compact for term in denied)
+                  assert (lic in {"public domain","public-domain","pd","pdm","cc0","cc0 1.0","cc0-1.0"} or lic.startswith("cc by ") or lic.startswith("cc-by-") or "creativecommons.org/licenses/by/" in lic or lic.startswith("creative commons attribution "))
                   count+=1
-          assert count==m["rows_admitted"] and h.hexdigest()==m["sha256_jsonl_uncompressed"]
+          assert m["rows_admitted"]>=100 and count==m["rows_admitted"] and h.hexdigest()==m["sha256_jsonl_uncompressed"]
           print(json.dumps({"shard":n,"records":count,"sha256":h.hexdigest(),"skipped_license":m["rows_skipped_unapproved_license"]}))
           PY
       - name: Upload immutable shard and manifest
