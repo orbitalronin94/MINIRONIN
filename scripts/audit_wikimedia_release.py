@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Audit the immutable Wikimedia ES 100k release against the current MINIRONIN corpus."""
 from __future__ import annotations
-import argparse, gzip, hashlib, json, re, sys
+import argparse, gzip, hashlib, json, re, sys, unicodedata
 from pathlib import Path
 
 LICENSE = "CC BY-SA 3.0 (dataset card) / GFDL dual-licensed source; retain attribution and share-alike"
@@ -9,7 +9,7 @@ URL_PREFIX = "https://es.wikipedia.org/wiki/"
 
 def norm(text: str) -> str:
     text = unicodedata.normalize("NFKC", text).casefold()
-    return re.sub(r"\\W+", " ", text, flags=re.UNICODE).strip()
+    return re.sub(r"\W+", " ", text, flags=re.UNICODE).strip()
 
 def sha(text: str) -> str:
     return hashlib.sha256(norm(text).encode("utf-8")).hexdigest()
