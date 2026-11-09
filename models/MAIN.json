@@ -1,49 +1,49 @@
 {
   "schema_version": 1,
   "status": "main",
-  "model_id": "minironin-transformer-10m-step-650000",
+  "model_id": "minironin-transformer-10m-step-670000",
   "architecture": "transformer-decoder-only",
   "parameter_count": 9970176,
-  "completed_steps": 650000,
+  "completed_steps": 670000,
   "tokenization": "UTF-8 bytes + EOS (257 active symbols)",
   "checkpoint": {
-    "filename": "checkpoint-650000.pt",
-    "sha256": "70f2cca02be8d4a3546992b40c6c82e62ed4be7c00de1ff549ef2894a1184b58",
+    "filename": "checkpoint-670000.pt",
+    "sha256": "92dc12706d9a8a859d2287c4db0fa2077cd713169e481f9b1df3d7731e2b4aa9",
     "source": "github-release-asset",
-    "release_tag": "minironin-cycle-1-step-650000",
-    "release_id": 438625962,
-    "asset_id": 725673970,
-    "asset_url": "https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-cycle-1-step-650000/checkpoint-650000.pt",
-    "report_asset_id": 725673961,
-    "report_sha256": "b4a0f9c442ecfa6daf5d4a7a0f62d91027f9bf675a6c451867c2936a1fe3a633"
+    "release_tag": "minironin-legacy-150k-from-650k-step-670000",
+    "release_id": 438897307,
+    "asset_id": 726797029,
+    "asset_url": "https://github.com/orbitalronin94/MINIRONIN/releases/download/minironin-legacy-150k-from-650k-step-670000/checkpoint-670000.pt",
+    "report_asset_id": 726797030,
+    "report_sha256": "ed1f69324862d50b1277b91aea86e358d0e762ac3046b3c32852478812e71863",
+    "sha256_manifest_asset_id": 726797034
   },
   "previous_main": {
-    "model_id": "minironin-transformer-10m-step-500000",
+    "model_id": "minironin-transformer-10m-step-650000",
     "architecture": "transformer-decoder-only",
     "parameter_count": 9970176,
-    "completed_steps": 500000,
-    "checkpoint_sha256": "80664596095e9ce4d1757b1ca379bbccfa96ad03f67936e70dc39487d8e8fe60",
-    "release_tag": "minironin-transformer-10m-step-500000-candidate",
+    "completed_steps": 650000,
+    "checkpoint_sha256": "70f2cca02be8d4a3546992b40c6c82e62ed4be7c00de1ff549ef2894a1184b58",
+    "release_tag": "minironin-cycle-1-step-650000",
     "status": "superseded_experimental"
   },
   "holdout": {
     "status": "completed_unscored_raw_generation",
-    "run_id": 42578466895,
-    "job_id": 129031396680,
-    "baseline_steps": 560000,
-    "baseline_checkpoint_sha256": "c3756008aae2485f22736b351ea5871a97f87e5dbf54e13c7a828ea8a880ecf8",
+    "run_id": 42588432458,
+    "job_id": 129063799637,
+    "artifact_id": 13660037280,
+    "artifact_name": "minironin-holdout-only-670000",
+    "artifact_sha256": "aa8bc5e6860282697f978e6794ad7d51ee7505a22cb1619d46eb5e8db3be6e7f",
     "holdout_count": 100,
-    "holdout_sha256": "3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535",
     "scoring": "unscored_raw_generation",
-    "comparison_to_560k": {
-      "identical_answers": 1,
-      "changed_answers": 99,
-      "answer_change_rate": 0.99,
-      "mean_character_delta_vs_base": -3.64,
-      "interpretation": "Descriptive text-difference metrics only; not a quality score."
-    },
-    "generation": "greedy argmax; temperature 0; max_new_tokens 128; 2 threads; eval mode; KV cache disabled",
-    "interpretation": "The 650k checkpoint is promoted by explicit project decision as experimental MAIN despite severe degeneration in raw generations. The holdout is unscored; promotion does not certify improved factual accuracy, reasoning, or conversational quality."
+    "generation": "greedy argmax; temperature 0; max_new_tokens 128; 2 threads; eval mode; KV cache",
+    "observations": [
+      "Las 100 generaciones alcanzaron el límite de 128 tokens.",
+      "Aparecen continuaciones autoformuladas con los marcadores Pregunta, Respuesta y Contexto.",
+      "Se observa rotación de frases recurrentes respecto a checkpoints anteriores.",
+      "El holdout no incorpora puntuación semántica automática; no acredita mejora de exactitud, razonamiento ni calidad conversacional."
+    ],
+    "interpretation": "Holdout descriptivo de generaciones brutas. La rotación de repertorio no se considera una mejora de calidad."
   },
-  "promotion_policy": "Manual project decision. The 650k checkpoint is the experimental MAIN reference by explicit user decision. This selection does not certify improved quality; preserve the 500k and 560k releases as historical references."
+  "promotion_policy": "Promoción manual por decisión explícita del proyecto. El checkpoint 670000 pasa a MAIN como referencia experimental. La promoción no certifica mejora de calidad; se conservan los checkpoints 650000 y 660000 como referencias históricas y el holdout 670000 como evidencia descriptiva."
 }
