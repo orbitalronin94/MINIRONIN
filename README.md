@@ -4,6 +4,13 @@
 
 
 
+## Biblioteca de entrenamiento: estado de admisión
+
+La biblioteca factual se amplía mediante ingestas versionadas, con idioma, licencia, procedencia, deduplicación y SHA-256 por shard. En la auditoría del 9 de noviembre de 2026, la tanda nueva verificada de PleIAs Spanish Public Domain Books añadió **9.766 registros españoles** y **1,34 GiB comprimidos** (shards 1–8); los ocho jobs y la reconstrucción unificada terminaron correctamente. Los lotes en cola, los catálogos upstream y el tamaño acumulado de releases no se contabilizan como crecimiento nuevo.
+
+- [Estado y contabilidad de las bibliotecas factuales](data/curated/OPEN_FACTUAL_CORPORA.md)
+- [Política y detalle de corpus curados](data/curated/README.md)
+
 ## La propuesta diferencial: un catálogo, no un podio
 
 MINIRONIN no se organiza alrededor de la promesa de que cada checkpoint sea mejor que el anterior. Conserva versiones verificables de una misma criatura y permite estudiar —y elegir— sus diferencias de comportamiento. Cada checkpoint puede tener un repertorio de frases, tics, errores, abstenciones y remates distinto. **La diferencia observada es parte del objeto de estudio; no equivale a una mejora de capacidad.**
