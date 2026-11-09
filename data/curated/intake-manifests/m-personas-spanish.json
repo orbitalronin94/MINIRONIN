@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "slug": "m-personas-spanish",
+  "name": "M-Personas Spanish conversation and persona corpus",
+  "repo_id": "BSC-LT/m-personas",
+  "license": "Apache 2.0",
+  "source_url": "https://huggingface.co/datasets/BSC-LT/m-personas",
+  "language": "es",
+  "split": "es",
+  "domain": "educación, tecnología, ciencia, sociedad, salud, derecho y conversación general",
+  "text_fields": [
+    "persona",
+    "prompt",
+    "messages",
+    "source_text"
+  ],
+  "task": "Spanish persona-conditioned conversation and question answering",
+  "minimum_rows": 30000,
+  "min_text_chars": 80,
+  "synthetic": true,
+  "attribution": "Barcelona Supercomputing Center, Language Technologies Laboratory; M-Personas; Apache License 2.0.",
+  "license_verification": "exact Apache-2.0 live card check; Spanish language-specific split only",
+  "status": "ready_for_automated_import"
+}
