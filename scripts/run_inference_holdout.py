@@ -66,8 +66,8 @@ def load_holdout(path: Path) -> list[dict]:
 def generate_tokens(
     model: MiniRoninLM, prompt: str, max_new_tokens: int, *, use_cache: bool = True,
     tokenizer: ByteNgramTokenizer | None = None, active_vocab: int = ACTIVE_VOCAB,
-    max_new_bytes: int | None = None,
-) -> tuple[list[int], str, int]:
+    max_new_bytes: int | None = None, return_byte_count: bool = False,
+) -> tuple[list[int], str] | tuple[list[int], str, int]:
     encoded = tokenizer.encode(prompt) if tokenizer is not None else list(prompt.encode("utf-8", errors="replace"))
     if not encoded:
         raise ValueError("Prompt encoded to an empty sequence")
@@ -102,7 +102,9 @@ def generate_tokens(
         tokenizer.decode(generated) if tokenizer is not None
         else bytes(generated).decode("utf-8", errors="replace")
     ).strip()
-    return generated, answer, generated_bytes
+    if return_byte_count:
+        return generated, answer, generated_bytes
+    return generated, answer
 
 def _clip_utf8(text: str, max_bytes: int) -> str:
     if max_bytes <= 0:
@@ -224,6 +226,7 @@ def main() -> None:
                 model, prompt, args.max_new_tokens, use_cache=not args.no_kv_cache,
                 tokenizer=tokenizer, active_vocab=active_vocab,
                 max_new_bytes=args.max_new_bytes or args.max_new_tokens,
+                return_byte_count=True,
             )
             elapsed = time.perf_counter() - started
             results.append({
