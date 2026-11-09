@@ -41,15 +41,6 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Descargar el corpus unificado de la ejecución que acaba de finalizar
-        uses: actions/download-artifact@v4
-        with:
-          name: minironin-unified-train-corpus-${{ env.CORPUS_RUN_ID }}
-          github-token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          run-id: ${{ env.CORPUS_RUN_ID }}
-          path: unified-train
-
       - name: Validar que el corpus procede de una ejecución exitosa en main
         run: |
           set -euo pipefail
@@ -60,6 +51,15 @@ jobs:
           [[ "$(jq -r .conclusion <<<"$run")" == "success" ]]
           [[ "$(jq -r .head_branch <<<"$run")" == "main" ]]
           echo "Corpus run confirmed: $CORPUS_RUN_ID"
+
+      - name: Descargar el corpus unificado de la ejecución que acaba de finalizar
+        uses: actions/download-artifact@v4
+        with:
+          name: minironin-unified-train-corpus-${{ env.CORPUS_RUN_ID }}
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.CORPUS_RUN_ID }}
+          path: unified-train
 
       - name: Verificar integridad y presencia de bibliotecas no sintéticas
         run: |
