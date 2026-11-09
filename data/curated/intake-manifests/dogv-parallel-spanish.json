@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "slug": "dogv-parallel-spanish",
+  "name": "DOGV Valencian-Spanish parallel corpus — Spanish side",
+  "repo_id": "gplsi/dogv_parallel",
+  "license": "CC BY 4.0",
+  "split": "train",
+  "domain": "diario oficial, legislación y administración pública",
+  "text_fields": [
+    "ES"
+  ],
+  "task": "Spanish official gazette parallel text",
+  "minimum_rows": 300000,
+  "min_text_chars": 20,
+  "streaming": true,
+  "gzip_output": true,
+  "attribution": "Espinosa Zaragoza et al. (2025), DOGV_PARALLEL; GPLSI, University of Alicante; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/gplsi/dogv_parallel",
+  "language": "es",
+  "license_verification": "exact CC BY 4.0 live card check; extract Spanish side only",
+  "status": "ready_for_automated_import"
+}
