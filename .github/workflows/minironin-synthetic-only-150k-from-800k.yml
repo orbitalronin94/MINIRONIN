@@ -108,31 +108,51 @@ jobs:
           mkdir -p train-150k/state/unified-train
           python scripts/build_unified_train.py --output-dir train-150k/state/unified-train --roots \
             generated-curricula generated-basic-curricula unified-input/behavioral-datasets
-          (cd train-150k/state/unified-train && sha256sum -c SHA256SUMS)
-
           python - <<'PY'
-          import gzip,json
+          import gzip,json,hashlib
           from collections import Counter
           from pathlib import Path
-          p=Path("train-150k/state/unified-train/train.jsonl.gz")
-          counts=Counter(); roots=("generated-curricula/","generated-basic-curricula/","unified-input/behavioral-datasets/")
-          with gzip.open(p,"rt",encoding="utf-8") as f:
-              for n,line in enumerate(f,1):
-                  r=json.loads(line)
+          out=Path("train-150k/state/unified-train")
+          p=out/"train.jsonl.gz"
+          allowed=("generated-curricula/","generated-basic-curricula/","unified-input/behavioral-datasets/")
+          sources=json.loads((out/"sources.json").read_text())
+          report=json.loads((out/"quality-report.json").read_text())
+          assert tuple(sources["input_roots"])==allowed, sources["input_roots"]
+          assert len(sources["sources"])==59, len(sources["sources"])
+          for item in sources["sources"]:
+              assert item["path"].startswith(allowed), item["path"]
+          counts=Counter(); rows=0
+          with gzip.open(p,"rt",encoding="utf-8") as stream:
+              for n,line in enumerate(stream,1):
+                  r=json.loads(line); rows+=1
                   if r.get("synthetic") is not True:
                       raise SystemExit(f"Rejected non-synthetic record at line {n}: {r.get('source_id')}")
                   sid=str(r.get("source_id",""))
-                  if not sid.startswith(roots):
+                  if not sid.startswith(allowed):
                       raise SystemExit(f"Rejected source outside allowlist at line {n}: {sid}")
                   counts[str(r.get("dataset","unknown"))]+=1
-          report=json.loads(Path("train-150k/state/unified-train/quality-report.json").read_text())
-          assert report["record_count"]>0
-          assert report["synthetic_and_source_counts"].get("synthetic",0)==report["record_count"]
+          assert rows==report["record_count"]==2_950_000, (rows,report["record_count"])
+          assert report["synthetic_and_source_counts"].get("synthetic",0)==rows
           assert report["synthetic_and_source_counts"].get("source_text",0)==0
-          print(json.dumps({"records":report["record_count"],"all_synthetic":True,
-              "datasets":dict(counts),"roots":report["input_roots"],
-              "corpus_sha256":report["train_jsonl_gz_sha256"]},ensure_ascii=False,indent=2))
+          # build_unified_train.py appends legacy provenance references unconditionally.
+          # Remove those metadata-only copies; no external corpus is admitted to this run.
+          prov=out/"provenance"
+          for name in ("HERETIC-SHA256.txt","PRODATPHIL-SHA256.txt","japan--SOURCES.json",
+                       "classics--SOURCES.json","anarchist--SOURCES.jsonl","papers--README.md"):
+              (prov/name).unlink(missing_ok=True)
+          # Rebuild checksum inventory after provenance filtering.
+          files=sorted(x for x in out.rglob("*") if x.is_file() and x.name!="SHA256SUMS")
+          lines=[]
+          for x in files:
+              h=hashlib.sha256(x.read_bytes()).hexdigest()
+              lines.append(f"{h}  {x.relative_to(out).as_posix()}\\n")
+          (out/"SHA256SUMS").write_text("".join(lines))
+          print(json.dumps({"records":rows,"all_synthetic":True,"source_files":len(sources["sources"]),
+              "datasets":dict(counts),"allowlisted_roots":list(allowed),
+              "corpus_sha256":sources["train_jsonl_gz_sha256"],
+              "external_provenance_copies_removed":6},ensure_ascii=False,indent=2))
           PY
+          (cd train-150k/state/unified-train && sha256sum -c SHA256SUMS)
 
       - name: Recuperar corpus/cache inmutable del segmento anterior
         if: env.START_STEP != '800000'
