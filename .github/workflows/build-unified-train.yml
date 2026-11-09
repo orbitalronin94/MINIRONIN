@@ -64,6 +64,32 @@ jobs:
       - name: Generar los 25 currículos de matemáticas y hechos
         run: python scripts/generate_basic_curricula.py --output-dir generated-basic-curricula --seed 20261108
 
+      - name: Generar un millón de ejercicios matemáticos exactos en castellano
+        run: |
+          set -euo pipefail
+          mkdir -p generated-math-es
+          python scripts/generate_math_es.py --count 1000000 --seed 810000 --output generated-math-es/math-es.jsonl
+          python - <<'PY'
+          import gzip, hashlib, json
+          from pathlib import Path
+          p=Path("generated-math-es/math-es.jsonl")
+          m=json.loads(Path(str(p)+".manifest.json").read_text(encoding="utf-8"))
+          assert m["records"] == 1_000_000
+          assert m["language"] == "es" and m["synthetic"] is True
+          assert len(m["operations"]) == 10
+          digest=hashlib.sha256()
+          count=0
+          with p.open(encoding="utf-8") as f:
+              for line in f:
+                  digest.update(line.encode("utf-8"))
+                  row=json.loads(line)
+                  assert row["language"]=="es" and row["train_eligible"] is True
+                  assert row["admission_status"]=="admitted" and row["synthetic"] is True
+                  count+=1
+          assert count==1_000_000 and digest.hexdigest()==m["sha256"]
+          print(json.dumps({"math_es_records":count,"sha256":digest.hexdigest()}))
+          PY
+
       - name: Construir los nueve datasets conductuales curados
         run: |
           set -euo pipefail
@@ -182,6 +208,7 @@ jobs:
             data/inherited/wikimedia-es \
             generated-curricula \
             generated-basic-curricula \
+            generated-math-es \
             unified-input/behavioral-datasets \
             unified-input/lexicon-source \
             data/curated
