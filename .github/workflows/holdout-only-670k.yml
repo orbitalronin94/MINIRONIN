@@ -1,6 +1,10 @@
 name: MINIRONIN — holdout exclusivo checkpoint 670k
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/holdout-only-670k.yml"
   release:
     types: [published]
 
@@ -9,7 +13,7 @@ permissions:
 
 jobs:
   holdout-670k:
-    if: github.event.release.tag_name == 'minironin-legacy-150k-from-650k-step-670000'
+    if: github.event_name == 'push' || github.event.release.tag_name == 'minironin-legacy-150k-from-650k-step-670000'
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
