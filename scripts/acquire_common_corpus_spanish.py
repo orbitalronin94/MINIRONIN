@@ -67,7 +67,7 @@ def main():
     ap.add_argument("--root",type=Path,default=Path("."))
     ap.add_argument("--output-dir",type=Path,default=Path("out"))
     a=ap.parse_args()
-    if not 1<=a.shard<=10:raise SystemExit("shard must be 1..10")
+    if not 1<=a.shard<=100:raise SystemExit("shard must be 1..100")
     if not re.fullmatch(r"[0-9a-f]{40}",a.revision):raise SystemExit("revision must be a full 40-char SHA")
     info=HfApi().dataset_info(REPO,revision=a.revision)
     if not info.card_data:raise SystemExit("missing Common Corpus dataset card")
