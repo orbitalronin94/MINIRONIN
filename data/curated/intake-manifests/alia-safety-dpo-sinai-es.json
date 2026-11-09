@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "slug": "alia-safety-dpo-sinai-es",
+  "name": "ALIA Spanish Safety DPO",
+  "repo_id": "SINAI/ALIA-es-Safety-DPO",
+  "license": "CC BY-SA 4.0",
+  "split": "train",
+  "domain": "seguridad, red teaming y preferencias de rechazo en español",
+  "text_fields": [
+    "prompt",
+    "chosen",
+    "rejected"
+  ],
+  "task": "Spanish safety preference optimization",
+  "synthetic": true,
+  "minimum_rows": 40000,
+  "min_text_chars": 30,
+  "attribution": "SINAI Research Group, Universidad de Jaén; ALIA Spanish Safety Preference Dataset; CC BY-SA 4.0.",
+  "source_url": "https://huggingface.co/datasets/SINAI/ALIA-es-Safety-DPO",
+  "language": "es",
+  "license_verification": "exact upstream card license required; no NC/ND",
+  "status": "ready_for_automated_import"
+}
