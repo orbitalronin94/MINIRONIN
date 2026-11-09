@@ -57,11 +57,11 @@ def main():
     with source.open(encoding="utf-8") as stream:
         for line in stream:
             scanned_lines += 1
-            line = line.rstrip("\\r\\n")
+            line = line.rstrip("\r\n")
             if not line:
                 flush()
                 continue
-            parts = line.split("\\t")
+            parts = line.split("\t")
             if len(parts) != 4:
                 raise SystemExit(f"Malformed CoNLL row at line {scanned_lines}: {line!r}")
             token, document_id, _span, tag = parts
@@ -71,9 +71,9 @@ def main():
     flush()
     if len(rows) < 7000:
         raise SystemExit(f"Unexpectedly small PharmaCoNER train split: {len(rows)} sentences")
-    with out.open("w", encoding="utf-8", newline="\\n") as stream:
+    with out.open("w", encoding="utf-8", newline="\n") as stream:
         for row in rows:
-            line = json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\\n"
+            line = json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n"
             stream.write(line); digest.update(line.encode("utf-8"))
     manifest = {
         "schema_version": 1, "dataset": "PharmaCoNER Spanish clinical NER train",
@@ -86,7 +86,7 @@ def main():
         "admission_policy": "Complete upstream train split only; preserve all tokens and expert BIO tags; no dev/test records imported."
     }
     (args.output_dir / "pharmaconer-es-train.manifest.json").write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: manifest[k] for k in ("source_revision", "rows_admitted", "source_clinical_cases", "entity_types", "license", "sha256_jsonl")}, ensure_ascii=False))
 
 if __name__ == "__main__":
