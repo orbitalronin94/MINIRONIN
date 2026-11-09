@@ -6,9 +6,9 @@ from pathlib import Path
 
 RULES = [
  ("literature_history_humanities", r"literatur|novel|poes|teatro|human|filosof|histori|arte|cultura|relig|anarqu|classic|wikisource|spanish-pd-books|hemeroteca"),
- ("science_medicine", r"cient[ií]f|science|medicin|cl[ií]nic|farmac|biomed|salud|biology|biolog|f[ií]sic|qu[ií]mic|matem[aá]t|math|astronom|minerva|pharmaco|spaccc|bne-"),
+ ("science_medicine", r"cient[ií]f|science|medicin|cl[ií]nic|farmac|biomed|salud|biology|biolog|f[ií]sic|qu[ií]mic|matem[aá]t|math|astronom|minerva|pharmaco|spaccc"),
  ("law_government", r"derech|legal|legisl|boe|gobiern|administraci[oó]n|parlament|constituci[oó]n|dogv|alia.*legal|bsc-legal"),
- ("education_academia", r"tesis|thesis|tdx|acad[eé]mic|educaci[oó]n|univers|pedagog|school|course|paper|papers"),
+ ("education_academia", r"tesis|thesis|tdx|acad[eé]mic|educaci[oó]n|univers|pedagog|school|course"),
  ("technology_engineering", r"software|program|c[oó]dig|computer|inform[aá]t|ingenier|tecnolog|sql|rpa|github|engineering"),
  ("social_sciences_economics", r"econom|sociolog|pol[ií]tic|psicolog|demograf|empresa|finanz|comerc|social.?scien"),
  ("language_translation", r"ling[uü][ií]st|lengua|idioma|translation|traduc|corpus.?paral|ner|lexicon|language"),
@@ -25,8 +25,14 @@ def flatten(v):
 
 def classify(row):
  if row.get("synthetic") is True: return "synthetic_behavior"
+ metadata=row.get("metadata",{}) if isinstance(row.get("metadata",{}),dict) else {}
+ specific=[]
+ for key in ("subject","domain","category","categories","discipline","topic","topics","keywords","title","collection"):
+  if key in metadata: specific.extend(flatten(metadata[key]))
+ specific_label=" ".join(specific).casefold()
+ for category,pattern in RULES:
+  if specific_label and re.search(pattern,specific_label,re.I): return category
  fields=[row.get("dataset",""),row.get("domain",""),row.get("source",""),row.get("source_id","")]
- fields.extend(flatten(row.get("metadata",{})))
  label=" ".join(map(str,fields)).casefold()
  for category,pattern in RULES:
   if re.search(pattern,label,re.I): return category
