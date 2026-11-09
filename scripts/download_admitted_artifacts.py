@@ -17,9 +17,18 @@ def sha(path: Path) -> str:
     return digest.hexdigest()
 
 
+def get_train_section(manifest):
+    return (
+        manifest.get("partitions", {}).get("train")
+        or manifest.get("train_partition")
+        or manifest.get("train")
+        or {}
+    )
+
+
 def find_artifact_nodes(value):
     if isinstance(value, dict):
-        if value.get("workflow_run_id") and value.get("artifact_name"):
+        if (value.get("workflow_run_id") or value.get("artifact_run_id")) and value.get("artifact_name"):
             yield value
         for child in value.values():
             yield from find_artifact_nodes(child)
@@ -44,7 +53,7 @@ def train_hashes(train):
 
 
 def has_verified_payload(folder, manifest):
-    expected = train_hashes(manifest.get("partitions", {}).get("train", {}))
+    expected = train_hashes(get_train_section(manifest))
     if not expected:
         return False
     return any(path.is_file() and sha(path) in expected for path in folder.rglob("*"))
@@ -59,7 +68,7 @@ def main():
     audit = []
     for manifest_path in sorted((base / "data/datasets/admitted").rglob("manifest.json")):
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        train = manifest.get("partitions", {}).get("train", {})
+        train = get_train_section(manifest)
         if manifest.get("status") != "admitted_scoped_training_partition" or train.get("training_eligible") is not True:
             continue
         folder = manifest_path.parent
@@ -73,7 +82,7 @@ def main():
             continue
         downloaded = False
         for artifact in artifacts:
-            run_id = str(artifact["workflow_run_id"])
+            run_id = str(artifact.get("workflow_run_id") or artifact.get("artifact_run_id"))
             name = str(artifact["artifact_name"])
             target = folder / "downloaded-artifact"
             target.mkdir(parents=True, exist_ok=True)
