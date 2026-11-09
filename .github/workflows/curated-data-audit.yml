@@ -23,10 +23,15 @@ jobs:
           python-version: "3.11"
       - name: Validate curated JSONL and provenance
         run: python scripts/audit_curated_lessons.py
-      - name: Publish SHA-256 manifest
+      - name: Audit BNE public-domain OCR metadata and subject fields
+        run: python scripts/audit_bne_pd_metadata.py --output data/manifests/bne-pd-metadata-audit.json
+      - name: Publish SHA-256 manifest and BNE audit
         uses: actions/upload-artifact@v4
         with:
-          name: minironin-engineering-lessons-manifest
-          path: data/manifests/engineering-lessons-v1.sha256.json
+          name: minironin-curated-data-audit
+          path: |
+            data/manifests/engineering-lessons-v1.sha256.json
+            data/manifests/bne-pd-metadata-audit.json
           if-no-files-found: error
           retention-days: 90
+
