@@ -49,14 +49,15 @@ def main():
             normalized={norm_license(v) for v in values if v is not None}
             if expected not in ALLOWED or expected not in normalized:
                 raise ValueError(f"license mismatch or unsupported: expected={expected}, actual={sorted(normalized)}")
-            ds=load_dataset(repo,name=m.get("config"),split=m.get("split","train"),revision=revision,streaming=bool(m.get("streaming",False)))
+            ds=load_dataset(repo,name=m.get("config"),split=m.get("split","train"),revision=revision,streaming=bool(m.get("streaming",False)),trust_remote_code=bool(m.get("trust_remote_code",False)))
             fields=m.get("text_fields",[])
             drop_columns=[x for x in m.get("drop_columns",[]) if x in getattr(ds,"column_names",[])]
             if drop_columns: ds=ds.remove_columns(drop_columns)
             language_field=m.get("language_field")
             allowed_languages=set(m.get("language_values",[]))
             digest=hashlib.sha256(); seen=set(); scanned=admitted=duplicates=short=wrong_language=0
-            with out.open("w",encoding="utf-8",newline="\n") as f:
+            opener=gzip.open if m.get("gzip_output") else open
+            with opener(out,"wt",encoding="utf-8",newline="\n") as f:
                 for i,row in enumerate(ds):
                     scanned+=1
                     if language_field and allowed_languages and str(row.get(language_field,"")).casefold() not in {x.casefold() for x in allowed_languages}:
