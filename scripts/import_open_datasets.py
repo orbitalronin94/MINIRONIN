@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Import full, explicitly licensed Hugging Face dataset train splits from manifests."""
 from __future__ import annotations
-import argparse, hashlib, json, re, sys
+import argparse, gzip, hashlib, json, re, sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -35,7 +35,7 @@ def main():
     for mp in manifests:
         m=json.loads(mp.read_text(encoding="utf-8"))
         slug=m["slug"]; repo=m["repo_id"]; expected=norm_license(m["license"])
-        out=outdir/f"{slug}.jsonl"
+        out=outdir/(f"{slug}.jsonl.gz" if m.get("gzip_output") else f"{slug}.jsonl")
         manifest_out=outdir/f"{slug}.manifest.json"
         if out.exists() and manifest_out.exists():
             results.append({"slug":slug,"status":"already_imported"})
@@ -49,8 +49,10 @@ def main():
             normalized={norm_license(v) for v in values if v is not None}
             if expected not in ALLOWED or expected not in normalized:
                 raise ValueError(f"license mismatch or unsupported: expected={expected}, actual={sorted(normalized)}")
-            ds=load_dataset(repo,name=m.get("config"),split=m.get("split","train"),revision=revision)
+            ds=load_dataset(repo,name=m.get("config"),split=m.get("split","train"),revision=revision,streaming=bool(m.get("streaming",False)))
             fields=m.get("text_fields",[])
+            drop_columns=[x for x in m.get("drop_columns",[]) if x in getattr(ds,"column_names",[])]
+            if drop_columns: ds=ds.remove_columns(drop_columns)
             language_field=m.get("language_field")
             allowed_languages=set(m.get("language_values",[]))
             digest=hashlib.sha256(); seen=set(); scanned=admitted=duplicates=short=wrong_language=0
@@ -73,7 +75,7 @@ def main():
                       "license":m["license"],"source_dataset":repo,
                       "source":m["source_url"],"source_revision":revision,"source_row":i,
                       "attribution":m["attribution"],"task":m.get("task","language modeling"),
-                      "metadata":{k:v for k,v in row.items() if k not in fields}}
+                      "metadata":{k:v for k,v in row.items() if k not in fields and isinstance(v,(str,int,float,bool,list,tuple))}}
                     line=json.dumps(record,ensure_ascii=False,separators=(",",":"),default=str)+"\n"
                     f.write(line); digest.update(line.encode()); admitted+=1
             if admitted < int(m.get("minimum_rows",1)):
@@ -91,7 +93,8 @@ def main():
         except Exception as exc:
             results.append({"slug":slug,"status":"rejected_or_retry","reason":str(exc)[:1000]})
             print(f"INTAKE_REJECTED {slug}: {exc}",file=sys.stderr)
-    report=outdir/"open-dataset-intake-report.json"
+    report_dir=Path("data/curated/intake-reports"); report_dir.mkdir(parents=True,exist_ok=True)
+    report=report_dir/"open-dataset-intake-report.json"
     report.write_text(json.dumps({"generated_at_utc":datetime.now(timezone.utc).isoformat(),"results":results},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"accepted":sum(x["status"]=="accepted" for x in results),"already_imported":sum(x["status"]=="already_imported" for x in results),"not_admitted":sum(x["status"]=="rejected_or_retry" for x in results),"results":results},ensure_ascii=False))
 if __name__=="__main__": main()
