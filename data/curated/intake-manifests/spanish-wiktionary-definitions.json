@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "slug": "spanish-wiktionary-definitions",
+  "name": "Spanish Wiktionary definitions",
+  "repo_id": "carloscapote/es.wiktionary.org",
+  "license": "CC BY-SA 4.0",
+  "split": "train",
+  "domain": "lexicografía, definiciones y conocimiento lingüístico",
+  "text_fields": [],
+  "task": "Spanish lexical knowledge",
+  "minimum_rows": 100000,
+  "attribution": "Spanish Wiktionary dump/parser by carloscapote; CC BY-SA 4.0.",
+  "source_url": "https://huggingface.co/datasets/carloscapote/es.wiktionary.org",
+  "language": "es",
+  "min_text_chars": 24,
+  "license_verification": "exact dataset-card identifier required; no NC/ND licenses admitted",
+  "status": "ready_for_automated_import"
+}
