@@ -1,0 +1,37 @@
+# Capítulos que se le olvidaron a Cervantes: 25
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Cap%C3%ADtulos%20que%20se%20le%20olvidaron%20a%20Cervantes%3A%2025
+
+**Page ID:** 20643
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Cap%C3%ADtulos%20que%20se%20le%20olvidaron%20a%20Cervantes%3A%2025?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+Entró don Quijote con reposo y majestad imperial, y hecha la ceremonia de la presentación, el dueño de casa le guió en persona a los aposentos que le destinaba. 
+
+-Aquí estará vuesa merced -le dijo-, si no del modo correspondiente a su calidad, por lo menos con la holgura y las ventajas que ofrece el campo. Tan luego como se hubiere aderezado, holgaremos de verle con nosotros, para que nos sentemos a la mesa. 
+
+Volvió a la sala el buen señor, y encareció con firmes razones que nadie hiciese burla de su huésped. 
+
+-La hospitalidad -dijo- es la cosa más delicada del mundo, así como la desgracia es la más respetable, y en el caso presente se reúnen las dos, siendo el que tenemos en casa un hombre de los que, aun cuando se juzgan felices, a los ojos de los cuerdos deben pasar por desdichados.
+
+Todos prometieron respetarle, y acto continuo estaban violando la promesa los mozalbetes y las niñas con no dejar de reírse de la catadura y el pelaje del recienvenido. 
+
+-Tú me vas a dar que hacer -dijo don Prudencio a un joven de rostro festivísimo que estaba ahí con una socarronería de desesperar a un muerto-: cuidado, muchacho. 
+
+No lo era tanto, pues frisaba con los veinticinco años, y a justo título pertenecía al gremio de los calaveras. Pariente próximo de doña Engracia de Borja, los hijos de ésta no podían vivir sin él, y aunque no con sobrada inclinación al campo, se  venía con ellos, puesto que a la temporada concurriesen las señoritas de su gusto, que lo eran todas. Llamábase don Alejo Mayorga. Con alguna vanidad de su parte, hubiera muy bien podido titularse conde de Archidona, siendo como era tradición de la familia que sus antecesores habían dejado prescribir su título, porque no lo tenían en mucho, o porque llamándose Mayorgas no habían menester otra cosa. Era don Alejo el segundo génito, y como suele suceder, el ídolo de su madre: el libertino se lleva siempre la palma. Cuando éstos son de buena raza, no hay uno que no sea simpático. Ejerce el calavera un prestigio misterioso en los que tratan con él, y tanto, que a pesar de sus horribles travesuras, será querido en su casa con preferencia a sus hermanos, por juiciosos que éstos sean. De vivo ingenio, decidor, cuando se conseguía cogerle, era don Alejo el alma de la tertulia. Y estudiante de todo el noble mancebo: cursó jurisprudencia en la Universidad de Salamanca; pero al cabo de dos años echó de ver que su inclinación no era ésa, y estuvo a punto de seguir la carrera teológica, por complacer a la señora su madre, quien le rallaba por que se ordenase. La consideración del matrimonio, su idea primordial, le desvió de los proyectos eclesiásticos, y se entró de rondón en la milicia, su verdadera vocación. Y por Dios que fue militar gentil y valeroso, sin dejar en ningún caso ni tiempo de ser enamorado. Desde los diecisiete había empezado a querer casarse, y cada año renovaba su pretensión, siempre con otra novia, para tormento de su madre. ¡Qué de inquietudes, angustias, lágrimas, no costaba a la pobre señora ese adorado torbellino! Liberal, manirroto, jamás tenía un duro sino para echarlo por la ventana. Si detestaba los estudios serios, leía con vehemencia cuanta obra fantástica podía haber a las manos, como son novelas y libros caballerescos. Instruidísimo en cosas de poca monta, ejercitaba con sobrado calor la contenciosa movilidad de su temperamento, sin que hubiese punto de filosofía, humanidades, derecho, historia, artes ni oficio en que no diese su parecer y se remitiese a cien mil autores que no había leído.
+
+Su hermano, mayor, don Zoilo de Mayorga, es vaciado en otro molde: joven asaz inteligente, su mérito principal consiste en juzgarse el primer hombre del mundo y en un filosófico desdén por la persona que está sobresaliendo y gozando de buena fama. Tiesierguido, el alma encambronada, todo lo decide con la autoridad del estagirita, cuando no es sino un pirrónico en cuya vida está campeando el egoísmo. El egoísmo, negra ausencia de los afectos nobles, los movimientos generosos del ánimo, que son la verdadera filosofía de los hombres de natural bueno y elevado. Llevarle la contra a este sumo pontífice es ser un tonto; saber algo uno es excitar su envenenada crítica, porque el no reconoce superior en ninguna materia, bien que la triste medianía le ha destinado a la indiferencia de los demás. Árbitro de las cosas, no hay nudo que no corte con la espada de Alejandro. Su elocuencia se ceba en el descrédito de los demás, y nunca tiene él más talento que cuando está haciendo ver palmariamente la inferioridad de sus amigos: parécele que no puede ser persona de viso, si ellos no son insignificantes: de la pequeñez de los otros saca su grandeza; y en esto no va fuera de camino, pues cuando nuestros méritos no descansan en las virtudes, preciso es que nuestra importancia derive de los defectos ajenos. El magnífico don Zoilo no piensa, pero dice que todos los hombres de talento viven atormentados por la más vil de las pasiones: habla de la envidia; y siendo él un sabio de primera clase en la difamación al disimulo, la grandeza de su alma le tiene lejos de ese feo pecado. Envidia, ¡oh!, envidia, amor de Satanás, gloria del infierno, de allí sales al mundo en ráfagas pestilentes, y enfermas y emponzoñas al género humano. Fada malhechora, vuelves negro lo blanco: hiere en las virtudes tu varilla siniestra, y las conviertes en vicios; cae en tus manos la inocencia, y se vuelve malicia. Tu lengua vive nadando en un fluido corrosivo; es larga y puntiaguda. Pasa la honra y la picas; huye de ti la austeridad y la alcanzas. Ves sin ojos; oyes sin oídos, vuelas sin alas: acuciosa eres, aprensiva. Los merecimientos, los triunfos de los demás, son injurias para ti; las buenas obras, provocaciones horribles; pero si te conviene el disimulo, disimulas: una de tus diligencias suele ser la hipocresía. Don Zoilo de Mayorga es víctima de la envidia, si bien el mismo no sabe lo que nadie pueda envidiar en él, o sus hechos admirables se han perdido en la ingrata memoria de las gentes. Para dar la última pincelada al carácter de este magnate, diremos que él no hubiera visto con indiferencia el título de marqués de Huagrahuigsa, y allá para su capote lo era en efecto, y por tal se tenía, desdeñando airadamente a los que no sintiesen correr por sus venas sangre de Braganzas.
+
+Capítulos que se le olvidaron a Cervantes
