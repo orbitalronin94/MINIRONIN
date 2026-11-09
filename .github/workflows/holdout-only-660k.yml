@@ -37,8 +37,9 @@ jobs:
           gh release download "$CHECKPOINT_TAG" --repo "$REPOSITORY" \
             --pattern "SHA256SUMS-660000" --dir .tmp/holdout-660k
           cd .tmp/holdout-660k
-          grep -F "checkpoint-660000.pt" SHA256SUMS-660000
-          sha256sum -c SHA256SUMS-660000
+          expected="$(awk '$2 ~ /checkpoint-660000[.]pt$/ {print $1}' SHA256SUMS-660000)"
+          test -n "$expected"
+          echo "$expected  checkpoint-660000.pt" | sha256sum -c -
           cd ../..
 
       - name: Instalar PyTorch CPU
