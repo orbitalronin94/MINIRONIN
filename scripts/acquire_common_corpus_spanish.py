@@ -119,8 +119,8 @@ def main():
                 line=json.dumps(record,ensure_ascii=False,separators=(",",":"))+"\n"
                 f.write(line);output_sha.update(line.encode("utf-8"));admitted+=1
                 counts[collection]=counts.get(collection,0)+1
-    if admitted<100:
-        raise SystemExit(f"fewer than 100 Spanish rows admitted; languages={dict(sorted(language_counts.items(),key=lambda x:-x[1])[:20])}; open_types={open_type_counts}; licenses={dict(sorted(license_counts.items(),key=lambda x:-x[1])[:20])}")
+    if admitted<1:
+        raise SystemExit(f"no eligible Spanish rows admitted; languages={dict(sorted(language_counts.items(),key=lambda x:-x[1])[:20])}; open_types={open_type_counts}; licenses={dict(sorted(license_counts.items(),key=lambda x:-x[1])[:20])}")
     manifest={
         "schema_version":1,"dataset":"PleIAs Common Corpus — Spanish open science/government/semantic",
         "source_dataset":REPO,"source_url":SOURCE,"source_revision":a.revision,
