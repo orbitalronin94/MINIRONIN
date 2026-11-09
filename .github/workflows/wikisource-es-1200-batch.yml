@@ -1,0 +1,88 @@
+name: MINIRONIN — preparar lote Wikisource ES de 1200 documentos
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/wikisource-es-1200-batch.yml"
+      - "scripts/acquire_wikisource_es_1200.py"
+  workflow_dispatch:
+    inputs:
+      batch_index:
+        description: "Lote determinista (1–31)"
+        required: true
+        default: "1"
+        type: string
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: minironin-wikisource-es-batch-\${{ inputs.batch_index || '1' }}
+  cancel-in-progress: false
+
+jobs:
+  create-curated-pr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      BATCH_INDEX: \${{ github.event_name == 'workflow_dispatch' && inputs.batch_index || '1' }}
+      REPOSITORY: \${{ github.repository }}
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Parquet reader and Hub client
+        run: python -m pip install --upgrade pip pyarrow huggingface_hub
+      - name: Select and materialize exactly 1200 attributed works
+        run: |
+          set -euo pipefail
+          python scripts/acquire_wikisource_es_1200.py --batch-index "$BATCH_INDEX" --manifest-path /tmp/wikisource-batch-manifest.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path("/tmp/wikisource-batch-manifest.json").read_text(encoding="utf-8"))
+          assert data["document_count"] == 1200
+          assert len(data["documents"]) == 1200
+          assert len({x["sha256"] for x in data["documents"]}) == 1200
+          assert len({x["page_id"] for x in data["documents"]}) == 1200
+          print(json.dumps({"batch":data["batch_index"],"documents":data["document_count"],"eligible":data["eligible_unique_source_texts"]},ensure_ascii=False))
+          PY
+      - name: Create PR containing exactly 1200 new source documents
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: \${{ github.token }}
+          branch: prep/wikisource-es-1200-batch-\${{ env.BATCH_INDEX }}
+          delete-branch: true
+          commit-message: "Add 1200 attributed Spanish Wikisource texts"
+          title: "Add 1200 Spanish Wikisource source documents — batch \${{ env.BATCH_INDEX }}"
+          body: |
+            Scope: exactly 1,200 complete source texts from the Spanish Wikisource snapshot.
+
+            Dataset: wikimedia/wikisource, configuration 20231201.es.
+            Pinned dataset revision: 160144440c765ed3ada4a4829ce1077910fbdbb6.
+            Every file preserves title, canonical source URL, page ID, source revision, and the dataset-card license declaration (CC BY-SA 3.0 / GFDL).
+            Attribution points to the original Wikisource page and its history. Some texts may be public domain or subject to item-specific terms; these are not silently reclassified.
+            The audit checks UTF-8, minimum text length, provenance fields, duplicate payloads, and SHA-256 manifest.
+
+            Auto-merge requires exactly 1,200 new Markdown documents under data/inherited/papers/curated/ and successful model tests plus inherited-data audit.
+          add-paths: data/inherited/papers/curated/wikimedia-wikisource/batch-\${{ env.BATCH_INDEX }}/
+      - name: Dispatch CI and provenance audit for the PR head
+        if: steps.cpr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: \${{ github.token }}
+          PR_BRANCH: prep/wikisource-es-1200-batch-\${{ env.BATCH_INDEX }}
+        run: |
+          set -euo pipefail
+          gh api --method POST "repos/$REPOSITORY/actions/workflows/minironin-ci.yml/dispatches" -f ref="$PR_BRANCH"
+          gh api --method POST "repos/$REPOSITORY/actions/workflows/data-audit.yml/dispatches" -f ref="$PR_BRANCH"
+          echo "Dispatched independent CI and inherited-data audit for $PR_BRANCH."
+      - name: Report generated PR
+        if: steps.cpr.outputs.pull-request-number != ''
+        run: echo "Created \${{ steps.cpr.outputs.pull-request-url }} with 1200 new documents."
