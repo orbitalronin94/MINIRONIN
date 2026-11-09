@@ -52,11 +52,11 @@ def as_record(obj, path, line_no):
         body="\n".join(strings(obj)); metadata={"raw_type":type(obj).__name__}
     if not body.strip(): body=json.dumps(obj,ensure_ascii=False,sort_keys=True,default=str)
     synthetic=bool(path.name.endswith((".jsonl.gz",".jsonl")) and ("curricula" in str(path) or "behavioral" in str(path) or path.name=="minironin-abstention-50k.jsonl"))
-    return {"id":str(metadata.get("id",f"{path.name}:{line_no}")) if isinstance(metadata,dict) else f"{path.name}:{line_no}",
-      "source_id":str(path),"domain":str(metadata.get("domain") or metadata.get("subject") or path.parent.name) if isinstance(metadata,dict) else path.parent.name,
+    return {"id":str(metadata.get("id") or metadata.get("row_sha256") or f"{path.name}:{line_no}") if isinstance(metadata,dict) else f"{path.name}:{line_no}",
+      "source_id":str(metadata.get("source_id") or path) if isinstance(metadata,dict) else str(path),"domain":str(metadata.get("domain") or metadata.get("subject") or path.parent.name) if isinstance(metadata,dict) else path.parent.name,
       "source":str(metadata.get("source") or path.name) if isinstance(metadata,dict) else path.name,
       "license":str(metadata.get("license") or "See source catalogue; provenance retained") if isinstance(metadata,dict) else "See source catalogue; provenance retained",
-      "synthetic":synthetic,"dataset":path.name,"text":body,"metadata":metadata}
+      "synthetic":bool(metadata.get("synthetic",False)) or synthetic,"dataset":str(metadata.get("dataset") or path.name),"text":body,"metadata":metadata}
 
 def read_jsonl(path):
     opener=gzip.open if path.name.endswith(".gz") else open
