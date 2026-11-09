@@ -203,7 +203,7 @@ def test_bpe_manifest_counts_only_documents_inside_byte_budget(tmp_path):
          "train_eligible": True, "split": "train", "text": "a" * 200}
         for i in range(4)
     ]
-    docs.write_text("".join(json.dumps(row) + "\\n" for row in rows), encoding="utf-8")
+    docs.write_text("".join(json.dumps(row) + chr(10) for row in rows), encoding="utf-8")
     output = tmp_path / "budget-tokenizer.json"
     subprocess.run([
         sys.executable, str(ROOT / "scripts/build_backdoor_bpe.py"),
