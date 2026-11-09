@@ -9,8 +9,8 @@
 
 | Prioridad | Fuente | Tamaño declarado | Contenido | Decisión de ingestión |
 |---|---|---:|---|---|
-| P0 | TDX Thesis Spanish Corpus (Zenodo 7313149) | 1,6 GB; 246,7 M tokens; 9.790 tesis | Ciencia, ingeniería, humanidades y conocimiento académico en español | Primera candidata de gran volumen. Descargar y auditar metadatos/licencia por tesis; la licencia CC BY 4.0 del empaquetado no sustituye el análisis de derechos de cada tesis. |
-| P0 | CSIC Spanish Corpus (Zenodo 7313126) | 146,8 M tokens; 30.929 documentos | Revistas científicas españolas | Primera candidata factual. Verificar licencia y derechos de cada revista/artículo; conservar DOI, revista, autoría y URL. |
+| P0 | TDX Thesis Spanish Corpus (Zenodo 7313149) | 1,6 GB; 246,7 M tokens; 9.790 tesis | Ciencia, ingeniería, humanidades y conocimiento académico en español | **No admitir en entrenamiento comercial/general por ahora.** El README especifica CC BY-NC-SA 4.0 (no CC BY 4.0) y declara que no hubo anonimización. Mantener en cuarentena de investigación; revisar privacidad y compatibilidad antes de cualquier uso. |
+| P0 | CSIC Spanish Corpus (Zenodo 7313126) | 146,8 M tokens; 30.929 documentos | Revistas científicas españolas | **No admitir en entrenamiento comercial/general por ahora.** El README especifica CC BY-NC-SA 4.0. Mantener fuera de la mezcla general; solo reconsiderar en una línea no comercial con revisión de derechos y trazabilidad. |
 | P1 | Wikimedia Spanish / Wikipedia | Corpus grande; ya existe intake reproducible de 100.000 documentos en el proyecto | Hechos generales, biografías, geografía, historia, ciencia | Reutilizar el adquiridor existente; CC BY-SA/GFDL exige atribución y compartir adaptaciones bajo términos compatibles. No contar como fuente editorialmente verificada. |
 | P1 | Common Corpus (PleIAs) — subconjunto español | Multilingüe, escala de billones de tokens global | Libros, prensa, ciencia, gobierno y patrimonio | Filtrar estrictamente `language=es` y licencia por documento; no descargar el corpus global ni asumir que todo es castellano. |
 | P1 | FineWeb-2 — `spa_Latn` | 441.287.261 documentos; 1,32 TB UTF-8 según tabla publicada | Web española global deduplicada y filtrada | Fuente masiva de segundo nivel. Usar solo shards españoles y aplicar filtro propio de calidad, licencias/procedencia y deduplicación. |
@@ -21,7 +21,7 @@
 | P2 | DOAB / OAPEN | Miles de libros académicos | Filosofía, humanidades y ciencia | Filtrar libros en español con licencia CC BY/CC0; excluir NC/ND para la línea general de entrenamiento. |
 | P3 | OpenBookQA-ES (BSC-LT) | 500 validación + 500 test | Ciencia escolar factual, opción múltiple | **No entrenar** esos splits: reservarlos para evaluación externa. Buscar train original u otras fuentes con permiso. |
 
-## Matemáticas: corpus factual generado por código
+## Cuarentena por licencia y privacidad\n\nLa ficha de Zenodo muestra CC BY 4.0 para el empaquetado de TDX y CSIC, pero sus README de distribución concretan **CC BY-NC-SA 4.0**. Prevalece la condición más restrictiva hasta aclaración formal del distribuidor. TDX indica además que no se realizó anonimización. Por tanto, ninguno de los dos se descarga a `data/datasets` ni se marca `train_eligible=true` en esta línea.\n\n## Matemáticas: corpus factual generado por código
 
 Además de las colecciones externas, se incorpora un generador determinista del proyecto:
 `scripts/generate_math_es.py`.
