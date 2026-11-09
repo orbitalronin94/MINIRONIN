@@ -21,4 +21,5 @@ jobs:
         run: |
           set -euo pipefail
           gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/acquire-bne-hemeroteca-ocr-spanish.yml/dispatches" -f ref=main
+          gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/acquire-bne-hemeroteca-ocr-spanish-batch2.yml/dispatches" -f ref=main
           echo "Dispatched acquire-bne-hemeroteca-ocr-spanish.yml; admitted rows and bytes will be read only from verified manifests."
