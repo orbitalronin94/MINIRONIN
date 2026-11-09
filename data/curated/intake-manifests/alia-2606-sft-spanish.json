@@ -21,5 +21,6 @@
   "source_url": "https://huggingface.co/datasets/BSC-LT/ALIA-2606-SFT",
   "language": "es",
   "license_verification": "exact upstream card license required; no NC/ND",
-  "status": "ready_for_automated_import"
+  "status": "ready_for_automated_import",
+  "shard_rows": 5000
 }
