@@ -1,0 +1,49 @@
+name: MINIRONIN external library artifact audit
+
+on:
+  pull_request:
+    paths:
+      - "data/inherited/**"
+      - "data/books/**"
+      - "data/classics/**"
+      - "data/anarchist/**"
+      - "data/japan/**"
+      - "data/curated/sources/**"
+      - "data/sources/**"
+      - "scripts/audit_external_library_artifacts.py"
+      - ".github/workflows/external-library-artifact-audit.yml"
+  push:
+    branches: [main]
+    paths:
+      - "data/inherited/**"
+      - "data/books/**"
+      - "data/classics/**"
+      - "data/anarchist/**"
+      - "data/japan/**"
+      - "data/curated/sources/**"
+      - "data/sources/**"
+      - "scripts/audit_external_library_artifacts.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-external-library-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Audit provenance, licence evidence, language, structure and duplicates
+        run: python scripts/audit_external_library_artifacts.py --output external-library-audit.json
+      - name: Publish complete audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-external-library-artifact-audit
+          path: external-library-audit.json
+          if-no-files-found: error
+          retention-days: 90
