@@ -39,7 +39,10 @@ jobs:
               m=json.loads(p.read_text())
               if not m.get("record_id"): continue
               f=root/m["file"]
-              h=hashlib.sha256(f.read_bytes()).hexdigest()
+              h=hashlib.sha256()
+              with f.open("rb") as raw:
+                  for block in iter(lambda:raw.read(1024*1024),b""): h.update(block)
+              h=h.hexdigest()
               assert h==m["sha256_jsonl"] and m["rows_admitted"]>0
               with gzip.open(f,"rt",encoding="utf-8") as stream:
                   for line in stream:
