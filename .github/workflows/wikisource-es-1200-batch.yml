@@ -73,7 +73,7 @@ jobs:
             The audit checks UTF-8, minimum text length, provenance fields, duplicate payloads, and SHA-256 manifest.
 
             Auto-merge requires exactly 1,200 new Markdown documents under data/inherited/papers/curated/ and successful model tests plus inherited-data audit.
-          add-paths: data/inherited/papers/curated/wikimedia-wikisource/batch-*/
+          add-paths: data/inherited/papers/curated/wikimedia-wikisource/batch-${{ env.BATCH_INDEX }}/
       - name: Dispatch CI and provenance audit for the PR head
         if: steps.cpr.outputs.pull-request-number != ''
         env:
