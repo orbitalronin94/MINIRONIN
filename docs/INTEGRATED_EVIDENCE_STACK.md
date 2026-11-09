@@ -13,7 +13,7 @@
 
 ## Flujo reproducible
 
-El workflow `.github/workflows/prepare-integrated-evidence-stack.yml` prepara el inventario, filas despiertas, candidato BACKDOOR_BPE e índice RAG, valida sus contratos y publica `minironin-integrated-evidence-stack`. En la rama de integración se prueba manualmente; al integrarse en `main`, se ejecuta tras cambios de los componentes de preparación.
+El workflow `.github/workflows/prepare-integrated-evidence-stack.yml` prepara el inventario, filas despiertas, candidato BACKDOOR_BPE e índice RAG, valida sus contratos y publica `minironin-integrated-evidence-stack`. La CI específica valida los componentes en la rama de integración. El workflow de preparación se ejecuta en `main` tras cambios en sus componentes o por lanzamiento manual.
 
 Si la preparación en `main` termina correctamente, `.github/workflows/holdout-integrated-810k.yml` descarga el artefacto exacto y ejecuta dos inferencias emparejadas sobre el mismo checkpoint 810k: baseline sin RAG y 810k + RAG. Comprueba SHA-256 del checkpoint, `completed_steps=810000`, los 100 IDs del holdout, SHA-256 del holdout y configuración de generación idéntica. Publica ambas respuestas y el diario comparativo. **No entrena ni cambia pesos.**
 
