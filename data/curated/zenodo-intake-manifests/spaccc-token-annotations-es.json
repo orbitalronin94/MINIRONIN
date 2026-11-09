@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "slug": "spaccc-token-annotations-es",
+  "name": "SPACCC_TOKEN Spanish Clinical Tokenization Annotations",
+  "record_id": 2560338,
+  "doi": "https://doi.org/10.5281/zenodo.2560338",
+  "license": "CC BY 4.0",
+  "license_id": "cc-by-4.0",
+  "format": "zip_txt",
+  "file_regex": "^SPACCC_TOKEN[.]zip$",
+  "domain": "tokenización clínica, morfología y anotación biomédica",
+  "task": "Spanish clinical tokenization and annotation",
+  "minimum_rows": 1000,
+  "min_text_chars": 20,
+  "attribution": "Marimon, Krallinger, González-Agirre, Villegas & Intxaurrondo (2018), SPACCC_TOKEN; PlanTL; CC BY 4.0.",
+  "language": "es",
+  "encoding": "utf-8",
+  "status": "ready_for_automated_import"
+}
