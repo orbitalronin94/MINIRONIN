@@ -21,7 +21,8 @@ concurrency:
 
 jobs:
   train:
-    if: github.event_name == 'push' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    if: false # Superseded; prevent this legacy workflow_run from launching a competing run.
+    # if: github.event_name == 'push' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
