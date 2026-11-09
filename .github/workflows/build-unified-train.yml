@@ -28,7 +28,6 @@ on:
       - "data/inherited/wikimedia-es/**"
       - "data/curated/accepted/**"
       - "scripts/acquire_common_corpus_spanish.py"
-      - "scripts/acquire_minerva_scientific_spanish.py"
       - "scripts/acquire_slr_bench_spanish.py"
       - "scripts/acquire_alia_cultural_heritage.py"
 
@@ -217,7 +216,7 @@ jobs:
           print(f"Copied {len(files)} Papers Markdown documents")
           PY
 
-      - name: Descargar y admitir bibliotecas españolas SLR, ALIA y Minerva sin meter payloads grandes en Git
+      - name: Descargar y admitir bibliotecas españolas SLR y ALIA sin meter payloads grandes en Git
         run: |
           set -euo pipefail
           python -m pip install "datasets==3.3.2" "huggingface_hub==0.29.3"
@@ -228,18 +227,16 @@ jobs:
           alia_revision="$(git ls-remote https://huggingface.co/datasets/SINAI/ALIA-es-cultural-heritage refs/heads/main | awk 'NR==1 {print $1}')"
           test "${#alia_revision}" -eq 40
           python scripts/acquire_alia_cultural_heritage.py --revision "$alia_revision" --root . --output-dir data/curated/accepted
-          minerva_revision="$(git ls-remote https://huggingface.co/datasets/proxectonos/corpus_dominio_cientifico refs/heads/main | awk 'NR==1 {print $1}')"
-          test "${#minerva_revision}" -eq 40
-          python scripts/acquire_minerva_scientific_spanish.py --revision "$minerva_revision" --root . --output-dir data/curated/accepted
           python - <<'PY'
           import json
           from pathlib import Path
           root=Path("data/curated/accepted")
-          for name in ("slr-bench-spanish-v1-all-train.manifest.json","alia-es-cultural-heritage-train.manifest.json","minerva-scientific-es-train.manifest.json"):
+          for name in ("slr-bench-spanish-v1-all-train.manifest.json","alia-es-cultural-heritage-train.manifest.json"):
               m=json.loads((root/name).read_text())
               print(name, {k:m.get(k) for k in ("record_count","rows_admitted","unique_source_ids","license","source_revision")})
           PY
           rm -rf "$HOME/.cache/huggingface/datasets" "$HOME/.cache/huggingface/hub"
+
       - name: Construir train.jsonl.gz y auditar sin descartar filas
         run: |
           set -euo pipefail
