@@ -6,6 +6,9 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/build-unified-train.yml"
+      - ".github/workflows/train-150k-from-500k-unified.yml"
+      - ".github/workflows/train-150k-from-650k-unified.yml"
+      - "scripts/train_long_run.py"
       - "scripts/build_unified_train.py"
       - "scripts/acquire_japanese_library.py"
       - "scripts/acquire_aozora_japanese_originals.py"
