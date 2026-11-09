@@ -35,6 +35,31 @@ class CausalSelfAttention(nn.Module):
         y = y.transpose(1, 2).contiguous().view(batch, length, width)
         return self.proj(y)
 
+    def forward_with_cache(self, x: torch.Tensor, past_kv=None):
+        batch, length, width = x.shape
+        q, k, v = self.qkv(x).chunk(3, dim=-1)
+        shape = (batch, length, self.n_heads, self.head_dim)
+        q = q.view(shape).transpose(1, 2)
+        k = k.view(shape).transpose(1, 2)
+        v = v.view(shape).transpose(1, 2)
+        past_length = 0 if past_kv is None else past_kv[0].shape[-2]
+        if past_kv is not None:
+            k = torch.cat((past_kv[0], k), dim=-2)
+            v = torch.cat((past_kv[1], v), dim=-2)
+        if past_length == 0:
+            y = F.scaled_dot_product_attention(
+                q, k, v, dropout_p=0.0, is_causal=True
+            )
+        else:
+            q_positions = past_length + torch.arange(length, device=x.device)
+            k_positions = torch.arange(k.shape[-2], device=x.device)
+            causal_mask = k_positions.unsqueeze(0) <= q_positions.unsqueeze(1)
+            y = F.scaled_dot_product_attention(
+                q, k, v, attn_mask=causal_mask, dropout_p=0.0, is_causal=False
+            )
+        y = y.transpose(1, 2).contiguous().view(batch, length, width)
+        return self.proj(y), (k, v)
+
 
 class MLP(nn.Module):
     def __init__(self, config: MaxRoninConfig):
@@ -58,6 +83,12 @@ class TransformerBlock(nn.Module):
         x = x + self.attn(self.ln_1(x))
         x = x + self.mlp(self.ln_2(x))
         return x
+
+    def forward_with_cache(self, x: torch.Tensor, past_kv=None):
+        attn_out, present_kv = self.attn.forward_with_cache(self.ln_1(x), past_kv)
+        x = x + attn_out
+        x = x + self.mlp(self.ln_2(x))
+        return x, present_kv
 
 
 class MaxRoninLM(nn.Module):
@@ -116,3 +147,26 @@ class MaxRoninLM(nn.Module):
                 labels[:, 1:].contiguous().view(-1),
             )
         return logits, loss
+
+
+    @torch.inference_mode()
+    def forward_with_cache(self, input_ids: torch.Tensor, past_key_values=None):
+        """Incremental inference; returns logits and per-layer (key, value) cache."""
+        if input_ids.ndim != 2:
+            raise ValueError("input_ids must have shape [batch, sequence]")
+        if past_key_values is not None and len(past_key_values) != len(self.blocks):
+            raise ValueError("past_key_values must contain one entry per transformer block")
+        past_length = 0 if past_key_values is None else past_key_values[0][0].shape[-2]
+        _, length = input_ids.shape
+        total_length = past_length + length
+        if total_length > self.config.context_length:
+            raise ValueError("sequence exceeds configured context")
+        positions = torch.arange(past_length, total_length, device=input_ids.device).unsqueeze(0)
+        x = self.token_embedding(input_ids) + self.position_embedding(positions)
+        presents = []
+        for index, block in enumerate(self.blocks):
+            past = None if past_key_values is None else past_key_values[index]
+            x, present = block.forward_with_cache(x, past)
+            presents.append(present)
+        logits = F.linear(self.final_norm(x), self.lm_head.weight)
+        return logits, presents
