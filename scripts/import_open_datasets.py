@@ -34,8 +34,8 @@ def main():
     results=[]
     for mp in manifests:
         m=json.loads(mp.read_text(encoding="utf-8"))
-        slug=m["slug"]; repo=m["repo_id"]; expected=norm_license(m["license"])
-        out=outdir/(f"{slug}.jsonl.gz" if m.get("gzip_output") else f"{slug}.jsonl")
+        slug=m["slug"]; repo=m["repo_id"]; expected=norm_license(m["license"]); gzip_output=bool(m.get("gzip_output", True))
+        out=outdir/(f"{slug}.jsonl.gz" if gzip_output else f"{slug}.jsonl")
         manifest_out=outdir/f"{slug}.manifest.json"
         if out.exists() and manifest_out.exists():
             results.append({"slug":slug,"status":"already_imported"})
@@ -56,7 +56,7 @@ def main():
             language_field=m.get("language_field")
             allowed_languages=set(m.get("language_values",[]))
             digest=hashlib.sha256(); seen=set(); scanned=admitted=duplicates=short=wrong_language=0
-            opener=gzip.open if m.get("gzip_output") else open
+            opener=gzip.open if gzip_output else open
             with opener(out,"wt",encoding="utf-8",newline="\n") as f:
                 for i,row in enumerate(ds):
                     scanned+=1
