@@ -46,6 +46,12 @@ El lote de 50 registros pasó la auditoría en [ejecución 42379452577](https://
 
 El objetivo es llegar a 1.000 casos válidos. El progreso y los criterios de admisión están en [ENGINEERING_CASES_1000.md](../../docs/ENGINEERING_CASES_1000.md). Los logs repetidos de una misma suite no se cuentan como casos distintos.
 
+## Admisiones de corpus textual externo
+
+El catálogo de bibliotecas textuales externas y sus resultados se documenta en el README raíz, sección «Nuevas bibliotecas textuales en castellano». Primer lote confirmado: PleIAs Spanish Public Domain Books, shards 1–8, **9.766 registros** y **1.441.007.073 bytes comprimidos**, con manifiestos SHA-256 publicados en la release persistente `pleias-spanish-pd-books-v1`.
+
+Este volumen se mantiene separado de los 50 registros de lecciones de ingeniería y de los currículos conductuales/sintéticos descritos arriba. No se deben sumar entre sí como si fueran la misma clase de dato ni atribuir a corpus real el contenido sintético. Los lotes planificados, fallidos o sin manifiesto verificado quedan fuera de los totales.
+
 ## Uso
 
 Estos registros pueden servir para entrenar al modelo a interpretar métricas, diagnosticar fallos y explicar controles de reproducibilidad. No sustituyen los corpus lingüísticos generales ni los benchmarks reservados. Antes de una mezcla de entrenamiento, deben pasar deduplicación global y revisión de contaminación del holdout.
