@@ -458,7 +458,25 @@ def load_training_data(heretic_root: Path, books_root: Path, anarchist_root: Pat
     return train_docs, names, probs, validation, manifest
 
 
-def batch_for_step(train_docs, names, probs, global_step, seed_offset=0):
+def sample_window_start(document_length: int, sequence_length: int,
+                        rng: random.Random, eos_window_fraction: float = 0.05) -> int:
+    """Sample a normal window, or deliberately include the document's EOS target.
+
+    The final valid window ends exactly at the appended EOS token. This changes
+    sampling frequency only; token IDs, labels, and checkpoint tensors stay intact.
+    """
+    if not 0.0 <= eos_window_fraction <= 1.0:
+        raise ValueError("eos_window_fraction must be in [0, 1]")
+    max_start = document_length - sequence_length - 1
+    if max_start < 0:
+        raise ValueError("Document shorter than training window")
+    if rng.random() < eos_window_fraction:
+        return max_start
+    return rng.randrange(0, max_start + 1)
+
+
+def batch_for_step(train_docs, names, probs, global_step, seed_offset=0,
+                   eos_window_fraction=0.05):
     rng = random.Random(BASE_SEED + seed_offset + global_step)
     domains = rng.choices(names, weights=probs, k=BATCH_SIZE)
     rows = []
@@ -466,7 +484,9 @@ def batch_for_step(train_docs, names, probs, global_step, seed_offset=0):
         raw = list(rng.choice(train_docs[domain])["text"].encode("utf-8", errors="replace")) + [ACTIVE_VOCAB - 1]
         if len(raw) < SEQUENCE_LENGTH + 1:
             raise ValueError("Document shorter than training window in " + domain)
-        start = rng.randrange(0, len(raw) - SEQUENCE_LENGTH)
+        start = sample_window_start(
+            len(raw), SEQUENCE_LENGTH, rng, eos_window_fraction
+        )
         rows.append(torch.tensor(raw[start:start + SEQUENCE_LENGTH + 1], dtype=torch.long))
     return torch.stack(rows)
 
@@ -505,9 +525,13 @@ def main():
     parser.add_argument("--seed-offset", type=int, default=0)
     parser.add_argument("--batch-size", type=int, default=BATCH_SIZE)
     parser.add_argument("--sequence-length", type=int, default=SEQUENCE_LENGTH)
+    parser.add_argument("--eos-window-fraction", type=float, default=0.05,
+                        help="Fraction of training windows ending at the real document EOS; 0 disables oversampling")
     args = parser.parse_args()
     if args.batch_size < 1 or args.sequence_length < 1:
         parser.error("batch-size and sequence-length must be positive")
+    if not 0.0 <= args.eos_window_fraction <= 1.0:
+        parser.error("eos-window-fraction must be between 0 and 1")
     BATCH_SIZE = args.batch_size
     SEQUENCE_LENGTH = args.sequence_length
 
@@ -571,7 +595,10 @@ def main():
         lr = learning_rate(global_step, args.total_steps, args.schedule_start_step, args.schedule_start_lr)
         for group in optimizer.param_groups:
             group["lr"] = lr
-        batch = batch_for_step(train_docs, names, probs, global_step, args.seed_offset).to(device)
+        batch = batch_for_step(
+            train_docs, names, probs, global_step, args.seed_offset,
+            eos_window_fraction=args.eos_window_fraction,
+        ).to(device)
         optimizer.zero_grad(set_to_none=True)
         _, loss = model(batch, labels=batch, vocab_limit=ACTIVE_VOCAB)
         if not torch.isfinite(loss):
@@ -605,6 +632,8 @@ def main():
         "seed_from_tournament": source.get("seed"),
         "parameter_count": parameter_count,
         "active_vocabulary": ACTIVE_VOCAB,
+        "eos_window_fraction": args.eos_window_fraction,
+        "eos_token_id": ACTIVE_VOCAB - 1,
         "mean_train_loss_last_100": sum(losses[-100:]) / min(100, len(losses)),
         "validation_loss": validation_loss,
         "validation_loss_by_domain": validation_by_domain,
@@ -621,6 +650,7 @@ def main():
         "completed_steps": completed,
         "total_steps": args.total_steps,
         "active_vocabulary": ACTIVE_VOCAB,
+        "eos_window_fraction": args.eos_window_fraction,
         "tokenization": source.get("tokenization", "UTF-8 bytes + EOS"),
         "validation_loss": validation_loss,
         "validation_loss_by_domain": validation_by_domain,
