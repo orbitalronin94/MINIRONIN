@@ -2,6 +2,10 @@ name: MINIRONIN — preparar lote Wikisource ES de 1200 documentos
 # Workflow validado tras corregir el escapado de expresiones de Actions.
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/wikisource-es-1200-batch.yml"
   workflow_dispatch:
     inputs:
       batch_index:
