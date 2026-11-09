@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from scripts.build_awakened_library_rows import has_alias, normalize, split_sentences
+from scripts.build_awakened_library_rows import has_alias, normalize, sentences
 
 
 def test_alias_matching_uses_word_boundaries():
@@ -10,7 +10,7 @@ def test_alias_matching_uses_word_boundaries():
 
 
 def test_sentence_split_preserves_sentence_content():
-    rows = split_sentences("Natural selection changes populations over time. Mutual aid can shape social life.")
+    rows = sentences("Natural selection changes populations over time. Mutual aid can shape social life.")
     assert len(rows) == 2
     assert rows[0].startswith("Natural selection")
     assert rows[1].startswith("Mutual aid")
