@@ -35,7 +35,23 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Evitar una segunda continuación desde el mismo checkpoint
+        id: duplicate_guard
+        run: |
+          set -euo pipefail
+          status="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/42684257501" --jq .status)"
+          conclusion="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/42684257501" --jq '.conclusion // ""')"
+          releases="$(gh api --paginate "repos/$GITHUB_REPOSITORY/releases?per_page=100" --jq '.[].tag_name' | grep '^minironin-full-corpus-150k-from-810k-step-' || true)"
+          if [ "$status" != "completed" ] || [ "$conclusion" = "success" ] || [ -n "$releases" ]; then
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+            echo "A prior 810k continuation is active, completed, or has published segments; skipping duplicate run."
+          else
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+            echo "No active or published 810k continuation found."
+          fi
+
       - name: Esperar al corpus unificado más reciente de main
+        if: steps.duplicate_guard.outputs.proceed == 'true'
         run: |
           set -euo pipefail
           completed=false
@@ -53,6 +69,7 @@ jobs:
           test "$completed" = true || { echo "Timed out waiting for unified corpus build"; exit 1; }
 
       - name: Descargar exactamente el artefacto del corpus recién construido
+        if: steps.duplicate_guard.outputs.proceed == 'true'
         uses: actions/download-artifact@v4
         with:
           name: minironin-unified-train-corpus-42682285299
@@ -62,6 +79,7 @@ jobs:
           path: unified-train
 
       - name: Verificar integridad, volumen y fuentes admitidas
+        if: steps.duplicate_guard.outputs.proceed == 'true'
         run: |
           set -euo pipefail
           test -s unified-train/train.jsonl.gz
@@ -96,6 +114,7 @@ jobs:
           PY
 
       - name: Descargar y verificar checkpoint padre de 810k
+        if: steps.duplicate_guard.outputs.proceed == 'true'
         id: parent
         run: |
           set -euo pipefail
@@ -123,6 +142,7 @@ jobs:
           PY
 
       - name: Instalar PyTorch CPU y comprobar recursos
+        if: steps.duplicate_guard.outputs.proceed == 'true'
         run: |
           set -euo pipefail
           df -h .
@@ -132,6 +152,7 @@ jobs:
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
 
       - name: Entrenar 150k pasos; guardar checkpoint verificable cada 10k
+        if: steps.duplicate_guard.outputs.proceed == 'true'
         run: |
           set -euo pipefail
           python -m py_compile scripts/train_long_run.py scripts/train_seed_tournament.py
@@ -185,6 +206,7 @@ jobs:
           done
 
       - name: Publicar resumen y auditoría del corpus consumido
+        if: steps.duplicate_guard.outputs.proceed == 'true'
         run: |
           set -euo pipefail
           cp unified-train/quality-report.json train-150k/reports/corpus-quality-report.json
@@ -200,6 +222,7 @@ jobs:
             --notes "150,000 training steps from the verified 810k checkpoint, using the complete admitted unified corpus artifact from run 42682285299 (source commit 68c1221be2497fb24b274363356258bbce91fa67). Checkpoints and reports were published every 10,000 steps. Candidate only; independent matched holdout required before promotion."
 
       - name: Publicar informes de los 15 tramos como artefacto de auditoría
+        if: steps.duplicate_guard.outputs.proceed == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: minironin-full-corpus-150k-from-810k-audit-${{ github.run_id }}
