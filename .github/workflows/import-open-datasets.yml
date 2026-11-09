@@ -42,11 +42,13 @@ jobs:
               m=json.loads(p.read_text())
               names=m.get("files",[m.get("file")])
               assert names and m["rows_admitted"]>0 and m["source_revision"]
+              expected={x["file"]:x["sha256"] for x in m.get("file_hashes",[])}
               for name in names:
                   f=root/name
                   h=hashlib.sha256()
                   with f.open("rb") as raw:
                       for block in iter(lambda:raw.read(1024*1024),b""): h.update(block)
+                  assert not expected or h.hexdigest()==expected[name],(p,name)
                   opener=gzip.open if f.name.endswith(".gz") else open
                   with opener(f,"rt",encoding="utf-8") as stream:
                       for line in stream:
