@@ -1,0 +1,59 @@
+name: MINIRONIN — adquirir 100k documentos Wikimedia en español
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: minironin-wikimedia-es-100k-intake
+  cancel-in-progress: false
+
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: prep/open-collections-curation-2026-11
+      - name: Python y dependencias
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instalar lector Parquet y cliente Hugging Face
+        run: python -m pip install --upgrade pip huggingface_hub pyarrow
+      - name: Descargar, seleccionar y curar exactamente 100k artículos
+        run: python scripts/acquire_wikimedia_es_100k.py --output-dir wikimedia-es-100k --target 100000
+      - name: Verificar cardinalidad, licencias y hashes
+        run: |
+          set -euo pipefail
+          (cd wikimedia-es-100k && sha256sum -c SHA256SUMS)
+          python - <<'PY'
+          import gzip, json
+          from pathlib import Path
+          root=Path("wikimedia-es-100k")
+          manifest=json.loads((root/"WIKIMEDIA-ES-100K-MANIFEST.json").read_text())
+          assert manifest["document_count"] == 100000
+          assert manifest["unique_normalized_texts"] == 100000
+          assert len(manifest["documents"]) == 100000
+          count=0
+          with gzip.open(root/"wikipedia-es-100k.jsonl.gz","rt",encoding="utf-8") as f:
+              for line in f:
+                  row=json.loads(line)
+                  assert row["license"] and row["metadata"]["url"].startswith("https://es.wikipedia.org/wiki/")
+                  assert len(row["text"]) >= 800
+                  count += 1
+          assert count == 100000, count
+          print(json.dumps({"verified_documents":count,"unique":manifest["unique_normalized_texts"],"license":manifest["license"]},ensure_ascii=False))
+          PY
+      - name: Publicar lote curado como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-wikimedia-es-100k
+          path: wikimedia-es-100k/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
