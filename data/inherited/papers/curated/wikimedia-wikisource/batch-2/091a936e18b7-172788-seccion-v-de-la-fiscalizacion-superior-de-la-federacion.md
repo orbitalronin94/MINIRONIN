@@ -1,0 +1,79 @@
+# Sección V De la Fiscalización Superior de la Federación
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Secci%C3%B3n%20V%20De%20la%20Fiscalizaci%C3%B3n%20Superior%20de%20la%20Federaci%C3%B3n
+
+**Page ID:** 172788
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Secci%C3%B3n%20V%20De%20la%20Fiscalizaci%C3%B3n%20Superior%20de%20la%20Federaci%C3%B3n?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+Artículo 79. La Auditoría Superior de la Federación de la Cámara de Diputados, tendrá autonomía
+técnica y de gestión en el ejercicio de sus atribuciones y para decidir sobre su organización interna,funcionamiento y resoluciones, en los términos que disponga la ley.
+
+La función de fiscalización será ejercida conforme a los principios de legalidad, definitividad,imparcialidad y confiabilidad.
+
+La Auditoría Superior de la Federación podrá iniciar el proceso de fiscalización a partir del primer día hábil del ejercicio fiscal siguiente, sin perjuicio de que las observaciones o recomendaciones que, en su caso realice, deberán referirse a la información definitiva presentada en la Cuenta Pública.
+
+Asimismo, por lo que corresponde a los trabajos de planeación de las auditorías, la Auditoría Superior de la Federación podrá solicitar información del ejercicio en curso, respecto de procesos concluidos.
+
+La Auditoría Superior de la Federación tendrá a su cargo:
+
+I.     Fiscalizar en forma posterior los ingresos, egresos y deuda; las garantías que, en su caso, otorgue el Gobierno Federal respecto a empréstitos de los Estados y Municipios; el manejo, la custodia y la aplicación de fondos y recursos de los Poderes de la Unión y de los entes públicos federales, así como realizar auditorías sobre el desempeño en el cumplimiento de los objetivos contenidos en los programas federales, a través de los informes que se rendirán en los términos que disponga la Ley.
+
+También fiscalizará directamente los recursos federales que administren o ejerzan los estados,
+los municipios, el Distrito Federal y los órganos político-administrativos de sus demarcaciones
+territoriales. En los términos que establezca la ley fiscalizará, en coordinación con las entidades locales de fiscalización o de manera directa, las participaciones federales. En el caso de los Estados y los Municipios cuyos empréstitos cuenten con la garantía de la Federación, fiscalizará el destino y ejercicio de los recursos correspondientes que hayan realizado los gobiernos locales. Asimismo, fiscalizará los recursos federales que se destinen y se ejerzan por cualquier entidad, persona física o moral, pública o privada, y los transferidos a fideicomisos, fondos y mandatos, públicos y privados, o cualquier otra figura jurídica, de conformidad con los procedimientos establecidos en las leyes y sin perjuicio de la competencia de otras autoridades y de los derechos de los usuarios del sistema financiero.
+
+Las entidades fiscalizadas a que se refiere el párrafo anterior deberán llevar el control y registro contable, patrimonial y presupuestario de los recursos de la Federación que les sean transferidos y asignados, de acuerdo con los criterios que establezca la Ley.
+ 
+La Auditoría Superior de la Federación podrá solicitar y revisar, de manera casuística y concreta, información de ejercicios anteriores al de la Cuenta Pública en revisión, sin que por este motivo se entienda, para todos los efectos legales, abierta nuevamente la Cuenta Pública del ejercicio al que pertenece la información solicitada, exclusivamente cuando el programa, proyecto o la erogación, contenidos en el presupuesto en revisión abarque para su ejecución y pago diversos ejercicios fiscales o se trate de revisiones sobre el cumplimiento de los objetivos de los programas federales. Las observaciones y recomendaciones que, respectivamente, la Auditoría Superior de la Federación emita, sólo podrán referirse al ejercicio de los recursos públicos de la Cuenta Pública en revisión.
+
+Sin perjuicio de lo previsto en el párrafo anterior, en las situaciones que determine la Ley,
+derivado de denuncias, la Auditoría Superior de la Federación, previa autorización de su Titular, podrá revisar durante el ejercicio fiscal en curso a las entidades fiscalizadas, así como respecto de ejercicios anteriores. Las entidades fiscalizadas proporcionarán la información que se solicite para la revisión, en los plazos y términos señalados por la Ley y, en caso de incumplimiento, serán aplicables las sanciones previstas en la misma. La Auditoría Superior de la Federación rendirá un informe específico a la Cámara de Diputados y, en su caso, promoverá las acciones que correspondan ante el Tribunal Federal de Justicia Administrativa, la Fiscalía Especializada en Combate a la Corrupción o las autoridades competentes;
+ 
+II.    Entregar el informe del resultado de la revisión de la Cuenta Pública a la Cámara de Diputados a más tardar el 20 de febrero del año siguiente al de su presentación, el cual se someterá a la consideración del pleno de dicha Cámara y tendrá carácter público. Dentro de dicho informe se incluirán las auditorías practicadas, los dictámenes de su revisión, los apartados correspondientes a la fiscalización del manejo de los recursos federales por parte de las entidades fiscalizadas a que se refiere la fracción anterior y a la verificación del desempeño en el cumplimiento de los objetivos de los programas federales, así como también un apartado específico con las observaciones de la entidad de fiscalización superior de la Federación que incluya las justificaciones y aclaraciones que, en su caso, las entidades fiscalizadas hayan presentado sobre las mismas.
+ 
+Para tal efecto, de manera previa a la presentación del informe del resultado se darán a conocer a las entidades fiscalizadas la parte que les corresponda de los resultados de su revisión, a efecto de que éstas presenten las justificaciones y aclaraciones que correspondan, las cuales deberán ser valoradas por la entidad de fiscalización superior de la Federación para la elaboración del informe del resultado de la revisión de la Cuenta Pública.
+ 
+El titular de la entidad de fiscalización superior de la Federación enviará a las entidades fiscalizadas, a más tardar a los 10 días hábiles posteriores a que sea entregado a la Cámara de Diputados el informe del resultado, las recomendaciones y acciones promovidas que correspondan para que, en un plazo de hasta 30 días hábiles, presenten la información y realicen las consideraciones que estimen pertinentes, en caso de no hacerlo se harán acreedores a las sanciones establecidas en Ley. Lo anterior, no aplicará a los pliegos de observaciones y a las promociones de responsabilidades, las cuales se sujetarán a los procedimientos y términos que establezca la Ley.
+ 
+La entidad de fiscalización superior de la Federación deberá pronunciarse en un plazo de 120 días hábiles sobre las respuestas emitidas por las entidades fiscalizadas, en caso de no hacerlo, se tendrán por atendidas las recomendaciones y acciones promovidas.
+ 
+En el caso de las recomendaciones al desempeño las entidades fiscalizadas deberán precisar ante la entidad de fiscalización superior de la Federación las mejoras realizadas o, en su caso, justificar su improcedencia.
+ 
+La entidad de fiscalización superior de la Federación deberá entregar a la Cámara de Diputados, los días 1 de los meses de mayo y noviembre de cada año, un informe sobre la situación que guardan las observaciones, recomendaciones y acciones promovidas.
+
+La Auditoría Superior de la Federación deberá guardar reserva de sus actuaciones y
+observaciones hasta que rinda los informes individuales de auditoría y el Informe General
+Ejecutivo a la Cámara de Diputados a que se refiere esta fracción; la Ley establecerá las
+sanciones aplicables a quienes infrinjan esta disposición;
+
+III.   Investigar los actos u omisiones que impliquen alguna irregularidad o conducta ilícita en el ingreso, egreso, manejo, custodia y aplicación de fondos y recursos federales, y efectuar visitas domiciliarias, únicamente para exigir la exhibición de libros, papeles o archivos indispensables para la realización de sus investigaciones, sujetándose a las leyes y a las formalidades establecidas para los cateos, y
+ 
+IV.   Derivado de sus investigaciones, promover las responsabilidades que sean procedentes ante el Tribunal Federal de Justicia Administrativa y la Fiscalía Especializada en Combate a la
+Corrupción, para la imposición de las sanciones que correspondan a los servidores públicos
+federales y, en el caso del párrafo segundo de la fracción I de este artículo, a los servidores
+públicos de los estados, municipios, del Distrito Federal y sus demarcaciones territoriales, y a los particulares.
+ 
+La Cámara de Diputados designará al titular de la Auditoría Superior de la Federación por el voto de las dos terceras partes de sus miembros presentes. La ley determinará el procedimiento para su designación. Dicho titular durará en su encargo ocho años y podrá ser nombrado nuevamente por una sola vez. Podrá ser removido, exclusivamente, por las causas graves que la ley señale, con la misma votación requerida para su nombramiento, o por las causas y conforme a los procedimientos previstos en el Título Cuarto de esta Constitución. 
+
+Para ser titular de la Auditoría Superior de la Federación se requiere cumplir, además de los requisitos establecidos en las fracciones I, II, IV, V y VI del artículo 95 de esta Constitución, los que señale la ley. Durante el ejercicio de su encargo no podrá formar parte de ningún partido político, ni desempeñar otro empleo, cargo o comisión, salvo los no remunerados en asociaciones científicas, docentes, artísticas o de beneficencia. 
+
+Los Poderes de la Unión, las entidades federativas y las demás entidades fiscalizadas facilitarán los auxilios que requiera la Auditoría Superior de la Federación para el ejercicio de sus funciones y, en caso de no hacerlo, se harán acreedores a las sanciones que establezca la Ley. Asimismo, los servidores públicos federales y locales, así como cualquier entidad, persona física o moral, pública o privada, fideicomiso, mandato o fondo, o cualquier otra figura jurídica, que reciban o ejerzan recursos públicos federales, deberán proporcionar la información y documentación que solicite la Auditoría Superior de la Federación, de conformidad con los procedimientos establecidos en las leyes y sin perjuicio de la competencia de otras autoridades y de los derechos de los usuarios del sistema financiero. En caso de no proporcionar la información, los responsables serán sancionados en los términos que establezca la Ley.
+ 
+El Poder Ejecutivo Federal aplicará el procedimiento administrativo de ejecución para el cobro de las indemnizaciones y sanciones pecuniarias a que se refiere la fracción IV del presente artículo.
+
+Referencias 
+
+Constitución Política de los Estados Unidos Mexicanos (1917)

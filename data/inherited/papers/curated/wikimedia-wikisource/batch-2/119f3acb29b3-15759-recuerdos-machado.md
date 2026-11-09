@@ -1,0 +1,67 @@
+# Recuerdos (Machado)
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Recuerdos%20%28Machado%29
+
+**Page ID:** 15759
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Recuerdos%20%28Machado%29?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+<div style='text-align:justify'>
+<div class="verse">
+  ¡Oh Soria! , cuando miro los frescos naranjales
+cargados de perfume, y el campo enverdecido,
+abiertos los jazmines, maduros los trigales,
+azules las montañas y el olivar florido;
+Guadalquivir corriendo al mar entre vergeles;
+y al sol de abril los huertos colmados de azucenas,
+y los enjambres de oro, para libar sus mieles
+dispersos en los campos, huir de sus colmenas;
+yo sé la encina roja crujiendo en tus hogares,
+barriendo el cierzo helado tu campo empedernido;
+y en sierras agrias sueño— ¡Urbión, sobre pinares!
+¡Moncayo blanco, al cielo aragonés erguido!—.
+Y pienso: Primavera, como un escalofrío
+irá a cruzar el alto solar del romancero,
+ya verdearán de chopos las márgenes del río.
+¿Dará sus verdes hojas el olmo aquel del Duero?
+Tendrán los campanarios de Soria sus cigüeñas,
+y la roqueda parda más de un zarzal en flor;
+ya los rebaños blancos, por entre grises peñas,
+hacia los altos prados conducirá el pastor.
+  ¡Oh, en el azul, vosotras, viajeras golondrinas
+que vais al joven Duero, zagales y merinos,
+con rumbo hacia las altas praderas numantinas,
+por las cañadas hondas y al sol de los caminos;
+hayedos y pinares que cruza el ágil ciervo;
+montañas, serrijones, lomazos, parameras,
+en donde reina el águila, por donde busca el cuervo
+su infecto expoliario; menudas sementeras
+cual sayos cenicientos; casetas y majadas
+entre desnuda roca; arroyos y hontanares
+donde a la tarde beben las yuntas fatigadas;
+dispersos huertecillos, humildes abejares! ...
+  ¡Adiós, tierra de Soria; adiós el alto llano
+cercado de colinas y crestas miliares,
+alcores y roquedas del yermo castellano,
+fantasmas de robledos y sombras de encinares!
+  En la desesperanza y en la melancolía
+de tu recuerdo, Soria, mi corazón se abreva.
+Tierra de alma, toda, hacia la tierra mía,
+por los floridos valles, mi corazón te lleva.
+                                           En el tren, abril de 1912
+
+ES-R
+Poesías de Antonio Machado
+Poesías
