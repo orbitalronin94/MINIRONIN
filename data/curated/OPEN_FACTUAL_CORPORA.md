@@ -13,10 +13,10 @@ Este registro define el orden de adquisición de bibliotecas externas ya curadas
 
 | Orden | Colección / proyecto upstream | Contenido de interés | Idioma | Derechos / control necesario | Estado |
 |---|---|---|---|---|---|
-| 1 | Wikimedia Wikisource español (wikimedia/wikisource, config 20231201.es) | Obras completas, fuentes primarias, historia, filosofía, ciencia clásica | es | CC BY-SA 3.0/GFDL declarado por dataset; conservar atribución, historial y condiciones por obra | Ya en curso: seis lotes de 1.200 (7.200 textos); continuar por lotes no solapados |
+| 1 | Wikimedia Wikisource español (wikimedia/wikisource, config 20231201.es) | Obras completas, fuentes primarias, historia, filosofía, ciencia clásica | es | CC BY-SA 3.0/GFDL declarado por dataset; conservar atribución, historial y condiciones por obra | Pipeline de 31 lotes de 1.200 (objetivo 37.200); PR #149 activa el encadenamiento, primer lote aún en cola; no contar como admitido hasta sus manifiestos |
 | 2 | Wikipedia español (wikimedia/wikipedia, snapshot 20231101.es) | Enciclopedia factual amplia | es | CC BY-SA 3.0/GFDL según dataset; atribución y share-alike; artículos no equivalen a hechos verificados | Biblioteca de 100.000 preparada/publicada; reconciliar hashes e integración |
-| 3 | Biblioteca Nacional de España / datos.gob.es | Catálogos, registros bibliográficos y OCR de obras digitalizadas | es | CC BY 4.0 donde lo declare el registro; revisar derechos de cada obra y calidad OCR | Adquisición selectiva pendiente |
-| 4 | BOE — legislación consolidada y datos abiertos | Leyes, reales decretos, órdenes, jurisprudencia publicada y metadatos | es | Verificar aviso de reutilización, exclusiones y versión de cada conjunto; texto normativo no es asesoramiento | Candidato prioritario |
+| 3 | Biblioteca Nacional de España / Hemeroteca Digital | OCR histórico por áreas temáticas, publicaciones y prensa | es | Filtro CC0 y fecha hasta 1900; conservar atribución, fuente y advertencias de calidad OCR | Release persistente con 20 shards/áreas y 20,4 MB comprimidos observados; PR #154 prepara el kickoff coordinado, no atribuir ese volumen a la última tanda sin manifiestos fechados |
+| 4 | BOE — legislación consolidada y datos abiertos | Leyes, reales decretos, órdenes y metadatos vigentes | es | API oficial; última versión vigente, excluir derogadas/anuladas, atribución BOE y aviso informativo | Release persistente con 5 shards y 209,1 MB comprimidos; el shard de offset 12.000 está publicado; ampliación posterior limitada al rango verificado en PR #159 |
 | 5 | INE — datos abiertos | Series estadísticas, metodología, clasificaciones y metadatos | es | Verificar licencia y condiciones por recurso; preservar unidad, periodo, ámbito y revisiones | Candidato prioritario |
 | 6 | AEMET OpenData | Observaciones, climatología, predicciones archivadas y documentación | es | Respetar licencia, atribución, límites de API y fecha de actualización | Candidato prioritario |
 | 7 | IGN / CNIG / datos geográficos abiertos | Cartografía, nomenclátor, geodesia, topografía y documentación | es | Revisar licencia de cada producto; separar datos vectoriales, metadatos y textos | Candidato prioritario |
@@ -25,7 +25,7 @@ Este registro define el orden de adquisición de bibliotecas externas ya curadas
 | 10 | Open Logic Project | Lógica formal, demostraciones, teoría de conjuntos y fundamentos | en (traducir solo con procedencia) | CC BY 4.0 según proyecto; fijar versión y conservar atribución | Candidato |
 | 11 | PRODATPHIL v0.3 | Filosofía de la ciencia, lógica e historia de ideas | en/de | Dominio público declarado por el editor; ya adquirido (147 obras) | Adquirido |
 | 12 | Mathlib4 | Matemática formalizada y pruebas verificables | en/formal | Apache-2.0 en revisión fijada; conservar licencia y cabeceras | Herencia de RONIN-IA |
-| 13 | PleIAs Common Corpus | Colecciones multilingües con procedencia y revisión de derechos | multilingüe; extraer es primero | Admisión por componente y documento; licencia/consentimiento no se heredan del nombre del corpus | Candidato de alto volumen |
+| 13 | PleIAs Common Corpus | Colecciones multilingües con procedencia y revisión de derechos | multilingüe; extraer es primero | Filtro por registro: español y licencias PD/CC0/CC-BY compatibles; excluir NC/ND/SA y componentes sin base clara | Release persistente con 10 shards de prueba publicados (4,33 MB comprimidos); PR #153 activa el proceso de 100 shards, ejecución de adquisición todavía en cola |
 | 14 | EleutherAI Common Pile v0.1 | Fuentes documentales abiertas ya agregadas y filtradas | mayoritariamente en | Revisar licencia y ficha de cada componente; no importar el agregado sin su manifiesto | Candidato por componente |
 | 15 | Wikidata dumps | Hechos estructurados, identificadores, relaciones, fechas y referencias | multilingüe | CC0; mantener referencias, calificadores, rangos y fecha de snapshot | Candidato de alto valor factual |
 | 16 | Eurostat | Estadística europea, definiciones y metodología | multilingüe | CC BY 4.0 en datos publicados, verificar excepciones y atribuir | Candidato de alto valor factual |
@@ -66,3 +66,27 @@ source_id, upstream_project, upstream_revision, document_id, canonical_url, titl
 
 ## Objetivo operativo
 Ampliar en lotes grandes y repetibles. Preferir cientos/miles de documentos por PR con selección determinista, número exacto de rutas, manifiesto SHA-256, validación UTF-8, longitud, procedencia y deduplicación. Para bibliotecas gigantes, publicar releases versionadas y checksums en lugar de inflar el historial Git. El recuento solo aumenta tras verificar bytes y documentos completos.
+
+
+## Estado auditado de admisiones (2026-11-09)
+
+La cifra incremental que se puede atribuir con evidencia a la tanda ejecutada hoy es la siguiente:
+
+| Fuente | Evidencia de ejecución | Registros verificados | Bytes comprimidos publicados |
+|---|---|---:|---:|
+| PleIAs Spanish Public Domain Books, shards 1–8 | [Run 42701981364](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42701981364); 8/8 jobs de conversión y rebuild unificado en verde | **9.766** | **1.441.007.073** (1,34 GiB) |
+
+Detalle de la cardinalidad por shard: 1: 1.230; 2: 1.209; 3: 1.215; 4: 1.226; 5: 1.218; 6: 1.213; 7: 1.204; 8: 1.251. Los logs verifican idioma `es`, elegibilidad de entrenamiento, licencia de dominio público por registro y SHA-256 del JSONL descomprimido frente al manifiesto. El flujo también conserva `synthetic=false` y la revisión upstream fijada.
+
+**No sumar a ese incremento diario:** los otros assets que ya aparecen en releases PleIAs, BOE, BNE o Common Corpus. Sus releases son inventarios persistentes acumulados; el tamaño total de una release no demuestra que todos sus bytes se hayan incorporado hoy ni que cada shard haya sido reconstruido en el corpus unificado en esta tanda.
+
+### En curso, todavía no contabilizado
+
+- PleIAs shards 89–96 y 97–129: workflows despachados, varios runs todavía en cola; contar solo cuando finalicen y se verifiquen sus manifiestos.
+- Wikisource: PR #149 inicia una cadena prevista de 31 PR de 1.200 documentos (objetivo nominal 37.200); el kickoff está verde, pero el primer lote sigue en cola.
+- PleIAs Common Corpus: PR #153 ya despachó el intake de 100 shards; la ejecución de adquisición está en cola.
+- BOE: se ajustó el rango a la única partición adicional demostrada; no se cuentan las particiones vacías/no verificadas.
+- BNE: PR #154 mantiene abierto el kickoff coordinado; el inventario persistente previo no se suma como crecimiento nuevo.
+- ALIA patrimonio cultural: la ejecución falló en la resolución de revisión upstream; PR #158 corrige la validación y sigue abierto. No hay filas nuevas admitidas que contar.
+
+La regla de contabilidad es: **un registro solo cuenta cuando existe en un JSONL publicado, su manifiesto coincide y los controles de licencia/idioma/integridad han pasado**. Los objetivos upstream, las colas de Actions y los PR de infraestructura no son contenido admitido.
