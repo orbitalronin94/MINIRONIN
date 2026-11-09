@@ -123,6 +123,7 @@ jobs:
             src/minironin/tokenizer.py \
             scripts/build_library_manifest.py \
             scripts/import_admitted_sources.py \
+            scripts/download_admitted_artifacts.py \
             scripts/build_awake_rows.py \
             scripts/build_backdoor_bpe.py \
             scripts/build_rag_index.py \
@@ -167,7 +168,7 @@ jobs:
           print(json.dumps(manifest, ensure_ascii=False, indent=2))
           PY
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@v4
         with:
           name: minironin-integrated-evidence-stack
           path: artifacts/
