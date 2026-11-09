@@ -1,0 +1,25 @@
+[
+  {
+    "slug": "spaccc-clinical-cases-es",
+    "status": "accepted",
+    "rows": 4885,
+    "shards": 1
+  },
+  {
+    "slug": "spaccc-token-annotations-es",
+    "status": "accepted",
+    "rows": 373429,
+    "shards": 8
+  },
+  {
+    "slug": "spanish-web-text-corpus-elg",
+    "status": "rejected_or_retry",
+    "reason": "expected one source file matching ^rawdata[.]dat$, found []"
+  },
+  {
+    "slug": "tdx-thesis-spanish-corpus",
+    "status": "accepted",
+    "rows": 8039826,
+    "shards": 161
+  }
+]

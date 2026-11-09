@@ -1,0 +1,992 @@
+{
+  "schema_version": 1,
+  "slug": "tdx-thesis-spanish-corpus",
+  "dataset": "TDX Thesis Spanish Corpus",
+  "record_id": 7313149,
+  "doi": "https://doi.org/10.5281/zenodo.7313149",
+  "source_revision": "7313149:1.0.0",
+  "license": "CC BY 4.0",
+  "language": "es",
+  "split": "train",
+  "source_file": "tdx_es.txt",
+  "source_file_size": 1589212502,
+  "source_file_sha256": "cf6315c20c6464f7c48ff73994455388b80a5577d4034ba3ac5b42286992b688",
+  "rows_scanned": 8165849,
+  "rows_admitted": 8039826,
+  "duplicates_skipped": 23667,
+  "short_skipped": 102356,
+  "files": [
+    "tdx-thesis-spanish-corpus.part-00001.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00002.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00003.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00004.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00005.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00006.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00007.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00008.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00009.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00010.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00011.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00012.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00013.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00014.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00015.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00016.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00017.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00018.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00019.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00020.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00021.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00022.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00023.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00024.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00025.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00026.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00027.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00028.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00029.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00030.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00031.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00032.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00033.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00034.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00035.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00036.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00037.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00038.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00039.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00040.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00041.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00042.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00043.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00044.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00045.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00046.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00047.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00048.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00049.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00050.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00051.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00052.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00053.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00054.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00055.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00056.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00057.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00058.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00059.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00060.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00061.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00062.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00063.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00064.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00065.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00066.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00067.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00068.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00069.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00070.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00071.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00072.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00073.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00074.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00075.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00076.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00077.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00078.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00079.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00080.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00081.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00082.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00083.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00084.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00085.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00086.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00087.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00088.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00089.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00090.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00091.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00092.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00093.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00094.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00095.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00096.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00097.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00098.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00099.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00100.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00101.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00102.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00103.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00104.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00105.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00106.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00107.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00108.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00109.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00110.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00111.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00112.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00113.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00114.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00115.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00116.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00117.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00118.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00119.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00120.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00121.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00122.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00123.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00124.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00125.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00126.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00127.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00128.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00129.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00130.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00131.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00132.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00133.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00134.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00135.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00136.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00137.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00138.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00139.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00140.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00141.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00142.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00143.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00144.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00145.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00146.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00147.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00148.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00149.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00150.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00151.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00152.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00153.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00154.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00155.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00156.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00157.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00158.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00159.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00160.jsonl.gz",
+    "tdx-thesis-spanish-corpus.part-00161.jsonl.gz"
+  ],
+  "file_hashes": [
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00001.jsonl.gz",
+      "sha256": "178e367e99b1e62f19f5054a731347c5472005aa47298acc933615571bf28bc2",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00002.jsonl.gz",
+      "sha256": "c7afb917e7ef3a798fe7c32662f623f024f24a21ea748b09ddaebca083ce63f3",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00003.jsonl.gz",
+      "sha256": "4795dc30444345957b1717d303f7723b4f748df37f1afe7b0dda8e377745e986",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00004.jsonl.gz",
+      "sha256": "c273d1c8cd9a621f034c30e25c4ce4c868842ad149e05ce509287fff6f63dad8",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00005.jsonl.gz",
+      "sha256": "bd34190e45e593d90d6b963ab88353e70d4cd19cb74551407b76147bea77b30e",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00006.jsonl.gz",
+      "sha256": "a4db4a64affbc13b86198484800d81cff9746fac1872a2516feae74fbd838e53",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00007.jsonl.gz",
+      "sha256": "bb5260c9e8ea3f98acaa9e27e50b759aedc07a5d7ad673ee34c60b89d30bbd67",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00008.jsonl.gz",
+      "sha256": "7acb24124cf30d5a8072fb4008da335b973a3b23cf20a6e212a3a3166db8eeff",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00009.jsonl.gz",
+      "sha256": "b65bd89c02ecf72263db7b354b115aa219898217e8a9d375aa897757af74ec05",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00010.jsonl.gz",
+      "sha256": "7d3d52016ac912fd33665bcfacabadfad1d4c90d35d9d9a412feb0a8f11e150f",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00011.jsonl.gz",
+      "sha256": "640b271dd1e4ae8138d26325209763ca81d2ebff3e92a63ad2fffd3b6214e901",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00012.jsonl.gz",
+      "sha256": "746c91fb8ba8d6e1f111086ee2f2ec2b86a6544452ea1db34a31169f86689f6c",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00013.jsonl.gz",
+      "sha256": "9701713efb15dd97974758176302efcad8b8c709186e12426b24d29645836601",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00014.jsonl.gz",
+      "sha256": "09abb0bd7d58d853398faadd57e7a0065d82e053ccc29742edf582c8b476e03b",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00015.jsonl.gz",
+      "sha256": "379f586dbb7bb404e810eea1190830ce23fbe2830b0b162d6ad235651521cde7",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00016.jsonl.gz",
+      "sha256": "ce304cb4a98df68aafde53cc9580f5be57e4c175e6fb8d0bd04c960cf01e751d",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00017.jsonl.gz",
+      "sha256": "5f24b05ae8ca3f6fff76fec968c7a024929e31011a7799d784eb68fe9875fb8e",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00018.jsonl.gz",
+      "sha256": "c2333cbef80bf59b0cf50dc875d418de28f812e06c201463b9c337b1cff887d7",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00019.jsonl.gz",
+      "sha256": "5c4ba99ebc97bd9ba254c23290ecce5a4387e9d63a6c095515144dd0390a66c1",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00020.jsonl.gz",
+      "sha256": "a5fe6daf2bf9606420611d21c77d30517e8bd2b770286d22895bfbf3b2050c43",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00021.jsonl.gz",
+      "sha256": "8fc1458b25e1c46c0f0f848a33f16247fdaaaf545620816a03913bc90598fe9b",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00022.jsonl.gz",
+      "sha256": "d7441f93046d9bc2a02b948494e6fb162732b0bc637e8db1c0968a8ced89c250",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00023.jsonl.gz",
+      "sha256": "9f49d3435667142b81fe8140403fca2a76e24bafaa78417ef567ec6b5b4be800",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00024.jsonl.gz",
+      "sha256": "d67f27b8a1843ac1a9e9c70338f37b3e9546140aa0d80f030916092cc9a40fda",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00025.jsonl.gz",
+      "sha256": "f88febcda9f8af52acf3ca6eefced6a059b4287aa78cc720eadd256162e111c6",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00026.jsonl.gz",
+      "sha256": "641ed93e217b9aeaf0bf97646168574ad7d4beb7a5e09aed8e48dfc52fc2c903",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00027.jsonl.gz",
+      "sha256": "113c6c8ec92373c43ac7b68555e22958557876fcf825e7f482809e1e9a2c8d5b",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00028.jsonl.gz",
+      "sha256": "2364af3857b4161470099c325b7099a6fd6aee1d130a8f25e111c45116f11716",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00029.jsonl.gz",
+      "sha256": "4a41d0dabf8f5debe570f2a86aba0b3f7373114a1657e46737e75462aca75fcd",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00030.jsonl.gz",
+      "sha256": "82dfa7bd0d2f0e35243880d8175538b28e4cbb5b26896c7bba6653a7215a1528",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00031.jsonl.gz",
+      "sha256": "a79fe11204c838816196b199911e317cd840aa2690bdf49666e15ff79380c094",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00032.jsonl.gz",
+      "sha256": "48ccf0d251cf2d8274b06421194018ee6a2120fa7a1b02361278bd8e504c9a5e",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00033.jsonl.gz",
+      "sha256": "5e71b277c267b1d821969c635a72f9d768e1d252b006b90debabb4af5bed8319",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00034.jsonl.gz",
+      "sha256": "e78609e5e4486d1147c93bd51c8ef6771cd64294ae3223c015b001a495a4fd4b",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00035.jsonl.gz",
+      "sha256": "3c1ab0a004dd402210f8c151234a770bd155521e56f8a0bffd06f1f55b9f4566",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00036.jsonl.gz",
+      "sha256": "acc845de681853292a58d3d9119c56be47e853c354073067d5fc1cd9b49551b6",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00037.jsonl.gz",
+      "sha256": "4d9aef18d152bfcfd344300876fbd80c731b5d0d9cd387b320de0e298853ad1a",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00038.jsonl.gz",
+      "sha256": "efab6e6d7a4eb4bfad70eb52583c0611bc876af140dfb889dada15af10815dcc",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00039.jsonl.gz",
+      "sha256": "12101b7e7906fe3c46f03e814a6da0a97b770627b5ee98b5db20a031c807dac6",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00040.jsonl.gz",
+      "sha256": "36a1007deaa92bd7172acd65256426aaa19dbc168707deba8b7af64d858c329f",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00041.jsonl.gz",
+      "sha256": "b3e3283f60c2624e2a664e70e5292fc7efaa934d7e30288167055024b98c6d30",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00042.jsonl.gz",
+      "sha256": "a5a795e008e5439b2d34f9a47671fcf5566c077d01cd5cdd3b068e0994f28af7",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00043.jsonl.gz",
+      "sha256": "a484e37bce6751bf076b160e1a31a976dead87177ae0a7f989f485ae6155917b",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00044.jsonl.gz",
+      "sha256": "b02a2e3240db5abf5c9ee5757106e797919147c2476a9f2c67dfc7df04bc0f75",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00045.jsonl.gz",
+      "sha256": "a241323d5d1964bce808d738d8f3c160f7454e7d549d791c51d66d47ed67bad3",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00046.jsonl.gz",
+      "sha256": "af1c380adf409873b50c1045147ce090a6bc668e41c51cb64ededfda9c96055b",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00047.jsonl.gz",
+      "sha256": "fa68d102f524118676d0eefb01071a35d90f11640890d71b4840f9e7986d4aab",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00048.jsonl.gz",
+      "sha256": "b94dd2f37fbc20ef544b783c7ef471fa4062914bfde74511a26b2b80cf1d30eb",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00049.jsonl.gz",
+      "sha256": "68c2e819ce25f12fcae1c4af008ef2ac39eb3633954654bbd47e556310d388d6",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00050.jsonl.gz",
+      "sha256": "91c73f1854238e57dd6a6db3e88794edd5ff64caf60c6d062bc862405eccdbde",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00051.jsonl.gz",
+      "sha256": "547c0be9f8281f438928a5972a57eefe6e16d8ae9609a5bd8d8d76c50d9bec33",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00052.jsonl.gz",
+      "sha256": "655544cfb8e102b706fc58598d5ab73f9fb9553f22a7c6383587abdd3bf4be3b",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00053.jsonl.gz",
+      "sha256": "31d44f629d45b1f677b42b90e2146759062c7f2181c0961ee749b71c6f666fc2",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00054.jsonl.gz",
+      "sha256": "9d1b4cec4ded6f9344271207921df71ed75219e33da09cb4e757f08805ae825a",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00055.jsonl.gz",
+      "sha256": "e1f8cb08804dc693bc478e417d5a52f2b0299680b370027a9f1faa9ddad2fa72",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00056.jsonl.gz",
+      "sha256": "526d7de8d39dfc9be0ccbd043243de8ac45535706c8dd959d8fb9b54136661b4",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00057.jsonl.gz",
+      "sha256": "28f657bdaafee6cece2cb299d8ab0b0391f7fefa6b85cb0832a3eeea00fc1530",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00058.jsonl.gz",
+      "sha256": "edfd25764412b3041ed64d7fca3c3ca380bd77111dba942cb5ff43537331cb16",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00059.jsonl.gz",
+      "sha256": "1d87e44b700ca699a48276e36c7f9724364a95d0d5909724ead2787408f46a1b",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00060.jsonl.gz",
+      "sha256": "7d88b09c2c896f3462ababcafac1705eca5a9af456087b9096d101781d96ba9f",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00061.jsonl.gz",
+      "sha256": "586d3ee73674f43b646331eaee6dd6405701e60f218ec5e7a6aa5322180f65fb",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00062.jsonl.gz",
+      "sha256": "4e9a894fb35b4e2c42a5436e29e9d7e2c8003f97f2187bff99a0c285e31843ff",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00063.jsonl.gz",
+      "sha256": "c67766fba1a98c00e25419d70c717d28c4f727a01542f174917e30453da7f42a",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00064.jsonl.gz",
+      "sha256": "6d149d6b972e0cc2070dc1b824533cd59a945894dde51a591cf6f2808d691ac4",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00065.jsonl.gz",
+      "sha256": "d16a6e98776caa98e11a1b6dd4260a0fb189b9dc86be339e43d1987907a6dd86",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00066.jsonl.gz",
+      "sha256": "c936fed074c7d791a3680f7752480d660a0f16cb31f43a654022247e17436f78",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00067.jsonl.gz",
+      "sha256": "c958f03c2d8856db4db886ed1ecd76d3f0f0ec55e5e4e9414189ec11e4997e0d",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00068.jsonl.gz",
+      "sha256": "26d33364abfce80bb70ca7adbdc53c0a3a9bc32c3a766248f907a648cad77cdc",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00069.jsonl.gz",
+      "sha256": "589514e930e129443b458244e45adc010c642a04aaf01f504575d631e63cb2c2",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00070.jsonl.gz",
+      "sha256": "6d13d7c5d919d6a16074c42a83f0ddf96fa3b521282d736eb93fafe4a5276cd8",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00071.jsonl.gz",
+      "sha256": "a4a14841482de20a107123522554b34f314d501f9f02e04fe947709a8e7f163e",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00072.jsonl.gz",
+      "sha256": "0903daa4cd8a0367331616cc97b9f25dd12486ae0045a3509d66ef341ed15cd8",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00073.jsonl.gz",
+      "sha256": "f9ce06b501348304f7a91787fdcf9b6bf0780ea956132796bd4a84bf1d23e2f1",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00074.jsonl.gz",
+      "sha256": "7e84073e448dd069bc1d33014d98a40be590a9e8c8f5257f2b1ff753cdd88851",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00075.jsonl.gz",
+      "sha256": "954f4f35bee3c161f6c3212d7ff38f065152ead9373490edb6f005b486e0c70a",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00076.jsonl.gz",
+      "sha256": "9151819f893261fd546ebf7084612f3aeacf52be1ae201dce2876b8ffaf6d723",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00077.jsonl.gz",
+      "sha256": "c6d8cb608c8ab6ef7ed83a69cf8a9eddd8965a7dd03975438a993ae68916df27",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00078.jsonl.gz",
+      "sha256": "e90ff7374f868db7216924bfbbd2273cb10e64b039a07d8d561b609c63b16e38",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00079.jsonl.gz",
+      "sha256": "ae33c17ab4bde8ba58c293ebe7aaa0b88c997a7bb5e1978c28a74d6a5146aa8b",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00080.jsonl.gz",
+      "sha256": "8d9598af0f7136cf217b1f1c4d931dc2ce94c62aa208a51c1c98a86cd8d70649",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00081.jsonl.gz",
+      "sha256": "d5dda8229f25461b308d77f757fe2db293dbdf8b9cbcda322f1277166b34b337",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00082.jsonl.gz",
+      "sha256": "33658980c7bccaeafe29ef57e251d446073a64dc11b6b05e37d522971f98b5a8",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00083.jsonl.gz",
+      "sha256": "59b9b12b640d925cff1c828f1fdb4c0ec0a5b4a5df71d9e2a47eca274aaea591",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00084.jsonl.gz",
+      "sha256": "f19f479c49ae59129851b4cfc9860c4da06c9ab92ce0fde244519607da6208ef",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00085.jsonl.gz",
+      "sha256": "cf20095f38e436e0e69a8562d7845be48125e3e70ce592321e856ce518185cad",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00086.jsonl.gz",
+      "sha256": "b31f28e2297342534700d33539cdf54add2353ee9c58d0086cb86af963adea40",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00087.jsonl.gz",
+      "sha256": "77e3652439c0e763f0462a68173c7aa8bc6f67f6ba2e13ed30081d54b9edb4fd",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00088.jsonl.gz",
+      "sha256": "80a881d90ee36c3bd33c0c96a62df4b665b098856c0519674dc9e886da1f4265",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00089.jsonl.gz",
+      "sha256": "7e2ba375d62b98ba575867c63f4c61b51c238927a192bca88845039dc9ace360",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00090.jsonl.gz",
+      "sha256": "6bdbc00c4f82461f7de8f417566ecda99a3fbe531188f066baee9463b868f376",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00091.jsonl.gz",
+      "sha256": "c69dba14181865f5b8aea1da8ad417b2c118af982256cd3584aea94ec4119419",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00092.jsonl.gz",
+      "sha256": "2d13e35732c9fe4e4975908d8741d4377d3160911eaea8b7caf3a9b1eb8372e7",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00093.jsonl.gz",
+      "sha256": "6d2354802eecafd3a61c19b1e41994e5928be2a6d18503994fda3c2753212511",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00094.jsonl.gz",
+      "sha256": "260ade65540e605c1fd4e41a73b86d39ee41f3f124b5d2e00e34dbbdb27fe774",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00095.jsonl.gz",
+      "sha256": "57c0c0551cbe91806989fe83646f3e6dc53f16604cb0527f51f0f7107c116b9d",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00096.jsonl.gz",
+      "sha256": "f7349ceaf317951ed31ca3e5aef289db4d96ef09d34a5888445b358fb75e7abb",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00097.jsonl.gz",
+      "sha256": "5790c9efd8c0f0d381624ebc73ef837835b77fa37c9c1117e7323492ca32208f",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00098.jsonl.gz",
+      "sha256": "f0e36e2506296bdc5f99de37b92ac4c5025a43410756b05427efeee390c24d5e",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00099.jsonl.gz",
+      "sha256": "051e9846606bd5cceb6d4d64505825ceb92a4bdf26e78442a49976110ea9bd74",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00100.jsonl.gz",
+      "sha256": "6963b7bf8c7fbfc590752b71381c6cd93f2764f08e845f90845d0f8f75862059",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00101.jsonl.gz",
+      "sha256": "57d3bcf4d45ebd827c7afb3998cf053263e62f71265cd754748cd9909336aeae",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00102.jsonl.gz",
+      "sha256": "59d4f056782395dbd0c1fbb518a26f1c6b142f86479ef9cb39aa1363557cd568",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00103.jsonl.gz",
+      "sha256": "cd1cdf679c706692062fd923dff4286ec019e945700716c02a889ac2b9adc0ac",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00104.jsonl.gz",
+      "sha256": "5839245c70cbcc0b1d2f226b7e381bfd1288a7bd71013e84b21f2a65e79f0a3c",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00105.jsonl.gz",
+      "sha256": "34e113ea65b4b8e1934ad8791e48c5aa21c51c9f7a33af16cb9e4fba9dee25ab",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00106.jsonl.gz",
+      "sha256": "cd8e9ecfa5ae3a66f5882db800401f8c0bc0beda8cb6b0d3518c5abeb42351e7",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00107.jsonl.gz",
+      "sha256": "eb7ae92a2a4c3f0053286b59a3308985e2cd9f368553ca06762c323a938f8a1d",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00108.jsonl.gz",
+      "sha256": "47c41f7938951cd1906b1a1718c6163159fff27f35dd748dd1510fd3529aec99",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00109.jsonl.gz",
+      "sha256": "e7f33ae1cb13a04ef3eb0a4c54f064976f46429471160dbc6771a72f8b7014ca",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00110.jsonl.gz",
+      "sha256": "a7c22d7ca07e7588fa6a4019a849a370d59907c6568b8ce3316743fc2eb9e933",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00111.jsonl.gz",
+      "sha256": "3b5a281adf0154b88f90d274dcd5f201da945aa816fc7af818ff8128432b6b47",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00112.jsonl.gz",
+      "sha256": "53373ab19d03fe0f2533f7ce7da24f0b183cf4a5763b59ee5b5d7a53dd3c79fb",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00113.jsonl.gz",
+      "sha256": "69918a99ddf5873972f7f819c5bd56fc644905e4e42648d85ff14705460d45ad",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00114.jsonl.gz",
+      "sha256": "a0e5c3369970cfc2fe68ad9b6529532a50d541c6eb4c60210f926f023a24b9d5",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00115.jsonl.gz",
+      "sha256": "4d2d2c70b41b855ecc59c2bf1eedd11cb92fe9d014bd1101da01c67a8fd9f951",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00116.jsonl.gz",
+      "sha256": "003be0a8589f5af64c39f74dcd11139b186da42a1c2312d45eccd64a4abc9575",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00117.jsonl.gz",
+      "sha256": "1571783fa62f61b8c418c8bf8b4a4b84fae83eef28a83563f118b8948fe99776",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00118.jsonl.gz",
+      "sha256": "f6934930d2d022538b0eb3dc47fb61bb6d75ac00804d5ed5c3e60b867a3ef16f",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00119.jsonl.gz",
+      "sha256": "c7b5701c9449b32d1a4b20db6c1044554b11d28b67a3c8e804fe07d5721261e9",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00120.jsonl.gz",
+      "sha256": "88fc1066c928b495bcf18d92d71ec658e22682a668fb64961f17326f43e40a3f",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00121.jsonl.gz",
+      "sha256": "ddf3c5dc440a3404345fadab62a0188ef289448bc6240fab71052b00c789bda9",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00122.jsonl.gz",
+      "sha256": "b81d9cc6da766f064ed058a9d35ae00d9c008f22145c218a412ae9f33732712d",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00123.jsonl.gz",
+      "sha256": "dbf886fe99c9445d82419c725431a624d95937016b133ecac2770d0b94d8a1f4",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00124.jsonl.gz",
+      "sha256": "51ff6d4e88a3c9be2b6209a68dece50f14f60311291698cdc14dee7667e670f8",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00125.jsonl.gz",
+      "sha256": "97242f1561cd34aaf40a04f701775a8cc94e608209cfc877a1dfa40616736f87",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00126.jsonl.gz",
+      "sha256": "8ebb536680dba2ed3efbd5b9dc4a711d1e15dba3d9d2e54ca1e211b0a314e3c0",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00127.jsonl.gz",
+      "sha256": "db7af45ed110865822bc224991b90fa2d04671ef6279403f7b0cdf4752f75cbc",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00128.jsonl.gz",
+      "sha256": "41d2b82445d7c1a80ded07d4d018346259bfad2fa56fd32fe134cfcf5762e843",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00129.jsonl.gz",
+      "sha256": "c92d6ee9ebe11827fa71010c2f4158f4e43f5da0079acc33de8ab688ca135630",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00130.jsonl.gz",
+      "sha256": "d50939b0b29c60514230cd87cff97caf19c06f918082ebf5e9123e3fad2a0686",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00131.jsonl.gz",
+      "sha256": "000603360c7eace461997d1ab27044f683f6fa3f9bafa18fb82a374e7023801b",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00132.jsonl.gz",
+      "sha256": "d71e191b5312b6d98f73563a53d21e1af1e717ecd5fea8940e326c66ababcb36",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00133.jsonl.gz",
+      "sha256": "2ebf2af6e18204557d5997c77a50bc13b6cbfba0940bdd1473b5926dbaf4a43e",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00134.jsonl.gz",
+      "sha256": "9808864c2fa68648d0c119b4f371031050ac177ab571b0e80d5e232fb1b87352",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00135.jsonl.gz",
+      "sha256": "2f7beadc68b8e2f72f312b9f178d139ac6f9eae72466c2ad1b4f4719d6654fb0",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00136.jsonl.gz",
+      "sha256": "123ac0331bd1e66659f2a224c6d5152704c990ae4bfab0057527d99ebee203d2",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00137.jsonl.gz",
+      "sha256": "fc24d4de5eb9a10970827cacdf2e55369725203fb3f76fb90b2d9720604f4c9d",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00138.jsonl.gz",
+      "sha256": "29490c132ef2fc394eaa6174ee35584fa685447fdac680d4e80d761119432c7e",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00139.jsonl.gz",
+      "sha256": "523a23c299a9d88ccf3e8832178349495de9571a2bc2888cb19d2a545aadbb3f",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00140.jsonl.gz",
+      "sha256": "270333e66e41bda162ff1ef57b631e3a775c75abb7a1df28f19cdcfe582a2fa2",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00141.jsonl.gz",
+      "sha256": "36ba2bdaf72786d6f65e3af599aba202f0b0c2a0d748b520728e3df91d20727d",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00142.jsonl.gz",
+      "sha256": "e186d24645db74f2843e653646fa7b9daf50038f1a40988d400aea09251c7255",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00143.jsonl.gz",
+      "sha256": "d68bc531200134d51298c61a2573c8a6b93702af0d50ee01991a74b55c228b18",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00144.jsonl.gz",
+      "sha256": "956834117831eda13eca008c5ab669f9b8e344d83d097a34403c6f80bce91c91",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00145.jsonl.gz",
+      "sha256": "18b286817b10893ba1c214a76c601fce794b6d711bc3e6cb6fdff43cdfd9665e",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00146.jsonl.gz",
+      "sha256": "b215ca543c51a38d8dd81202942f9714f1e7eb639b8b28744c9a1b21ac3e35b6",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00147.jsonl.gz",
+      "sha256": "cd139c215ba1ffb4f2d19ed4f32bcd06081221da93b88c4223fdebd8083046cc",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00148.jsonl.gz",
+      "sha256": "13b42fff0aca4d8d80caf05973f4d1f4ffaaca229821df102df8a3c1f1007615",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00149.jsonl.gz",
+      "sha256": "845ddd59acc8ac3d60d134a69f18b790b74e9585abc629b351466ed9049e0d22",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00150.jsonl.gz",
+      "sha256": "32b5221c40ca8068c7e6bfbcefa018ebec6e488558dc6edfd8b96925b869be6d",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00151.jsonl.gz",
+      "sha256": "1d0a38765dc90d1a9d20060b1ed2a36a8e0ac033090729b008fa75cb7cb55c52",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00152.jsonl.gz",
+      "sha256": "92d4926199ee279e8b814a06fbbe80884263ac908357d01f43f7c7e109109aa9",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00153.jsonl.gz",
+      "sha256": "f1bed11145aaca4995765fb96460ae772208bb79b834ef67f0518d97c9601aa0",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00154.jsonl.gz",
+      "sha256": "734dac48e3ad27615f7d025bacc678303c98f2242e953eed3ec16bdb91d42bcf",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00155.jsonl.gz",
+      "sha256": "0095c77b65fdc92c5f3418b4e6c8dc08675ae5d2e7727c8c3d46429769445ffc",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00156.jsonl.gz",
+      "sha256": "fd7c8dfb4e432e9149df4612cbf56755413acd82dc1559bcbd16168149aca631",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00157.jsonl.gz",
+      "sha256": "227aa64bb324ebee80d2d61bc94be8888b0dab06be62a1fd05d7d9cfcea5db46",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00158.jsonl.gz",
+      "sha256": "2e10cdb5930f7ede80342d8315abe0e899a0fc18c9c3f5ecd3de15c32de96ee9",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00159.jsonl.gz",
+      "sha256": "e86befd25cce9661ba80dc8a90edaf56ce47d8d712c7717fd689abdf36e797cd",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00160.jsonl.gz",
+      "sha256": "993e7b157c588c7199a45aacbb7e6e475173036827f60e9fe44b6e7dc306718b",
+      "rows": 50000
+    },
+    {
+      "file": "tdx-thesis-spanish-corpus.part-00161.jsonl.gz",
+      "sha256": "f06b4ca04a09defc0b4e8b5b58237a042f5fcbfb022f8840938b35f465139680",
+      "rows": 39826
+    }
+  ],
+  "file": "tdx-thesis-spanish-corpus.part-00001.jsonl.gz",
+  "sha256_jsonl_uncompressed": "eaad6771846dd4db912bc6b2e3ae3461d242c0b1d4f831f0776c6e9a158cb77d",
+  "retrieved_at_utc": "2026-11-09T20:32:03.676338+00:00",
+  "attribution": "Petrea et al. (2022), TDX Thesis Spanish Corpus; Barcelona Supercomputing Center / CSUC; CC BY 4.0."
+}

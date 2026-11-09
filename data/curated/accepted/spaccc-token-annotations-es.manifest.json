@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "slug": "spaccc-token-annotations-es",
+  "dataset": "SPACCC_TOKEN Spanish Clinical Tokenization Annotations",
+  "record_id": 2560338,
+  "doi": "https://doi.org/10.5281/zenodo.2560338",
+  "source_revision": "2560338:2019-02-01",
+  "license": "CC BY 4.0",
+  "language": "es",
+  "split": "train",
+  "source_file": "SPACCC_TOKEN.zip",
+  "source_file_size": 13014089,
+  "source_file_sha256": "77d5820616108c8f9bc359b03056ae78b881dae97174eea3cc24fcd964908f64",
+  "rows_scanned": 417573,
+  "rows_admitted": 373429,
+  "duplicates_skipped": 15207,
+  "short_skipped": 28937,
+  "files": [
+    "spaccc-token-annotations-es.part-00001.jsonl.gz",
+    "spaccc-token-annotations-es.part-00002.jsonl.gz",
+    "spaccc-token-annotations-es.part-00003.jsonl.gz",
+    "spaccc-token-annotations-es.part-00004.jsonl.gz",
+    "spaccc-token-annotations-es.part-00005.jsonl.gz",
+    "spaccc-token-annotations-es.part-00006.jsonl.gz",
+    "spaccc-token-annotations-es.part-00007.jsonl.gz",
+    "spaccc-token-annotations-es.part-00008.jsonl.gz"
+  ],
+  "file_hashes": [
+    {
+      "file": "spaccc-token-annotations-es.part-00001.jsonl.gz",
+      "sha256": "e94b011e993d6eb0725b39b62ced072aad1485187364bb796f21ff86fa3b7c04",
+      "rows": 50000
+    },
+    {
+      "file": "spaccc-token-annotations-es.part-00002.jsonl.gz",
+      "sha256": "9c4fa50c7a6cafe4e299aec58ec4f87cec821166291df5c6cb47e1616a9a8a3d",
+      "rows": 50000
+    },
+    {
+      "file": "spaccc-token-annotations-es.part-00003.jsonl.gz",
+      "sha256": "838460eb7958bff11bfda9aff93b460d32c0ee9b9ee8420f4bd338567e92215c",
+      "rows": 50000
+    },
+    {
+      "file": "spaccc-token-annotations-es.part-00004.jsonl.gz",
+      "sha256": "de4ad47619ee0850a28f8a32118f44800832baf853c94485b995403dc0514107",
+      "rows": 50000
+    },
+    {
+      "file": "spaccc-token-annotations-es.part-00005.jsonl.gz",
+      "sha256": "51c410f91d680b90d132b7bf96ce2268c73ccc264b7679a35cba6c2f9abac008",
+      "rows": 50000
+    },
+    {
+      "file": "spaccc-token-annotations-es.part-00006.jsonl.gz",
+      "sha256": "29669751f69dccde918a07e3a695a19ff732efbd5f37ea20dfad60a8da6fc500",
+      "rows": 50000
+    },
+    {
+      "file": "spaccc-token-annotations-es.part-00007.jsonl.gz",
+      "sha256": "8af731ef8eb3586c4174119a2b7be145d1940181a26b059f7b6ecee73c185e6f",
+      "rows": 50000
+    },
+    {
+      "file": "spaccc-token-annotations-es.part-00008.jsonl.gz",
+      "sha256": "ae55d0168091bad11c02220271b087c7d6e8a17f40ebe419e0230acb5c53daea",
+      "rows": 23429
+    }
+  ],
+  "file": "spaccc-token-annotations-es.part-00001.jsonl.gz",
+  "sha256_jsonl_uncompressed": "aa3e72d0a0d68ac7304b8ae3fe458e3c85fda89fbb8348ef343b1982803ce59e",
+  "retrieved_at_utc": "2026-11-09T20:22:46.010387+00:00",
+  "attribution": "Marimon, Krallinger, González-Agirre, Villegas & Intxaurrondo (2018), SPACCC_TOKEN; PlanTL; CC BY 4.0."
+}

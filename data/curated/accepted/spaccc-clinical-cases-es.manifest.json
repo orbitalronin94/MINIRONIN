@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "slug": "spaccc-clinical-cases-es",
+  "dataset": "SPACCC Spanish Clinical Case Corpus",
+  "record_id": 2560316,
+  "doi": "https://doi.org/10.5281/zenodo.2560316",
+  "source_revision": "2560316:2019-02-01",
+  "license": "CC BY 4.0",
+  "language": "es",
+  "split": "train",
+  "source_file": "SPACCC.zip",
+  "source_file_size": 1343438,
+  "source_file_sha256": "79298e434b7adb481339893781cb5c8f26eefb0790a5f19cccdcb2f4a47b8cf6",
+  "rows_scanned": 6821,
+  "rows_admitted": 4885,
+  "duplicates_skipped": 0,
+  "short_skipped": 1936,
+  "files": [
+    "spaccc-clinical-cases-es.part-00001.jsonl.gz"
+  ],
+  "file_hashes": [
+    {
+      "file": "spaccc-clinical-cases-es.part-00001.jsonl.gz",
+      "sha256": "0918bb6a4d0201f85b769d84bccfd05a3f7c793f435e1875445efe9f71e956e2",
+      "rows": 4885
+    }
+  ],
+  "file": "spaccc-clinical-cases-es.part-00001.jsonl.gz",
+  "sha256_jsonl_uncompressed": "18143ec200052129f488fbe2578decd6f6eb576bcbb3f1fab3bb9ca37f6a5545",
+  "retrieved_at_utc": "2026-11-09T20:22:12.946526+00:00",
+  "attribution": "Intxaurrondo, Marimon, González-Agirre, López-Martín, Rodríguez, Santamaría, Villegas & Krallinger (2018), SPACCC; PlanTL; CC BY 4.0."
+}
