@@ -104,7 +104,7 @@ jobs:
           assert groups and 0<float(groups[0]["lr"])<=3e-4, groups
           lr=float(groups[0]["lr"])
           with open(os.environ["GITHUB_OUTPUT"],"a") as out:
-              out.write(f"parent_lr={lr:.12g}\\n")
+              out.write(f"parent_lr={lr:.12g}\n")
           print(json.dumps({"step":cp["completed_steps"],"parameters":cp["parameter_count"],
               "active_vocabulary":cp["active_vocabulary"],"tokenization":tokenization,"optimizer_lr":lr},indent=2))
           PY
