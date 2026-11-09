@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "slug": "socialdisner-spanish",
+  "name": "SocialDisNER Spanish clinical social media NER",
+  "repo_id": "IIC/socialdisner",
+  "license": "CC BY 4.0",
+  "split": "train",
+  "domain": "salud pública y menciones de enfermedades en redes sociales",
+  "text_fields": [
+    "text"
+  ],
+  "task": "Spanish disease mention recognition",
+  "minimum_rows": 4000,
+  "min_text_chars": 25,
+  "attribution": "Gasco Sánchez et al. (2022), SocialDisNER; Instituto de Ingeniería del Conocimiento; CC BY 4.0.",
+  "source_url": "https://huggingface.co/datasets/IIC/socialdisner",
+  "language": "es",
+  "license_verification": "exact live dataset-card license check; source split and original labels retained",
+  "status": "ready_for_automated_import"
+}
