@@ -50,6 +50,14 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-rag.txt pytest
 
+      - name: Download source-pinned admitted corpus artifacts when payloads are not committed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/download_admitted_artifacts.py \
+            --roninia-root external/roninia \
+            --output artifacts/library/downloads
+
       - name: Import only scoped-admitted train payloads and authored libraries
         run: |
           mkdir -p artifacts/library
