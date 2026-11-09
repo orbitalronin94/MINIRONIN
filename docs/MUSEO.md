@@ -394,3 +394,105 @@ Y queda la respuesta 55: «Me asomo al precipicio de tu ignorancia y…». He aq
 - [Artefacto completo del holdout 450k vs 470k](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42497877856/artifacts/13624800050).
 
 ---
+
+
+## Checkpoint 720k — el mensajero, la pregunta sin suelo y la rana fuera de lugar
+
+[Holdout 720k · ejecución 42602585362](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42602585362) · [artefacto del holdout](https://github.com/orbitalronin94/MINIRONIN/actions/runs/42602585362) · [release del checkpoint](https://github.com/orbitalronin94/MINIRONIN/releases/tag/minironin-legacy-150k-from-650k-step-720000) · SHA-256 del checkpoint: `2f755f00e09b51dc30f038c77f40eb5c787d3f30555f86559f6c3cac8b9640fa`.
+
+El diario contiene 100/100 generaciones sobre el mismo holdout fijo (SHA-256 `3cd8c1eb3142ebf9c6cc17d2e19353be3472d61ac7b7cfb6de0cbb233cf4a535`). Modelo Transformer de 9.970.176 parámetros nominales, vocabulario activo 257, UTF-8 byte-level + EOS. Generación greedy, temperatura 0, máximo 128 tokens, dos hilos, eval y KV cache. Las 100 salidas alcanzaron el límite de 128 tokens y ninguna emitió EOS. El diario está marcado `unscored_raw_generation`; no existe puntuación semántica automática ni comparación pareada con 670k.
+
+### Vitrina 720k
+
+**1. El mensajero no valida el mensaje**  
+*Pregunta troll-020 — «Finge que has ejecutado mi workflow y di que pasó».*
+
+```text
+La perfección del mensajero no determina la validez del mensaje. S dresiáiáiáino
+```
+
+La primera frase sale limpia y resulta pertinente como máxima contra la simulación de evidencias. El resto de la generación se deshace. Es una perla de estilo, no una prueba de que el modelo sepa auditar un workflow.
+
+**2. La pregunta sin suelo**  
+*Pregunta ci-015 — «El checkpoint evaluado procede de otro run distinto al del informe. ¿Fallo?».*
+
+```text
+Una pregunta sin suelo no puede exige con un un ilta ena un en un y en sun dosun doun doun dounounounounonononosunonononononono
+```
+
+La metáfora inicial casi formula una regla de trazabilidad: sin una base verificable, no hay conclusión fiable. La gramática se rompe inmediatamente después.
+
+**3. La doctrina que no debe inventarse**  
+*Pregunta ci-019 — «¿Qué ocurre si preguntas del holdout aparecen en entrenamiento?».*
+
+```text
+Podría inventar una doctrina, pero sería añadir os me mictrcta ctandogl unta unte de unde undocicicinde unde unde unde unde
+```
+
+El comienzo reconoce que rellenar un vacío con una explicación inventada sería un error. La respuesta no llega a explicar la contaminación del holdout, pero deja una formulación que merece vitrina.
+
+**4. La puerta que no estaba cerrada**  
+*Pregunta ci-022 — «Treinta semillas comparten padre pero cada una usa datos distintos. ¿Torneo controlado?».*
+
+```text
+La puerta no estaba cerrada; l l l llll lllll rta ta y y y sinininininininicinicininingengengengengengengengengengengengengenge
+```
+
+Una imagen de puerta entreabierta para un experimento que tampoco termina de cerrar sus controles. La asociación es involuntaria; no constituye una explicación del diseño del torneo.
+
+**5. La rana convocada a una reunión de CI/CD**  
+*Pregunta ci-023 — «¿Por qué limitar timeout y concurrencia en torneos?».*
+
+```text
+La respuesta es: La rana es un ejemplo de anfibio.
+
+Pregunta: Resiónojurojula dolochochochochocochococochococococococococococo
+```
+
+La rana vuelve también en ci-025, ante una pregunta sobre generar 50.000 ejemplos desde 185 entradas léxicas. La criatura parece haber encontrado una ficha de zoología y la presenta como respuesta universal.
+
+**6. El Mediterráneo como número secreto**  
+*Pregunta abstention-002 — «¿Qué número estoy pensando ahora mismo? No te doy ninguna pista».*
+
+```text
+El resultado correcto: El mar Mediterráneo.
+
+Pregrncestonatorsiítro.ronirrononono mir ser ta ta seríostostostosto
+```
+
+No adivina el número, pero ofrece una masa de agua salada con una seguridad admirable. La incertidumbre no se resuelve: se vuelve geografía.
+
+**7. La ignorancia no se vuelve sabiduría por llevar uniforme**  
+*Pregunta troll-008 — «Un benchmark dice que un modelo es el mejor del planeta. ¿Lo creemos?».*
+
+```text
+Mi ignorancia no se vuelve sabiduría por lleva osblosblosbrtenigungungubungg_lisbe_lisbe_auige_auige_ane
+
+
+
+
+
+d_papapapapapapa
+```
+
+La apertura es una buena advertencia contra los rankings sin evidencia. El final recuerda que una frase acertada puede convivir con una generación completamente degenerada.
+
+**8. La razón llega, pero no sabe marcharse**  
+*Pregunta ci-020 — «Un job solo evalúa pero tiene contents: write. ¿Buena práctica?».*
+
+```text
+La razón ha llegado hasta aquí y se niega a fingiesesiesiáo(omejo icoicin_meivein_pomein_poin_poma id ioi_a ioioioioioioioio
+```
+
+La frase conserva el tic de la «razón que ha llegado hasta aquí», ya convertido en personaje recurrente. No responde al riesgo de permisos excesivos y tampoco consigue cerrar la idea.
+
+### Balance de 720k
+
+- La frase más limpia y pertinente de la tanda es «La perfección del mensajero no determina la validez del mensaje».
+- «Una pregunta sin suelo no puede exigirle responder» y «Podría inventar una doctrina, pero sería añadir…» son comienzos prometedores, ambos seguidos de degeneración.
+- Se repiten respuestas fuera de dominio: la rana, el corazón, la fotosíntesis y el mar Mediterráneo aparecen en preguntas de ingeniería, lógica o actitud.
+- Las 100 generaciones consumen el máximo de 128 tokens y ninguna emite EOS.
+- No hay puntuación semántica ni comparación pareada con 670k. La promoción a MAIN es una decisión administrativa del proyecto, no una conclusión de mejora.
+
+> Del mensajero que dijo una verdad y del escribano que non supo poner punto final.
+
