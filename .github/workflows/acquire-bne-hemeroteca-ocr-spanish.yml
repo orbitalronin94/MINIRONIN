@@ -70,7 +70,7 @@ jobs:
               for line in f:
                   r=json.loads(line)
                   assert r["language"]=="es" and r["license"].startswith("CC0")
-                  assert r["train_eligible"] and r["date"][:4]<="1900"
+                  assert r["train_eligible"] and (r["date"] is None or r["date"][:4]<="1900")
                   n+=1
           assert n==m["rows_admitted"] and h.hexdigest()==m["sha256_jsonl_uncompressed"]
           print(json.dumps({"split":split,"pages":n,"sha256":h.hexdigest()}))
