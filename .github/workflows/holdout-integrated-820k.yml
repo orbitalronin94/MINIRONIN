@@ -1,0 +1,129 @@
+name: MINIRONIN — paired holdout 810k vs 820k (byte tokenizer + integrated RAG)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/holdout-integrated-820k.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: minironin-paired-holdout-810k-820k
+  cancel-in-progress: false
+
+jobs:
+  paired-holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: orbitalronin94/MINIRONIN
+      PREPARATION_RUN_ID: "42682285328"
+      BASELINE_TAG: minironin-full-corpus-step-810000
+      CANDIDATE_TAG: minironin-full-corpus-150k-from-810k-step-820000
+      BASELINE_SHA256: 2d8ff48dc0645d4b2d83c2462bc33b88a1abade9354eb9289c265c7a5b13ca6b
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Descargar checkpoints 810k y 820k, informes y checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .tmp/holdout-820k/checkpoints .tmp/holdout-820k/integrated
+          gh release download "$BASELINE_TAG" --repo "$REPOSITORY" --pattern "checkpoint-810000.pt" --dir .tmp/holdout-820k/checkpoints
+          gh release download "$CANDIDATE_TAG" --repo "$REPOSITORY" --pattern "checkpoint-820000.pt" --dir .tmp/holdout-820k/checkpoints
+          gh release download "$CANDIDATE_TAG" --repo "$REPOSITORY" --pattern "report-820000.json" --dir .tmp/holdout-820k/checkpoints
+          gh release download "$CANDIDATE_TAG" --repo "$REPOSITORY" --pattern "SHA256SUMS-820000" --dir .tmp/holdout-820k/checkpoints
+          echo "$BASELINE_SHA256  .tmp/holdout-820k/checkpoints/checkpoint-810000.pt" | sha256sum -c -
+          (cd .tmp/holdout-820k/checkpoints && sha256sum -c SHA256SUMS-820000)
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path(".tmp/holdout-820k/checkpoints/report-820000.json")
+          r=json.loads(p.read_text(encoding="utf-8"))
+          assert r.get("completed_steps")==820000, r.get("completed_steps")
+          assert r.get("dataset_manifest",{}).get("unified_records_read",0)>0
+          print(json.dumps({"step":r.get("completed_steps"),"validation_loss":r.get("validation_loss"),"validation_by_domain":r.get("validation_loss_by_domain"),"dataset_manifest":r.get("dataset_manifest")},ensure_ascii=False))
+          PY
+
+      - name: Descargar RAG integrado exacto de la preparación confirmada
+        shell: bash
+        run: |
+          set -euo pipefail
+          run="$(gh api "repos/$REPOSITORY/actions/runs/$PREPARATION_RUN_ID")"
+          [[ "$(jq -r .name <<<"$run")" == "Prepare MINIRONIN integrated evidence stack" ]]
+          [[ "$(jq -r .status <<<"$run")" == "completed" && "$(jq -r .conclusion <<<"$run")" == "success" ]]
+          gh run download "$PREPARATION_RUN_ID" --repo "$REPOSITORY" --name minironin-integrated-evidence-stack --dir .tmp/holdout-820k/integrated
+          test -s .tmp/holdout-820k/integrated/rag/minironin-rag.sqlite
+          python - <<'PY'
+          import json,sqlite3
+          from pathlib import Path
+          root=Path(".tmp/holdout-820k/integrated")
+          m=json.loads((root/"integrated-manifest.json").read_text())
+          assert m["holdout_read"] is False and m["training_performed"] is False
+          db=sqlite3.connect(root/"rag/minironin-rag.sqlite")
+          rag=json.loads(db.execute("SELECT value FROM metadata WHERE key='manifest'").fetchone()[0])
+          assert rag["holdout_read"] is False and rag["training_performed"] is False
+          assert rag["chunks_unique"] > 0
+          print(json.dumps({"admitted_documents":m["library"]["documents"],"rag_chunks":rag["chunks_unique"],"rag_sources":len(rag["sources"])},ensure_ascii=False))
+          PY
+
+      - name: Instalar PyTorch CPU y verificar ambos checkpoints y el holdout
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m py_compile scripts/run_inference_holdout.py scripts/rag_retrieve.py src/minironin/tokenizer.py
+          python - <<'PY'
+          import json,torch
+          from pathlib import Path
+          for step in (810000,820000):
+              p=Path(f".tmp/holdout-820k/checkpoints/checkpoint-{step}.pt")
+              cp=torch.load(p,map_location="cpu",weights_only=False)
+              assert cp.get("completed_steps")==step, (step,cp.get("completed_steps"))
+              assert cp.get("parameter_count")==9970176
+              assert cp.get("active_vocabulary")==257
+              assert "byte" in cp.get("tokenization","UTF-8 bytes + EOS").lower() or "utf-8" in cp.get("tokenization","UTF-8 bytes + EOS").lower()
+              assert cp.get("optimizer_state_dict"), "Optimizer state missing"
+              print(json.dumps({"step":step,"parameters":cp["parameter_count"],"active_vocabulary":cp["active_vocabulary"],"tokenization":cp.get("tokenization","UTF-8 bytes + EOS")}))
+          rows=[json.loads(x) for x in Path("benchmarks/inference-holdout-v1.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+          assert len(rows)==100 and len({x["id"] for x in rows})==100
+          assert all(x.get("split")=="inference_only" for x in rows)
+          print("100 immutable inference-only questions verified.")
+          PY
+
+      - name: Holdout 810k sin RAG (baseline)
+        run: |
+          python scripts/run_inference_holdout.py --checkpoint .tmp/holdout-820k/checkpoints/checkpoint-810000.pt --label "810k-byte-no-rag-paired" --steps 810000 --holdout benchmarks/inference-holdout-v1.jsonl --output .tmp/holdout-820k/diary-810k-no-rag.json --max-new-tokens 128 --max-new-bytes 128 --threads 2
+
+      - name: Holdout 820k sin RAG (candidato)
+        run: |
+          python scripts/run_inference_holdout.py --checkpoint .tmp/holdout-820k/checkpoints/checkpoint-820000.pt --label "820k-byte-no-rag-paired" --steps 820000 --holdout benchmarks/inference-holdout-v1.jsonl --output .tmp/holdout-820k/diary-820k-no-rag.json --max-new-tokens 128 --max-new-bytes 128 --threads 2
+
+      - name: Holdout 810k con RAG integrado
+        run: |
+          python scripts/run_inference_holdout.py --checkpoint .tmp/holdout-820k/checkpoints/checkpoint-810000.pt --label "810k-byte-plus-integrated-rag" --steps 810000 --holdout benchmarks/inference-holdout-v1.jsonl --output .tmp/holdout-820k/diary-810k-rag.json --base-diary .tmp/holdout-820k/diary-810k-no-rag.json --rag-index .tmp/holdout-820k/integrated/rag/minironin-rag.sqlite --rag-no-vectors --rag-top-k 5 --rag-max-context-chars 6000 --max-new-tokens 128 --max-new-bytes 128 --threads 2
+
+      - name: Holdout 820k con RAG integrado
+        run: |
+          python scripts/run_inference_holdout.py --checkpoint .tmp/holdout-820k/checkpoints/checkpoint-820000.pt --label "820k-byte-plus-integrated-rag" --steps 820000 --holdout benchmarks/inference-holdout-v1.jsonl --output .tmp/holdout-820k/diary-820k-rag.json --base-diary .tmp/holdout-820k/diary-820k-no-rag.json --rag-index .tmp/holdout-820k/integrated/rag/minironin-rag.sqlite --rag-no-vectors --rag-top-k 5 --rag-max-context-chars 6000 --max-new-tokens 128 --max-new-bytes 128 --threads 2
+
+      - name: Publicar los cuatro diarios, respuestas y procedencia
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-paired-holdout-810k-vs-820k-integrated-rag
+          path: .tmp/holdout-820k/
+          if-no-files-found: error
+          retention-days: 90
