@@ -151,6 +151,16 @@ Selección de fragmentos y tics de las 100 generaciones. Se conservan por su per
 
 **Vigilad la homeostasis.** Más pasos pueden consolidar patrones de generación sin aumentar el conocimiento. La repetición de un aforismo no demuestra que el modelo sepa cuándo es pertinente; una frase elegante tampoco demuestra que haya entendido la pregunta.
 
+### El mínimo viable de elocuencia — experimento de 4,3M efectivos
+
+Hay un resultado que merece quedar registrado aunque el examen de capacidad sea desolador. En una evaluación byte-level, un modelo descrito en el experimento como de **4,3 millones de parámetros efectivos** obtuvo **0/100 respuestas correctas y 0/100 emisiones de EOS**. Sus generaciones, por tanto, no demostraron capacidad de responder correctamente ni de cerrar de forma fiable sus respuestas. Y, sin embargo, entre ellas aparecieron **al menos seis frases que un lector humano podría citar en LinkedIn sin sospechar que proceden de un loro estadístico**.
+
+La observación no es que el modelo sepa lo que dice. Es más modesta y, por eso mismo, interesante: **la elocuencia local puede aparecer antes que la competencia conversacional**. Una frase puede tener ritmo, imagen, contraste o una conclusión memorable y seguir siendo irrelevante para la pregunta, incorrecta o parte de una generación que no sabe detenerse.
+
+Este resultado sugiere que el umbral mínimo para producir lenguaje con apariencia aforística es menor de lo que cabría esperar. No establece un umbral universal de parámetros ni demuestra comprensión, intención, criterio o utilidad. «Seis frases citables» es una selección humana cualitativa, no una métrica validada; deberá conservarse junto al conjunto íntegro de generaciones y su procedencia para evitar que la vitrina oculte los noventa y tantos parlamentos fallidos.
+
+> De la elocuencia mínima: aun quien non sabe responder ni poner punto final puede, por accidente, acuñar una frase que otro querría firmar. Mas la belleza de la sentencia non absuelve el desacierto de la respuesta.
+
 ### Dos maneras de medir al loro: capacidad y entretenimiento
 
 El holdout de cien preguntas no debe presentarse como si agotara el propósito del proyecto. Es una prueba fija de comportamiento ante preguntas; **no es, por sí sola, una evaluación completa de personalidad, comicidad ni valor de entretenimiento**. El checkpoint 650k puede ser peor como sistema de respuestas pertinentes y, al mismo tiempo, más interesante como personaje cómico. Son afirmaciones compatibles porque describen objetivos distintos.
