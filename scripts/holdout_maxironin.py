@@ -24,13 +24,16 @@ def generate(model, tokenizer, question, eos_id, max_new=128):
  x=torch.tensor([ids],dtype=torch.long)
  generated=[]
  model.eval()
- for _ in range(max_new):
-  logits,_=model(x)
+ # Prefill: procesa el prompt una sola vez y conserva K/V de cada capa.
+ logits, cache = model.forward_with_cache(x, past_key_values=None)
+ for step in range(max_new):
   nxt=int(torch.argmax(logits[0,-1,:]).item())
   if nxt==eos_id: break
   generated.append(nxt)
-  x=torch.cat([x,torch.tensor([[nxt]],dtype=torch.long)],dim=1)
-  if x.shape[1]>=512: break
+  if step+1>=max_new or x.shape[1]+step+1>=512: break
+  # Decode incremental: solo procesa el token recién generado.
+  token=torch.tensor([[nxt]],dtype=torch.long)
+  logits, cache = model.forward_with_cache(token, past_key_values=cache)
  return tokenizer.decode(generated),len(generated)
 
 def run(model, tokenizer, holdout, output, label, ckpt_sha, tok_sha, seed):
@@ -41,7 +44,7 @@ def run(model, tokenizer, holdout, output, label, ckpt_sha, tok_sha, seed):
   answer,n=generate(model,tokenizer,row["question"],eos)
   results.append({"id":row["id"],"domain":row["domain"],"question":row["question"],"rubric":row["rubric"],"answer":answer,"generated_tokens":n})
   if i%10==0: print(json.dumps({"event":"holdout_progress","state":label,"completed":i,"total":len(holdout)}),flush=True)
- payload={"schema_version":1,"benchmark":"MINIRONIN inference holdout v1 (unmodified questions/rubrics)","experiment":"MAXIRONIN-500M","state":label,"seed":seed,"checkpoint_sha256":ckpt_sha,"tokenizer_sha256":tok_sha,"holdout_sha256":sha(Path("benchmarks/inference-holdout-v1.jsonl")),"holdout_count":len(results),"generation":{"strategy":"greedy argmax","temperature":0,"max_new_tokens":128,"prompt_suffix":"\\nRespuesta:","context_limit":512,"dtype":"float32","threads":4},"scoring_status":"unscored_raw_generation","human_blind_review_required":True,"results":results}
+ payload={"schema_version":1,"benchmark":"MINIRONIN inference holdout v1 (unmodified questions/rubrics)","experiment":"MAXIRONIN-500M","state":label,"seed":seed,"checkpoint_sha256":ckpt_sha,"tokenizer_sha256":tok_sha,"holdout_sha256":sha(Path("benchmarks/inference-holdout-v1.jsonl")),"holdout_count":len(results),"generation":{"strategy":"greedy argmax","temperature":0,"max_new_tokens":128,"prompt_suffix":"\\nRespuesta:","context_limit":512,"dtype":"float32","threads":4,"kv_cache":true,"decode":"single-token-incremental"},"scoring_status":"unscored_raw_generation","human_blind_review_required":True,"results":results}
  output.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
  print(json.dumps({"event":"holdout_complete","state":label,"count":len(results),"file":str(output),"checkpoint_sha256":ckpt_sha}),flush=True)
 
@@ -71,5 +74,5 @@ def main():
  if actual!=expected: raise RuntimeError(f"Checkpoint SHA mismatch: {actual}")
  if state.get("completed_steps")!=1000: raise RuntimeError("Checkpoint is not step 1000")
  run(model,tokenizer,rows,out/"holdout-after-step-1000.json","after_step_1000",actual,toksha,seed)
- print(json.dumps({"event":"paired_holdout_complete","before":"reconstructed initialization","after_checkpoint_sha256":actual,"tokenizer_sha256":toksha}),flush=True)
+ print(json.dumps({"event":"paired_holdout_complete","before":"reconstructed initialization","after_checkpoint_sha256":actual,"tokenizer_sha256":toksha,"kv_cache":True}),flush=True)
 if __name__=="__main__": main()
