@@ -1,0 +1,37 @@
+# El redoblante y el parche
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/El%20redoblante%20y%20el%20parche
+
+**Page ID:** 36178
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/El%20redoblante%20y%20el%20parche?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+-«Tienes instintos bien malos:
+-dijo el parche al redoblante,-
+»y es ya sobrado irritante
+»que me maltrates a palos.»-
+-«Pues, tambor de Barrabás, 
+»¿quién curará tu galbana?
+»¿Sin zurrarte la badana,
+»sonarías tú jamás?»-
+
+La pereza es elocuente
+retrato de ese tambor; 
+la hacen sólo diligente
+las baquetas del rigor.
+
+ES-E
+Nuevas fábulas
+Fábulas

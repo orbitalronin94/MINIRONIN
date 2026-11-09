@@ -1,0 +1,40 @@
+# Parnaso español 208
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Parnaso%20espa%C3%B1ol%20208
+
+**Page ID:** 24251
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Parnaso%20espa%C3%B1ol%20208?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+¿Temes, ¡oh Lisi!, a Júpiter Tonante, 
+y pálido tu sol sus llamas mira, 
+cuando Jove, del ceño de tu ira, 
+tiembla vencido y de querella amante? 
+
+Témale armado el pertinaz gigante
+que a la conquista de su trono aspira; 
+y Juno, que celoso le suspira, 
+le tema ardiendo y en tu amor constante. 
+
+A ti el trueno es requiebro, si amenaza 
+el tirano, le atiende en el tesoro,
+cuando su sien temor precioso enlaza. 
+
+Al robre baja en rayo y a ti en oro; 
+y si renueva Amor la antigua traza, 
+en lugar de tronar, bramará toro. 
+
+Sonetos de Francisco de Quevedo
+Parnaso Español

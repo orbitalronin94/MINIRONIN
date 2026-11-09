@@ -1,0 +1,23 @@
+# Primera Gramática de la lengua Castellana: 1.08
+
+**Fuente:** Wikimedia Wikisource, edición española.
+
+**Source URL:** https://es.wikisource.org/wiki/Primera%20Gram%C3%A1tica%20de%20la%20lengua%20Castellana%3A%201.08
+
+**Page ID:** 235924
+
+**Dataset revision:** 160144440c765ed3ada4a4829ce1077910fbdbb6 — wikimedia/wikisource, snapshot 20231201.es.
+
+**License:** CC BY-SA 3.0 / GFDL (Wikimedia Wikisource dataset card).
+
+**Atribución:** texto procedente de Wikisource; título y enlace canónico conservados. El historial de la página identifica las contribuciones y versiones: https://es.wikisource.org/wiki/Primera%20Gram%C3%A1tica%20de%20la%20lengua%20Castellana%3A%201.08?action=history. Fuente de datos: Wikimedia Foundation.
+
+La ficha del conjunto declara licencia dual GFDL y CC BY-SA 3.0 para el contenido textual original; algunos textos pueden tener condiciones adicionales o estar en dominio público. Se conserva esta atribución por documento y no se presume que todos los textos tengan idéntica situación individual.
+
+---
+
+## Texto fuente
+
+Hasta aquí avemos disputado de las figuras et fuerça que tienen las letras en nuestra lengua: sigue se agora de la orden que tienen entre sí; no, como dize Sant Isidro, de la orden del a b c, que la a es primera, la b, segunda, la c, tercera; por que desta orden no tiene que hazer el gramático, antes, como dize Quintiliano, daña a los que comiençan aprender las letras; que saben el a b c por memoria, et no conocen las letras por sus figuras et fuerças; mas diremos de las letras en qué manera se ordenan et cogen en una sílaba. Lo cual demostraremos primera mente en las vocales, cuando se aiuntan et cuajan entre sí por diphthongo. Diphthongo llaman los griegos, cuando en una sílaba se arrebatan dos vocales, et llámasse assí, por que como quiera que sea una sílaba haze en ella dos heridas. I aunque, según Quintiliano, nunca en una sílaba se pueden cuajar más de dos vocales, en nuestra lengua ai algunas diciones en que se pueden coger tres vocales, en cinco maneras: en la primera, iai, como diziendo aiais, vaiais, espaciais; la segunda, iei, como diziendo ensuzieis, desmaieis, alivieis; la tercera, iue, como diziendo poiuelo, arroiuelo, hoiuelo; la cuarta, uai, como diziendo guai, aguaitar; la quinta, uei como diziendo buei, bueitre. Assí, que será proprio de nuestra lengua, lo cual otra ninguna tiene, que en una sílaba se pueden cuajar tres vocales. Tienen los griegos ocho diphthongos de dos vocales; los latinos, seis: tres griegos et tres latinos. Nuestra lengua tiene doze, compuestos de dos vocales, et cinco, de tres, como parece en aquellas diciones que arriba pusimos, lo cual en esta manera se puede provar: cinco vocales tiene el castellano: a, e, i, o, u; de las cuales a, e, o, en ninguna manera se pueden cuajar entre sí ni coger en una herida; assí que no será diphthongo entre ae, ea, ao, oa, eo, oe, como en estas diciones: saeta, leal, nao, loar, rodeo, poeta. La e, i, puédense coger en una sílaba entre sí, et con las otras tres; assí que puede ser diphthongo entre ai, au, ei, eu, ia, ie, io, iu, oi, ua, ue, ui. La u, con la o mui pocas vezes se puede aiuntar por diphthongo, et con diphthongo, nunca. Assí que, como cinco vocales no pueden aiuntarse entre sí más de en veinte maneras, et en las ocho dellas en ninguna manera se pueda cuajar diphthongo, queda provado lo que diximos: que los diphthongos en el castellano son doze. Lo cual más distinta mente se puede deduzir en esta manera: cógese la a con la i, como en estas diciones: gaita, baile; et puédese desatar, como en éstas: vaina, caida. Cógese con la u, como en estas diciones: causa, caudal; puédese desatar, como en éstas: laud, ataud. La e cógese con la i, como en estas diciones: lei, pleito; puédese desatar, como en éstas: reir, leiste. Cógese con la u, como en estas diciones: deudor, reuma; puédese desatar, como en éstas: leudar, reuntar. La i cógese con la a, como en estas diciones: justicia, malicia; puédese desatar; como en éstas: saia, día. Cógese con la e, como en estas diciones: miedo, viento; puédese desatar, como en éstas: fiel, riel. Cógese con la o, como en estas diciones: dios, precios; puédese desatar, como en éstas: río, mío. Cógese con la u, como en estas diciones: biuda, ciudad; puédese desatar, como en éstas: viuela, piuela. La o cógese con la i, como en estas diciones: soi, doi; puédese desatar, como en éstas: oido, roido. La u cógese con la a, como en estas diciones: agua, cuanto; puédese desatar, como en éstas: rua, pua. Cógese con la e, como en estas diciones: cuerpo, muerto; puédese desatar mui pocas vezes. Cógese con la i, como en estas diciones: cuidado, cuita; puédese desatar, como en éstas: huida, Luis.
+
+ Primera Gramática de la lengua Castellana
