@@ -1,0 +1,52 @@
+name: Test integrated evidence stack
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/minironin/tokenizer.py"
+      - "scripts/build_library_manifest.py"
+      - "scripts/import_admitted_sources.py"
+      - "scripts/build_awake_rows.py"
+      - "scripts/build_backdoor_bpe.py"
+      - "scripts/build_rag_index.py"
+      - "scripts/train_backdoor_bpe_continuation.py"
+      - "scripts/run_inference_holdout.py"
+      - "tests/test_tokenizer.py"
+      - "tests/test_library_manifest.py"
+      - "tests/test_integrated_stack.py"
+      - ".github/workflows/test-integrated-evidence-stack.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install torch pytest
+      - name: Compile integration modules
+        run: |
+          python -m py_compile \
+            src/minironin/tokenizer.py \
+            scripts/build_library_manifest.py \
+            scripts/import_admitted_sources.py \
+            scripts/build_awake_rows.py \
+            scripts/build_backdoor_bpe.py \
+            scripts/build_rag_index.py \
+            scripts/train_backdoor_bpe_continuation.py \
+            scripts/run_inference_holdout.py
+      - name: Run integration tests
+        run: |
+          pytest -q \
+            tests/test_tokenizer.py \
+            tests/test_library_manifest.py \
+            tests/test_integrated_stack.py
