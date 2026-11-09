@@ -58,13 +58,19 @@ jobs:
           assert count==m["rows_admitted"]
           print(json.dumps({"admitted":count,"skipped_wikipedia":m["rows_skipped_wikipedia"],"skipped_duplicates":m["rows_skipped_exact_duplicates"],"source_ids":len(m["source_id_counts"]),"sha256":m["sha256_jsonl"]},ensure_ascii=False))
           PY
-      - name: Publish audited accepted ALIA payload as workflow artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: minironin-alia-es-cultural-heritage-accepted
-          path: |
-            data/curated/accepted/alia-es-cultural-heritage-train.jsonl
-            data/curated/accepted/alia-es-cultural-heritage-train.manifest.json
-          if-no-files-found: error
-          compression-level: 0
-          retention-days: 90
+      - name: Publish audited ALIA payload and manifest as immutable release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if ! gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --title "ALIA Spanish Cultural Heritage — accepted corpus" --notes "CC BY-SA 4.0; Spanish-only, Wikipedia sources excluded, synthetic=false; source IDs and SHA-256 recorded in the manifest."
+          fi
+          gh release upload "$RELEASE_TAG" \
+            data/curated/accepted/alia-es-cultural-heritage-train.jsonl \
+            data/curated/accepted/alia-es-cultural-heritage-train.manifest.json \
+            --repo "$GITHUB_REPOSITORY" --clobber
+      - name: Rebuild unified training corpus after verified publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/build-unified-train.yml/dispatches" -f ref=main
