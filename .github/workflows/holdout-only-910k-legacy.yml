@@ -1,0 +1,88 @@
+name: MINIRONIN — holdout exclusivo checkpoint 910k (legacy byte tokenizer, sin RAG ni KV cache)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/holdout-only-910k-legacy.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  holdout-910k:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: orbitalronin94/MINIRONIN
+      CHECKPOINT_TAG: minironin-legacy-150k-from-760k-nonsynthetic-step-910000-candidate
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Descargar checkpoint 910k y verificar SHA-256
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .tmp/holdout-910k
+          gh release download "$CHECKPOINT_TAG" --repo "$REPOSITORY" \
+            --pattern "checkpoint-910000.pt" --dir .tmp/holdout-910k
+          gh release download "$CHECKPOINT_TAG" --repo "$REPOSITORY" \
+            --pattern "SHA256SUMS-910000" --dir .tmp/holdout-910k
+          cd .tmp/holdout-910k
+          expected="$(awk '$2 ~ /checkpoint-910000[.]pt$/ {print $1}' SHA256SUMS-910000)"
+          test -n "$expected"
+          echo "$expected  checkpoint-910000.pt" | sha256sum -c -
+          echo "Checkpoint SHA-256 verified: $expected"
+
+      - name: Instalar PyTorch CPU
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Verificar holdout fijo de 100 preguntas
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("benchmarks/inference-holdout-v1.jsonl")
+          rows=[json.loads(x) for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
+          ids=[x["id"] for x in rows]
+          assert len(rows)==100, f"Se esperaban 100 preguntas; hay {len(rows)}"
+          assert len(set(ids))==100, "Hay IDs duplicados"
+          assert all(x.get("split")=="inference_only" for x in rows)
+          print("Holdout fijo verificado: 100 preguntas únicas.")
+          PY
+
+      - name: Ejecutar holdout legacy sin RAG y sin KV cache
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/minironin.py scripts/run_inference_holdout.py
+          python scripts/run_inference_holdout.py \
+            --checkpoint .tmp/holdout-910k/checkpoint-910000.pt \
+            --label "minironin-910000-legacy-no-rag-no-kv" \
+            --steps 910000 \
+            --holdout benchmarks/inference-holdout-v1.jsonl \
+            --output .tmp/holdout-910k/diary-910000.json \
+            --max-new-tokens 128 \
+            --threads 2 \
+            --no-kv-cache
+
+      - name: Publicar respuestas completas y diario auditable
+        uses: actions/upload-artifact@v7
+        with:
+          name: minironin-holdout-only-910000-legacy-no-rag-no-kv
+          path: .tmp/holdout-910k/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
