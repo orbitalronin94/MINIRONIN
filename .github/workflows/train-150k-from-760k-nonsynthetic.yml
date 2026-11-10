@@ -209,7 +209,8 @@ jobs:
           wait "$publisher_pid" || true
           exit "$train_status"
 
-      - name: Verificar y publicar candidato de 960k
+      - name: Verificar y publicar candidato de 910k
+        if: inputs.mode == 'train'
         run: |
           set -euo pipefail
           cp train-150k/current/checkpoint-910000.pt train-150k/checkpoint-910000.pt
@@ -229,7 +230,7 @@ jobs:
           gh release create "minironin-legacy-150k-from-760k-nonsynthetic-step-910000-candidate" \
             train-150k/checkpoint-910000.pt train-150k/report-910000.json train-150k/SHA256SUMS-910000 \
             --title "MINIRONIN legacy tokenizer — 150k continuation / step 910000" \
-            --notes "150,000 additional steps from the verified 810k byte-level checkpoint, trained on all admitted non-synthetic rows in the previous lighter unified corpus artifact (run 42523463620; 776,739,403 bytes). Synthetic datasets explicitly excluded. Candidate only; no automatic promotion. Matched holdout required."
+            --notes "150,000 additional steps from the verified 760k byte-level checkpoint, trained on all admitted non-synthetic rows in the previous lighter unified corpus artifact (run 42523463620; 776,739,403 bytes). Synthetic datasets explicitly excluded. Candidate only; no automatic promotion. Matched holdout required."
 
       - name: Conservar checkpoints parciales e informes incluso si falla el entrenamiento
         if: always() && inputs.mode == 'train'
