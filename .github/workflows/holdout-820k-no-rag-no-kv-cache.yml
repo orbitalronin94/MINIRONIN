@@ -1,0 +1,91 @@
+name: MINIRONIN — holdout exclusivo checkpoint 820k (sin RAG ni KV cache)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/holdout-820k-no-rag-no-kv-cache.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: minironin-holdout-only-820k-no-rag-no-kv-cache
+  cancel-in-progress: false
+
+jobs:
+  holdout-820k-no-rag-no-kv-cache:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: orbitalronin94/MINIRONIN
+      CANDIDATE_TAG: minironin-legacy-150k-from-810k-nonsynthetic-step-820000
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Descargar checkpoint 820k e informe
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .tmp/holdout-820k-no-rag-no-kv-cache/checkpoint
+          gh release download "$CANDIDATE_TAG" --repo "$REPOSITORY" --pattern "checkpoint-820000.pt" --dir .tmp/holdout-820k-no-rag-no-kv-cache/checkpoint
+          gh release download "$CANDIDATE_TAG" --repo "$REPOSITORY" --pattern "report-820000.json" --dir .tmp/holdout-820k-no-rag-no-kv-cache/checkpoint
+          gh release download "$CANDIDATE_TAG" --repo "$REPOSITORY" --pattern "SHA256SUMS-820000" --dir .tmp/holdout-820k-no-rag-no-kv-cache/checkpoint
+          expected="$(awk '$2 ~ /checkpoint-820000[.]pt$/ {print $1}' .tmp/holdout-820k-no-rag-no-kv-cache/checkpoint/SHA256SUMS-820000)"
+          test -n "$expected"
+          echo "$expected  .tmp/holdout-820k-no-rag-no-kv-cache/checkpoint/checkpoint-820000.pt" | sha256sum -c -
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path(".tmp/holdout-820k-no-rag-no-kv-cache/checkpoint/report-820000.json").read_text(encoding="utf-8"))
+          assert r.get("completed_steps")==820000, r.get("completed_steps")
+          print(json.dumps({"step":r.get("completed_steps"),"validation_loss":r.get("validation_loss"),"validation_loss_by_domain":r.get("validation_loss_by_domain")},ensure_ascii=False))
+          PY
+
+      - name: Instalar PyTorch CPU y validar checkpoint y holdout fijo
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m py_compile scripts/run_inference_holdout.py src/minironin/tokenizer.py
+          python - <<'PY'
+          import json,torch
+          from pathlib import Path
+          cp=torch.load(".tmp/holdout-820k-no-rag-no-kv-cache/checkpoint/checkpoint-820000.pt",map_location="cpu",weights_only=False)
+          assert cp.get("completed_steps")==820000
+          assert cp.get("parameter_count")==9970176
+          assert cp.get("active_vocabulary")==257
+          assert cp.get("optimizer_state_dict"), "Optimizer state missing"
+          print(json.dumps({"step":cp["completed_steps"],"parameters":cp["parameter_count"],"active_vocabulary":cp["active_vocabulary"],"tokenization":cp.get("tokenization","UTF-8 bytes + EOS")},ensure_ascii=False))
+          rows=[json.loads(x) for x in Path("benchmarks/inference-holdout-v1.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+          assert len(rows)==100 and len({x["id"] for x in rows})==100
+          assert all(x.get("split")=="inference_only" for x in rows)
+          print("100 preguntas inference-only verificadas.")
+          PY
+
+      - name: Ejecutar holdout de 820k sin RAG
+        run: |
+          python scripts/run_inference_holdout.py \
+            --checkpoint .tmp/holdout-820k-no-rag-no-kv-cache/checkpoint/checkpoint-820000.pt \
+            --label "820k-byte-no-rag-no-kv-cache" --steps 820000 \
+            --holdout benchmarks/inference-holdout-v1.jsonl \
+            --output .tmp/holdout-820k-no-rag-no-kv-cache/diary-820k-no-rag.json \
+            --max-new-tokens 128 --max-new-bytes 128 --threads 2 --no-kv-cache
+
+      - name: Publicar las 100 respuestas y diario auditable de 820k sin RAG
+        uses: actions/upload-artifact@v4
+        with:
+          name: minironin-holdout-only-820k-no-rag-no-kv-cache
+          path: .tmp/holdout-820k-no-rag-no-kv-cache/
+          if-no-files-found: error
+          retention-days: 90
