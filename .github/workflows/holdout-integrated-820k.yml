@@ -23,7 +23,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       REPOSITORY: orbitalronin94/MINIRONIN
       PREPARATION_RUN_ID: "42682285328"
-      CANDIDATE_TAG: minironin-full-corpus-150k-from-810k-step-820000
+      CANDIDATE_TAG: minironin-legacy-150k-from-810k-nonsynthetic-step-820000
     steps:
       - name: Checkout MINIRONIN
         uses: actions/checkout@v5
