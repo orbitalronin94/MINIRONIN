@@ -233,9 +233,24 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
             joined="\n\n".join(rows)
             if len(joined)>=200:
                 add_doc(store,key[0],joined,"MINIRONIN-UNIFIED:"+key[1],str(corpus_path))
+    load_started=time.perf_counter()
+    last_progress=load_started
+    raw_size=max(1,stat.st_size)
     with gzip.open(corpus_path,"rb") as stream:
-        for line in stream:
+        for line_number,line in enumerate(stream,1):
             digest.update(line)
+            now=time.perf_counter()
+            if line_number == 1 or line_number % 10000 == 0 or now-last_progress >= 30:
+                compressed_bytes=min(raw_size,stream.fileobj.tell())
+                print(json.dumps({
+                    "phase":"corpus_ingest","records_seen":line_number,
+                    "records_accepted":records,"synthetic_excluded":excluded_synthetic_records,
+                    "documents_kept":len(store["docs"]),"pending_groups":len(pending),
+                    "compressed_bytes_read":compressed_bytes,"compressed_bytes_total":stat.st_size,
+                    "compressed_percent":round(100*compressed_bytes/raw_size,2),
+                    "elapsed_seconds":round(now-load_started,1),
+                },ensure_ascii=False),flush=True)
+                last_progress=now
             if not line.strip(): continue
             try: row=json.loads(line)
             except (UnicodeDecodeError,json.JSONDecodeError): continue
@@ -528,8 +543,8 @@ def main():
         parser.error("total-steps must be positive and start-step must be below it")
     if args.schedule_start_step < 0 or args.schedule_start_step >= args.total_steps:
         parser.error("schedule-start-step must be below total-steps")
-    if args.steps != CHECKPOINT_EVERY or (args.start_step - args.schedule_start_step) % CHECKPOINT_EVERY:
-        parser.error("Each segment must be exactly 10,000 steps, aligned to the continuation schedule")
+    if args.steps < CHECKPOINT_EVERY or args.steps % CHECKPOINT_EVERY or (args.start_step - args.schedule_start_step) % CHECKPOINT_EVERY:
+        parser.error("steps must be a positive multiple of 10,000, aligned to the continuation schedule")
     if args.start_step + args.steps > args.total_steps:
         parser.error("Segment exceeds total-steps")
 
@@ -594,13 +609,51 @@ def main():
         grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
         losses.append(float(loss.detach()))
-        if local_step % 100 == 0:
+        if local_step == 1 or local_step % 10 == 0:
+            elapsed_now=time.perf_counter()-segment_started
+            rate=local_step/max(elapsed_now,1e-9)
+            remaining=(args.steps-local_step)/max(rate,1e-9)
             print(json.dumps({
-                "global_step": global_step,
-                "loss": losses[-1],
-                "lr": lr,
-                "grad_norm": float(grad_norm),
-            }), flush=True)
+                "phase":"training","global_step":global_step,"segment_step":local_step,
+                "segment_total":args.steps,"loss":losses[-1],"lr":lr,
+                "grad_norm":float(grad_norm),"steps_per_second":round(rate,3),
+                "elapsed_seconds":round(elapsed_now,1),"eta_seconds":round(remaining,1),
+            }),flush=True)
+        if local_step % CHECKPOINT_EVERY == 0:
+            checkpoint_step=global_step
+            print(json.dumps({"phase":"checkpoint_validation_started","global_step":checkpoint_step}),flush=True)
+            interim_val,interim_by_domain=evaluate(model,validation,device)
+            interim_elapsed=round(time.perf_counter()-segment_started,2)
+            interim_report={
+                "status":"segment_checkpoint","completed_steps":checkpoint_step,
+                "total_steps":args.total_steps,"batch_size":BATCH_SIZE,
+                "sequence_length":SEQUENCE_LENGTH,"tokens_per_optimizer_step":BATCH_SIZE*SEQUENCE_LENGTH,
+                "segment_steps":local_step,"parameter_count":parameter_count,
+                "active_vocabulary":ACTIVE_VOCAB,
+                "mean_train_loss_last_100":sum(losses[-100:])/min(100,len(losses)),
+                "validation_loss":interim_val,"validation_loss_by_domain":interim_by_domain,
+                "elapsed_seconds":interim_elapsed,"dataset_manifest":manifest,
+            }
+            interim_checkpoint={
+                "model_state_dict":{k:v.detach().cpu() for k,v in model.state_dict().items()},
+                "optimizer_state_dict":optimizer.state_dict(),"model_config":source["model_config"],
+                "parameter_count":parameter_count,"seed":source.get("seed"),
+                "completed_steps":checkpoint_step,"total_steps":args.total_steps,
+                "active_vocabulary":ACTIVE_VOCAB,
+                "tokenization":source.get("tokenization","UTF-8 bytes + EOS"),
+                "validation_loss":interim_val,"validation_loss_by_domain":interim_by_domain,
+                "dataset_manifest":manifest,"torch_rng_state":torch.get_rng_state(),
+            }
+            interim_path=output/f"checkpoint-{checkpoint_step:06d}.pt"
+            torch.save(interim_checkpoint,interim_path)
+            (output/f"report-{checkpoint_step:06d}.json").write_text(
+                json.dumps(interim_report,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+            interim_hash=hashlib.sha256(interim_path.read_bytes()).hexdigest()
+            (output/f"checkpoint-{checkpoint_step:06d}.sha256").write_text(
+                f"{interim_hash}  {interim_path.name}\\n",encoding="utf-8")
+            print(json.dumps({"phase":"checkpoint_saved","completed_steps":checkpoint_step,
+                "checkpoint_sha256":interim_hash,"validation_loss":interim_val,
+                "elapsed_seconds":interim_elapsed},ensure_ascii=False),flush=True)
 
     validation_loss, validation_by_domain = evaluate(model, validation, device)
     completed = args.start_step + args.steps
