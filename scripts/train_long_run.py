@@ -183,8 +183,20 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
             print(json.dumps({"dataset_cache":"reused",**cm},ensure_ascii=False),flush=True)
             return cached["train_docs"],cached["names"],cached["probs"],cached["validation"],cm
         cache_path.unlink()
+    try:
+        import orjson
+        fast_json_loads = orjson.loads
+        json_backend = "orjson"
+    except ImportError:
+        fast_json_loads = json.loads
+        json_backend = "stdlib-json"
     store={"docs":[],"seen":set()}
     digest=hashlib.sha256()
+    phase_started=time.perf_counter()
+    def phase(name, status="started", **details):
+        print(json.dumps({"phase":name,"status":status,
+            "elapsed_seconds":round(time.perf_counter()-phase_started,2),
+            **details},ensure_ascii=False),flush=True)
     records=0
     excluded_synthetic_records=0
     domains={}
@@ -234,6 +246,7 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
             if len(joined)>=200:
                 add_doc(store,key[0],joined,"MINIRONIN-UNIFIED:"+key[1],str(corpus_path))
     load_started=time.perf_counter()
+    phase("corpus_ingest","started",corpus_bytes=stat.st_size,json_backend=json_backend)
     last_progress=load_started
     raw_size=max(1,stat.st_size)
     with gzip.open(corpus_path,"rb") as stream:
@@ -252,8 +265,8 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
                 },ensure_ascii=False),flush=True)
                 last_progress=now
             if not line.strip(): continue
-            try: row=json.loads(line)
-            except (UnicodeDecodeError,json.JSONDecodeError): continue
+            try: row=fast_json_loads(line)
+            except (UnicodeDecodeError,ValueError): continue
             if synthetic_only and row.get("synthetic") is not True:
                 raise SystemExit(f"Synthetic-only mode rejected non-synthetic row: {row.get('source_id')}")
             if exclude_synthetic and row.get("synthetic") is True:
@@ -274,8 +287,23 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
                 key=(domain,str(row.get("dataset","unknown")))
                 pending.setdefault(key,[]).append(body)
                 if len(pending[key])>=8: flush(key)
+    phase("corpus_ingest","completed",records_seen=line_number if "line_number" in locals() else 0,
+          records_accepted=records,synthetic_excluded=excluded_synthetic_records,
+          documents=len(store["docs"]),domains=domains,
+          elapsed_ingest_seconds=round(time.perf_counter()-load_started,2))
+    phase("flush_pending_groups","started",pending_groups=len(pending))
     for key in list(pending): flush(key)
+    phase("flush_pending_groups","completed",documents=len(store["docs"]))
+    dedup_hashes=len(store["seen"])
+    store["seen"].clear()
+    del store["seen"]
+    phase("release_dedup_index","completed",released_hashes=dedup_hashes)
+    phase("document_split","started",documents=len(store["docs"]))
     train_docs,val_docs=split_documents(store["docs"])
+    phase("document_split","completed",train_documents=sum(map(len,train_docs.values())),
+          validation_documents=sum(map(len,val_docs.values())),
+          domains={k:{"train":len(train_docs.get(k,[])),"validation":len(val_docs.get(k,[]))}
+                   for k in sorted(set(train_docs)|set(val_docs))})
     if allow_sparse_domains:
         required=tuple(name for name in MIX_WEIGHTS if train_docs.get(name) and val_docs.get(name))
         if len(required) < 2:
@@ -286,7 +314,9 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
     if missing: raise SystemExit("Unified corpus missing train/validation domains: "+", ".join(missing))
     names,probs=weighted_domains(train_docs)
     val_rng,validation=random.Random(314159),{}
+    phase("validation_windows","started",domains=len(val_docs))
     for domain in sorted(val_docs):
+        domain_started=time.perf_counter()
         batches=[]
         for _ in range(4):
             rows=[]
@@ -297,6 +327,11 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
                 rows.append(torch.tensor(raw[offset:offset+SEQUENCE_LENGTH+1],dtype=torch.long))
             if len(rows)==BATCH_SIZE: batches.append(torch.stack(rows))
         if batches: validation[domain]=batches
+        print(json.dumps({"phase":"validation_domain","domain":domain,
+            "documents":len(val_docs[domain]),"batches":len(batches),
+            "elapsed_seconds":round(time.perf_counter()-domain_started,2)},ensure_ascii=False),flush=True)
+    phase("validation_windows","completed",domains=len(validation),
+          batches=sum(len(v) for v in validation.values()))
     missing_val=[name for name in required if not validation.get(name)]
     if missing_val: raise SystemExit("Unified corpus has no validation windows for: "+", ".join(missing_val))
     manifest={"cache_schema_version":5,"corpus_mode":"single unified corpus","exclude_synthetic":bool(exclude_synthetic),"synthetic_only":bool(synthetic_only),"allow_sparse_domains":bool(allow_sparse_domains),"unified_records_excluded_synthetic":excluded_synthetic_records,"unified_corpus":str(corpus_path),
@@ -308,7 +343,9 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
       "source_policy":("Synthetic-only: every row must be marked synthetic; no inherited libraries or external corpus roots" if synthetic_only else ("All admitted non-synthetic unified-bundle rows ingested; every row explicitly marked synthetic excluded; RONIN-IA excluded; byte tokenizer retained" if exclude_synthetic else "All admitted unified-bundle rows ingested; RONIN-IA excluded; no 505k/BPE artifacts")),
       "split_policy":"Deterministic SHA-256 document split; 10% validation per mapped domain"}
     cache_path.parent.mkdir(parents=True,exist_ok=True)
+    phase("dataset_cache_write","started",path=str(cache_path))
     torch.save({"train_docs":train_docs,"names":names,"probs":probs,"validation":validation,"manifest":manifest},cache_path)
+    phase("dataset_cache_write","completed",cache_bytes=cache_path.stat().st_size)
     print(json.dumps({"dataset_cache":"built",**manifest},ensure_ascii=False),flush=True)
     return train_docs,names,probs,validation,manifest
 
