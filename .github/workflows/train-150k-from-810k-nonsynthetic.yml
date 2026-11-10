@@ -161,9 +161,15 @@ jobs:
                 cp "$checksum" "train-150k/checkpoints/SHA256SUMS-$end"
                 tag="minironin-legacy-150k-from-810k-nonsynthetic-step-$end"
                 if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-                  gh release upload "$tag" "train-150k/checkpoints/checkpoint-$end.pt" "train-150k/checkpoints/report-$end.json" "train-150k/checkpoints/SHA256SUMS-$end" --repo "$GITHUB_REPOSITORY" --clobber
+                  if ! gh release upload "$tag" "train-150k/checkpoints/checkpoint-$end.pt" "train-150k/checkpoints/report-$end.json" "train-150k/checkpoints/SHA256SUMS-$end" --repo "$GITHUB_REPOSITORY" --clobber; then
+                    echo "WARN: publication failed for step $end; will retry"
+                    continue
+                  fi
                 else
-                  gh release create "$tag" "train-150k/checkpoints/checkpoint-$end.pt" "train-150k/checkpoints/report-$end.json" "train-150k/checkpoints/SHA256SUMS-$end" --repo "$GITHUB_REPOSITORY" --title "MINIRONIN legacy tokenizer — step $end" --notes "Checkpoint emitted immediately after its 10k validation. Continuous continuation from verified step 810000; non-synthetic unified corpus only. Candidate; holdout required."
+                  if ! gh release create "$tag" "train-150k/checkpoints/checkpoint-$end.pt" "train-150k/checkpoints/report-$end.json" "train-150k/checkpoints/SHA256SUMS-$end" --repo "$GITHUB_REPOSITORY" --title "MINIRONIN legacy tokenizer — step $end" --notes "Checkpoint emitted immediately after its 10k validation. Continuous continuation from verified step 810000; non-synthetic unified corpus only. Candidate; holdout required."; then
+                    echo "WARN: release creation failed for step $end; will retry"
+                    continue
+                  fi
                 fi
                 touch "$marker"
                 echo "Published checkpoint step $end"
