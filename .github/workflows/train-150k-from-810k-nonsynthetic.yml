@@ -12,6 +12,11 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/train-150k-from-810k-nonsynthetic.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/train-150k-from-810k-nonsynthetic.yml"
+      - "scripts/train_long_run.py"
+      - "scripts/train_seed_tournament.py"
 
 permissions:
   actions: read
@@ -22,6 +27,19 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Validar sintaxis Python antes del merge
+        run: python -m py_compile scripts/train_long_run.py scripts/train_seed_tournament.py
+
   train:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
