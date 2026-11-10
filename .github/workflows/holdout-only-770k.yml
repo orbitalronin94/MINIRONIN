@@ -1,0 +1,79 @@
+name: MINIRONIN — holdout exclusivo checkpoint 770k
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/holdout-only-770k.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  holdout-770k:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: orbitalronin94/MINIRONIN
+      CHECKPOINT_TAG: minironin-legacy-150k-from-760k-nonsynthetic-step-770000
+      CHECKPOINT_SHA256: 95ee88a5d06bd78371fe46d75bb0aba2edfd08f4f991c52c5cd7f88b924d5059
+    steps:
+      - name: Checkout MINIRONIN
+        uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Descargar exclusivamente checkpoint 770k y verificar SHA-256
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .tmp/holdout-770k
+          gh release download "$CHECKPOINT_TAG" --repo "$REPOSITORY" \
+            --pattern "checkpoint-770000.pt" --dir .tmp/holdout-770k
+          echo "$CHECKPOINT_SHA256  .tmp/holdout-770k/checkpoint-770000.pt" | sha256sum -c -
+
+      - name: Instalar PyTorch CPU
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+
+      - name: Verificar holdout fijo de 100 preguntas
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("benchmarks/inference-holdout-v1.jsonl")
+          rows=[json.loads(x) for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
+          ids=[x["id"] for x in rows]
+          assert len(rows)==100, f"Se esperaban 100 preguntas; hay {len(rows)}"
+          assert len(set(ids))==100, "Hay IDs duplicados"
+          assert all(x.get("split")=="inference_only" for x in rows)
+          print("Holdout fijo verificado: 100 preguntas únicas.")
+          PY
+
+      - name: Ejecutar holdout solo sobre 770k
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/minironin.py scripts/run_inference_holdout.py
+          python scripts/minironin.py holdout \
+            --checkpoint .tmp/holdout-770k/checkpoint-770000.pt \
+            --label "minironin-770000-single-checkpoint" \
+            --steps 770000 \
+            --holdout benchmarks/inference-holdout-v1.jsonl \
+            --output .tmp/holdout-770k/diary-770000.json \
+            --max-new-tokens 128 \
+            --threads 2
+
+      - name: Publicar respuestas completas y diario auditable
+        uses: actions/upload-artifact@v7
+        with:
+          name: minironin-holdout-only-770000
+          path: .tmp/holdout-770k/
+          if-no-files-found: error
+          retention-days: 90
