@@ -1,6 +1,7 @@
 name: MINIRONIN — holdout exclusivo checkpoint 910k (legacy byte tokenizer, sin RAG ni KV cache)
 
 on:
+  # workflow_dispatch plus push lets the merged workflow run immediately.
   workflow_dispatch:
   push:
     branches: [main]
