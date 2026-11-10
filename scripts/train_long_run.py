@@ -647,10 +647,10 @@ def main():
             interim_path=output/f"checkpoint-{checkpoint_step:06d}.pt"
             torch.save(interim_checkpoint,interim_path)
             (output/f"report-{checkpoint_step:06d}.json").write_text(
-                json.dumps(interim_report,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+                json.dumps(interim_report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
             interim_hash=hashlib.sha256(interim_path.read_bytes()).hexdigest()
             (output/f"checkpoint-{checkpoint_step:06d}.sha256").write_text(
-                f"{interim_hash}  {interim_path.name}\\n",encoding="utf-8")
+                f"{interim_hash}  {interim_path.name}\n",encoding="utf-8")
             print(json.dumps({"phase":"checkpoint_saved","completed_steps":checkpoint_step,
                 "checkpoint_sha256":interim_hash,"validation_loss":interim_val,
                 "elapsed_seconds":interim_elapsed},ensure_ascii=False),flush=True)
