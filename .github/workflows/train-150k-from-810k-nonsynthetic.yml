@@ -1,10 +1,6 @@
-name: MINIRONIN — 150k continuation from 810k (non-synthetic admitted corpus)
+name: MINIRONIN — 150k continuation from 810k (latest successful unified corpus)
 
 on:
-  workflow_run:
-    workflows: ["MINIRONIN — construir corpus unificado de entrenamiento"]
-    types: [completed]
-    branches: [main]
   workflow_dispatch:
     inputs:
       corpus_run_id:
@@ -32,7 +28,7 @@ jobs:
     timeout-minutes: 360
     env:
       GH_TOKEN: ${{ github.token }}
-      CORPUS_RUN_ID: ${{ github.event_name == 'workflow_dispatch' && inputs.corpus_run_id || (github.event_name == 'workflow_run' && github.event.workflow_run.id || '42679698690') }}
+      CORPUS_RUN_ID: ${{ github.event_name == 'workflow_dispatch' && inputs.corpus_run_id || '42679698690' }}
       PARENT_TAG: minironin-full-corpus-step-810000
       PARENT_SHA256: 2d8ff48dc0645d4b2d83c2462bc33b88a1abade9354eb9289c265c7a5b13ca6b
       START_STEP: "810000"
@@ -160,7 +156,7 @@ jobs:
               "train-150k/checkpoints/report-$end.json" \
               "train-150k/checkpoints/SHA256SUMS-$end" \
               --title "MINIRONIN legacy tokenizer — step $end" \
-              --notes "10k segment in the 150k continuation from verified 810k checkpoint. Active vocabulary 257 (UTF-8 bytes + EOS). Uses all admitted non-synthetic rows; records marked synthetic are excluded by the training loader. Candidate only; independent holdout required."
+              --notes "10k segment in the 150k continuation from verified 810k checkpoint. Active vocabulary 257 (UTF-8 bytes + EOS). Uses the latest successfully compiled unified library artifact (run 42679698690); records marked synthetic are excluded by the training loader. Candidate only; independent holdout required."
             input="$checkpoint"
             echo "::endgroup::"
           done
@@ -185,7 +181,7 @@ jobs:
           gh release create "minironin-legacy-150k-from-810k-nonsynthetic-step-960000-candidate" \
             train-150k/checkpoint-960000.pt train-150k/report-960000.json train-150k/SHA256SUMS-960000 \
             --title "MINIRONIN legacy tokenizer — 150k continuation / step 960000" \
-            --notes "150,000 additional steps from the verified 810k byte-level checkpoint, trained on all admitted non-synthetic rows from the unified corpus. Synthetic datasets explicitly excluded. Candidate only; no automatic promotion. Matched holdout required."
+            --notes "150,000 additional steps from the verified 810k byte-level checkpoint, trained on all admitted non-synthetic rows in the latest successfully compiled unified corpus artifact (run 42679698690). Synthetic datasets explicitly excluded. Candidate only; no automatic promotion. Matched holdout required."
 
       - name: Publicar informes y checkpoints intermedios como artefacto de auditoría
         uses: actions/upload-artifact@v4
