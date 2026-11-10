@@ -77,3 +77,5 @@ jobs:
           path: .tmp/holdout-800k/
           if-no-files-found: error
           retention-days: 90
+
+# Trigger solicitado: ejecutar el holdout aislado del checkpoint 800k.
