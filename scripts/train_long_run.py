@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from functools import lru_cache
 import hashlib
 import json
 import math
@@ -321,10 +322,10 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
         for _ in range(4):
             rows=[]
             for _ in range(BATCH_SIZE):
-                raw=list(val_rng.choice(val_docs[domain])["text"].encode("utf-8",errors="replace"))+[ACTIVE_VOCAB-1]
-                if len(raw)<SEQUENCE_LENGTH+1: continue
-                offset=val_rng.randrange(0,len(raw)-SEQUENCE_LENGTH)
-                rows.append(torch.tensor(raw[offset:offset+SEQUENCE_LENGTH+1],dtype=torch.long))
+                encoded=encode_text_cached(val_rng.choice(val_docs[domain])["text"])
+                if len(encoded)<SEQUENCE_LENGTH+1: continue
+                offset=val_rng.randrange(0,len(encoded)-SEQUENCE_LENGTH)
+                rows.append(encoded[offset:offset+SEQUENCE_LENGTH+1])
             if len(rows)==BATCH_SIZE: batches.append(torch.stack(rows))
         if batches: validation[domain]=batches
         print(json.dumps({"phase":"validation_domain","domain":domain,
@@ -519,16 +520,24 @@ def load_training_data(heretic_root: Path, books_root: Path, anarchist_root: Pat
     return train_docs, names, probs, validation, manifest
 
 
+@lru_cache(maxsize=1024)
+def encode_text_cached(text: str) -> torch.Tensor:
+    """Cache a bounded number of byte-tokenized documents to avoid per-step Python lists."""
+    raw = bytearray(text.encode("utf-8", errors="replace"))
+    tokens = torch.frombuffer(raw, dtype=torch.uint8).to(torch.long)
+    return torch.cat((tokens, torch.tensor([ACTIVE_VOCAB - 1], dtype=torch.long)))
+
+
 def batch_for_step(train_docs, names, probs, global_step, seed_offset=0):
     rng = random.Random(BASE_SEED + seed_offset + global_step)
     domains = rng.choices(names, weights=probs, k=BATCH_SIZE)
     rows = []
     for domain in domains:
-        raw = list(rng.choice(train_docs[domain])["text"].encode("utf-8", errors="replace")) + [ACTIVE_VOCAB - 1]
-        if len(raw) < SEQUENCE_LENGTH + 1:
+        encoded = encode_text_cached(rng.choice(train_docs[domain])["text"])
+        if len(encoded) < SEQUENCE_LENGTH + 1:
             raise ValueError("Document shorter than training window in " + domain)
-        start = rng.randrange(0, len(raw) - SEQUENCE_LENGTH)
-        rows.append(torch.tensor(raw[start:start + SEQUENCE_LENGTH + 1], dtype=torch.long))
+        start = rng.randrange(0, len(encoded) - SEQUENCE_LENGTH)
+        rows.append(encoded[start:start + SEQUENCE_LENGTH + 1])
     return torch.stack(rows)
 
 
@@ -586,6 +595,7 @@ def main():
         parser.error("Segment exceeds total-steps")
 
     torch.set_num_threads(args.threads)
+    torch.set_num_interop_threads(1)
     torch.use_deterministic_algorithms(True)
     device = torch.device("cpu")
     if args.unified_corpus:
@@ -632,12 +642,18 @@ def main():
     losses = []
     model.train()
 
+    data_seconds = 0.0
+    compute_seconds = 0.0
     for local_step in range(1, args.steps + 1):
         global_step = args.start_step + local_step
         lr = learning_rate(global_step, args.total_steps, args.schedule_start_step, args.schedule_start_lr)
         for group in optimizer.param_groups:
             group["lr"] = lr
+        data_started = time.perf_counter()
         batch = batch_for_step(train_docs, names, probs, global_step, args.seed_offset).to(device)
+        data_elapsed = time.perf_counter() - data_started
+        data_seconds += data_elapsed
+        compute_started = time.perf_counter()
         optimizer.zero_grad(set_to_none=True)
         _, loss = model(batch, labels=batch, vocab_limit=ACTIVE_VOCAB)
         if not torch.isfinite(loss):
@@ -645,6 +661,7 @@ def main():
         loss.backward()
         grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
+        compute_seconds += time.perf_counter() - compute_started
         losses.append(float(loss.detach()))
         if local_step == 1 or local_step % 10 == 0:
             elapsed_now=time.perf_counter()-segment_started
@@ -654,6 +671,9 @@ def main():
                 "phase":"training","global_step":global_step,"segment_step":local_step,
                 "segment_total":args.steps,"loss":losses[-1],"lr":lr,
                 "grad_norm":float(grad_norm),"steps_per_second":round(rate,3),
+                "data_seconds_per_step":round(data_seconds/local_step,4),
+                "compute_seconds_per_step":round(compute_seconds/local_step,4),
+                "tokenization_cache":encode_text_cached.cache_info()._asdict(),
                 "elapsed_seconds":round(elapsed_now,1),"eta_seconds":round(remaining,1),
             }),flush=True)
         if local_step % CHECKPOINT_EVERY == 0:
