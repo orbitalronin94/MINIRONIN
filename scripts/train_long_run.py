@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from functools import lru_cache
 import hashlib
 import json
 import math
@@ -183,8 +184,20 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
             print(json.dumps({"dataset_cache":"reused",**cm},ensure_ascii=False),flush=True)
             return cached["train_docs"],cached["names"],cached["probs"],cached["validation"],cm
         cache_path.unlink()
+    try:
+        import orjson
+        fast_json_loads = orjson.loads
+        json_backend = "orjson"
+    except ImportError:
+        fast_json_loads = json.loads
+        json_backend = "stdlib-json"
     store={"docs":[],"seen":set()}
     digest=hashlib.sha256()
+    phase_started=time.perf_counter()
+    def phase(name, status="started", **details):
+        print(json.dumps({"phase":name,"status":status,
+            "elapsed_seconds":round(time.perf_counter()-phase_started,2),
+            **details},ensure_ascii=False),flush=True)
     records=0
     excluded_synthetic_records=0
     domains={}
@@ -234,6 +247,7 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
             if len(joined)>=200:
                 add_doc(store,key[0],joined,"MINIRONIN-UNIFIED:"+key[1],str(corpus_path))
     load_started=time.perf_counter()
+    phase("corpus_ingest","started",corpus_bytes=stat.st_size,json_backend=json_backend)
     last_progress=load_started
     raw_size=max(1,stat.st_size)
     with gzip.open(corpus_path,"rb") as stream:
@@ -252,8 +266,8 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
                 },ensure_ascii=False),flush=True)
                 last_progress=now
             if not line.strip(): continue
-            try: row=json.loads(line)
-            except (UnicodeDecodeError,json.JSONDecodeError): continue
+            try: row=fast_json_loads(line)
+            except (UnicodeDecodeError,ValueError): continue
             if synthetic_only and row.get("synthetic") is not True:
                 raise SystemExit(f"Synthetic-only mode rejected non-synthetic row: {row.get('source_id')}")
             if exclude_synthetic and row.get("synthetic") is True:
@@ -274,8 +288,23 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
                 key=(domain,str(row.get("dataset","unknown")))
                 pending.setdefault(key,[]).append(body)
                 if len(pending[key])>=8: flush(key)
+    phase("corpus_ingest","completed",records_seen=line_number if "line_number" in locals() else 0,
+          records_accepted=records,synthetic_excluded=excluded_synthetic_records,
+          documents=len(store["docs"]),domains=domains,
+          elapsed_ingest_seconds=round(time.perf_counter()-load_started,2))
+    phase("flush_pending_groups","started",pending_groups=len(pending))
     for key in list(pending): flush(key)
+    phase("flush_pending_groups","completed",documents=len(store["docs"]))
+    dedup_hashes=len(store["seen"])
+    store["seen"].clear()
+    del store["seen"]
+    phase("release_dedup_index","completed",released_hashes=dedup_hashes)
+    phase("document_split","started",documents=len(store["docs"]))
     train_docs,val_docs=split_documents(store["docs"])
+    phase("document_split","completed",train_documents=sum(map(len,train_docs.values())),
+          validation_documents=sum(map(len,val_docs.values())),
+          domains={k:{"train":len(train_docs.get(k,[])),"validation":len(val_docs.get(k,[]))}
+                   for k in sorted(set(train_docs)|set(val_docs))})
     if allow_sparse_domains:
         required=tuple(name for name in MIX_WEIGHTS if train_docs.get(name) and val_docs.get(name))
         if len(required) < 2:
@@ -286,17 +315,24 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
     if missing: raise SystemExit("Unified corpus missing train/validation domains: "+", ".join(missing))
     names,probs=weighted_domains(train_docs)
     val_rng,validation=random.Random(314159),{}
+    phase("validation_windows","started",domains=len(val_docs))
     for domain in sorted(val_docs):
+        domain_started=time.perf_counter()
         batches=[]
         for _ in range(4):
             rows=[]
             for _ in range(BATCH_SIZE):
-                raw=list(val_rng.choice(val_docs[domain])["text"].encode("utf-8",errors="replace"))+[ACTIVE_VOCAB-1]
-                if len(raw)<SEQUENCE_LENGTH+1: continue
-                offset=val_rng.randrange(0,len(raw)-SEQUENCE_LENGTH)
-                rows.append(torch.tensor(raw[offset:offset+SEQUENCE_LENGTH+1],dtype=torch.long))
+                encoded=encode_text_cached(val_rng.choice(val_docs[domain])["text"])
+                if len(encoded)<SEQUENCE_LENGTH+1: continue
+                offset=val_rng.randrange(0,len(encoded)-SEQUENCE_LENGTH)
+                rows.append(encoded[offset:offset+SEQUENCE_LENGTH+1])
             if len(rows)==BATCH_SIZE: batches.append(torch.stack(rows))
         if batches: validation[domain]=batches
+        print(json.dumps({"phase":"validation_domain","domain":domain,
+            "documents":len(val_docs[domain]),"batches":len(batches),
+            "elapsed_seconds":round(time.perf_counter()-domain_started,2)},ensure_ascii=False),flush=True)
+    phase("validation_windows","completed",domains=len(validation),
+          batches=sum(len(v) for v in validation.values()))
     missing_val=[name for name in required if not validation.get(name)]
     if missing_val: raise SystemExit("Unified corpus has no validation windows for: "+", ".join(missing_val))
     manifest={"cache_schema_version":5,"corpus_mode":"single unified corpus","exclude_synthetic":bool(exclude_synthetic),"synthetic_only":bool(synthetic_only),"allow_sparse_domains":bool(allow_sparse_domains),"unified_records_excluded_synthetic":excluded_synthetic_records,"unified_corpus":str(corpus_path),
@@ -308,7 +344,9 @@ def load_unified_training_data(corpus_path: Path, cache_path: Path, synthetic_on
       "source_policy":("Synthetic-only: every row must be marked synthetic; no inherited libraries or external corpus roots" if synthetic_only else ("All admitted non-synthetic unified-bundle rows ingested; every row explicitly marked synthetic excluded; RONIN-IA excluded; byte tokenizer retained" if exclude_synthetic else "All admitted unified-bundle rows ingested; RONIN-IA excluded; no 505k/BPE artifacts")),
       "split_policy":"Deterministic SHA-256 document split; 10% validation per mapped domain"}
     cache_path.parent.mkdir(parents=True,exist_ok=True)
+    phase("dataset_cache_write","started",path=str(cache_path))
     torch.save({"train_docs":train_docs,"names":names,"probs":probs,"validation":validation,"manifest":manifest},cache_path)
+    phase("dataset_cache_write","completed",cache_bytes=cache_path.stat().st_size)
     print(json.dumps({"dataset_cache":"built",**manifest},ensure_ascii=False),flush=True)
     return train_docs,names,probs,validation,manifest
 
@@ -482,16 +520,24 @@ def load_training_data(heretic_root: Path, books_root: Path, anarchist_root: Pat
     return train_docs, names, probs, validation, manifest
 
 
+@lru_cache(maxsize=1024)
+def encode_text_cached(text: str) -> torch.Tensor:
+    """Cache a bounded number of byte-tokenized documents to avoid per-step Python lists."""
+    raw = bytearray(text.encode("utf-8", errors="replace"))
+    tokens = torch.frombuffer(raw, dtype=torch.uint8).to(torch.long)
+    return torch.cat((tokens, torch.tensor([ACTIVE_VOCAB - 1], dtype=torch.long)))
+
+
 def batch_for_step(train_docs, names, probs, global_step, seed_offset=0):
     rng = random.Random(BASE_SEED + seed_offset + global_step)
     domains = rng.choices(names, weights=probs, k=BATCH_SIZE)
     rows = []
     for domain in domains:
-        raw = list(rng.choice(train_docs[domain])["text"].encode("utf-8", errors="replace")) + [ACTIVE_VOCAB - 1]
-        if len(raw) < SEQUENCE_LENGTH + 1:
+        encoded = encode_text_cached(rng.choice(train_docs[domain])["text"])
+        if len(encoded) < SEQUENCE_LENGTH + 1:
             raise ValueError("Document shorter than training window in " + domain)
-        start = rng.randrange(0, len(raw) - SEQUENCE_LENGTH)
-        rows.append(torch.tensor(raw[start:start + SEQUENCE_LENGTH + 1], dtype=torch.long))
+        start = rng.randrange(0, len(encoded) - SEQUENCE_LENGTH)
+        rows.append(encoded[start:start + SEQUENCE_LENGTH + 1])
     return torch.stack(rows)
 
 
@@ -549,6 +595,7 @@ def main():
         parser.error("Segment exceeds total-steps")
 
     torch.set_num_threads(args.threads)
+    torch.set_num_interop_threads(1)
     torch.use_deterministic_algorithms(True)
     device = torch.device("cpu")
     if args.unified_corpus:
@@ -595,12 +642,18 @@ def main():
     losses = []
     model.train()
 
+    data_seconds = 0.0
+    compute_seconds = 0.0
     for local_step in range(1, args.steps + 1):
         global_step = args.start_step + local_step
         lr = learning_rate(global_step, args.total_steps, args.schedule_start_step, args.schedule_start_lr)
         for group in optimizer.param_groups:
             group["lr"] = lr
+        data_started = time.perf_counter()
         batch = batch_for_step(train_docs, names, probs, global_step, args.seed_offset).to(device)
+        data_elapsed = time.perf_counter() - data_started
+        data_seconds += data_elapsed
+        compute_started = time.perf_counter()
         optimizer.zero_grad(set_to_none=True)
         _, loss = model(batch, labels=batch, vocab_limit=ACTIVE_VOCAB)
         if not torch.isfinite(loss):
@@ -608,6 +661,7 @@ def main():
         loss.backward()
         grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
+        compute_seconds += time.perf_counter() - compute_started
         losses.append(float(loss.detach()))
         if local_step == 1 or local_step % 10 == 0:
             elapsed_now=time.perf_counter()-segment_started
@@ -617,6 +671,9 @@ def main():
                 "phase":"training","global_step":global_step,"segment_step":local_step,
                 "segment_total":args.steps,"loss":losses[-1],"lr":lr,
                 "grad_norm":float(grad_norm),"steps_per_second":round(rate,3),
+                "data_seconds_per_step":round(data_seconds/local_step,4),
+                "compute_seconds_per_step":round(compute_seconds/local_step,4),
+                "tokenization_cache":encode_text_cached.cache_info()._asdict(),
                 "elapsed_seconds":round(elapsed_now,1),"eta_seconds":round(remaining,1),
             }),flush=True)
         if local_step % CHECKPOINT_EVERY == 0:

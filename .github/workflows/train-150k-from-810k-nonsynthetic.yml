@@ -12,6 +12,11 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/train-150k-from-810k-nonsynthetic.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/train-150k-from-810k-nonsynthetic.yml"
+      - "scripts/train_long_run.py"
+      - "scripts/train_seed_tournament.py"
 
 permissions:
   actions: read
@@ -22,6 +27,19 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Validar sintaxis Python antes del merge
+        run: python -m py_compile scripts/train_long_run.py scripts/train_seed_tournament.py
+
   train:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
@@ -54,7 +72,7 @@ jobs:
           echo "Corpus run confirmed: $CORPUS_RUN_ID"
 
       - name: Descargar el corpus unificado de la ejecución indicada
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: minironin-unified-train-corpus-${{ env.CORPUS_RUN_ID }}
           github-token: ${{ github.token }}
@@ -91,7 +109,7 @@ jobs:
           df -h .
           test "$(df --output=avail -k . | tail -1 | tr -d ' ')" -gt 8000000
           python -m pip install --upgrade pip
-          python -m pip install numpy
+          python -m pip install numpy orjson
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
 
       - name: Descargar y verificar checkpoint base de 810k (bytes UTF-8 + EOS)
@@ -121,12 +139,46 @@ jobs:
         id: parent
 
 
-      - name: Entrenar 150k pasos en un único proceso con progreso y checkpoints cada 10k
+      - name: Entrenar 150k pasos y publicar cada checkpoint en vivo
         run: |
           set -euo pipefail
           python -m py_compile scripts/train_long_run.py scripts/train_seed_tournament.py
           input="train-150k/parent/checkpoint-810000.pt"
           mkdir -p train-150k/current train-150k/checkpoints
+          stop_file="$RUNNER_TEMP/stop-checkpoint-publisher"
+          rm -f "$stop_file"
+          (
+            while [[ ! -f "$stop_file" ]]; do
+              for end in $(seq 820000 10000 960000); do
+                printf -v padded "%06d" "$end"
+                checkpoint="train-150k/current/checkpoint-$padded.pt"
+                report="train-150k/current/report-$padded.json"
+                checksum="train-150k/current/checkpoint-$padded.sha256"
+                marker="train-150k/checkpoints/published-$end"
+                [[ -s "$checkpoint" && -s "$report" && -s "$checksum" && ! -f "$marker" ]] || continue
+                cp "$checkpoint" "train-150k/checkpoints/checkpoint-$end.pt"
+                cp "$report" "train-150k/checkpoints/report-$end.json"
+                cp "$checksum" "train-150k/checkpoints/SHA256SUMS-$end"
+                tag="minironin-legacy-150k-from-810k-nonsynthetic-step-$end"
+                if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+                  if ! gh release upload "$tag" "train-150k/checkpoints/checkpoint-$end.pt" "train-150k/checkpoints/report-$end.json" "train-150k/checkpoints/SHA256SUMS-$end" --repo "$GITHUB_REPOSITORY" --clobber; then
+                    echo "WARN: publication failed for step $end; will retry"
+                    continue
+                  fi
+                else
+                  if ! gh release create "$tag" "train-150k/checkpoints/checkpoint-$end.pt" "train-150k/checkpoints/report-$end.json" "train-150k/checkpoints/SHA256SUMS-$end" --repo "$GITHUB_REPOSITORY" --title "MINIRONIN legacy tokenizer — step $end" --notes "Checkpoint emitted immediately after its 10k validation. Continuous continuation from verified step 810000; non-synthetic unified corpus only. Candidate; holdout required."; then
+                    echo "WARN: release creation failed for step $end; will retry"
+                    continue
+                  fi
+                fi
+                touch "$marker"
+                echo "Published checkpoint step $end"
+              done
+              sleep 10
+            done
+          ) &
+          publisher_pid=$!
+          set +e
           python scripts/train_long_run.py \
             --unified-corpus unified-train/train.jsonl.gz \
             --exclude-synthetic --allow-sparse-domains \
@@ -141,21 +193,11 @@ jobs:
             --total-steps 960000 \
             --schedule-start-step 810000 \
             --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
-          for end in $(seq 820000 10000 960000); do
-            printf -v padded "%06d" "$end"
-            checkpoint="train-150k/current/checkpoint-$padded.pt"
-            report="train-150k/current/report-$padded.json"
-            test -s "$checkpoint" && test -s "$report"
-            cp "$checkpoint" "train-150k/checkpoints/checkpoint-$end.pt"
-            cp "$report" "train-150k/checkpoints/report-$end.json"
-            cp "train-150k/current/checkpoint-$padded.sha256" "train-150k/checkpoints/SHA256SUMS-$end"
-            gh release create "minironin-legacy-150k-from-810k-nonsynthetic-step-$end" \
-              "train-150k/checkpoints/checkpoint-$end.pt" \
-              "train-150k/checkpoints/report-$end.json" \
-              "train-150k/checkpoints/SHA256SUMS-$end" \
-              --title "MINIRONIN legacy tokenizer — step $end" \
-              --notes "10k checkpoint from one continuous 150k training process. Uses verified unified corpus artifact run 42679698690; explicitly synthetic rows excluded. Candidate only; independent holdout required."
-          done
+          train_status=$?
+          set -e
+          touch "$stop_file"
+          wait "$publisher_pid" || true
+          exit "$train_status"
 
       - name: Verificar y publicar candidato de 960k
         run: |
@@ -179,11 +221,12 @@ jobs:
             --title "MINIRONIN legacy tokenizer — 150k continuation / step 960000" \
             --notes "150,000 additional steps from the verified 810k byte-level checkpoint, trained on all admitted non-synthetic rows in the latest successfully compiled unified corpus artifact (run 42679698690). Synthetic datasets explicitly excluded. Candidate only; no automatic promotion. Matched holdout required."
 
-      - name: Publicar informes y checkpoints intermedios como artefacto de auditoría
-        uses: actions/upload-artifact@v6
+      - name: Conservar checkpoints parciales e informes incluso si falla el entrenamiento
+        if: always()
+        uses: actions/upload-artifact@v7
         with:
           name: minironin-legacy-vocab-150k-from-810k-nonsynthetic-${{ github.run_id }}
           path: train-150k/
-          if-no-files-found: error
+          if-no-files-found: warn
           compression-level: 0
           retention-days: 90
