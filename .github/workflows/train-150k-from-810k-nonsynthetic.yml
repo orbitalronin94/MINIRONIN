@@ -35,10 +35,10 @@ jobs:
       TOTAL_STEPS: "960000"
     steps:
       - name: Checkout MINIRONIN
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -54,7 +54,7 @@ jobs:
           echo "Corpus run confirmed: $CORPUS_RUN_ID"
 
       - name: Descargar el corpus unificado de la ejecución que acaba de finalizar
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: minironin-unified-train-corpus-${{ env.CORPUS_RUN_ID }}
           github-token: ${{ github.token }}
@@ -184,7 +184,7 @@ jobs:
             --notes "150,000 additional steps from the verified 810k byte-level checkpoint, trained on all admitted non-synthetic rows in the latest successfully compiled unified corpus artifact (run 42679698690). Synthetic datasets explicitly excluded. Candidate only; no automatic promotion. Matched holdout required."
 
       - name: Publicar informes y checkpoints intermedios como artefacto de auditoría
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: minironin-legacy-vocab-150k-from-810k-nonsynthetic-${{ github.run_id }}
           path: train-150k/
