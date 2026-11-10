@@ -1,4 +1,4 @@
-name: MINIRONIN — holdout exclusivo checkpoint 760k
+name: MINIRONIN — holdout 760k con tokenizador byte-level original
 
 on:
   workflow_dispatch:
@@ -70,7 +70,7 @@ jobs:
           python -m py_compile scripts/minironin.py scripts/run_inference_holdout.py
           python scripts/minironin.py holdout \
             --checkpoint .tmp/holdout-760k/checkpoint-760000.pt \
-            --label "minironin-760000-single-checkpoint" \
+            --label "minironin-760000-original-byte-tokenizer" \
             --steps 760000 \
             --holdout benchmarks/inference-holdout-v1.jsonl \
             --output .tmp/holdout-760k/diary-760000.json \
