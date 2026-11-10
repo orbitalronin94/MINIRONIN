@@ -53,7 +53,7 @@ jobs:
           [[ "$(jq -r .head_branch <<<"$run")" == "main" ]]
           echo "Corpus run confirmed: $CORPUS_RUN_ID"
 
-      - name: Descargar el corpus unificado de la ejecución que acaba de finalizar
+      - name: Descargar el corpus unificado de la ejecución indicada
         uses: actions/download-artifact@v5
         with:
           name: minironin-unified-train-corpus-${{ env.CORPUS_RUN_ID }}
@@ -121,44 +121,40 @@ jobs:
         id: parent
 
 
-      - name: Entrenar 150k pasos desde 810k; excluir datasets sintéticos
+      - name: Entrenar 150k pasos en un único proceso con progreso y checkpoints cada 10k
         run: |
           set -euo pipefail
           python -m py_compile scripts/train_long_run.py scripts/train_seed_tournament.py
           input="train-150k/parent/checkpoint-810000.pt"
-          mkdir -p train-150k/checkpoints
-          for start in $(seq 810000 10000 950000); do
-            end=$((start + 10000))
-            echo "::group::Legacy byte tokenizer / non-synthetic corpus — steps $((start + 1))-$end"
-            python scripts/train_long_run.py \
-              --unified-corpus unified-train/train.jsonl.gz \
-              --exclude-synthetic --allow-sparse-domains \
-              --input-checkpoint "$input" \
-              --output-dir train-150k/current \
-              --start-step "$start" \
-              --steps 10000 \
-              --batch-size 4 \
-              --sequence-length 128 \
-              --threads 2 \
-              --dataset-cache "$RUNNER_TEMP/minironin-unified-corpus-cache.pt" \
-              --total-steps 960000 \
-              --schedule-start-step 810000 \
-              --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
+          mkdir -p train-150k/current train-150k/checkpoints
+          python scripts/train_long_run.py \
+            --unified-corpus unified-train/train.jsonl.gz \
+            --exclude-synthetic --allow-sparse-domains \
+            --input-checkpoint "$input" \
+            --output-dir train-150k/current \
+            --start-step 810000 \
+            --steps 150000 \
+            --batch-size 4 \
+            --sequence-length 128 \
+            --threads 2 \
+            --dataset-cache "$RUNNER_TEMP/minironin-unified-corpus-cache.pt" \
+            --total-steps 960000 \
+            --schedule-start-step 810000 \
+            --schedule-start-lr "${{ steps.parent.outputs.parent_lr }}"
+          for end in $(seq 820000 10000 960000); do
             printf -v padded "%06d" "$end"
             checkpoint="train-150k/current/checkpoint-$padded.pt"
             report="train-150k/current/report-$padded.json"
             test -s "$checkpoint" && test -s "$report"
             cp "$checkpoint" "train-150k/checkpoints/checkpoint-$end.pt"
             cp "$report" "train-150k/checkpoints/report-$end.json"
-            sha256sum "train-150k/checkpoints/checkpoint-$end.pt" "train-150k/checkpoints/report-$end.json" > "train-150k/checkpoints/SHA256SUMS-$end"
+            cp "train-150k/current/checkpoint-$padded.sha256" "train-150k/checkpoints/SHA256SUMS-$end"
             gh release create "minironin-legacy-150k-from-810k-nonsynthetic-step-$end" \
               "train-150k/checkpoints/checkpoint-$end.pt" \
               "train-150k/checkpoints/report-$end.json" \
               "train-150k/checkpoints/SHA256SUMS-$end" \
               --title "MINIRONIN legacy tokenizer — step $end" \
-              --notes "10k segment in the 150k continuation from verified 810k checkpoint. Active vocabulary 257 (UTF-8 bytes + EOS). Uses the latest successfully compiled unified library artifact (run 42679698690); records marked synthetic are excluded by the training loader. Candidate only; independent holdout required."
-            input="$checkpoint"
-            echo "::endgroup::"
+              --notes "10k checkpoint from one continuous 150k training process. Uses verified unified corpus artifact run 42679698690; explicitly synthetic rows excluded. Candidate only; independent holdout required."
           done
 
       - name: Verificar y publicar candidato de 960k
