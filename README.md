@@ -1,4 +1,6 @@
 # MINIRONIN
+**English summary:** MINIRONIN is an independent, reproducible research project on compact language models, tokenizer design, curated training corpora, CPU training on GitHub Actions, checkpoint provenance, and honest behavioral evaluation. Its experimental findings are documented with explicit limitations; checkpoint differences are not presented as proof of general intelligence.
+
 
 **MINIRONIN** es un proyecto de investigación independiente para construir y evaluar modelos de lenguaje compactos. El modelo principal experimental es ahora el **Transformer decoder-only con 4,3 millones de parámetros efectivos** (el recuento nominal de 9.970.176 queda como cifra de arquitectura, no como capacidad efectiva), checkpoint de 720.000 pasos. Se promociona por decisión explícita del proyecto como referencia experimental; esto **no** significa que haya demostrado una mejora de calidad: el holdout de 100 preguntas de 720k muestra bucles, contaminación entre preguntas y degeneración, sin puntuación semántica automática.
 
